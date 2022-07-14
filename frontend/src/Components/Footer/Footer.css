@@ -1,0 +1,68 @@
+.row {
+    font-family: 'Saira Stencil One';
+    color: silver;
+    font-weight:900;
+    text-align: center;
+    padding-top: 25px;
+}
+
+#footer-section {
+    background-color: lightcyan;
+}
+
+.abdullah-logo {
+    padding: 1%;
+    width: 10.5rem;
+}
+
+.footer-social {
+    height: 35px;
+    width: 35px;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-top: 7px;
+    padding-right: 7px;
+    padding-bottom: 7px;
+    padding-left: 7px;
+}
+
+.footer-social:hover {
+    background-color: grey;
+}
+
+.low-row {
+    padding-top: 25px;
+    text-align: center;
+}
+
+.footer-icon {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.copyright-paragraph {
+    color: silver;
+    margin-top: 20px;
+    font-family: 'Alfa Slab One';
+    font-size: 15px;
+}
+
+.react-logo {
+    height: 7.5vmin;
+    pointer-events: none;
+}
+  
+@media (prefers-reduced-motion: no-preference) {
+    .react-logo {
+      animation: App-logo-spin infinite 10s linear;
+    }
+}
+  
+@keyframes react-logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+}
