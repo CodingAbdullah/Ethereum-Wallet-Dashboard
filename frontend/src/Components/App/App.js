@@ -1,10 +1,24 @@
 import './App.css';
-import Footer from '../Footer/Footer.jsx';
+import Navbar from  '../Navbar/Navbar';
+import Sidebar from '../Sidebar/Sidebar';
+import Home from '../Home/Home';
+import Footer from '../Footer/Footer';
 
 const App = () => {
   return (
     <div className="App">
-      <Footer />
+      <div>
+        <Navbar />
+      </div>
+      <div>
+        <Sidebar />
+      </div>
+      <div>
+        <Home />
+      </div>
+      <div>
+        <Footer />
+      </div>
     </div>
   );
 }
