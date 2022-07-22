@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Home.css';
-import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+
+    const navigate = useNavigate();
+    const [walletAddress, updateWalletAddress] = useState("");
 
     const [btcPrice, updateBtcPrice] = useState({
         information: null
@@ -22,6 +25,10 @@ const Home = () => {
 
 
     useEffect(() => {
+
+        // Clear local storage of wallet address
+        localStorage.removeItem('walletAddress');
+
         // Bitcoin Price Action
         fetch(URL + API_ENDPOINT + QUERY_STRING_BITCOIN)
         .then(response => response.json())
@@ -69,6 +76,13 @@ const Home = () => {
         .catch(err => console.log(err)); 
     }, []);
 
+    const formHandler = () => {
+        if (walletAddress.length() === 42 && walletAddress.substring(0, 2) === '0x'){
+            localStorage.setItem('walletAddress', walletAddress);
+            navigate("/transactions");
+        }
+    }
+
     if (btcPrice.information === null || ethPrice.information === null) {
         return <div>Loading...</div>
     }
@@ -83,8 +97,8 @@ const Home = () => {
                                 <div class="container">
                                     <h1 class="display-5">Welcome!</h1>
                                     <p>Your one-stop shop to check the bearings of your wallet and coin price action. Enter the <b>public</b> address below (the 42-digit hex code) of your wallet to track your activity!</p>
-                                    <form>
-                                        <input class="form-control mr-sm-2" type="search" placeholder="Enter Wallet Address (0xa2e3wet5f...)" max="42" min="42" aria-label="Search" required />
+                                    <form onSubmit={formHandler}>
+                                        <input class="form-control mr-sm-2" type="search" placeholder="Enter Wallet Address (0xa2e3se4u5F...)" max="42" min="42" aria-label="Search" onChange={(e) => updateWalletAddress(e.target.value)} required />
                                         <button class="btn btn-outline-success wallet-search-button" type="submit">Search &raquo;</button>
                                     </form>
                                 </div>
