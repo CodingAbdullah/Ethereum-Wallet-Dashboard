@@ -58,7 +58,7 @@ const Home = () => {
                     }
                 });
 
-                if (ethPrice.information.usd_24h_change < 0){
+                if (res.ethereum.usd_24h_change < 0){
                     updateEthColourChange("red");
                 }
                 else {
@@ -82,7 +82,7 @@ const Home = () => {
                         <div class="jumbotron">
                                 <div class="container">
                                     <h1 class="display-5">Welcome!</h1>
-                                    <p>Your one-stop shop to check the bearings of your wallet and coin price action. Enter below the <b>public</b> address (the 42-digit hex code) of your wallet to track your activity!</p>
+                                    <p>Your one-stop shop to check the bearings of your wallet and coin price action. Enter the <b>public</b> address below (the 42-digit hex code) of your wallet to track your activity!</p>
                                     <form>
                                         <input class="form-control mr-sm-2" type="search" placeholder="Enter Wallet Address (0xa2e3wet5f...)" max="42" min="42" aria-label="Search" required />
                                         <button class="btn btn-outline-success wallet-search-button" type="submit">Search &raquo;</button>
@@ -94,20 +94,20 @@ const Home = () => {
                                 <div class="col-md-6">
                                     <img src={require("../../assets/images/bitcoin-brands.svg").default} width="75" height="75" alt="logo" /><br /> 
                                     <h4>BTC</h4>
-                                    <p>Price: ${btcPrice.information.bitcoin.usd} USD</p> 
+                                    <p>Price: <b>${btcPrice.information.bitcoin.usd} USD</b></p> 
                                     <p style={{ display: 'inline' }}>24 Hr% Change: </p> 
-                                    <p style={{ display: 'inline', color: btcColourChange }}>{btcColourChange === "red" ? "-" + btcPrice.information.bitcoin.usd_24h_change.toFixed(2) + "%": "+" + btcPrice.information.bitcoin.usd_24h_change.toFixed(2) + "%"}</p>
+                                    <b><p style={{ display: 'inline', color: btcColourChange }}>{btcColourChange === "red" ? btcPrice.information.bitcoin.usd_24h_change.toFixed(2) + "%": "+" + btcPrice.information.bitcoin.usd_24h_change.toFixed(2) + "%"}</p></b>
                                     <br />
-                                    <button class="btn btn-outline-primary wallet-search-button" type="submit">View Details &raquo;</button>
+                                    <button class="btn btn-outline-primary wallet-search-button" type="submit">View Price Action &raquo;</button>
                                 </div>
                                 <div class="col-md-6">
                                     <img src={require("../../assets/images/ethereum-brands.svg").default} width="75" height="75" alt="logo" /><br />
-                                    <h4>ETH</h4> 
-                                    <p>Price: ${ethPrice.information.ethereum.usd} USD</p>
-                                    <p style={{ display: 'inline' }}>24 Hr% Change: </p> 
-                                    <p style={{ display: 'inline', color: ethColourChange }}>{ ethColourChange === 'red' ? "-" + ethPrice.information.ethereum.usd_24h_change.toFixed(2) + "%": "+" + ethPrice.information.ethereum.usd_24h_change.toFixed(2) + "%"}</p> 
+                                    <h4>ETH</h4>
+                                    <p>Price: <b>${ethPrice.information.ethereum.usd} USD</b></p>
+                                    <p style={{ display: 'inline' }}>24 Hr% Change: </p>
+                                    <b><p style={{ display: 'inline', color: ethColourChange }}>{ ethColourChange === "red" ? ethPrice.information.ethereum.usd_24h_change.toFixed(2) + "%": "+" + ethPrice.information.ethereum.usd_24h_change.toFixed(2) + "%"}</p></b> 
                                     <br />
-                                    <button class="btn btn-outline-primary wallet-search-button" type="submit">View Details &raquo;</button>
+                                    <button class="btn btn-outline-primary wallet-search-button" type="submit">View Price Action &raquo;</button>
                                 </div>
                             </div>
                         </div>
