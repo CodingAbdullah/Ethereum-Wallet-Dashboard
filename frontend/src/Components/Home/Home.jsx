@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Home.css';
-import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
-
-    const navigate = useNavigate();
     const [walletAddress, updateWalletAddress] = useState("");
 
     const [btcPrice, updateBtcPrice] = useState({
@@ -79,7 +76,6 @@ const Home = () => {
     const formHandler = () => {
         if (walletAddress.length() === 42 && walletAddress.substring(0, 2) === '0x'){
             localStorage.setItem('walletAddress', walletAddress);
-            navigate("/transactions");
         }
     }
 
