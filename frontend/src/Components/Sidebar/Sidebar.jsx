@@ -12,27 +12,27 @@ const Sidebar = () => {
                             <tbody>
                                 <tr class="col-sm-3">
                                     <td><img src={require("../../assets/images/dashboard.png")} width="35" height="25" alt="logo" /></td>
-                                    <td><a href="#">Dashboard</a></td>
+                                    <td><a href="/dashboard">Dashboard</a></td>
                                 </tr>
                                 <tr>
                                     <td><img src={require("../../assets/images/transactions.png")} width="35" height="25" alt="logo" /></td>
-                                    <td><a href="#">Transactions</a></td>
+                                    <td><a href="/transactions">Transactions</a></td>
                                 </tr>
                                 <tr>
                                     <td><img src={require("../../assets/images/analytics.png")} width="35" height="25" alt="logo" /></td>
-                                    <td><a href="#">Analytics</a></td>
+                                    <td><a href="/analytics">Analytics</a></td>
                                 </tr>
                                 <tr>
                                     <td><img src={require("../../assets/images/collections.png")} width="35" height="25" alt="logo" /></td>
-                                    <td><a href="#">Collections</a></td>
+                                    <td><a href="/collections">Collections</a></td>
                                 </tr>
                                 <tr>
                                     <td><img src={require("../../assets/images/charts.png")} width="35" height="25" alt="logo" /></td>
-                                    <td><a href="#">Charts</a></td>
+                                    <td><a href="/charts">Charts</a></td>
                                 </tr>
                                 <tr>
                                     <td><img src={require("../../assets/images/about.png")} width="35" height="25" alt="logo" /></td>
-                                    <td><a href="#">About</a></td>
+                                    <td><a href="/about">About</a></td>
                                 </tr>
                             </tbody>
                         </table>

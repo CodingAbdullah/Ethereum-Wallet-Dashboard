@@ -13,7 +13,7 @@ const ETHChartPortal = () => {
         fetch(URL + API_ENDPOINT)
         .then(response => response.json())
         .then(res => {
-            result = res; 
+            result = res;
             console.log(res);
         })
         .catch(err => console.log(err));

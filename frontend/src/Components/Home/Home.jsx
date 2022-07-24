@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Home.css';
+import Alert from '../Alert/Alert';
 
 const Home = () => {
+
+    const [formAlert, updateAlert] = useState("");
     const [walletAddress, updateWalletAddress] = useState("");
 
     const [btcPrice, updateBtcPrice] = useState({
@@ -15,16 +19,17 @@ const Home = () => {
     const [btcColourChange, updateBtcColourChange] = useState("");
     const [ethColourChange, updateEthColourChange] = useState("");
 
+    const navigate = useNavigate();
+
     const URL= "https://api.coingecko.com/api/v3";
     const API_ENDPOINT = "/simple/price";
     const QUERY_STRING_BITCOIN= "?ids=bitcoin&vs_currencies=usd&include_24hr_change=true";
     const QUERY_STRING_ETHEREUM= "?ids=ethereum&vs_currencies=usd&include_24hr_change=true";
 
-
     useEffect(() => {
 
         // Clear local storage of wallet address
-        localStorage.removeItem('walletAddress');
+        localStorage.removeItem("walletAddress");
 
         // Bitcoin Price Action
         fetch(URL + API_ENDPOINT + QUERY_STRING_BITCOIN)
@@ -73,9 +78,23 @@ const Home = () => {
         .catch(err => console.log(err)); 
     }, []);
 
-    const formHandler = () => {
-        if (walletAddress.length() === 42 && walletAddress.substring(0, 2) === '0x'){
-            localStorage.setItem('walletAddress', walletAddress);
+    const formHandler = (e) => {
+        e.preventDefault();
+
+        if (walletAddress.length === 42 && walletAddress.substring(0, 2) === "0x"){
+            localStorage.setItem("walletAddress", walletAddress);
+            updateAlert("");
+            navigate("/transactions");    
+        }
+        else {
+            if (formAlert === "invalid"){
+                e.target.reset();
+                localStorage.clear();                
+            }
+            else {
+                updateAlert("invalid");
+                localStorage.clear();
+            }
         }
     }
 
@@ -89,6 +108,7 @@ const Home = () => {
                         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <h1 class="h2">Dashboard</h1>
                         </div>
+                        { formAlert === "invalid" ? <div><Alert type="danger"/></div> : <div/> }
                         <div class="jumbotron">
                                 <div class="container">
                                     <h1 class="display-5">Welcome!</h1>
@@ -108,7 +128,7 @@ const Home = () => {
                                     <p style={{ display: 'inline' }}>24 Hr% Change: </p> 
                                     <b><p style={{ display: 'inline', color: btcColourChange }}>{btcColourChange === "red" ? btcPrice.information.bitcoin.usd_24h_change.toFixed(2) + "%": "+" + btcPrice.information.bitcoin.usd_24h_change.toFixed(2) + "%"}</p></b>
                                     <br />
-                                    <button class="btn btn-outline-primary wallet-search-button" type="submit">View Price Action &raquo;</button>
+                                    <button class="btn btn-outline-primary wallet-search-button" onClick={() => { navigate("/btcChart") }}>View Price Action &raquo;</button>
                                 </div>
                                 <div class="col-md-6">
                                     <img src={require("../../assets/images/ethereum-brands.svg").default} width="75" height="75" alt="logo" /><br />
@@ -117,7 +137,7 @@ const Home = () => {
                                     <p style={{ display: 'inline' }}>24 Hr% Change: </p>
                                     <b><p style={{ display: 'inline', color: ethColourChange }}>{ ethColourChange === "red" ? ethPrice.information.ethereum.usd_24h_change.toFixed(2) + "%": "+" + ethPrice.information.ethereum.usd_24h_change.toFixed(2) + "%"}</p></b> 
                                     <br />
-                                    <button class="btn btn-outline-primary wallet-search-button" type="submit">View Price Action &raquo;</button>
+                                    <button class="btn btn-outline-primary wallet-search-button" onClick={() => { navigate("/ethChart") }}>View Price Action &raquo;</button>
                                 </div>
                             </div>
                         </div>
