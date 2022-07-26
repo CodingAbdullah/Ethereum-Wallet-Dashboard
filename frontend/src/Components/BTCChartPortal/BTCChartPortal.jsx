@@ -12,41 +12,25 @@ const BTCChartPortal = () => {
 
     const [chartData, setChartData] = useState({});
 
-    // Default implementation for now.. 14 days
+    // Default implementation for now... 14 days
     useEffect(() => {
-        fetch(URL + API_ENDPOINT)
-        .then(response => response.json())
-        .then(res => {
-            setChartData(prevState => {
-                return {
-                    ...prevState,
-                    labels: ['1', '2', '3', '4', '5', '6','7','8','9','10', '11', '12', '13', '14', '15'],
-                    datasets: [
-                    {
-                        label: "Price in USD",
-                        data: res.prices.map((btcInfo) => btcInfo[1]),
-                        backgroundColor: [
-                            "#ff0000",
-                            "#ff0000",
-                            "#ff0000",
-                            "#ff0000",
-                            "#ff0000",
-                            "#ff0000",
-                            "#ff0000",
-                            "#ff0000",
-                            "#ff0000",
-                            "#ff0000",
-                            "#ff0000",
-                            "#ff0000",
-                            "#ff0000",
-                            "#ff0000",
-                            "#ff0000"
-                        ]
-                    }]
-                }
-            }); 
-        })
-        .catch(err => console.log(err));
+        const fetchBitcoinData = async () => {
+            let res = await fetch(URL + API_ENDPOINT);
+
+                setChartData(prevState => {
+                    return {
+                        ...prevState,
+                        labels: ['1', '2', '3', '4', '5', '6','7','8','9','10', '11', '12', '13', '14', '15'],
+                        datasets: [
+                        {
+                            label: "Price in USD",
+                            data: res.prices.map((btcInfo) => btcInfo[1]),
+                            backgroundColor: "#ff0000"
+                        }]
+                    }
+                }); 
+        }
+        fetchBitcoinData().catch(console.error);
     }, []);
 
     return (
@@ -57,6 +41,7 @@ const BTCChartPortal = () => {
                         <button style={{ marginTop: '1rem', marginRight: '1rem', marginBottom: '0.4rem' }} class="btn btn-secondary">{element}</button>
                     );
                 })}
+            </div>
                 <div>
                     <Line
                         data={chartData}
@@ -74,7 +59,6 @@ const BTCChartPortal = () => {
                         }}
                     />
                 </div>
-            </div>
         </div>
     )
 }
