@@ -1,33 +1,28 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-import { BitcoinChart } from '../BitcoinChart/BitcoinChart';
-import axios from 'axios';
-import { registerables } from 'chart.js';
+import React, { useState, useEffect } from 'react';
+import { Line } from 'react-chartjs-2';
+
 import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend,
-  } from 'chart.js';
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
 
-  ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
-  );
-
-  ChartJS.register(...registerables);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const BTCChartPage = () => {
-
     const URL= "https://api.coingecko.com/api/v3";
     const id = "bitcoin";
     const QUERY_STRING_BITCOIN = '?ids=bitcoin&vs_currencies=usd&include_24hr_change=true';
@@ -35,52 +30,110 @@ const BTCChartPage = () => {
     const QUERY_STRING_BITCOIN_PRICES = "?vs_currency=usd&days=14"; // Default selection for now.
     const BITCOIN_PRICE_ENDPOINT = "/coins/" + id + "/market_chart" + QUERY_STRING_BITCOIN_PRICES + "&interval=daily";
      
-    const [btcPrice, updateBtcPrice] = useState(0.00);
+    const [btcInfo, updateBtcInfo] = useState({
+      information: null
+    });    
+  
     const [chartData, setChartData] = useState({});
+
     let days = [];
+    for (var i = 0; i <= 14; i++) {
+      days.push(String(i + 1));
+    }
 
-    // Default implementation for now... 14 days
-    useEffect(() => {
-        const fetchBitcoinData = async () => {
-            let curr_prices = await axios.get(URL + BITCOIN_PRICE_ENDPOINT);
-            let bitcoin_price = await axios.get(URL + CURRENCY_ENDPOINT + QUERY_STRING_BITCOIN);
+  // Get current coin prices as well as historical prices
+  useEffect(() => {
+    const fetchCoins = async () => {
+      await fetch(URL + BITCOIN_PRICE_ENDPOINT)
+      .then(response => response.json())
+      .then(res => {
+        setChartData(prevState => {
+          return {
+            ...prevState,
+            res
+          }
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
-            updateBtcPrice(bitcoin_price.data.bitcoin.usd);
-
-            for (var i = 0; i <= 14; i++) {
-                days.push(String(i + 1));
-            }
-
-            setChartData((prevState) => {
-                return {
-                    ...prevState,
-                    labels: days,
-                    datasets: [
-                            {
-                                label: "Price in USD",
-                                data: curr_prices.data.prices.map(day => day[1].toFixed(2)),
-                                fill: false,
-                                backgroundColor: "red",
-                                borderColor: "red",
-                            }
-                    ]
-                }
-            });
+      await fetch(URL + CURRENCY_ENDPOINT + QUERY_STRING_BITCOIN)
+      .then(response => response.json())
+      .then(res => {
+        if (res.bitcoin !== undefined) {
+          updateBtcInfo((prevState) => {
+              return {
+                  ...prevState,
+                  information: res
+              }
+          });
         }
-        fetchBitcoinData();
-    }, []);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    };
+    fetchCoins();
+  }, [])
 
-    if (chartData === {}) {
-        return <div>Loading...</div>
+  // Set display configurations
+  var data = {
+    labels: days,
+    datasets: [{
+      label: `Bitcoin Price`,
+      data: chartData?.res?.prices?.map(x => x[1].toFixed(2)),
+      backgroundColor: 'red',
+      borderColor: 'red',
+      borderWidth: 1,
+      xAxisID: 'Days'
+    }]
+  };
+
+  // Adding options to enhance charts
+  var options = {
+    maintainAspectRatio: false,
+    scales: {
+    },
+    legend: {
+      display: true,
+      position: "bottom",
+      labels: {
+        fontSize: 25
+      }
     }
-    else {
-        return (                        
-                <div>
-                    <h1>{btcPrice === 0.00 ? <div>Not uploaded yet</div> : "Bitcoin Current Price: $" + btcPrice + " USD"}</h1>
-                    { chartData === {} ? <div>Loading...</div> : <BitcoinChart data={ chartData } />  }
-                </div>
-        );
-    }
+  }
+
+  // Display Title, 24 Hr. Price% Change, Price of Coin
+  if (btcInfo.information === null || chartData === {}) {
+    return <div>Loading...</div>
+  }
+  else {
+    return (
+      <div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+          <h3 style={{marginTop: '2rem'}}>Bitcoin Price: <b>${btcInfo.information.bitcoin.usd} USD</b></h3> 
+          <h5 style={{marginBottom: '2rem', display: 'inline'}}>24 Hr. % Change: 
+            { btcInfo.information.bitcoin.usd_24h_change < 0 ? 
+            <h5 style={{display: 'inline', color: 'red'}}>{btcInfo.information.bitcoin.usd_24h_change.toFixed(2) +"%"}</h5> : 
+            <h5 style={{display: 'inline', color: 'green'}}>{" +" + btcInfo.information.bitcoin.usd_24h_change.toFixed(2) + "%"}</h5>}
+          </h5>
+          <div>
+            {( chartData === {} || days === [] ) ? <div>Loading...</div> : 
+            <div style={{marginTop: '2rem'}}>
+              <Line 
+                data={data}
+                height={250}
+                width={250}
+                options={options}
+              />
+            </div>
+            }
+          </div>
+        </main>
+      </div>
+    )
+  }
 }
 
 export default BTCChartPage;
