@@ -1,65 +1,72 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
+import axios from 'axios';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+  } from 'chart.js';
+
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+  );
 
 const ETHChartPortal = () => {
 
-    const time = ["1 day", "14 days", "30 days"];
     const URL= "https://api.coingecko.com/api/v3";
     const id = "ethereum";
     const QUERY_STRING = "?vs_currency=usd&days=14"; // Default selection for now.
     const API_ENDPOINT = "/coins/" + id + "/market_chart" + QUERY_STRING + "&interval=daily";
 
     const [chartData, setChartData] = useState({});
+    let days = [];
 
     // Default implementation for now... 14 days
     useEffect(() => {
         const fetchEthereumData = async () => {
-            let res = await fetch(URL + API_ENDPOINT);
+            let res = await axios.get(URL + API_ENDPOINT);
 
-                setChartData(prevState => {
-                    return {
-                        ...prevState,
-                        labels: ['1', '2', '3', '4', '5', '6','7','8','9','10', '11', '12', '13', '14', '15'],
-                        datasets: [
-                        {
-                            label: "Price in USD",
-                            data: res.prices.map((btcInfo) => btcInfo[1]),
-                            backgroundColor: "#ff0000"
-                        }]
-                    }
-                }); 
+            for (var i = 0; i <= 14; i++) {
+                days.push(String(i + 1));
+            }
+
+            setChartData((prevState) => {
+                return {
+                    ...prevState,
+                    labels: days,
+                    datasets: [
+                            {
+                                label: "Price in USD",
+                                data: res.data.prices.map(day => day[1].toFixed(2)),
+                                fill: false,
+                                backgroundColor: "red",
+                                borderColor: "red",
+                                xAxisID: 'Days'
+                            }
+                    ]
+                }
+            })
         }
-        fetchEthereumData().catch(console.error);
+        fetchEthereumData();
     }, []);
 
-    return (
-        <div className='dashboard'>
-            <div>
-                { time.map(element => { 
-                    return (
-                        <button style={{ marginTop: '1rem', marginRight: '1rem', marginBottom: '0.4rem' }} class="btn btn-secondary">{element}</button>
-                    );
-                })}
+    return (                        
+            
+            <div class="dashboard d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                { chartData === {} ? <div>Loading</div> : <Line data={chartData} />  }
             </div>
-                <div>
-                    <Line
-                        data={chartData}
-                        options={{
-                            plugins: {
-                                title: {
-                                display: true,
-                                text: "Bticoin Chart"
-                                },
-                                legend: {
-                                display: true,
-                                position: "bottom"
-                            }
-                        }
-                        }}
-                    />
-                </div>
-        </div>
     )
 }
 
