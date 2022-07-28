@@ -9,7 +9,7 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend,
+  Legend
 } from 'chart.js';
 
 ChartJS.register(
@@ -35,8 +35,8 @@ const ETHChartPage = () => {
     });    
   
     const [chartData, setChartData] = useState({});
-
     let days = [];
+
     for (var i = 0; i <= 14; i++) {
       days.push(String(i + 1));
     }
@@ -85,8 +85,7 @@ const ETHChartPage = () => {
       data: chartData?.res?.prices?.map(x => x[1].toFixed(2)),
       backgroundColor: 'red',
       borderColor: 'red',
-      borderWidth: 1,
-      xAxisID: 'Days'
+      borderWidth: 1
     }]
   };
 
@@ -103,8 +102,17 @@ const ETHChartPage = () => {
       }
     }
   }
+  
+  const buttonHandler = (d) => {
 
-  // Display Title, 24 Hr. Price% Change, Price of Coin
+  }
+
+  let buttonDaysArray = ["Last Day", "Last 14 Days", "Last 30 Days"];
+  let buttons = buttonDaysArray.map(day =>  {
+    return <button onClick={buttonHandler(day)} style={{marginRight: '1rem', paddingLeft: '0.5rem', paddingRight: '0.5rem'}} class="btn btn-secondary">{day}</button>
+  });
+
+  // Display Title, 24 Hr. % Change, Price of Coin
   if (ethInfo.information === null || chartData === {}) {
     return <div>Loading...</div>
   }
@@ -115,20 +123,24 @@ const ETHChartPage = () => {
           <h3 style={{marginTop: '2rem'}}>Ethereum Price: <b>${ethInfo.information.ethereum.usd} USD</b></h3> 
           <h5 style={{marginBottom: '2rem', display: 'inline'}}>24 Hr. % Change: 
             { ethInfo.information.ethereum.usd_24h_change < 0 ? 
-            <h5 style={{display: 'inline', color: 'red'}}>{ethInfo.information.ethereum.usd_24h_change.toFixed(2) +"%"}</h5> : 
-            <h5 style={{display: 'inline', color: 'green'}}>{" +" + ethInfo.information.ethereum.usd_24h_change.toFixed(2) + "%"}</h5>}
+              <h6 style={{display: 'inline', color: 'red'}}>{ethInfo.information.ethereum.usd_24h_change.toFixed(2) + "%"}</h6> : 
+              <h6 style={{display: 'inline', color: 'green'}}>{" +" + ethInfo.information.ethereum.usd_24h_change.toFixed(2) + "%"}</h6>
+            }
           </h5>
           <div>
             {( chartData === {} || days === [] ) ? <div>Loading...</div> : 
-            <div style={{marginTop: '2rem'}}>
-              <Line 
-                data={data}
-                height={250}
-                width={250}
-                options={options}
-              />
-            </div>
+              <div style={{marginTop: '2rem'}}>
+                <Line 
+                  data={data}
+                  height={250}
+                  width={250}
+                  options={options}
+                />
+              </div>
             }
+          </div>
+          <div class="button-section" style={{marginTop: '1rem'}}>
+            {buttons}
           </div>
         </main>
       </div>

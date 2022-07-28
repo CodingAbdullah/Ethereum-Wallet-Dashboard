@@ -5,6 +5,7 @@ import Home from '../Home/Home';
 import Transactions from '../Transactions/Transactions';
 import BTCChartPage from '../BTCChartPage/BTCChartPage';
 import ETHChartPage from '../ETHChartPage/ETHChartPage';
+import Test from './Test';
 import Footer from '../Footer/Footer';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 

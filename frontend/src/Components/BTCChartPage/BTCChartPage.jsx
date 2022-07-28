@@ -9,7 +9,7 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend,
+  Legend
 } from 'chart.js';
 
 ChartJS.register(
@@ -85,24 +85,33 @@ const BTCChartPage = () => {
       data: chartData?.res?.prices?.map(x => x[1].toFixed(2)),
       backgroundColor: 'red',
       borderColor: 'red',
-      borderWidth: 1,
-      xAxisID: 'Days'
+      borderWidth: 1
     }]
   };
 
   // Adding options to enhance charts
   var options = {
     maintainAspectRatio: false,
-    scales: {
-    },
-    legend: {
-      display: true,
-      position: "bottom",
-      labels: {
-        fontSize: 25
+    plugins: {
+      title: {
+        display: true,
+        text: "Bitcoin Chart"
+      },
+      legend: {
+        display: true,
+        position: "bottom"
       }
-    }
+     }
   }
+   
+  const buttonHandler = (d) => {
+
+  }
+
+  let buttonDaysArray = ["Last Day", "Last 14 Days", "Last 30 Days"];
+  let buttons = buttonDaysArray.map(day =>  {
+    return <button onClick={buttonHandler(day)} style={{marginRight: '1rem', paddingLeft: '0.5rem', paddingRight: '0.5rem'}} class="btn btn-secondary">{day}</button>
+  });
 
   // Display Title, 24 Hr. Price% Change, Price of Coin
   if (btcInfo.information === null || chartData === {}) {
@@ -115,20 +124,24 @@ const BTCChartPage = () => {
           <h3 style={{marginTop: '2rem'}}>Bitcoin Price: <b>${btcInfo.information.bitcoin.usd} USD</b></h3> 
           <h5 style={{marginBottom: '2rem', display: 'inline'}}>24 Hr. % Change: 
             { btcInfo.information.bitcoin.usd_24h_change < 0 ? 
-            <h5 style={{display: 'inline', color: 'red'}}>{btcInfo.information.bitcoin.usd_24h_change.toFixed(2) +"%"}</h5> : 
-            <h5 style={{display: 'inline', color: 'green'}}>{" +" + btcInfo.information.bitcoin.usd_24h_change.toFixed(2) + "%"}</h5>}
+              <h5 style={{display: 'inline', color: 'red'}}>{btcInfo.information.bitcoin.usd_24h_change.toFixed(2) +"%"}</h5> : 
+              <h5 style={{display: 'inline', color: 'green'}}>{" +" + btcInfo.information.bitcoin.usd_24h_change.toFixed(2) + "%"}</h5>
+            }
           </h5>
           <div>
             {( chartData === {} || days === [] ) ? <div>Loading...</div> : 
-            <div style={{marginTop: '2rem'}}>
-              <Line 
-                data={data}
-                height={250}
-                width={250}
-                options={options}
-              />
-            </div>
+              <div style={{marginTop: '2rem'}}>
+                <Line 
+                  data={data}
+                  height={250}
+                  width={250}
+                  options={options}
+                />
+              </div>
             }
+          </div>
+          <div class="button-section" style={{marginTop: '1rem'}}>
+            {buttons}
           </div>
         </main>
       </div>
