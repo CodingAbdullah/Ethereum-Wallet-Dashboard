@@ -22,7 +22,7 @@ const Transactions = () => {
     // Convert from WEI to ETH 1 ETH = 10^18 WEI
     return (
         <div> 
-            { result === null ? "Invalid Data" : result*(1/1000000000000000000) } 
+            <h1>{ result === null ? "Invalid Data" : result*(1/1000000000000000000) }</h1> 
         </div>
     )
 }

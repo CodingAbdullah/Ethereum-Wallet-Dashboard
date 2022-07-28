@@ -75,7 +75,7 @@ const ETHChartPage = () => {
       })
     };
     fetchCoins();
-  }, [])
+  }, []);
 
   // Set display configurations
   var data = {
@@ -103,13 +103,23 @@ const ETHChartPage = () => {
     }
   }
   
+  // Buttons for displaying different chart date ranges
   const buttonHandler = (d) => {
-
+    switch(d) {
+      case "Last Day":
+        break;
+      case "Last 14 Days":
+        break;
+      case "Last 30 Days":
+        break;
+      default:
+        break;
+    }
   }
 
   let buttonDaysArray = ["Last Day", "Last 14 Days", "Last 30 Days"];
   let buttons = buttonDaysArray.map(day =>  {
-    return <button onClick={buttonHandler(day)} style={{marginRight: '1rem', paddingLeft: '0.5rem', paddingRight: '0.5rem'}} class="btn btn-secondary">{day}</button>
+    return <button onClick={buttonHandler} style={{marginRight: '1rem', paddingLeft: '0.5rem', paddingRight: '0.5rem'}} class="btn btn-secondary">{day}</button>
   });
 
   // Display Title, 24 Hr. % Change, Price of Coin

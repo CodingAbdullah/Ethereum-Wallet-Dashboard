@@ -35,8 +35,8 @@ const BTCChartPage = () => {
     });    
   
     const [chartData, setChartData] = useState({});
-
     let days = [];
+
     for (var i = 0; i <= 14; i++) {
       days.push(String(i + 1));
     }
@@ -103,9 +103,19 @@ const BTCChartPage = () => {
       }
      }
   }
-   
-  const buttonHandler = (d) => {
 
+  // Buttons for displaying different chart date ranges
+  const buttonHandler = (d) => {
+    switch(d) {
+      case "Last Day":
+        break;
+      case "Last 14 Days":
+        break;
+      case "Last 30 Days":
+        break;
+      default:
+        break;
+    }
   }
 
   let buttonDaysArray = ["Last Day", "Last 14 Days", "Last 30 Days"];
