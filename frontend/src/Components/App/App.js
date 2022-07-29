@@ -5,6 +5,7 @@ import Home from '../Home/Home';
 import Transactions from '../Transactions/Transactions';
 import BTCChartPage from '../BTCChartPage/BTCChartPage';
 import ETHChartPage from '../ETHChartPage/ETHChartPage';
+import PageNotFound from '../MiscellaneousPages/PageNotFound';
 import Footer from '../Footer/Footer';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -24,6 +25,7 @@ const App = () => {
             <Route exact path="/transactions" element={<Transactions />}></Route>
             <Route exact path="/btcChart" element={<BTCChartPage />}></Route>
             <Route exact path="/ethChart" element={<ETHChartPage />}></Route>
+            <Route exact path="*" element={<PageNotFound />}></Route>
           </Routes>
         </div>
         <div>
