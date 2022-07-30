@@ -20,7 +20,7 @@ const Sidebar = () => {
                                 </tr>
                                 <tr>
                                     <td><img src={require("../../assets/images/analytics.png")} width="35" height="25" alt="logo" /></td>
-                                    <td><a href="/analytics">Analytics</a></td>
+                                    <td><a href="/analytics">Wallet Analytics</a></td>
                                 </tr>
                                 <tr>
                                     <td><img src={require("../../assets/images/collections.png")} width="35" height="25" alt="logo" /></td>
