@@ -4,8 +4,8 @@ const Collections = () => {
 
     return (
         <div className="collections">
-        </div>
-
+            <h1>Collections</h1>
+        </div>  
     )
 }
 
