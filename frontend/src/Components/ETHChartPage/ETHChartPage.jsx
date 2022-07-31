@@ -190,7 +190,6 @@ const ETHChartPage = () => {
     return (
       <div>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-          <h1>{displayChart === '15' || displayChart === '30' ? "Yessir" : 'No ser'}</h1>
           <h3 style={{marginTop: '2rem'}}>Ethereum Price: <b>${ethInfo.information.ethereum.usd} USD</b></h3> 
           <h5 style={{marginBottom: '2rem', display: 'inline'}}>24 Hr. % Change: 
             { ethInfo.information.ethereum.usd_24h_change < 0 ? 
