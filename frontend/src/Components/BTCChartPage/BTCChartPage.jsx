@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
+import moment from 'moment';
 
 import {
   Chart as ChartJS,
@@ -39,15 +40,19 @@ const BTCChartPage = () => {
 
   // Get current coin prices as well as historical prices
   useEffect(() => {
-    const fetchCoins = async () => {
+    const fetchCoins = async () => {      
       await fetch(URL + BITCOIN_PRICE_ENDPOINT)
       .then(response => response.json())
       .then(res => {
         setChartData(prevState => {
+          let days = [];
+          for (var i = 1; i < 31; i++){
+            days.push(moment().subtract(i, 'days').calendar());
+          }
           return {
             ...prevState,
             res,
-            time: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+            time: days.reverse()
           }
         });
       })
@@ -80,7 +85,7 @@ const BTCChartPage = () => {
         case "Last Day":
           updateDisplayChart("1");
           break;
-  
+          
         case "Last 14 Days":
           updateDisplayChart("14");
           break;
@@ -102,10 +107,14 @@ const BTCChartPage = () => {
         .then(response => response.json())
         .then(res => {
           setChartData(prevState => {
+            let days = [];
+            for (var i = 1; i < 15; i++){
+              days.push(moment().subtract(i, 'days').calendar());
+            }
             return {
               ...prevState,
               res,
-              time: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+              time: days.reverse()
             }
           });
         })
@@ -118,11 +127,14 @@ const BTCChartPage = () => {
         .then(response => response.json())
         .then(res => {
           setChartData(prevState => {
+            let days = [];
+            for (var i = 1; i < 31; i++){
+              days.push(moment().subtract(i, 'days').calendar());
+            }
             return {
               ...prevState,
               res,
-              time: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 
-                16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+              time: days.reverse()
             }
           });
         })
@@ -135,11 +147,14 @@ const BTCChartPage = () => {
         .then(response => response.json())
         .then(res => {
           setChartData(prevState => {
+            let days = [];
+            for (var i = 1; i < 25; i++){
+              days.push(moment().subtract(i, 'hours').calendar());
+            }
             return {
               ...prevState,
               res,
-              time: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 
-                16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
+              time: days.reverse()
             }
           });
         })
@@ -180,7 +195,7 @@ const BTCChartPage = () => {
 
   let buttonDaysArray = ["Last Day", "Last 14 Days", "Last 30 Days"];
   let buttons = buttonDaysArray.map(day =>  {
-    return <button onClick={() => buttonHandler(day)} style={{marginRight: '1rem', paddingLeft: '0.5rem', paddingRight: '0.5rem'}} class="btn btn-secondary">{day}</button>
+    return <button onClick={() => buttonHandler(day)} style={{marginTop: '2rem', marginRight: '1rem', marginBottom: '5rem', paddingLeft: '0.5rem', paddingRight: '0.5rem'}} class="btn btn-secondary">{day}</button>
   });
 
   // Display Title, 24 Hr. Price% Change, Price of Coin
@@ -194,7 +209,7 @@ const BTCChartPage = () => {
           <h3 style={{marginTop: '2rem'}}>Bitcoin Price: <b>${btcInfo.information.bitcoin.usd} USD</b></h3> 
           <h5 style={{marginBottom: '2rem', display: 'inline'}}>24 Hr. % Change: 
             { btcInfo.information.bitcoin.usd_24h_change < 0 ? 
-              <h5 style={{display: 'inline', color: 'red'}}>{btcInfo.information.bitcoin.usd_24h_change.toFixed(2) +"%"}</h5> : 
+              <h5 style={{display: 'inline', color: 'red'}}>{" " + btcInfo.information.bitcoin.usd_24h_change.toFixed(2) +"%"}</h5> : 
               <h5 style={{display: 'inline', color: 'green'}}>{" +" + btcInfo.information.bitcoin.usd_24h_change.toFixed(2) + "%"}</h5>
             }
           </h5>
