@@ -74,7 +74,7 @@ const BTCChartPage = () => {
       })
       .catch(err => {
         console.log(err);
-      })
+      });
     };
     fetchCoins();
   }, [])

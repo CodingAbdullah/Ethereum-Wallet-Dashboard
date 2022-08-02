@@ -21,10 +21,10 @@ const Home = () => {
 
     const navigate = useNavigate();
 
-    const URL= "https://api.coingecko.com/api/v3";
+    const URL = "https://api.coingecko.com/api/v3";
     const API_ENDPOINT = "/simple/price";
-    const QUERY_STRING_BITCOIN= "?ids=bitcoin&vs_currencies=usd&include_24hr_change=true";
-    const QUERY_STRING_ETHEREUM= "?ids=ethereum&vs_currencies=usd&include_24hr_change=true";
+    const QUERY_STRING_BITCOIN = "?ids=bitcoin&vs_currencies=usd&include_24hr_change=true";
+    const QUERY_STRING_ETHEREUM = "?ids=ethereum&vs_currencies=usd&include_24hr_change=true";
 
     useEffect(() => {
 

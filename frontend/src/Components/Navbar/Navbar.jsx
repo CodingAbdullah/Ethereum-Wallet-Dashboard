@@ -14,6 +14,7 @@ const Navbar = () => {
 
         if (walletAddress.length === 42 && walletAddress.substring(0, 2) === "0x") {
             localStorage.setItem("walletAddress", walletAddress);
+            updateAlert("");
             navigate("/transactions");
         }
         else {
