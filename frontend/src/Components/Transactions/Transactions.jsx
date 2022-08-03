@@ -63,26 +63,25 @@ const Transactions = () => {
         .catch(err => console.log(err));
 
         // Transactions of a particular account, IF the address of the particular one entered is valid
-        if (validAddress) {
-            fetch(URL + '?module=' + mod + "&action=txlist&address=" + address + "&startblock=" + startBlock 
+        fetch(URL + '?module=' + mod + "&action=txlist&address=" + addr + "&startblock=" + startBlock 
             + '&endblock=' + endBlock + "&page=" + page + "&offset=" + offset + "&sort=" + sort + "&apikey=" + API_KEY)
             .then(response => response.json())
             .then(res => {
                 if (res.message === 'OK'){
-                    console.log(res.result);
                     updateTransactions(prevState => {
                         return {
                             ...prevState,
-                            list: res.result
+                            list: res
                         }
                     });
                 }
             })
             .catch(err => console.log(err));
-        }
+            console.log(transactions.list.result);
+
     }, []);
 
-    if (validAddress === null || address === '' || ethPrice === {}) {
+    if (validAddress === null || address === '' || ethPrice === {} || transactions === {}) {
         return <div>Loading...</div>
     }
     else if (validAddress === false || address === ''){
@@ -103,31 +102,36 @@ const Transactions = () => {
                 <table class="table table-dark">
                     <thead>
                         <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                            <th scope="col">Block Number</th>
+                            <th scope="col">Time Stamp</th>
+                            <th scope="col">Hash</th>
+                            <th scope="col">Block Hash</th>
+                            <th scope="col">From</th>
+                            <th scope="col">To</th>
+                            <th scope="col">Value</th>
+                            <th scope="col">Gas</th>
+                            <th scope="col">Contract Address</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        </tr>
-                        <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                        </tr>
-                        <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                        </tr>
+                            {
+                                transactions === {} ? <div /> :
+                                transactions.list.result.map(record => {
+                                    return (
+                                        <tr>
+                                            <td>{record.blockNumber}</td>
+                                            <td>{record.timeStamp}</td>
+                                            <td>{record.hash}</td>
+                                            <td>{record.blockHash}</td>
+                                            <td>{record.from}</td>
+                                            <td>{record.to}</td>
+                                            <td>{record.value}</td>
+                                            <td>{record.gas}</td>
+                                            <td>{record.contractAddress}</td>
+                                        </tr>
+                                    )
+                                })
+                            }
                     </tbody>
                 </table>
             </main>
