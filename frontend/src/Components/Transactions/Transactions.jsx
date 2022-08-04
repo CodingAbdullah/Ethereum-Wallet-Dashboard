@@ -6,11 +6,11 @@ const Transactions = () => {
     const [amount, updateAmount] = useState(0.00);
     const [validAddress, updateValidity] = useState(null);
     const [address, updateAddress] = useState("");
-    const [ethPrice, updateETHPrice] = useState({ // Eth price tracker
-        information: null
+    const [ethPrice, updateETHPrice] = useState({ 
+        information: null // Eth price tracker
     }); 
-    const [transactions, updateTransactions] = useState({ // Transactions
-        information: null 
+    const [transactions, updateTransactions] = useState({ 
+        information: null // Transactions
     }); 
     
     const navigate = useNavigate();
@@ -64,7 +64,10 @@ const Transactions = () => {
                 });
             }
         })
-        .catch(err => {console.log(err); updateValidity(false);}); // Message was not ok, therefore ask to redirect
+        .catch(err => {
+            console.log(err); 
+            updateValidity(false); // Message was not ok, therefore ask to redirect
+        });
 
         // Transactions of a particular account, IF the address of the particular one entered is valid
         fetch(URL + '?module=' + mod + "&action=txlist&address=" + addr + "&startblock=" + startBlock 
@@ -83,7 +86,10 @@ const Transactions = () => {
                     updateValidity(false); // Message was not ok, therefore ask to redirect
                 }
             })
-            .catch(err => {console.log(err); updateValidity(false);}) // Message was not ok, therefore ask to redirect
+            .catch(err => {
+                console.log(err); 
+                updateValidity(false); // Message was not ok, therefore ask to redirect
+            });
     }, []);
 
     if (validAddress === null || address === '' || ethPrice === {} || transactions.information === null) {
@@ -101,9 +107,10 @@ const Transactions = () => {
         return ( 
             // Adding items here for now, later, all will be styled
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                <h3>{ "Account: " + address}</h3>
-                <h5>{"Amount: " + (amount*(1/1000000000000000000)) + " ETH (@ $" + ethPrice.information.ethereum.usd.toFixed(2) + " USD/ETH)"}</h5>
-                <h2>Transactions</h2>
+                <h3 style={{marginTop: '1.5rem'}}>{"Account: " + address}</h3>
+                <h5>{"ETH Balance: " + (amount*(1/1000000000000000000)) + " ETH (@ $" + ethPrice.information.ethereum.usd.toFixed(2) + " USD/ETH)"}</h5>
+                <h6>{"Amount in USD: $" + ((amount*(1/1000000000000000000))*(ethPrice.information.ethereum.usd)).toFixed(2) + " USD"}</h6>
+                <h2 style={{marginTop: '2.0rem'}}>Transactions</h2>
                 <table class="table table-dark col-md-9 ml-sm-auto col-lg-10 px-md-4">
                     <thead>
                         <tr>
@@ -125,7 +132,7 @@ const Transactions = () => {
                                             <td>{record.timeStamp}</td>
                                             <td>{record.from}</td>
                                             <td>{record.to}</td>
-                                            <td>{record.value*(1/1000000000000000000).toPrecision(8) + " E"}</td>
+                                            <td>{(record.value*(1/1000000000000000000)).toPrecision(4) + " E"}</td>
                                             <td>{record.gas}</td>
                                         </tr>
                                     )
@@ -133,6 +140,7 @@ const Transactions = () => {
                         }                             
                     </tbody>
                 </table>
+                <button style={{marginTop: '1.5rem'}} class="btn btn-success" onClick={() => navigate("/")}>Go Back</button>
             </main>
         )
     }

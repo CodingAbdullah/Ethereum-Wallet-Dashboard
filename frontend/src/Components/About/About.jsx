@@ -15,7 +15,6 @@ const About = () => {
                                 Centred around the concept of Etherscan, but more lightweight in nature. Offers the ability to quickly visualize and analyze information. 
                                 Whether you are looking up wallet activity, perform analytics or get a quick check up on prices, this is the place to do it! 
                             </p>
-                            <hr />
                     </div>
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <h4>Features</h4>
@@ -25,7 +24,6 @@ const About = () => {
                             <p>Daily/Weekly/Monthly coin charts (more coins to be added later), ENS features (to be added later), wallet analytics, transactions (including internal, ERC20, ERC721, ERC1155, if applicable), 
                                 and historical information pertaining to a wallet, including historical Ether balance.
                             </p>
-                            <hr />
                     </div>
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <h4>Credits</h4>
