@@ -6,8 +6,12 @@ const Transactions = () => {
     const [amount, updateAmount] = useState(0.00);
     const [validAddress, updateValidity] = useState(null);
     const [address, updateAddress] = useState("");
-    const [ethPrice, updateETHPrice] = useState({}); // Eth price tracker
-    const [transactions, updateTransactions] = useState({}); // Transactions
+    const [ethPrice, updateETHPrice] = useState({ // Eth price tracker
+        information: null
+    }); 
+    const [transactions, updateTransactions] = useState({ // Transactions
+        information: null 
+    }); 
     
     const navigate = useNavigate();
 
@@ -31,7 +35,6 @@ const Transactions = () => {
         .then(res => {
             if (res.message === 'OK'){
                 updateAmount(res.result);
-                localStorage.clear();                
                 updateValidity(true);
             }
             else {
@@ -68,20 +71,18 @@ const Transactions = () => {
             .then(response => response.json())
             .then(res => {
                 if (res.message === 'OK'){
-                    updateTransactions(prevState => {
+                    updateTransactions((prevState) => {
                         return {
                             ...prevState,
-                            list: res
+                            information: res
                         }
                     });
                 }
             })
             .catch(err => console.log(err));
-            console.log(transactions.list.result);
-
     }, []);
 
-    if (validAddress === null || address === '' || ethPrice === {} || transactions === {}) {
+    if (validAddress === null || address === '' || ethPrice === {} || transactions.information === null) {
         return <div>Loading...</div>
     }
     else if (validAddress === false || address === ''){
@@ -99,39 +100,33 @@ const Transactions = () => {
                 <h3>{ "Account: " + address}</h3>
                 <h5>{"Amount: " + (amount*(1/1000000000000000000)) + " ETH (@ $" + ethPrice.information.ethereum.usd.toFixed(2) + " USD/ETH)"}</h5>
                 <h2>Transactions</h2>
-                <table class="table table-dark">
+                <table class="table table-dark col-md-9 ml-sm-auto col-lg-10 px-md-4">
                     <thead>
                         <tr>
                             <th scope="col">Block Number</th>
                             <th scope="col">Time Stamp</th>
-                            <th scope="col">Hash</th>
-                            <th scope="col">Block Hash</th>
                             <th scope="col">From</th>
                             <th scope="col">To</th>
                             <th scope="col">Value</th>
                             <th scope="col">Gas</th>
-                            <th scope="col">Contract Address</th>
                         </tr>
                     </thead>
                     <tbody>
-                            {
+                        {
                                 transactions === {} ? <div /> :
-                                transactions.list.result.map(record => {
+                                transactions.information.result.map(record => {
                                     return (
                                         <tr>
                                             <td>{record.blockNumber}</td>
                                             <td>{record.timeStamp}</td>
-                                            <td>{record.hash}</td>
-                                            <td>{record.blockHash}</td>
                                             <td>{record.from}</td>
                                             <td>{record.to}</td>
-                                            <td>{record.value}</td>
+                                            <td>{record.value*(1/1000000000000000000).toPrecision(8) + " E"}</td>
                                             <td>{record.gas}</td>
-                                            <td>{record.contractAddress}</td>
                                         </tr>
                                     )
-                                })
-                            }
+                                }) 
+                        }                             
                     </tbody>
                 </table>
             </main>
