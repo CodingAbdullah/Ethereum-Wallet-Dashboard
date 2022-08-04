@@ -44,6 +44,7 @@ const Transactions = () => {
         })
         .catch(err => {
             console.log(err);
+            updateValidity(false); // Message was not ok, therefore ask to redirect
         });
 
         // ETH Price
@@ -63,7 +64,7 @@ const Transactions = () => {
                 });
             }
         })
-        .catch(err => console.log(err));
+        .catch(err => {console.log(err); updateValidity(false);}); // Message was not ok, therefore ask to redirect
 
         // Transactions of a particular account, IF the address of the particular one entered is valid
         fetch(URL + '?module=' + mod + "&action=txlist&address=" + addr + "&startblock=" + startBlock 
@@ -78,8 +79,11 @@ const Transactions = () => {
                         }
                     });
                 }
+                else {
+                    updateValidity(false); // Message was not ok, therefore ask to redirect
+                }
             })
-            .catch(err => console.log(err));
+            .catch(err => {console.log(err); updateValidity(false);}) // Message was not ok, therefore ask to redirect
     }, []);
 
     if (validAddress === null || address === '' || ethPrice === {} || transactions.information === null) {
