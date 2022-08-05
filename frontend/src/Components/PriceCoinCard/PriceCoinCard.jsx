@@ -16,7 +16,7 @@ const PriceCoinCard = (props) => {
 
     return (
             <div class="card" style={{width: '18rem'}}>
-                <img src={require("../../assets/images/bitcoin-brands.svg").default} width="75" height="75" alt="logo" /><br /> 
+                <img src={require("../../assets/images/btc.svg").default} width="75" height="75" alt="logo" /><br /> 
                 <div class="card-body">
                     <h4 class="card-title">Coin Title</h4>
                     <p>Price: <b>${coinInfo.information.bitcoin.usd} USD</b></p> 
