@@ -8,7 +8,7 @@ import ETHChartPage from '../ETHChartPage/ETHChartPage';
 import PageNotFound from '../MiscellaneousPages/PageNotFound';
 import Footer from '../Footer/Footer';
 import About from '../About/About';
-import Charts from '../Charts/Charts';
+import PricesPage from '../PricesPage/PricesPage';
 import Collections from '../Collections/Collections';
 import ERC720 from '../Collections/ERC720';
 import ERC721 from '../Collections/ERC721';
@@ -33,7 +33,7 @@ const App = () => {
             <Route exact path="/transactions" element={<Transactions />}></Route>
             <Route exact path="/btcChart" element={<BTCChartPage />}></Route>
             <Route exact path="/ethChart" element={<ETHChartPage />}></Route>
-            <Route exact path="/charts" element={<Charts />}></Route>
+            <Route exact path="/prices" element={<PricesPage />}></Route>
             <Route exact path="/collections" element={<Collections />}></Route>
             <Route exact path="/erc720" element={<ERC720 />}></Route>
             <Route exact path="/erc721" element={<ERC721 />}></Route>
