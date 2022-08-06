@@ -13,9 +13,13 @@ const PriceCoinCard = (props) => {
         updateRelevantInfo((prevState) => {
             return {
                 ...prevState,
-                information: coinInfo.res
+                information: coinInfo
             }
         });
+        
+        // Update colour accordingly
+        updateColour(coinInfo[Object.keys(coinInfo)[0]].usd_24h_change < 0 ? "red" : "green");
+
     }, []);
 
     if (relevantInfo.information === null){
@@ -24,10 +28,10 @@ const PriceCoinCard = (props) => {
     return (
             <div class="card" style={{width: '18rem'}}>
                 <div class="card-body">
-                    <h4 class="card-title">Coin Title</h4>
-                    <p>Price: <b>${relevantInfo.information.bitcoin.usd} USD</b></p> 
+                    <h4 class="card-title">{name}</h4>
+                    <p>Price: <b>${relevantInfo.information[Object.keys(coinInfo)[0]].usd} USD</b></p> 
                     <p style={{ display: 'inline' }}>24 Hr% Change: </p> 
-                    <b><p style={{ display: 'inline', color: colorChange }}>{colorChange === "red" ? relevantInfo.information.bitcoin.usd_24h_change.toFixed(2) + "%": "+" + relevantInfo.information.bitcoin.usd_24h_change.toFixed(2) + "%"}</p></b>
+                    <b><p style={{ display: 'inline', color: colorChange }}>{colorChange === "green" ? "+" + relevantInfo.information[Object.keys(coinInfo)[0]].usd_24h_change.toFixed(2) + "%" : relevantInfo.information[Object.keys(coinInfo)[0]].usd_24h_change.toFixed(2) + "%"}</p></b>
                 </div>
             </div>
     )
