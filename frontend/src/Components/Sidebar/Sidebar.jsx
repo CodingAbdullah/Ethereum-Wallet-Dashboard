@@ -26,7 +26,7 @@ const Sidebar = () => {
                          </tr>
                         <tr>
                             <td><img src={require("../../assets/images/charts.png")} width="35" height="25" alt="logo" /></td>
-                            <td><a href="/charts">Charts</a></td>
+                            <td><a href="/prices">Coin Prices</a></td>
                         </tr>
                         <tr>
                             <td><img src={require("../../assets/images/about.png")} width="35" height="25" alt="logo" /></td>

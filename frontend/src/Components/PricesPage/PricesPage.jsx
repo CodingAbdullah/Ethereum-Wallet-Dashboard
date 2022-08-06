@@ -8,7 +8,6 @@ const PricesPage = () => {
      'binance-usd': 'BUSD' ,  Cardano: 'ADA' ,  Solana: 'SOL' ,  Polkadot: 'DOT' , Dogecoin: 'DOGE' ,  dai: 'DAI' , 
      'matic-network': 'MATIC' ,  'avalanche-2': 'AVAX' , Uniswap: 'UNI' ,  'shiba-inu': 'SHIB' }; 
 
-    const coinKeys = Object.keys(top15CoinCaps);
     const [coinInfo, updateCoinInfo] = useState([]);
 
     useEffect(() => {
@@ -37,17 +36,26 @@ const PricesPage = () => {
         return <div>Loading...</div>
     }
     else {
-        console.log(coinInfo)
+        let cards = [];
+        for (var i = 0; i < coinInfo.length; i += 2){
+            cards.push(coinInfo[i]); // Remove duplicatess
+        }
         return (
-            <div class="container">
-                <div class="row">
-                    { coinInfo.map(coin => {
-                        return (
-                            <PriceCoinCard name={Object.keys(coin.res)[0]} coinInfo={coin.res} /> // Will fix duplicates later and formatting..
-                        );
-                    })}
-                </div> 
-            </div>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <h1 style={{ marginTop: '1.5rem', marginBottom: '1rem' }}>Prices Chart</h1>
+                <p>Here is the list of the latest prices on the top 15 coins by <b>market cap.</b> </p>
+                <div style={{ marginLeft: '2.25rem' }} class="container">
+                    <div class="row">
+                        {
+                           cards.map(coin => {
+                                return (
+                                    <PriceCoinCard name={ Object.keys(coin.res)[0] } coinInfo={coin.res} /> // Display child components by passing properties to them
+                                );
+                            })
+                        }
+                    </div> 
+                </div>
+            </main>
         )
     }
 }
