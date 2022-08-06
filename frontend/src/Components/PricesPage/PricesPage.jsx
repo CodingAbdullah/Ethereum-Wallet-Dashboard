@@ -3,9 +3,10 @@ import { useEffect } from 'react';
 import PriceCoinCard from '../PriceCoinCard/PriceCoinCard';
 
 const PricesPage = () => {
+    // Display these for each of the cards
     const top15CoinCaps = [{ Bitcoin: 'BTC' }, { Ethereum: 'ETH' }, { USD: 'USDC' }, { binancecoin: 'BNB' }, { Ripple: 'XRP' }, 
     { 'binance-usd': 'BUSD' }, { Cardano: 'ADA' }, { Solana: 'SOL' }, { Polkadot: 'DOT' }, { Dogecoin: 'DOGE' }, { dai: 'DAI' }, 
-    { 'matic-network': 'MATIC' }, { 'avalanche-2': 'AVAX' }, { Uniswap: 'UNI' }, { 'shiba-inu': 'SHIB' }]; // Display these for each of the cards.
+    { 'matic-network': 'MATIC' }, { 'avalanche-2': 'AVAX' }, { Uniswap: 'UNI' }, { 'shiba-inu': 'SHIB' }]; 
 
     const [coinInfo, updateCoinInfo] = useState([]);
 
@@ -20,8 +21,9 @@ const PricesPage = () => {
                 await fetch(URL + API_ENDPOINT + "?ids=" + Object.keys(top15CoinCaps[i])[0] + "&vs_currencies=usd&include_24hr_change=true")
                 .then(response => response.json())
                 .then(res => {   
+                    
                     // Fetch from Object.keys() and pick the first key
-                    updateCoinInfo((prevState) => [...prevState, {key: res}]);        
+                    updateCoinInfo((prevState) => [...prevState, { res }]);        
                 })
                 .catch(err => {
                     console.log(err);
@@ -37,11 +39,10 @@ const PricesPage = () => {
     }
     return (
         <div class="container">
+            {console.log(coinInfo)}
             <div class="row">
-                { console.log(coinInfo)}
-                <div class="col">
-                </div>
-            </div>
+                <PriceCoinCard name={Object.keys(top15CoinCaps[0])[0]} ticker={top15CoinCaps[Object.keys(top15CoinCaps[0])[0]]} coinInfo={coinInfo[0]} />
+            </div> 
         </div>
     )
 }
