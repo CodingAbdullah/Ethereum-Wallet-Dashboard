@@ -122,7 +122,7 @@ const Home = () => {
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <img src={require("../../assets/images/btc.svg").default} width="75" height="75" alt="logo" /><br /> 
+                                    <img src={require("../../assets/images/bitcoin.svg").default} width="75" height="75" alt="logo" /><br /> 
                                     <h4>BTC</h4>
                                     <p>Price: <b>${btcPrice.information.bitcoin.usd} USD</b></p> 
                                     <p style={{ display: 'inline' }}>24 Hr% Change: </p> 
@@ -131,7 +131,7 @@ const Home = () => {
                                     <button class="btn btn-outline-primary wallet-search-button" onClick={() => { navigate("/btcChart") }}>View Price Action &raquo;</button>
                                 </div>
                                 <div class="col-md-6">
-                                    <img src={require("../../assets/images/eth.svg").default} width="75" height="75" alt="logo" /><br />
+                                    <img src={require("../../assets/images/ethereum.svg").default} width="75" height="75" alt="logo" /><br />
                                     <h4>ETH</h4>
                                     <p>Price: <b>${ethPrice.information.ethereum.usd} USD</b></p>
                                     <p style={{ display: 'inline' }}>24 Hr% Change: </p>
