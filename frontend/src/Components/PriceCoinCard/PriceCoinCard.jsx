@@ -52,7 +52,7 @@ const PriceCoinCard = (props) => {
                         relevantInfo.information[Object.keys(coinInfo)[0]].usd_24h_change.toFixed(2) + "%"
                     }
                     </p></b>
-                    <button class="btn btn-outline-primary wallet-search-button" onClick={() => { navigate("/ethChart") }}>View Price Action &raquo;</button>
+                    <button class="btn btn-outline-primary wallet-search-button" onClick={() => { navigate("/chart", { state: { coin: name }}) }}>View Price Action &raquo;</button>
                 </div>
             </div>
         )

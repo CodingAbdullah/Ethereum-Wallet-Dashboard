@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
+import { useNavigate, useLocation } from 'react-router-dom';
 import moment from 'moment';
 
 import {
@@ -24,24 +25,35 @@ ChartJS.register(
 );
 
 const GenericChartPage = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const coinRequest = location.state.coin; // Grab the parameter value
+
+    // Check to see if the parameters exist and are valid, run to check prices, selection area for the different coins
     const URL= "https://api.coingecko.com/api/v3";
-    const id = "bitcoin";
-    const QUERY_STRING_BITCOIN = '?ids=bitcoin&vs_currencies=usd&include_24hr_change=true';
+
+    const id = coinRequest === undefined ? 'bitcoin' : coinRequest; // Default to bitcoin if the value is not defined
+
+    let astheticNaming = id.includes("-") ? 
+                         id.split("-")[0].substring(0, 1).toUpperCase() + id.split("-")[0].substring(1, id.split("-")[0].length) : 
+                         id.substring(0, 1).toUpperCase() + id.substring(1, id.length); // Naming for chart 
+
+    const QUERY_STRING = '?ids=' + id + '&vs_currencies=usd&include_24hr_change=true';
     const CURRENCY_ENDPOINT = '/simple/price';
-    const QUERY_STRING_BITCOIN_PRICES = "?vs_currency=usd&days=14"; // Default selection for now.
-    const BITCOIN_PRICE_ENDPOINT = "/coins/" + id + "/market_chart" + QUERY_STRING_BITCOIN_PRICES + "&interval=daily";
-     
-    const [btcInfo, updateBtcInfo] = useState({
+    const QUERY_STRING_PRICES = "?vs_currency=usd&days=14"; // Default selection for now.
+    const PRICE_ENDPOINT = "/coins/" + id + "/market_chart" + QUERY_STRING_PRICES + "&interval=daily";
+
+    const [coinInfo, updateCoinInfo] = useState({
       information: null
     });    
   
-    const [chartData, setChartData] = useState({});
-    const [displayChart, updateDisplayChart] = useState('15');
+    const [chartData, setChartData] = useState({}); // Data for data points on chart
+    const [displayChart, updateDisplayChart] = useState('15'); // Display chart dates, default set to 15
 
   // Get current coin prices as well as historical prices
   useEffect(() => {
     const fetchCoins = async () => {      
-      await fetch(URL + BITCOIN_PRICE_ENDPOINT)
+      await fetch(URL + PRICE_ENDPOINT) // Get coin price data information
       .then(response => response.json())
       .then(res => {
         setChartData(prevState => {
@@ -60,11 +72,11 @@ const GenericChartPage = () => {
         console.log(error);
       });
 
-      await fetch(URL + CURRENCY_ENDPOINT + QUERY_STRING_BITCOIN)
+      await fetch(URL + CURRENCY_ENDPOINT + QUERY_STRING) // Get current coin price
       .then(response => response.json())
       .then(res => {
-        if (res.bitcoin !== undefined) {
-          updateBtcInfo((prevState) => {
+        if (res[Object.keys(res)[0]] !== undefined) { // Get coin value from generic setup res.ethereum, res.binance ... and so on
+          updateCoinInfo((prevState) => {
               return {
                   ...prevState,
                   information: res
@@ -103,7 +115,7 @@ const GenericChartPage = () => {
   useEffect(() => {
     const fetchCoins = async (value) => {
       if (value === '14'){
-        await fetch(URL + BITCOIN_PRICE_ENDPOINT)
+        await fetch(URL + PRICE_ENDPOINT)
         .then(response => response.json())
         .then(res => {
           setChartData(prevState => {
@@ -123,7 +135,7 @@ const GenericChartPage = () => {
         });
       }
       else if (value === '30'){
-        await fetch(URL + "/coins/bitcoin/market_chart?vs_currency=usd&days=30&interval=daily")
+        await fetch(URL + "/coins/" + id +  "/market_chart?vs_currency=usd&days=30&interval=daily") // Generic id setup
         .then(response => response.json())
         .then(res => {
           setChartData(prevState => {
@@ -143,7 +155,7 @@ const GenericChartPage = () => {
         });
       }
       else {
-        await fetch(URL + "/coins/bitcoin/market_chart?vs_currency=usd&days=1&interval=hourly")
+        await fetch(URL + "/coins/" + id + "/market_chart?vs_currency=usd&days=1&interval=hourly") // Generic id setup
         .then(response => response.json())
         .then(res => {
           setChartData(prevState => {
@@ -170,7 +182,7 @@ const GenericChartPage = () => {
   var data = {
     labels: chartData?.time,
     datasets: [{
-      label: `Bitcoin Price`,
+      label:  astheticNaming + ' Price',
       data: chartData?.res?.prices?.map(x => x[1].toFixed(2)),
       backgroundColor: 'red',
       borderColor: 'red',
@@ -184,7 +196,7 @@ const GenericChartPage = () => {
     plugins: {
       title: {
         display: true,
-        text: "Bitcoin Chart"
+        text: "Chart"
       },
       legend: {
         display: true,
@@ -199,18 +211,19 @@ const GenericChartPage = () => {
   });
 
   // Display Title, 24 Hr. Price% Change, Price of Coin
-  if (btcInfo.information === null || chartData === {}) {
+  if (coinInfo.information === null || chartData === {}) {
     return <div>Loading...</div>
   }
   else {
+    // Generic coin setup using Object keys from API responses to generate output
     return (
       <div>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-          <h3 style={{marginTop: '2rem'}}>Name goes here Price: <b>${btcInfo.information.bitcoin.usd} USD</b></h3> 
+          <h3 style={{marginTop: '2rem'}}>{astheticNaming + " "} Price: <b>${coinInfo.information[Object.keys(coinInfo.information)[0]].usd} USD</b></h3> 
           <h5 style={{marginBottom: '2rem', display: 'inline'}}>24 Hr. % Change: 
-            { btcInfo.information.bitcoin.usd_24h_change < 0 ? 
-              <h5 style={{display: 'inline', color: 'red'}}>{" " + btcInfo.information.bitcoin.usd_24h_change.toFixed(2) +"%"}</h5> : 
-              <h5 style={{display: 'inline', color: 'green'}}>{" +" + btcInfo.information.bitcoin.usd_24h_change.toFixed(2) + "%"}</h5>
+            { coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change < 0 ? 
+              <h5 style={{display: 'inline', color: 'red'}}>{" " + coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change.toFixed(2) +"%"}</h5> : 
+              <h5 style={{display: 'inline', color: 'green'}}>{" +" + coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change.toFixed(2) + "%"}</h5>
             }
           </h5>
           <div>
@@ -227,6 +240,9 @@ const GenericChartPage = () => {
           </div>
           <div class="button-section" style={{marginTop: '1rem'}}>
             {buttons}
+          </div>
+          <div>
+            <button class="btn btn-success" onClick={() => navigate("/")}>Go To Dashboard</button>
           </div>
         </main>
       </div>

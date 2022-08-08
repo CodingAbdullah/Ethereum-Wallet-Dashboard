@@ -128,7 +128,7 @@ const Home = () => {
                                     <p style={{ display: 'inline' }}>24 Hr% Change: </p> 
                                     <b><p style={{ display: 'inline', color: btcColourChange }}>{btcColourChange === "red" ? btcPrice.information.bitcoin.usd_24h_change.toFixed(2) + "%": "+" + btcPrice.information.bitcoin.usd_24h_change.toFixed(2) + "%"}</p></b>
                                     <br />
-                                    <button class="btn btn-outline-primary wallet-search-button" onClick={() => { navigate("/btcChart") }}>View Price Action &raquo;</button>
+                                    <button class="btn btn-outline-primary wallet-search-button" onClick={() => { navigate("/chart", { state : { coin : 'bitcoin' }}) }}>View Price Action &raquo;</button>
                                 </div>
                                 <div class="col-md-6">
                                     <img src={require("../../assets/images/ethereum.svg").default} width="75" height="75" alt="logo" /><br />
@@ -137,7 +137,7 @@ const Home = () => {
                                     <p style={{ display: 'inline' }}>24 Hr% Change: </p>
                                     <b><p style={{ display: 'inline', color: ethColourChange }}>{ ethColourChange === "red" ? ethPrice.information.ethereum.usd_24h_change.toFixed(2) + "%": "+" + ethPrice.information.ethereum.usd_24h_change.toFixed(2) + "%"}</p></b> 
                                     <br />
-                                    <button class="btn btn-outline-primary wallet-search-button" onClick={() => { navigate("/ethChart") }}>View Price Action &raquo;</button>
+                                    <button class="btn btn-outline-primary wallet-search-button" onClick={() => { navigate("/chart", { state: { coin: 'ethereum' }}) }}>View Price Action &raquo;</button>
                                 </div>
                             </div>
                         </div>
