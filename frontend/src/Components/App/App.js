@@ -3,8 +3,6 @@ import Navbar from  '../Navbar/Navbar';
 import Sidebar from '../Sidebar/Sidebar';
 import Home from '../Home/Home';
 import Transactions from '../Transactions/Transactions';
-import BTCChartPage from '../BTCChartPage/BTCChartPage';
-import ETHChartPage from '../ETHChartPage/ETHChartPage';
 import PageNotFound from '../MiscellaneousPages/PageNotFound';
 import Footer from '../Footer/Footer';
 import About from '../About/About';
@@ -32,8 +30,6 @@ const App = () => {
             <Route exact path="/" element={<Home />}></Route>
             <Route exact path="/about" element={<About />}></Route>
             <Route exact path="/transactions" element={<Transactions />}></Route>
-            <Route exact path="/btcChart" element={<BTCChartPage />}></Route>
-            <Route exact path="/ethChart" element={<ETHChartPage />}></Route>
             <Route exact path="/prices" element={<PricesPage />}></Route>
             <Route exact path="/collections" element={<Collections />}></Route>
             <Route exact path="/erc720" element={<ERC720 />}></Route>
