@@ -49,6 +49,7 @@ const GenericChartPage = () => {
   
     const [chartData, setChartData] = useState({}); // Data for data points on chart
     const [displayChart, updateDisplayChart] = useState('15'); // Display chart dates, default set to 15
+    const [selectRequest, updateSelectRequest] = useState("bitcoin"); // Default set to bitcoin
 
   // Get current coin prices as well as historical prices
   useEffect(() => {
@@ -106,6 +107,58 @@ const GenericChartPage = () => {
           updateDisplayChart("30");
           break;
   
+        default:
+          break;
+      }
+    }
+
+    const selectHandler = (v) => {
+      switch(v.value){
+        case "avalanche-2":
+          updateSelectRequest('avalanche-2');
+          break;
+        case "binancecoin":
+          updateSelectRequest('binancecoin');
+          break;
+        case "binance-usd":
+          updateSelectRequest('binance-usd');
+          break;
+        case 'bitcoin':
+          updateSelectRequest('bitcoin');
+          break;
+        case 'cardano':
+          updateSelectRequest('cardano');
+          break;
+        case 'dai':
+          updateSelectRequest('dai');
+          break;
+        case 'dogecoin':
+          updateSelectRequest('dogecoin');
+          break;
+        case 'ethereum':
+          updateSelectRequest('ethereum');
+          break;
+        case 'matic-network':
+          updateSelectRequest('matic-network');
+          break;
+        case 'polkadot':
+          updateSelectRequest('polkadot');
+          break;
+        case 'ripple':
+          updateSelectRequest('ripple');
+          break;
+        case 'shiba-inu':
+          updateSelectRequest('shiba-inu');
+          break;
+        case 'solana':
+          updateSelectRequest('solana');
+          break;
+        case 'uniswap':
+          updateSelectRequest('uniswap');
+          break;
+        case 'usd':
+          updateSelectRequest('usd');
+          break;
         default:
           break;
       }
@@ -226,6 +279,26 @@ const GenericChartPage = () => {
               <h5 style={{display: 'inline', color: 'green'}}>{" +" + coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change.toFixed(2) + "%"}</h5>
             }
           </h5>
+          <br />
+          <label style={{marginRight: '0.5rem'}}>Select a coin: </label>
+
+          <select style={{marginTop: '2rem'}} onchange={() => selectHandler(this)} name="coinSelector">
+            <option value="avalanche-2">Avalanche</option>
+            <option value="binancecoin">Binance</option>
+            <option value="binance-usd">Binance USD</option>
+            <option selected value="bitcoin">Bitcoin</option>
+            <option value="cardano">Cardano</option>
+            <option value="dai">Dai</option>
+            <option value="dogecoin">Dogecoin</option>
+            <option value="ethereum">Ethereum</option>
+            <option value="matic-network">Polygon</option>
+            <option value="solana">Solana</option>
+            <option value="shiba-inu">Shiba Inu</option>
+            <option value="ripple">Ripple</option>
+            <option value="polkadot">Polkadot</option>
+            <option value="uniswap">Uniswap</option>
+            <option value="usd">USD</option>
+          </select>
           <div>
             {( chartData === {} || chartData.time === [] ) ? <div>Loading...</div> : 
               <div style={{marginTop: '2rem'}}>
