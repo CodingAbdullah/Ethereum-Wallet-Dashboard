@@ -231,6 +231,33 @@ const GenericChartPage = () => {
     fetchCoins(displayChart);
   }, [displayChart]);
 
+
+  // Selection based on coin
+  useEffect(() => {
+    const fetchCoins = async (value) => {
+        await fetch(URL + "/coins/" + value + "/market_chart?vs_currency=usd&days=1&interval=hourly") // Generic id setup
+        .then(response => response.json())
+        .then(res => {
+          setChartData(prevState => {
+            let days = [];
+            for (var i = 1; i < 25; i++){
+              days.push(moment().subtract(i, 'hours').calendar());
+            }
+            return {
+              ...prevState,
+              res,
+              time: days.reverse()
+            }
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    fetchCoins(selectRequest);
+  }, [selectRequest]);
+
+
   // Set display configurations
   var data = {
     labels: chartData?.time,
@@ -286,7 +313,7 @@ const GenericChartPage = () => {
             <option value="avalanche-2">Avalanche</option>
             <option value="binancecoin">Binance</option>
             <option value="binance-usd">Binance USD</option>
-            <option selected value="bitcoin">Bitcoin</option>
+            <option value="bitcoin">Bitcoin</option>
             <option value="cardano">Cardano</option>
             <option value="dai">Dai</option>
             <option value="dogecoin">Dogecoin</option>
