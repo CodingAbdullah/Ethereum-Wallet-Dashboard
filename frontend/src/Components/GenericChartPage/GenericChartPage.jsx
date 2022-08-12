@@ -32,7 +32,6 @@ const GenericChartPage = () => {
     // Check to see if the parameters exist and are valid, run to check prices, selection area for the different coins
     const URL= "https://api.coingecko.com/api/v3";
     let id = coinRequest === undefined ? 'bitcoin' : coinRequest; // Default to bitcoin if the value is not defined
-
     const QUERY_STRING = '?ids=' + id + '&vs_currencies=usd&include_24hr_change=true';
     const CURRENCY_ENDPOINT = '/simple/price';
     const QUERY_STRING_PRICES = "?vs_currency=usd&days=14"; // Default selection for now.
@@ -44,54 +43,53 @@ const GenericChartPage = () => {
   
     const [chartData, setChartData] = useState({}); // Data for data points on chart
     const [displayChart, updateDisplayChart] = useState('15'); // Display chart dates, default set to 15
-    const [selectRequest, updateSelectRequest] = useState(""); // Default set to bitcoin
-    const [toggleSelect, updateToggleSelect] = useState(false);
+    const [selectRequest, updateSelectRequest] = useState("bitcoin"); // Default set to bitcoin
+    const [toggleSelect, updateToggleSelect] = useState(0); // Use a counter instead
 
     // Update based on the toggle value afterwards, hence state will be used here
     const [astheticNaming, updateAstheticNaming] = useState(id.includes("-") ? 
                                                             id.split("-")[0].substring(0, 1).toUpperCase() + id.split("-")[0].substring(1, id.split("-")[0].length) : 
                                                             id.substring(0, 1).toUpperCase() + id.substring(1, id.length)); // Naming for chart 
 
-  // Get current coin prices as well as historical prices
-  useEffect(() => {
-    const fetchCoins = async () => {      
-      await fetch(URL + PRICE_ENDPOINT) // Get coin price data information
-      .then(response => response.json())
-      .then(res => {
-        setChartData(prevState => {
-          let days = [];
-          for (var i = 1; i < 31; i++){
-            days.push(moment().subtract(i, 'days').calendar());
-          }
-          return {
-            ...prevState,
-            res,
-            time: days.reverse()
-          }
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-      await fetch(URL + CURRENCY_ENDPOINT + QUERY_STRING) // Get current coin price
-      .then(response => response.json())
-      .then(res => {
-        if (res[Object.keys(res)[0]] !== undefined) { // Get coin value from generic setup res.ethereum, res.binance ... and so on
-          updateCoinInfo((prevState) => {
-              return {
-                  ...prevState,
-                  information: res
-              }
+    useEffect(() => {
+      const fetchCoins = async () => {      
+        await fetch(URL + PRICE_ENDPOINT) // Get coin price data information
+        .then(response => response.json())
+        .then(res => {
+          setChartData(prevState => {
+            let days = [];
+            for (var i = 1; i < 31; i++){
+              days.push(moment().subtract(i, 'days').calendar());
+            }
+            return {
+              ...prevState,
+              res,
+              time: days.reverse()
+            }
           });
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    };
-    fetchCoins();
-  }, [])
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+        await fetch(URL + CURRENCY_ENDPOINT + QUERY_STRING) // Get current coin price
+        .then(response => response.json())
+        .then(res => {
+          if (res[Object.keys(res)[0]] !== undefined) { // Get coin value from generic setup res.ethereum, res.binance ... and so on
+            updateCoinInfo((prevState) => {
+                return {
+                    ...prevState,
+                    information: res
+                }
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      };
+      fetchCoins();
+    }, [])
 
     // Buttons for displaying different chart date ranges, used to update the diplay chart date, which triggers a re-render
     const buttonHandler = (d) => {
@@ -113,9 +111,19 @@ const GenericChartPage = () => {
   // Dependency is used to update chart rendering each case is considered and a separate API call is made for each scenario
   useEffect(() => {
     const fetchCoins = async (value) => {
+      let v = toggleSelect ? selectRequest : id // If the user toggled the select, use the selected coin, otherwise the actual coin
+      
+      // Update Naming
+      toggleSelect ? (updateAstheticNaming(selectRequest.includes("-") ? 
+      selectRequest.split("-")[0].substring(0, 1).toUpperCase() + selectRequest.split("-")[0].substring(1, selectRequest.split("-")[0].length) : 
+      selectRequest.substring(0, 1).toUpperCase() + selectRequest.substring(1, selectRequest.length))) : 
+      
+      (updateAstheticNaming(id.includes("-") ? 
+      id.split("-")[0].substring(0, 1).toUpperCase() + id.split("-")[0].substring(1, id.split("-")[0].length) : 
+      id.substring(0, 1).toUpperCase() + id.substring(1, id.length)));
+
       if (value === '14'){
-        let value = toggleSelect ? selectRequest : id // If the user toggled the select, use the selected coin, otherwise the actual coin
-        await fetch(URL + "/coins/" + value + "/market_chart" + QUERY_STRING_PRICES + "&interval=daily")
+        await fetch(URL + "/coins/" + v + "/market_chart" + QUERY_STRING_PRICES + "&interval=daily")
         .then(response => response.json())
         .then(res => {
           setChartData(prevState => {
@@ -135,8 +143,7 @@ const GenericChartPage = () => {
         });
       }
       else if (value === '30'){
-        let value = toggleSelect ? selectRequest : id // If the user toggled the select, use the selected coin, otherwise the actual coin
-        await fetch(URL + "/coins/" + value +  "/market_chart?vs_currency=usd&days=30&interval=daily") // Generic id setup
+        await fetch(URL + "/coins/" + v +  "/market_chart?vs_currency=usd&days=30&interval=daily") // Generic id setup
         .then(response => response.json())
         .then(res => {
           setChartData(prevState => {
@@ -156,8 +163,7 @@ const GenericChartPage = () => {
         });
       }
       else {
-        let value = toggleSelect ? selectRequest : id // If the user toggled the select, use the selected coin, otherwise the actual coin
-        await fetch(URL + "/coins/" + value + "/market_chart?vs_currency=usd&days=1&interval=hourly") // Generic id setup
+        await fetch(URL + "/coins/" + v + "/market_chart?vs_currency=usd&days=1&interval=hourly") // Generic id setup
         .then(response => response.json())
         .then(res => {
           setChartData(prevState => {
@@ -176,57 +182,26 @@ const GenericChartPage = () => {
           console.log(error);
         });
       }
+
+       // Current coin price 
+       await fetch(URL + CURRENCY_ENDPOINT + '?ids=' + v + '&vs_currencies=usd&include_24hr_change=true') // Get current coin price
+       .then(response => response.json())
+       .then(res => {
+         if (res[Object.keys(res)[0]] !== undefined) { // Get coin value from generic setup res.ethereum, res.binance ... and so on
+           updateCoinInfo((prevState) => {
+               return {
+                   ...prevState,
+                   information: res
+               }
+           });
+         }
+       })
+       .catch(err => {
+         console.log(err);
+       });
     }
     fetchCoins(displayChart);
-  }, [displayChart]);
-
-
-  // Selection based on coin
-  useEffect(() => {
-    const fetchCoins = async () => {
-        await fetch(URL + "/coins/" + selectRequest + "/market_chart?vs_currency=usd&days=1&interval=hourly") // Generic id setup
-        .then(response => response.json())
-        .then(res => {
-          setChartData(prevState => {
-            let days = [];
-            for (var i = 1; i < 25; i++){
-              days.push(moment().subtract(i, 'hours').calendar());
-            }
-            return {
-              ...prevState,
-              res,
-              time: days.reverse()
-            }
-          });
-
-          // Update the naming
-          updateAstheticNaming(selectRequest.includes("-") ? 
-                               selectRequest.split("-")[0].substring(0, 1).toUpperCase() + selectRequest.split("-")[0].substring(1, selectRequest.split("-")[0].length) : 
-                               selectRequest.substring(0, 1).toUpperCase() + selectRequest.substring(1, selectRequest.length))
-          })
-        .catch((error) => {
-          console.log(error);
-        });
-
-        // Current coin price 
-        await fetch(URL + CURRENCY_ENDPOINT + '?ids=' + selectRequest + '&vs_currencies=usd&include_24hr_change=true') // Get current coin price
-        .then(response => response.json())
-        .then(res => {
-          if (res[Object.keys(res)[0]] !== undefined) { // Get coin value from generic setup res.ethereum, res.binance ... and so on
-            updateCoinInfo((prevState) => {
-                return {
-                    ...prevState,
-                    information: res
-                }
-            });
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }
-    fetchCoins();
-  }, [selectRequest]);
+  }, [displayChart, toggleSelect]); // Dependencies will be both toggle and what day to display. Re-render on each request
 
   // Set display configurations
   var data = {
@@ -278,7 +253,7 @@ const GenericChartPage = () => {
             </h5>
           <br />
           <label style={{marginRight: '0.5rem'}}>Select a coin: </label>
-          <select style={{marginTop: '2rem'}} onChange={(e) => { updateSelectRequest(e.target.value); updateToggleSelect(true); }} name="coinSelector">
+          <select style={{marginTop: '2rem'}} onChange={(e) => { updateSelectRequest(e.target.value); let count = toggleSelect; updateToggleSelect(count + 1); }} name="coinSelector">
             <option value="avalanche-2">Avalanche</option>
             <option value="binancecoin">Binance</option>
             <option value="binance-usd">Binance USD</option>
