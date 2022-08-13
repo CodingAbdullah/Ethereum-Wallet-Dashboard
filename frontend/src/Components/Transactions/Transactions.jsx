@@ -25,7 +25,6 @@ const Transactions = () => {
         const startBlock = 0;
         const endBlock = 99999999;
         const page = 1;
-        const offset = 10;
         const sort = 'asc';
         updateAddress(addr);
     
@@ -71,7 +70,7 @@ const Transactions = () => {
 
         // Transactions of a particular account, IF the address of the particular one entered is valid
         fetch(URL + '?module=' + mod + "&action=txlist&address=" + addr + "&startblock=" + startBlock 
-            + '&endblock=' + endBlock + "&page=" + page + "&offset=" + offset + "&sort=" + sort + "&apikey=" + API_KEY)
+            + '&endblock=' + endBlock + "&page=" + page + "&offset=" + 1000 + "&sort=" + sort + "&apikey=" + API_KEY)
             .then(response => response.json())
             .then(res => {
                 if (res.message === 'OK'){
@@ -140,7 +139,7 @@ const Transactions = () => {
                         }                             
                     </tbody>
                 </table>
-                <button style={{marginTop: '1.5rem'}} class="btn btn-success" onClick={() => navigate("/")}>Go Back</button>
+                <button style={{marginTop: '1.5rem'}} class="btn btn-success" onClick={() => { navigate("/"); localStorage.removeItem('walletAddress'); }}>Go Back</button>
             </main>
         )
     }

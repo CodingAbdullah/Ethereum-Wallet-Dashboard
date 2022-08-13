@@ -35,7 +35,6 @@ const Home = () => {
         fetch(URL + API_ENDPOINT + QUERY_STRING_BITCOIN)
         .then(response => response.json())
         .then(res => {
-
             if (res.bitcoin !== undefined) {
                 updateBtcPrice((prevState) => {
                     return {
