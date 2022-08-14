@@ -32,7 +32,7 @@ const App = () => {
             <Route exact path="/transactions" element={<Transactions />}></Route>
             <Route exact path="/prices" element={<PricesPage />}></Route>
             <Route exact path="/collections" element={<Collections />}></Route>
-            <Route exact path="/erc720" element={<ERC720 />}></Route>
+            <Route exact path="/erc20-token-prices" element={<ERC720 />}></Route>
             <Route exact path="/erc721" element={<ERC721 />}></Route>
             <Route exact path="/erc1155" element={<ERC1155 />}></Route>
             <Route exact path="/walletAnalytics" element={<WalletStats />}></Route>

@@ -165,6 +165,9 @@ const Home = () => {
                                     </form>
                                 </div>
                         </div>
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2">Market Data</h1>
+                        </div>
                         <div class="container">                   
                             <p style={{ marginBottom: '2rem' }} class='marquee-paragraph col-md-9 ml-sm-auto col-lg-10 px-md-4'><b>Top 5 Trending Coins: </b>{trendingCoins}</p>
                             <p><b>Active Currencies: </b> {active_cryptocurrencies}</p>      
@@ -172,7 +175,7 @@ const Home = () => {
                             <p><b>Market Dominance: </b> BTC {(btc).toFixed(2) + "%"} ETH {(eth).toFixed(2) + "%"}</p>
                             <p style={{marginBottom: '4rem'}}><b>24 Hour Market Cap % Change: </b>
                                 <p style={{ display: 'inline', color: market_cap_change_percentage_24h_usd < 0 ? 'red' : 'green', fontWeight: 'bold'}}>
-                                    {(market_cap_change_percentage_24h_usd).toFixed(2) + "%"}
+                                    {market_cap_change_percentage_24h_usd < 0 ? "" : "+"}{(market_cap_change_percentage_24h_usd).toFixed(2) + "%"}
                                 </p>
                             </p>
                             <div class="row">
