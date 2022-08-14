@@ -18,11 +18,13 @@ const Home = () => {
 
     const [btcColourChange, updateBtcColourChange] = useState("");
     const [ethColourChange, updateEthColourChange] = useState("");
+    const [trendingCoins, updateTrendingCoins] = useState("");
 
     const navigate = useNavigate();
 
     const URL = "https://api.coingecko.com/api/v3";
     const API_ENDPOINT = "/simple/price";
+    const TRENDINGCOINS_ENDPOINT = '/search/trending'; // trending coins
     const QUERY_STRING_BITCOIN = "?ids=bitcoin&vs_currencies=usd&include_24hr_change=true";
     const QUERY_STRING_ETHEREUM = "?ids=ethereum&vs_currencies=usd&include_24hr_change=true";
 
@@ -75,6 +77,27 @@ const Home = () => {
             }
         })
         .catch(err => console.log(err)); 
+
+        // Get trending information
+        fetch(URL + TRENDINGCOINS_ENDPOINT)
+        .then(response => response.json())
+        .then(res => {
+            let finalDisplay = '';
+            if (res !== {}) { 
+                let information = '';
+                for (var i = 0; i < res.coins.length - 2; i++){
+                    information += res.coins[i].item.name;
+                    information += ' - ';
+                    information += res.coins[i].item.symbol;
+                    finalDisplay += information;
+                    information = ' | ';
+                }
+                updateTrendingCoins(finalDisplay);
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }, []);
 
     const formHandler = (e) => {
@@ -97,7 +120,7 @@ const Home = () => {
         }
     }
 
-    if (btcPrice.information === null || ethPrice.information === null) {
+    if (btcPrice.information === null || ethPrice.information === null || trendingCoins === '') {
         return <div>Loading...</div>
     }
     else {
@@ -119,6 +142,7 @@ const Home = () => {
                                 </div>
                         </div>
                         <div class="container">
+                            <p style={{ marginBottom: '2rem' }} class='marquee-paragraph col-md-9 ml-sm-auto col-lg-10 px-md-4'><b>Top 5 Trending Coins: </b>{trendingCoins}</p>
                             <div class="row">
                                 <div class="col-md-6">
                                     <img src={require("../../assets/images/bitcoin.svg").default} width="75" height="75" alt="logo" /><br /> 

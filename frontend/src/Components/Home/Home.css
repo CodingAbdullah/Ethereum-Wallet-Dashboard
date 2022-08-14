@@ -5,3 +5,25 @@
 h4 {
     margin-top: 0.5rem;
 }
+
+
+.marquee-paragraph {
+    z-index: -150;
+}
+/* Makes the animation pause on hover */
+.marquee-paragraph:hover{
+    animation-play-state: paused;
+}
+ 
+/* The animation */
+@keyframes marquee{
+    0%{transform: translateX(100%);}
+    100%{transform: translateX(-100%);}
+}
+ 
+/* media query to enable animation for only those who want it */
+@media (prefers-reduced-motion: no-preference) {
+    .marquee-paragraph{
+        animation: marquee 20s linear infinite;
+    }
+}

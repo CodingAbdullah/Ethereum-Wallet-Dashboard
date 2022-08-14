@@ -13,10 +13,6 @@ const Sidebar = () => {
                             <td><a href="/">Dashboard</a></td>
                         </tr>
                         <tr>
-                            <td><img src={require("../../assets/images/transactions.png")} width="35" height="25" alt="logo" /></td>
-                            <td><a href="/transactions">Transactions</a></td>
-                        </tr>
-                        <tr>
                             <td><img src={require("../../assets/images/analytics.png")} width="35" height="25" alt="logo" /></td>
                             <td><a href="/walletAnalytics">Wallet Analytics</a></td>
                         </tr>
