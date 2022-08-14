@@ -19,12 +19,16 @@ const Home = () => {
     const [btcColourChange, updateBtcColourChange] = useState("");
     const [ethColourChange, updateEthColourChange] = useState("");
     const [trendingCoins, updateTrendingCoins] = useState("");
+    const [globalMarketData, updateGlobalMarketData] = useState({
+        information: null
+    });
 
     const navigate = useNavigate();
 
     const URL = "https://api.coingecko.com/api/v3";
     const API_ENDPOINT = "/simple/price";
     const TRENDINGCOINS_ENDPOINT = '/search/trending'; // trending coins
+    const GLOBALMARKETDATA_ENDPOINT = '/global' // global data
     const QUERY_STRING_BITCOIN = "?ids=bitcoin&vs_currencies=usd&include_24hr_change=true";
     const QUERY_STRING_ETHEREUM = "?ids=ethereum&vs_currencies=usd&include_24hr_change=true";
 
@@ -85,7 +89,7 @@ const Home = () => {
             let finalDisplay = '';
             if (res !== {}) { 
                 let information = '';
-                for (var i = 0; i < res.coins.length - 2; i++){
+                for (var i = 0; i < res.coins.length - 2; i++){ // Use 5 instead of the 7 this API fetches
                     information += res.coins[i].item.name;
                     information += ' - ';
                     information += res.coins[i].item.symbol;
@@ -97,7 +101,21 @@ const Home = () => {
         })
         .catch(err => {
             console.log(err);
+        });
+
+        fetch(URL + GLOBALMARKETDATA_ENDPOINT) // Fetch global data
+        .then(response => response.json())
+        .then(res => {
+            if (res !== {}){
+                updateGlobalMarketData((prevState) => {
+                    return {
+                        ...prevState,
+                        information: res
+                    }
+                });
+            }
         })
+        .catch(err => console.log(err));
     }, []);
 
     const formHandler = (e) => {
@@ -120,10 +138,16 @@ const Home = () => {
         }
     }
 
-    if (btcPrice.information === null || ethPrice.information === null || trendingCoins === '') {
+    if (btcPrice.information === null || ethPrice.information === null || trendingCoins === '' || globalMarketData.information === null) {
         return <div>Loading...</div>
     }
     else {
+        // global market data information, destructuring data
+        const { active_cryptocurrencies } = globalMarketData.information.data;
+        const { usd } = globalMarketData.information.data.total_market_cap;
+        const { btc, eth } = globalMarketData.information.data.market_cap_percentage;
+        const { market_cap_change_percentage_24h_usd } = globalMarketData.information.data;
+
         return (
             <div class="home">
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
@@ -141,8 +165,16 @@ const Home = () => {
                                     </form>
                                 </div>
                         </div>
-                        <div class="container">
+                        <div class="container">                   
                             <p style={{ marginBottom: '2rem' }} class='marquee-paragraph col-md-9 ml-sm-auto col-lg-10 px-md-4'><b>Top 5 Trending Coins: </b>{trendingCoins}</p>
+                            <p><b>Active Currencies: </b> {active_cryptocurrencies}</p>      
+                            <p><b>Total Market Cap: </b> ${(usd).toFixed(2)}</p>
+                            <p><b>Market Dominance: </b> BTC {(btc).toFixed(2) + "%"} ETH {(eth).toFixed(2) + "%"}</p>
+                            <p style={{marginBottom: '4rem'}}><b>24 Hour Market Cap % Change: </b>
+                                <p style={{ display: 'inline', color: market_cap_change_percentage_24h_usd < 0 ? 'red' : 'green', fontWeight: 'bold'}}>
+                                    {(market_cap_change_percentage_24h_usd).toFixed(2) + "%"}
+                                </p>
+                            </p>
                             <div class="row">
                                 <div class="col-md-6">
                                     <img src={require("../../assets/images/bitcoin.svg").default} width="75" height="75" alt="logo" /><br /> 
