@@ -34,7 +34,7 @@ ChartJS.register(
     total_supply
     max_supply
     circulating_supply
-    price_change_percentage_24h": 6.48391
+    price_change_percentage_24h: 6.48391
     high_24h.usd
     low_24h.usd
     atl.usd atl_date.usd
@@ -48,6 +48,7 @@ ChartJS.register(
 
     { prices: [[1, 2], [1, 2], [1, 2] and so on...] }
 */
+
 const ERC720 = () => {
     const navigate = useNavigate();
 
@@ -62,26 +63,24 @@ const ERC720 = () => {
   
     const [chartData, setChartData] = useState({}); // Data for data points on chart
 
-    /* 
-    Update based on the toggle value afterwards, hence state will be used here
-    const [astheticNaming, updateAstheticNaming] = useState(id.includes("-") ? 
-                                                            id.split("-")[0].substring(0, 1).toUpperCase() + id.split("-")[0].substring(1, id.split("-")[0].length) : 
-                                                            id.substring(0, 1).toUpperCase() + id.substring(1, id.length)); // Naming for chart 
-    */
+    // Update based on the toggle value afterwards, hence state will be used here
+    const [astheticNaming, updateAstheticNaming] = useState("Ethereum"); // Naming for chart, default to Ethereum to start 
+    
+    // Get Ethereum data initially
     useEffect(() => {
       const fetchCoins = async () => {      
-        await fetch(URL + ERC20_PRICE_ENDPOINT) // Get coin price data information
+        await fetch(URL + "/coins/ethereum/market_chart?vs_currency=usd&days=14&interval=daily")
         .then(response => response.json())
         .then(res => {
           setChartData(prevState => {
-            let minutes = [];
+            let days = [];
             for (var i = 1; i < 15; i++){
-                minutes.push(moment().subtract(i, 'minutes').calendar());
+                days.push(moment().subtract(i, 'days').calendar());
             }
             return {
               ...prevState,
               res,
-              time: minutes.reverse()
+              time: days.reverse()
             }
           });
         })
@@ -89,10 +88,11 @@ const ERC720 = () => {
           console.log(error);
         });
 
-        await fetch(URL + ERC20_INFO_ENDPOINT) // Get current coin price
+        // Get current ETH price
+        await fetch(URL + "/simple/price?ids=ethereum&vs_currencies=usd&include_24hr_change=true") 
         .then(response => response.json())
         .then(res => {
-          if (res[Object.keys(res)[0]] !== undefined) { // Get coin value from generic setup res.ethereum, res.binance ... and so on
+          if (res.ethereum !== undefined) { // Since we are getting ETH initially, res.ethereum
             updateCoinInfo((prevState) => {
                 return {
                     ...prevState,
@@ -113,7 +113,7 @@ const ERC720 = () => {
   var data = {
     labels: chartData?.time,
     datasets: [{
-      label: ' Price',
+      label: astheticNaming + ' Price',
       data: chartData?.res?.prices?.map(x => x[1].toFixed(2)),
       backgroundColor: 'red',
       borderColor: 'red',
@@ -127,7 +127,7 @@ const ERC720 = () => {
     plugins: {
       title: {
         display: true,
-        text:  " Chart"
+        text: astheticNaming + " Chart"
       },
       legend: {
         display: true,
@@ -145,15 +145,17 @@ const ERC720 = () => {
     return (
       <div>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-          <h3 style={{marginTop: '2rem'}}>{" "} Price: <b>${coinInfo.information[Object.keys(coinInfo.information)[0]].usd} USD</b></h3> 
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h2>ERC20 Market Data</h2>
+          </div>
+          <h3 style={{marginTop: '2rem'}}>{astheticNaming + " "} Price: <b>${coinInfo.information[Object.keys(coinInfo.information)[0]].usd} USD</b></h3> 
           <h5 style={{marginBottom: '2rem', display: 'inline'}}>24 Hr. % Change:
             { coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change < 0 ? 
               <h5 style={{display: 'inline', color: 'red'}}>{" " + coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change.toFixed(2) +"%"}</h5> : 
               <h5 style={{display: 'inline', color: 'green'}}>{" +" + coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change.toFixed(2) + "%"}</h5>
             }
-            </h5>
+          </h5>
           <br />
-          <label style={{marginRight: '0.5rem'}}>Select a coin: </label>
           <div>
             {( chartData === {} || chartData.time === [] ) ? <div>Loading...</div> : 
               <div style={{marginTop: '2rem'}}>
@@ -167,7 +169,7 @@ const ERC720 = () => {
             }
           </div>
           <div>
-            <button class="btn btn-success" onClick={() => navigate("/")}>Go To Dashboard</button>
+            <button class="btn btn-success" style={{marginTop: '2rem'}} onClick={() => navigate("/")}>Go To Dashboard</button>
           </div>
         </main>
       </div>
