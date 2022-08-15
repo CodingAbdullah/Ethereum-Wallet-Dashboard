@@ -26,30 +26,6 @@ ChartJS.register(
 );
 
 
-/*
-    --- THINGS TO GET ---
-
-    [res. will contain all this information] /coin/ethereum/contract/<contract address>
-    contract_address
-    last_updated
-    total_supply
-    max_supply
-    circulating_supply
-    price_change_percentage_24h: 6.48391
-    high_24h.usd
-    low_24h.usd
-    atl.usd atl_date.usd
-    ath.usd ath_date.usd
-    ath_change_percentage.usd
-    ath.usd ath_date.usd
-    market_data.current_price.usd
-
-    (only allow for display of 1 chart, with table containing the rest of the information)
-    [res. will contain all this information] /coin/ethereum/contract/<contract address>/market_chart?vs_currency=usd&days=1
-
-    { prices: [[1, 2], [1, 2], [1, 2] and so on...] }
-*/
-
 const ERC720 = () => {
     const navigate = useNavigate();
 
@@ -60,20 +36,17 @@ const ERC720 = () => {
       information: null
     });    
   
+    const [erc20Info, updateErc20Info] = useState({ // Update information, when user requests a valid ERC20 token
+      information: null
+    });
+
     const [chartData, setChartData] = useState({}); // Data for data points on chart
 
-    // Update based on the toggle value afterwards, hence state will be used here
-    const [astheticNaming, updateAstheticNaming] = useState("Ethereum"); // Naming for chart, default to Ethereum to start 
-    
+    // API information
     const URL= "https://api.coingecko.com/api/v3";
     const ERC20_INFO_ENDPOINT = '/coins/ethereum/contract/' + tokenContractAddress;
     const ERC20_PRICE_ENDPOINT = '/coins/ethereum/contract/' + tokenContractAddress + '/market_chart?vs_currency=usd&days=0.05';
 
-    /*
-        useState(id.includes("-") ? 
-                 id.split("-")[0].substring(0, 1).toUpperCase() + id.split("-")[0].substring(1, id.split("-")[0].length) : 
-                 id.substring(0, 1).toUpperCase() + id.substring(1, id.length)); // Naming for chart 
-    */
 
     // Get Ethereum data initially
     useEffect(() => {
@@ -122,34 +95,56 @@ const ERC720 = () => {
     e.preventDefault();
 
     if (tokenContractAddress.length === 42 && tokenContractAddress.substring(0, 2) === "0x"){
-
       // Fetch token contract address to check the value 
       await fetch(URL + ERC20_INFO_ENDPOINT)
       .then(response => response.json())
       .then(res => {
         if (res.error){
           updateAlert('invalid'); // Set alert if error is found to notify invalid contract address
-          localStorage.clear();
         }
         else {
-          updateAlert('');
-          localStorage.setItem("contractAddress", tokenContractAddress); // Update storage to hold smart contract, if valid.
+          updateAlert('');          
+          updateErc20Info((prevState) => { // Get relevant information regarding the ERC20 token
+            return {
+              ...prevState,
+              information: res
+            }
+          });
         }
       })
       .catch(err => {
         console.log(err); // Display error if contract is not found
         updateAlert('invalid');
-        localStorage.clear();
       }); 
+      
+
+      if (erc20Info.information !== null) {
+        await fetch(URL + ERC20_PRICE_ENDPOINT) // If ERC20 token information is valid, get the latest 10 price points
+        .then(response => response.json())
+        .then(res => {
+          setChartData(prevState => {
+            let units = [];
+            for (var i = 1; i < 11; i++){
+                units.push(i); // No need to use momentjs library here, just ten entry points
+            }
+            return {
+              ...prevState,
+              res,
+              time: units
+            }
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      }
     }
     else {
         if (formAlert === "invalid"){ // If the format is not of length 42 and start with 0x (hex), throw error
             e.target.reset();
-            localStorage.clear();                
         }
         else {
             updateAlert("invalid"); // If repeated multiple times, clear input and keep error as is
-            localStorage.clear();
         }
     }
   }
@@ -158,7 +153,7 @@ const ERC720 = () => {
   var data = {
     labels: chartData?.time,
     datasets: [{
-      label: astheticNaming + " Price",
+      label: erc20Info.information === null ? 'Ethereum Price' : 'Last Ten Price Points',
       data: chartData?.res?.prices?.map(x => x[1].toFixed(2)),
       backgroundColor: 'red',
       borderColor: 'red',
@@ -172,7 +167,7 @@ const ERC720 = () => {
     plugins: {
       title: {
         display: true,
-        text: astheticNaming + " Chart"
+        text: erc20Info.information === null ? 'Ethereum Chart' : erc20Info.information.name + ' Chart'
       },
       legend: {
         display: true,
@@ -186,19 +181,25 @@ const ERC720 = () => {
     return <div>Loading...</div>
   }
   else {
-    // Generic coin setup using Object keys from API responses to generate output
+    // Generic coin setup using Object keys from API responses to generate output, code added when user requests a display of a valid ERC 20 token
     return (
       <div>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h2>ERC20 Market Data</h2>
+            <h2>ERC20 Token Market Data</h2>
           </div>
           { formAlert === "invalid" ? <div><Alert type="danger"/></div> : <div/> }
-          <h3 style={{marginTop: '2rem'}}>{astheticNaming + " "} Price: <b>${coinInfo.information[Object.keys(coinInfo.information)[0]].usd} USD</b></h3> 
+          <h3 style={{marginTop: '2rem'}}>{erc20Info.information === null ? "Ethereum " : erc20Info.information.name} Price: <b>${erc20Info.information === null ? coinInfo.information[Object.keys(coinInfo.information)[0]].usd : erc20Info.information.market_data.current_price.usd} USD</b></h3> 
           <h5 style={{marginBottom: '2rem', display: 'inline'}}>24 Hr. % Change:
-            { coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change < 0 ? 
+            { erc20Info.information === null ? (coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change < 0 ? 
               <h5 style={{display: 'inline', color: 'red'}}>{" " + coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change.toFixed(2) + "%"}</h5> : 
               <h5 style={{display: 'inline', color: 'green'}}>{" +" + coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change.toFixed(2) + "%"}</h5>
+            )
+            :
+            (erc20Info.information.market_data.price_change_percentage_24h < 0 ?
+            <h5 style={{display: 'inline', color: 'red'}}>{" " + erc20Info.information.market_data.price_change_percentage_24h.toFixed(2) + "%"}</h5> : 
+            <h5 style={{display: 'inline', color: 'green'}}>{" +" + erc20Info.information.market_data.price_change_percentage_24h.toFixed(2) + "%"}</h5>
+            )
             }
           </h5>
           <br />
@@ -214,6 +215,79 @@ const ERC720 = () => {
               </div>
             }
           </div>
+          <div style={{marginTop: '3rem', marginBottom: '3.0rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            {
+              // Display data of the valid ERC20 token
+              erc20Info.information === null ? <div /> :
+              <table>
+                  <thead>
+                    <tr>
+                      <th scope="col">Additional Token Information</th>
+                    </tr>
+                  </thead>
+                  <tr>
+                    <td><b>Name</b></td>
+                    <td>{erc20Info.information.name}</td>
+                  </tr>
+                  <tr>
+                    <td><b>Contract Address</b></td>
+                    <td>{erc20Info.information.contract_address}</td>
+                  </tr>
+                  <tr>
+                    <td><b>Last Updated</b></td>
+                    <td>{erc20Info.information.last_updated.split('T')[0]}</td>
+                  </tr>
+                  <tr>
+                    <td><b>Total Supply</b></td>
+                    <td>{erc20Info.information.market_data.total_supply}</td>
+                  </tr>
+                  <tr>
+                    <td><b>Max Supply</b></td>
+                    <td>{erc20Info.information.market_data.max_supply}</td>
+                  </tr>
+                  <tr>
+                    <td><b>Circulating Supply</b></td>
+                    <td>{erc20Info.information.market_data.circulating_supply}</td>
+                  </tr>
+                  <tr>
+                    <td><b>24 Hr. Price % Change</b></td>
+                    <td style={{color: erc20Info.information.market_data.price_change_percentage_24h < 0 ? 'red' : 'green'}}>
+                      <b>{erc20Info.information.market_data.price_change_percentage_24h > 0 ? "+" : ""}{erc20Info.information.market_data.price_change_percentage_24h.toFixed(2) + "%"}</b>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><b>24 Hr. Highest Price</b></td>
+                    <td>{erc20Info.information.market_data.high_24h.usd}</td>
+                  </tr>
+                  <tr>
+                    <td><b>24 Hr. Lowest Price</b></td>
+                    <td>{erc20Info.information.market_data.low_24h.usd}</td>
+                  </tr>
+                  <tr>
+                    <td><b>All-Time Lowest Price</b></td>
+                    <td>{erc20Info.information.market_data.atl.usd}</td>
+                  </tr>
+                  <tr>
+                    <td><b>All-Time Lowest Price Date</b></td>
+                    <td>{erc20Info.information.market_data.atl_date.usd.split("T")[0]}</td>
+                  </tr>
+                  <tr>
+                    <td><b>All-Time Highest Price</b></td>
+                    <td>{erc20Info.information.market_data.ath.usd}</td>
+                  </tr>
+                  <tr>
+                    <td><b>All-Time Highest Price Date</b></td>
+                    <td>{erc20Info.information.market_data.ath_date.usd.split("T")[0]}</td>
+                  </tr>
+                  <tr>
+                    <td><b>All-Time Highest Price to Current % Change</b></td>
+                    <td style={{color: erc20Info.information.market_data.ath_change_percentage.usd < 0 ? 'red' : 'green'}}>
+                      <b>{erc20Info.information.market_data.ath_change_percentage.usd.toFixed(2) + "%"}</b>
+                    </td>
+                  </tr>
+              </table>
+            }
+          </div>
           <form onSubmit={formHandler} style={{marginTop: '1.5rem'}}>
             <label style={{marginRight: '0.5rem'}}>ERC20 Contract Address: </label>
             <input type="text" onChange={(e) => updateContractAddress(e.target.value)} placeholder="Enter here" required />
@@ -227,6 +301,6 @@ const ERC720 = () => {
       </div>
     )
   }
-}
+}    
 
 export default ERC720;
