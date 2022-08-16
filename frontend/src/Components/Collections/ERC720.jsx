@@ -187,7 +187,7 @@ const ERC720 = () => {
           </div>
           { formAlert === "invalid" ? <div><Alert type="danger"/></div> : <div/> }
           <h3 style={{marginTop: '2rem'}}>{erc20Info.information === null ? "Ethereum " : erc20Info.information.name} Price: <b>${erc20Info.information === null ? coinInfo.information[Object.keys(coinInfo.information)[0]].usd : erc20Info.information.market_data.current_price.usd} USD</b></h3> 
-          <div style={{marginBottom: '2rem', display: 'inline'}}>24 Hr. % Change:
+          <h5 style={{marginBottom: '2rem', display: 'inline'}}>24 Hr. % Change:
             { erc20Info.information === null ? (coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change < 0 ? 
               <h5 style={{display: 'inline', color: 'red'}}>{" " + coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change.toFixed(2) + "%"}</h5> : 
               <h5 style={{display: 'inline', color: 'green'}}>{" +" + coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change.toFixed(2) + "%"}</h5>
@@ -198,7 +198,7 @@ const ERC720 = () => {
             <h5 style={{display: 'inline', color: 'green'}}>{" +" + erc20Info.information.market_data.price_change_percentage_24h.toFixed(2) + "%"}</h5>
             )
             }
-          </div>
+          </h5>
           <br />
           <div>
             {( chartData === {} || chartData.time === [] ) ? <div>Loading...</div> : 
