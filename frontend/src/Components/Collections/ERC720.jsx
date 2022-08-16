@@ -116,9 +116,7 @@ const ERC720 = () => {
         console.log(err); // Display error if contract is not found
         updateAlert('invalid');
       }); 
-      
 
-      if (erc20Info.information !== null) {
         await fetch(URL + ERC20_PRICE_ENDPOINT) // If ERC20 token information is valid, get the latest 10 price points
         .then(response => response.json())
         .then(res => {
@@ -138,7 +136,6 @@ const ERC720 = () => {
           console.log(error);
         });
       }
-    }
     else {
         if (formAlert === "invalid"){ // If the format is not of length 42 and start with 0x (hex), throw error
             e.target.reset();
@@ -190,7 +187,7 @@ const ERC720 = () => {
           </div>
           { formAlert === "invalid" ? <div><Alert type="danger"/></div> : <div/> }
           <h3 style={{marginTop: '2rem'}}>{erc20Info.information === null ? "Ethereum " : erc20Info.information.name} Price: <b>${erc20Info.information === null ? coinInfo.information[Object.keys(coinInfo.information)[0]].usd : erc20Info.information.market_data.current_price.usd} USD</b></h3> 
-          <h5 style={{marginBottom: '2rem', display: 'inline'}}>24 Hr. % Change:
+          <div style={{marginBottom: '2rem', display: 'inline'}}>24 Hr. % Change:
             { erc20Info.information === null ? (coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change < 0 ? 
               <h5 style={{display: 'inline', color: 'red'}}>{" " + coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change.toFixed(2) + "%"}</h5> : 
               <h5 style={{display: 'inline', color: 'green'}}>{" +" + coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change.toFixed(2) + "%"}</h5>
@@ -201,7 +198,7 @@ const ERC720 = () => {
             <h5 style={{display: 'inline', color: 'green'}}>{" +" + erc20Info.information.market_data.price_change_percentage_24h.toFixed(2) + "%"}</h5>
             )
             }
-          </h5>
+          </div>
           <br />
           <div>
             {( chartData === {} || chartData.time === [] ) ? <div>Loading...</div> : 
@@ -225,66 +222,68 @@ const ERC720 = () => {
                       <th scope="col">Additional Token Information</th>
                     </tr>
                   </thead>
-                  <tr>
-                    <td><b>Name</b></td>
-                    <td>{erc20Info.information.name}</td>
-                  </tr>
-                  <tr>
-                    <td><b>Contract Address</b></td>
-                    <td>{erc20Info.information.contract_address}</td>
-                  </tr>
-                  <tr>
-                    <td><b>Last Updated</b></td>
-                    <td>{erc20Info.information.last_updated.split('T')[0]}</td>
-                  </tr>
-                  <tr>
-                    <td><b>Total Supply</b></td>
-                    <td>{erc20Info.information.market_data.total_supply}</td>
-                  </tr>
-                  <tr>
-                    <td><b>Max Supply</b></td>
-                    <td>{erc20Info.information.market_data.max_supply}</td>
-                  </tr>
-                  <tr>
-                    <td><b>Circulating Supply</b></td>
-                    <td>{erc20Info.information.market_data.circulating_supply}</td>
-                  </tr>
-                  <tr>
-                    <td><b>24 Hr. Price % Change</b></td>
-                    <td style={{color: erc20Info.information.market_data.price_change_percentage_24h < 0 ? 'red' : 'green'}}>
-                      <b>{erc20Info.information.market_data.price_change_percentage_24h > 0 ? "+" : ""}{erc20Info.information.market_data.price_change_percentage_24h.toFixed(2) + "%"}</b>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><b>24 Hr. Highest Price</b></td>
-                    <td>{erc20Info.information.market_data.high_24h.usd}</td>
-                  </tr>
-                  <tr>
-                    <td><b>24 Hr. Lowest Price</b></td>
-                    <td>{erc20Info.information.market_data.low_24h.usd}</td>
-                  </tr>
-                  <tr>
-                    <td><b>All-Time Lowest Price</b></td>
-                    <td>{erc20Info.information.market_data.atl.usd}</td>
-                  </tr>
-                  <tr>
-                    <td><b>All-Time Lowest Price Date</b></td>
-                    <td>{erc20Info.information.market_data.atl_date.usd.split("T")[0]}</td>
-                  </tr>
-                  <tr>
-                    <td><b>All-Time Highest Price</b></td>
-                    <td>{erc20Info.information.market_data.ath.usd}</td>
-                  </tr>
-                  <tr>
-                    <td><b>All-Time Highest Price Date</b></td>
-                    <td>{erc20Info.information.market_data.ath_date.usd.split("T")[0]}</td>
-                  </tr>
-                  <tr>
-                    <td><b>All-Time Highest Price to Current % Change</b></td>
-                    <td style={{color: erc20Info.information.market_data.ath_change_percentage.usd < 0 ? 'red' : 'green'}}>
-                      <b>{erc20Info.information.market_data.ath_change_percentage.usd.toFixed(2) + "%"}</b>
-                    </td>
-                  </tr>
+                  <tbody>
+                    <tr>
+                      <td><b>Name</b></td>
+                      <td>{erc20Info.information.name}</td>
+                    </tr>
+                    <tr>
+                      <td><b>Contract Address</b></td>
+                      <td>{erc20Info.information.contract_address}</td>
+                    </tr>
+                    <tr>
+                      <td><b>Last Updated</b></td>
+                      <td>{erc20Info.information.last_updated.split('T')[0]}</td>
+                    </tr>
+                    <tr>
+                      <td><b>Total Supply</b></td>
+                      <td>{erc20Info.information.market_data.total_supply}</td>
+                    </tr>
+                    <tr>
+                      <td><b>Max Supply</b></td>
+                      <td>{erc20Info.information.market_data.max_supply}</td>
+                    </tr>
+                    <tr>
+                      <td><b>Circulating Supply</b></td>
+                      <td>{erc20Info.information.market_data.circulating_supply}</td>
+                    </tr>
+                    <tr>
+                      <td><b>24 Hr. Price % Change</b></td>
+                      <td style={{color: erc20Info.information.market_data.price_change_percentage_24h < 0 ? 'red' : 'green'}}>
+                        <b>{erc20Info.information.market_data.price_change_percentage_24h > 0 ? "+" : ""}{erc20Info.information.market_data.price_change_percentage_24h.toFixed(2) + "%"}</b>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><b>24 Hr. Highest Price</b></td>
+                      <td>{erc20Info.information.market_data.high_24h.usd}</td>
+                    </tr>
+                    <tr>
+                      <td><b>24 Hr. Lowest Price</b></td>
+                      <td>{erc20Info.information.market_data.low_24h.usd}</td>
+                    </tr>
+                    <tr>
+                      <td><b>All-Time Lowest Price</b></td>
+                      <td>{erc20Info.information.market_data.atl.usd}</td>
+                    </tr>
+                    <tr>
+                      <td><b>All-Time Lowest Price Date</b></td>
+                      <td>{erc20Info.information.market_data.atl_date.usd.split("T")[0]}</td>
+                    </tr>
+                    <tr>
+                      <td><b>All-Time Highest Price</b></td>
+                      <td>{erc20Info.information.market_data.ath.usd}</td>
+                    </tr>
+                    <tr>
+                      <td><b>All-Time Highest Price Date</b></td>
+                      <td>{erc20Info.information.market_data.ath_date.usd.split("T")[0]}</td>
+                    </tr>
+                    <tr>
+                      <td><b>All-Time Highest Price to Current % Change</b></td>
+                      <td style={{color: erc20Info.information.market_data.ath_change_percentage.usd < 0 ? 'red' : 'green'}}>
+                        <b>{erc20Info.information.market_data.ath_change_percentage.usd.toFixed(2) + "%"}</b>
+                      </td>
+                    </tr>
+                  </tbody>
               </table>
             }
           </div>
