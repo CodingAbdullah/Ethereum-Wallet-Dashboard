@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useNavigate, useLocation } from 'react-router-dom';
+import CoinSelector from './CoinSelector';
 import moment from 'moment';
 
 import {
@@ -235,6 +236,13 @@ const GenericChartPage = () => {
     return <button onClick={() => buttonHandler(day)} style={{marginTop: '2rem', marginRight: '1rem', marginBottom: '5rem', paddingLeft: '0.5rem', paddingRight: '0.5rem'}} class="btn btn-secondary">{day}</button>
   });
 
+  const selectHandler = (e) => {
+    updateSelectRequest(e.target.value);
+
+    let count = toggleSelect;
+    updateToggleSelect(count + 1);
+  }
+
   // Display Title, 24 Hr. Price% Change, Price of Coin
   if (coinInfo.information === null || chartData === {}) {
     return <div>Loading...</div>
@@ -252,24 +260,7 @@ const GenericChartPage = () => {
             }
             </h5>
           <br />
-          <label style={{marginRight: '0.5rem'}}>Select a coin: </label>
-          <select style={{marginTop: '2rem'}} onChange={(e) => { updateSelectRequest(e.target.value); let count = toggleSelect; updateToggleSelect(count + 1); }} name="coinSelector">
-            <option value="avalanche-2">Avalanche</option>
-            <option value="binancecoin">Binance</option>
-            <option value="binance-usd">Binance USD</option>
-            <option value="bitcoin">Bitcoin</option>
-            <option value="cardano">Cardano</option>
-            <option value="dai">Dai</option>
-            <option value="dogecoin">Dogecoin</option>
-            <option value="ethereum">Ethereum</option>
-            <option value="matic-network">Polygon</option>
-            <option value="solana">Solana</option>
-            <option value="shiba-inu">Shiba Inu</option>
-            <option value="ripple">Ripple</option>
-            <option value="polkadot">Polkadot</option>
-            <option value="uniswap">Uniswap</option>
-            <option value="usd">USD</option>
-          </select>
+          <CoinSelector changeValue={selectHandler} />
           <div>
             {( chartData === {} || chartData.time === [] ) ? <div>Loading...</div> : 
               <div style={{marginTop: '2rem'}}>
