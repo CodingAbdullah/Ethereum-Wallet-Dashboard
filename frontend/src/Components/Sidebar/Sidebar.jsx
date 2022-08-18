@@ -29,6 +29,10 @@ const Sidebar = () => {
                             <td><a href="/erc20-token-prices">ERC20 Token Prices</a></td>
                         </tr>
                         <tr>
+                            <td><img src={require("../../assets/images/ensTwo.png")} width="35" height="30" alt="logo" /></td>
+                            <td><a href="/ens-lookup">ENS Lookups</a></td>
+                        </tr>
+                        <tr>
                             <td><img src={require("../../assets/images/about.png")} width="35" height="25" alt="logo" /></td>
                             <td><a href="/about">About</a></td>
                         </tr>

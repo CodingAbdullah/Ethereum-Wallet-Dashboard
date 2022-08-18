@@ -7,7 +7,6 @@ const WalletStats = () => {
             
         </div>
     )
-
 }
 
 export default WalletStats;
