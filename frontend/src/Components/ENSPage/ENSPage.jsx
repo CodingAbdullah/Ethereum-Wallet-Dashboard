@@ -9,17 +9,18 @@ const ENSPage = () => {
     const [setAlert, updateAlert] = useState(false);
 
     const URL = "https://api.transpose.io/v0/ens"; 
-    const ENDPOINT = '/ens-records-by-owner'
+    const ENS_TO_ADDRESS_ENDPOINT = '/ens-records-by-owner'
+    const ADDRESS_TO_ENS_ENDPOINT = '/ens-records-by-name';
 
-    const formHandler = (e) => {
+    const ENSToAddressHandler = (e) => {
         e.preventDefault();
 
         // ENS APIs go here.. Address ---> ENS Resolver first
         if (updateAddressToENS.length === 42 && updateAddressToENS.substring(0, 2) === '0x'){
             
-            fetch(URL + ENDPOINT, 
+            fetch(URL + ENS_TO_ADDRESS_ENDPOINT, 
                 {   method: 'GET', 
-                    body: JSON.stringify({ owner_address: addressToENS }), 
+                    body: JSON.stringify({ owner_address: ensToAddress }), 
                     headers: { 
                         'content-type' : 'application/json', 
                         'X-API-KEY' : process.env.REACT_APP_TRANSPOSE_API_KEY // Transpose API key hidden 
@@ -40,20 +41,52 @@ const ENSPage = () => {
             })
             .catch(err => console.error(err)); // Retrieve error
         }
+        else {
+            updateAlert(true); // Invalid address
+        }
     }
 
+    const AddressToENSHandler = (e) => {
+        e.preventDefault();
+
+        // ENS APIs go here.. Address ---> ENS Resolver first            
+            fetch(URL + ADDRESS_TO_ENS_ENDPOINT, 
+                {   method: 'GET', 
+                    body: JSON.stringify({ ens_names: addressToENS }), 
+                    headers: { 
+                        'content-type' : 'application/json', 
+                        'X-API-KEY' : process.env.REACT_APP_TRANSPOSE_API_KEY // Transpose API key hidden 
+                    }
+                }
+            )
+            .then(response => response.json())
+            .then(res => { 
+                if (res.status === 'error'){
+                    updateAlert(true); // If response is 401, 404, or 500 set alert
+                }
+                else {
+                    if (setAlert) {
+                        updateAlert(false); // If Alert was set, remove it
+                    }    
+                    console.log(res);
+                }
+            })
+            .catch(err => console.error(err)); // Retrieve error
+    }
+    
     return (
         <div className="ens-page">
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">ENS - Ethereum Naming Service</h1>
                 </div>
-                <form onSubmit={formHandler}>
-                    <h4>ENS Lookups</h4>
-                    { setAlert ? <Alert type='danger' /> : null}
+                <h4>ENS Lookups</h4>
+                { setAlert ? <Alert type='danger' /> : null}
+                <form onSubmit={ENSToAddressHandler}>
                     <label style= {{marginRight: '2rem'}}>{"ENS -> Address Resolver"}</label>
                     <input type="text" onChange={e => updateENSToAddress(e.target.value)} />
-                    <br />
+                </form>
+                <form onSubmit={AddressToENSHandler}>
                     <label style={{marginRight: '2rem'}}>{"Address -> ENS Resolver"}</label>
                     <input type="text" onChange={e => updateAddressToENS(e.target.value)} />
                     <br />
