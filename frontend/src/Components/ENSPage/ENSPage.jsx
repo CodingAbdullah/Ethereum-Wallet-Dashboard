@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Alert from '../Alert/Alert';
+import axios from 'axios';
 
 const ENSPage = () => {
 
@@ -9,37 +10,33 @@ const ENSPage = () => {
     const [setAlert, updateAlert] = useState(false);
 
     const URL = "https://api.transpose.io/v0/ens"; 
-    const ENS_TO_ADDRESS_ENDPOINT = '/ens-records-by-owner'
-    const ADDRESS_TO_ENS_ENDPOINT = '/ens-records-by-name';
+    const ADDRESS_TO_ENS_ENDPOINT = '/ens-records-by-owner'
+    const ENS_TO_ADDRESS_ENDPOINT = '/ens-records-by-name';
 
     const ENSToAddressHandler = (e) => {
         e.preventDefault();
 
-        // ENS APIs go here.. Address ---> ENS Resolver first
+        // ENS APIs go here.. ENS ---> Address Resolver first
         if (updateAddressToENS.length === 42 && updateAddressToENS.substring(0, 2) === '0x'){
-            
-            fetch(URL + ENS_TO_ADDRESS_ENDPOINT, 
-                {   method: 'GET', 
-                    body: JSON.stringify({ owner_address: ensToAddress }), 
-                    headers: { 
-                        'content-type' : 'application/json', 
-                        'X-API-KEY' : process.env.REACT_APP_TRANSPOSE_API_KEY // Transpose API key hidden 
-                    }
+            const options = {   
+                method: 'GET', 
+                mode: 'no-cors', // no-cors, *cors, same-origin
+                headers: { 
+                    'content-type' : 'application/json', 
+                    'access-control-allow-origin': '*',
+                    'X-API-KEY' : process.env.REACT_APP_TRANSPOSE_API_KEY // Transpose API key hidden 
                 }
-            )
-            .then(response => response.json())
-            .then(res => { 
-                if (res.status === 'error'){
-                    updateAlert(true); // If response is 401, 404, or 500 set alert
-                }
-                else {
-                    if (setAlert) {
-                        updateAlert(false); // If Alert was set, remove it
-                    }    
-                    console.log(res);
-                }
-            })
-            .catch(err => console.error(err)); // Retrieve error
+            }
+    
+            axios.get(URL + ENS_TO_ADDRESS_ENDPOINT + "?ens_names=" + ensToAddress, JSON.stringify(options)) // Using Axios library
+            .then(response => {
+                console.log(response);
+                updateAlert(false);
+             })
+            .catch(err => {
+                console.log(err);
+                updateAlert(true);   
+            });        
         }
         else {
             updateAlert(true); // Invalid address
@@ -48,30 +45,32 @@ const ENSPage = () => {
 
     const AddressToENSHandler = (e) => {
         e.preventDefault();
-
-        // ENS APIs go here.. Address ---> ENS Resolver first            
-            fetch(URL + ADDRESS_TO_ENS_ENDPOINT, 
-                {   method: 'GET', 
-                    body: JSON.stringify({ ens_names: addressToENS }), 
-                    headers: { 
-                        'content-type' : 'application/json', 
-                        'X-API-KEY' : process.env.REACT_APP_TRANSPOSE_API_KEY // Transpose API key hidden 
-                    }
+        
+        // ENS APIs go here.. Address ---> ENS Resolver second
+        if (updateAddressToENS.length === 42 && updateAddressToENS.substring(0, 2) === '0x'){
+            const options = {   
+                method: 'GET', 
+                mode: 'no-cors', // no-cors, *cors, same-origin
+                headers: { 
+                    'content-type' : 'application/json', 
+                    'access-control-allow-origin': '*',
+                    'X-API-KEY' : process.env.REACT_APP_TRANSPOSE_API_KEY // Transpose API key hidden 
                 }
-            )
-            .then(response => response.json())
-            .then(res => { 
-                if (res.status === 'error'){
-                    updateAlert(true); // If response is 401, 404, or 500 set alert
-                }
-                else {
-                    if (setAlert) {
-                        updateAlert(false); // If Alert was set, remove it
-                    }    
-                    console.log(res);
-                }
-            })
-            .catch(err => console.error(err)); // Retrieve error
+            }
+    
+            axios.get(URL + ADDRESS_TO_ENS_ENDPOINT + "?owner_address=" + addressToENS, JSON.stringify(options)) //Using Axios library
+            .then(response => {
+                console.log(response);
+                updateAlert(false);
+             })
+            .catch(err => {
+                console.log(err);
+                updateAlert(true);   
+            });        
+        }
+        else {
+            updateAlert(true); // Invalid address
+        }
     }
     
     return (
