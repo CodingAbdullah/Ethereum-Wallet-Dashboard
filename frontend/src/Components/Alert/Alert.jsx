@@ -1,16 +1,23 @@
 import React from 'react';
 
 const Alert = (props) => {
-    const alertType = props.type;
+    const { type } = props;
     let message = "";
 
-    if (props.type === "danger") {
-        message = "You need to enter a valid address, outlined below!"
+    switch(type) {
+        case "danger":
+            message = "You need to enter a valid address, outlined below!";
+            break;
+        case "warning":
+            message = "Empty wallet! No assets found!";
+            break;
+        default:
+            break;
     }
-    
+
     return (
         <div className="alert">
-            <div style={{ marginBottom: '-1rem' }} class={`alert alert-${alertType}`} role="alert">
+            <div style={{ marginBottom: '-1rem' }} class={`alert alert-${type}`} role="alert">
                 { message }
             </div>
         </div>

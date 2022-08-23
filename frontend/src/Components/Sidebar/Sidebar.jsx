@@ -29,7 +29,7 @@ const Sidebar = () => {
                             <td><a href="/erc20-token-prices">ERC20 Token Prices</a></td>
                         </tr>
                         <tr>
-                            <td><img src={require("../../assets/images/nft.png")} width="35" height="25" alt="logo" /></td>
+                            <td><img src={require("../../assets/images/nft.png")} width="35" height="30" alt="logo" /></td>
                             <td><a href="/erc721-lookups">ERC721 Token Lookups</a></td>
                         </tr>
                         <tr>

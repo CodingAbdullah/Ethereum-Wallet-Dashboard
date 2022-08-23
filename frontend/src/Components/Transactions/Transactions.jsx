@@ -7,7 +7,7 @@ const Transactions = () => {
     const [validAddress, updateValidity] = useState(null);
     const [address, updateAddress] = useState("");
     const [ethPrice, updateETHPrice] = useState({ 
-        information: null // Eth price tracker
+        information: null // ETH Price Tracker
     }); 
     const [transactions, updateTransactions] = useState({ 
         information: null // Transactions
