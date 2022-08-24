@@ -39,14 +39,27 @@ const ERC721 = () => {
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
+                    updateEmptyAlert(false);
+                    updateNFTData((prevState) => {
+                        return {
+                            ...prevState,
+                            information: null
+                        }
+                    });
                 }
                 else {
                     if (response.status === 200 && response.data.total === 0){ // If empty, display warning
                         updateEmptyAlert(true);
                         updateAlert(false);
+                        updateNFTData((prevState) => {
+                            return {
+                                ...prevState,
+                                information: null
+                            }
+                        });
                     }
                     else {
-                        updateAlert(false); // Remove alerts if any
+                        updateAlert(false); // Remove alerts if any exist
                         updateEmptyAlert(false);
 
                         updateNFTData((prevState) => {
@@ -57,12 +70,18 @@ const ERC721 = () => {
                         });
                     }
                 }
-                console.log(response);
             })
             .catch(err => console.log(err));
         }
         else {
             updateAlert(true); // Set Alert
+            updateEmptyAlert(false); // Remove redundant alerts, and empty data
+            updateNFTData((prevState) => {
+                return {
+                    ...prevState,
+                    information: null
+                }
+            });
         }
     }   
 
@@ -75,14 +94,14 @@ const ERC721 = () => {
                     <h2>ERC721 Token Data</h2>
                 </div>
                 <form onSubmit={walletHandler}>
-                    <label style={{marginRight: '0.5rem'}}>Enter Wallet Address (max top 100 NFTs will be displayed): </label>
+                    <label style={{marginRight: '0.5rem'}}>Enter Wallet Address (Top 100 NFTs will be displayed): </label>
                     <input type="text" onChange={e => updateWalletAddress(e.target.value)} placeholder="Enter here" required />
                     <br />
-                    <button style={{marginTop: '2rem'}} type="submit" class="btn btn-primary">Check Data</button>
+                    <button style={{marginTop: '3rem'}} type="submit" class="btn btn-primary">Check Data</button>
                 </form>
-                <button style={{marginTop: '1rem'}} class='btn btn-success' onClick={() => navigate("/")}>Go Home</button>
-                
-                {nftData.information !== null ? <h5 style={{marginTop: '2rem'}}>ERC721 Token Holdings for wallet: <b>{walletAddress}</b></h5> : null}
+                <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-success' onClick={() => navigate("/")}>Go Home</button>
+                <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { updateAlert(false); updateEmptyAlert(false); updateNFTData((prevState) => { return { ...prevState, information: null }} )}}>Clear</button>
+                {nftData.information !== null ? <h5 style={{marginTop: '2rem'}}>ERC721 Token Holdings for Wallet: <b>{walletAddress}</b></h5> : null}
                 <div style={{marginTop: '2rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                     { nftData.information === null ? <div /> : <ERC721InfoTable walletAddress={walletAddress} data={nftData.information} /> }
                 </div>

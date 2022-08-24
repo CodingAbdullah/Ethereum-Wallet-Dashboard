@@ -12,7 +12,7 @@ const ERC721InfoTable = (props) => {
                 <th scope="col">Token Address</th>
                 <th scope="col">Token Id</th>
                 <th scope="col">Symbol</th>
-                <th scope="col">Amount</th>
+                <th scope="col">Link</th>
               </tr>
             </thead>
             <tbody>
@@ -23,7 +23,7 @@ const ERC721InfoTable = (props) => {
                                 <td>{record.token_address}</td>
                                 <td>{record.token_id}</td>
                                 <td>{record.symbol}</td>
-                                <td>{record.amount}</td>
+                                <td><a href={"https://opensea.io/assets/ethereum/" + record.token_address + "/" + record.token_id} target="_blank" rel="noreferrer">NFT Link</a></td>
                             </tr>
                     )
                 })}
