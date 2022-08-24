@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import AddressToENSInfoTable from './AddressToENSInfoTable';
+import ENSToAddressInfoTable from './ENSToAddressInfoTable';
 import Alert from '../Alert/Alert';
 import axios from 'axios';
 
@@ -7,24 +9,32 @@ const ENSPage = () => {
     const [ensToAddress, updateENSToAddress] = useState('');
     const [addressToENS, updateAddressToENS] = useState('');
 
+    const [ensToAddressData, updateENSToAddressData] = useState({
+        information: null
+    });
+
+    const [addressToEnsData, updateAddressToEnsData] = useState({
+        information: null
+    });
+
     const [setAlert, updateAlert] = useState(false);
 
-    const URL = "https://api.transpose.io/v0/ens"; 
-    const ADDRESS_TO_ENS_ENDPOINT = '/ens-records-by-owner'
+    const ADDRESS_TO_ENS_MORALIS_ENDPOINT = "https://deep-index.moralis.io/api/v2/resolve/";
     const ENS_TO_ADDRESS_ENDPOINT = '/ens-records-by-name';
 
+    
     const ENSToAddressHandler = (e) => {
         e.preventDefault();
 
         // ENS APIs go here.. ENS ---> Address Resolver first
-        if (updateAddressToENS.length === 42 && updateAddressToENS.substring(0, 2) === '0x'){
+        if (ensToAddress.length === 42 && ensToAddress.substring(0, 2) === '0x'){
             const options = {   
                 method: 'GET', 
                 mode: 'no-cors', // no-cors, *cors, same-origin
                 headers: { 
                     'content-type' : 'application/json', 
                     'access-control-allow-origin': '*',
-                    'X-API-KEY' : process.env.REACT_APP_TRANSPOSE_API_KEY // Transpose API key hidden 
+                    'X-API-KEY' : process.env.REACT_APP_MORALIS_API_KEY // Transpose API key hidden 
                 }
             }
     
@@ -47,29 +57,53 @@ const ENSPage = () => {
         e.preventDefault();
         
         // ENS APIs go here.. Address ---> ENS Resolver second
-        if (updateAddressToENS.length === 42 && updateAddressToENS.substring(0, 2) === '0x'){
+        if (addressToENS.length === 42 && addressToENS.substring(0, 2) === '0x'){
             const options = {   
                 method: 'GET', 
                 mode: 'no-cors', // no-cors, *cors, same-origin
                 headers: { 
                     'content-type' : 'application/json', 
                     'access-control-allow-origin': '*',
-                    'X-API-KEY' : process.env.REACT_APP_TRANSPOSE_API_KEY // Transpose API key hidden 
+                    'X-API-KEY' : process.env.REACT_APP_MORALIS_API_KEY // Transpose API key hidden 
                 }
             }
     
-            axios.get(URL + ADDRESS_TO_ENS_ENDPOINT + "?owner_address=" + addressToENS, JSON.stringify(options)) //Using Axios library
+            axios.get(ADDRESS_TO_ENS_MORALIS_ENDPOINT + addressToENS + "/reverse", options) // Using Axios library
             .then(response => {
                 console.log(response);
+                updateAddressToEnsData((prevState) => { // Update Address to Ens for the display of tabulated information
+                    return {
+                        ...prevState,
+                        information: response.data
+                    }
+                });
                 updateAlert(false);
+                updateENSToAddressData((prevState) => { // Void the result from the other resolver
+                    return {
+                        ...prevState,
+                        information: null
+                    }
+                });
              })
             .catch(err => {
                 console.log(err);
-                updateAlert(true);   
+                updateAlert(true); 
+                updateAddressToEnsData((prevState) => { // Void previous search of address --> ens
+                    return {
+                        ...prevState,
+                        information: null
+                    }
+                });  
             });        
         }
         else {
             updateAlert(true); // Invalid address
+            updateAddressToEnsData((prevState) => { // Void previous search of address --> ens
+                return {
+                    ...prevState,
+                    information: null
+                }
+            });
         }
     }
     
@@ -82,15 +116,26 @@ const ENSPage = () => {
                 <h4>ENS Lookups</h4>
                 { setAlert ? <Alert type='danger' /> : null}
                 <form onSubmit={ENSToAddressHandler}>
-                    <label style= {{marginRight: '2rem'}}>{"ENS -> Address Resolver"}</label>
+                    <label style={{marginRight: '2rem'}}>{"ENS -> Address Resolver"}</label>
                     <input type="text" onChange={e => updateENSToAddress(e.target.value)} />
+                    <br />
+                    <button style={{marginTop: '1rem'}} class="btn btn-success" type='submit'>Submit</button>
                 </form>
-                <form onSubmit={AddressToENSHandler}>
+                <form style={{marginTop: '3rem'}} onSubmit={AddressToENSHandler}>
                     <label style={{marginRight: '2rem'}}>{"Address -> ENS Resolver"}</label>
                     <input type="text" onChange={e => updateAddressToENS(e.target.value)} />
                     <br />
-                    <button style={{marginTop: '2rem'}} class="btn btn-success" type='submit'>Submit</button>
+                    <button style={{marginTop: '1rem'}} class="btn btn-success" type='submit'>Submit</button>
                 </form>
+                <div style={{marginTop: '2rem'}}>
+                    { addressToEnsData.information === null ? <div /> : 
+                        <div>
+                            <h6>ENS Resolver for Wallet Address: <b>{addressToENS}</b></h6>
+                            <AddressToENSInfoTable data={addressToEnsData.information } />
+                        </div> 
+                    }
+                    { ensToAddressData.information === null ? <div /> : <ENSToAddressInfoTable data={ensToAddressData.information } /> }
+                </div>
             </main>
         </div>
     )

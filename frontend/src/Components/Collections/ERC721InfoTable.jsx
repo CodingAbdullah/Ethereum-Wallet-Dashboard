@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ERC721InfoTable = (props) => {
-    const { data, walletAddress } = props; // Destructure data
+    const { data } = props; // Destructure data
 
     return (
         // Display data of the ERC721 holdings
