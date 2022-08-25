@@ -10,14 +10,14 @@ const ERC720Holdings = () => {
     const [setAlert, updateAlert] = useState(false);
 
     const [isEmpty, updateEmptyAlert] = useState(false);
-    const [ERC20Data, updateERC20Data] = useState({
+    const [ERC20Holdings, updateERC20Holdings] = useState({
         information: null
     });
 
     const navigate = useNavigate();
 
     const URL = "https://deep-index.moralis.io/api/v2/";
-    const ERC20TOKEN_ENDPOINT = '/nft?chain=eth&format=decimal';
+    const ERC20TOKEN_ENDPOINT = '/erc20?chain=eth';
 
     const walletHandler = (e) => {
         e.preventDefault();
@@ -35,12 +35,12 @@ const ERC720Holdings = () => {
         }
 
         if (walletAddress.length === 42 && walletAddress.substring(0, 2) === '0x'){
-            axios.get(URL + walletAddress + ERC20TOKEN_ENDPOINT, options) // NFT endpoint for retrieving information related to holdings
+            axios.get(URL + walletAddress + ERC20TOKEN_ENDPOINT, options) // ERC20 endpoint for retrieving information related to holdings
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
                     updateEmptyAlert(false);
-                    updateERC20Data((prevState) => {
+                    updateERC20Holdings((prevState) => {
                         return {
                             ...prevState,
                             information: null
@@ -48,10 +48,10 @@ const ERC720Holdings = () => {
                     });
                 }
                 else {
-                    if (response.status === 200 && response.data.total === 0){ // If empty, display warning
+                    if (response.status === 200 && response.data.length === 0){ // If empty, display warning
                         updateEmptyAlert(true);
                         updateAlert(false);
-                        updateERC20Data((prevState) => {
+                        updateERC20Holdings((prevState) => {
                             return {
                                 ...prevState,
                                 information: null
@@ -62,7 +62,7 @@ const ERC720Holdings = () => {
                         updateAlert(false); // Remove alerts if any exist
                         updateEmptyAlert(false);
 
-                        updateERC20Data((prevState) => {
+                        updateERC20Holdings((prevState) => {
                             return {
                                 ...prevState,
                                 information: response.data
@@ -76,7 +76,7 @@ const ERC720Holdings = () => {
         else {
             updateAlert(true); // Set Alert
             updateEmptyAlert(false); // Remove redundant alerts, and empty data
-            updateERC20Data((prevState) => {
+            updateERC20Holdings((prevState) => {
                 return {
                     ...prevState,
                     information: null
@@ -91,19 +91,19 @@ const ERC720Holdings = () => {
                 { setAlert ? <Alert type="danger" /> : null }
                 { isEmpty ? <Alert type="warning" /> : null }
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h2>ERC721 Token Data</h2>
+                    <h2>ERC20 Token Data</h2>
                 </div>
                 <form onSubmit={walletHandler}>
-                    <label style={{marginRight: '0.5rem'}}>Enter Wallet Address (Top 100 NFTs will be displayed): </label>
+                    <label style={{marginRight: '0.5rem'}}>Enter Wallet Address (ERC20 token balances in this wallet will be displayed): </label>
                     <input type="text" onChange={e => updateWalletAddress(e.target.value)} placeholder="Enter here" required />
                     <br />
-                    <button style={{marginTop: '3rem'}} type="submit" class="btn btn-primary">Check Data</button>
+                    <button style={{marginTop: '3rem'}} type="submit" class="btn btn-primary">Check Balances</button>
                 </form>
                 <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-success' onClick={() => navigate("/")}>Go Home</button>
-                <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { updateAlert(false); updateEmptyAlert(false); updateERC20Data((prevState) => { return { ...prevState, information: null }} )}}>Clear</button>
-                {ERC20Data.information !== null ? <h5 style={{marginTop: '2rem'}}>ERC721 Token Holdings for Wallet: <b>{walletAddress}</b></h5> : null}
-                <div style={{marginTop: '2rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                    { ERC20Data.information === null ? <div /> : <ERC720HoldingsInfoTable data={ERC20Data.information} /> }
+                <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { updateAlert(false); updateEmptyAlert(false); updateERC20Holdings((prevState) => { return { ...prevState, information: null }} )}}>Clear</button>
+                { ERC20Holdings.information !== null ? <h5 style={{marginTop: '2rem'}}>ERC720 Token Holdings for Wallet: <b>{walletAddress}</b></h5> : null }
+                <div style={{marginTop: '2rem'}}>
+                    { ERC20Holdings.information === null ? <div /> : <ERC720HoldingsInfoTable data={ERC20Holdings.information} /> }
                 </div>
             </main>
         </div>  
