@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ERC20InfoTable = (props) => {
+const ERC20PricesInfoTable = (props) => {
     const { data } = props; // Destructure data
 
     return (
@@ -77,4 +77,4 @@ const ERC20InfoTable = (props) => {
     )
 }
 
-export default ERC20InfoTable;
+export default ERC20PricesInfoTable;

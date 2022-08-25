@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
-import ERC2OInfoTable from '../Collections/ERC20InfoTable';
+import ERC720PricesInfoTable from './ERC720PricesInfoTable';
 import { useNavigate } from 'react-router-dom';
 import Alert from '../Alert/Alert';
 import moment from 'moment';
@@ -27,7 +27,7 @@ ChartJS.register(
 );
 
 
-const ERC720 = () => {
+const ERC720TokenPrices = () => {
     const navigate = useNavigate();
 
     const [tokenContractAddress, updateContractAddress] = useState('0xde0B295669a9FD93d5F28D9Ec85E40f4cb697BAe'); // Set default to EthDev contract address 
@@ -217,7 +217,7 @@ const ERC720 = () => {
             {
               // Display data of the valid ERC20 token
               erc20Info.information === null ? <div /> :
-              <ERC2OInfoTable data={erc20Info} />
+              <ERC720PricesInfoTable data={erc20Info} />
             }
           </div>
           <form onSubmit={formHandler} style={{marginTop: '1.5rem'}}>
@@ -235,4 +235,4 @@ const ERC720 = () => {
   }
 }    
 
-export default ERC720;
+export default ERC720TokenPrices;

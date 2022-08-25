@@ -1,10 +1,10 @@
 import React, { useState }from 'react';
 import Alert from '../Alert/Alert';
-import ERC721InfoTable from './ERC721InfoTable';
+import ERC721HoldingsInfoTable from './ERC721HoldingsInfoTable';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 
-const ERC721 = () => {
+const ERC721Holdings = () => {
 
     const [walletAddress, updateWalletAddress] = useState("");
     const [setAlert, updateAlert] = useState(false);
@@ -103,11 +103,11 @@ const ERC721 = () => {
                 <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { updateAlert(false); updateEmptyAlert(false); updateNFTData((prevState) => { return { ...prevState, information: null }} )}}>Clear</button>
                 {nftData.information !== null ? <h5 style={{marginTop: '2rem'}}>ERC721 Token Holdings for Wallet: <b>{walletAddress}</b></h5> : null}
                 <div style={{marginTop: '2rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                    { nftData.information === null ? <div /> : <ERC721InfoTable data={nftData.information} /> }
+                    { nftData.information === null ? <div /> : <ERC721HoldingsInfoTable data={nftData.information} /> }
                 </div>
             </main>
         </div>  
     )
 }
 
-export default ERC721;
+export default ERC721Holdings;
