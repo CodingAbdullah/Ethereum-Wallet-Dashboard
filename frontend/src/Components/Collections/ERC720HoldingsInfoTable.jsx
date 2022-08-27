@@ -5,13 +5,13 @@ const ERC720HoldingsInfoTable = (props) => {
 
     return (
         <div className="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-            <table>
-                <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Token Address</th>
-                    <th scope="col">Symbol</th>
-                    <th scope="col">Balance</th>
+            <table style={{border: '1px solid black'}}>
+                <thead style={{border: '1px solid black'}}>
+                <tr style={{border: '1px solid black'}}>
+                    <th style={{border: '1px solid black'}} scope="col">Name</th>
+                    <th style={{border: '1px solid black'}} scope="col">Token Address</th>
+                    <th style={{border: '1px solid black'}} scope="col">Symbol</th>
+                    <th style={{border: '1px solid black'}} scope="col">Balance</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -22,11 +22,11 @@ const ERC720HoldingsInfoTable = (props) => {
                         }
                         else {
                             return (
-                                <tr>
-                                    <td>{record.name}</td>
-                                    <td>{record.token_address}</td>
-                                    <td>{record.symbol}</td>
-                                    <td>{record.balance}</td>
+                                <tr style={{border: '1px solid black'}}>
+                                    <td style={{border: '1px solid black'}}>{record.name}</td>
+                                    <td style={{border: '1px solid black'}}>{record.token_address}</td>
+                                    <td style={{border: '1px solid black'}}>{record.symbol}</td>
+                                    <td style={{border: '1px solid black'}}>{record.balance}</td>
                                 </tr>
                             )
                         }
