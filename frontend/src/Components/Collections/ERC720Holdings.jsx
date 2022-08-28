@@ -1,6 +1,7 @@
 import React, { useState }from 'react';
 import Alert from '../Alert/Alert';
 import ERC720HoldingsInfoTable from './ERC720HoldingsInfoTable';
+import ERC720TransfersInfoTable from './ERC720TransfersInfoTable';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 
@@ -14,10 +15,16 @@ const ERC720Holdings = () => {
         information: null
     });
 
+    const [ERC20Transfers, updateERC20Transfers] = useState({
+        information: null
+    });
+
     const navigate = useNavigate();
 
     const URL = "https://deep-index.moralis.io/api/v2/";
     const ERC20TOKEN_ENDPOINT = '/erc20?chain=eth';
+
+    const ERC20TOKENTRANSFERS_ENDPOINT = '/erc20/transfers?chain=eth';
 
     const walletHandler = (e) => {
         e.preventDefault();
@@ -72,6 +79,38 @@ const ERC720Holdings = () => {
                 }
             })
             .catch(err => console.log(err));
+
+            // Get ERC20Transfers of particular wallet
+            axios.get(URL + walletAddress + ERC20TOKENTRANSFERS_ENDPOINT, options)
+            .then(response => {
+                if (response.status !== 200){
+                    updateERC20Transfers((prevState) => {
+                        return {
+                            ...prevState,
+                            information: null
+                        }
+                    });
+                }
+                else {
+                    if (response.status === 200 && response.data.length === 0){ // If empty, keep state to null
+                        updateERC20Transfers((prevState) => {
+                            return {
+                                ...prevState,
+                                information: null
+                            }
+                        });
+                    }
+                    else {
+                        updateERC20Transfers((prevState) => {
+                            return {
+                                ...prevState,
+                                information: response.data.result // If data exists, add it to state
+                            }
+                        });
+                    }
+                }
+            })
+            .catch(err => {console.log(err)})
         }
         else {
             updateAlert(true); // Set Alert
@@ -104,6 +143,9 @@ const ERC720Holdings = () => {
                 { ERC20Holdings.information !== null ? <h5 style={{marginTop: '2rem'}}>ERC720 Token Holdings for Wallet: <b>{walletAddress}</b></h5> : null }
                 <div style={{marginTop: '2rem'}}>
                     { ERC20Holdings.information === null ? <div /> : <ERC720HoldingsInfoTable data={ERC20Holdings.information} /> }
+                </div>
+                <div style={{marginTop: '2rem'}}>
+                    { ERC20Transfers.information === null ? <div /> : <ERC720TransfersInfoTable data={ERC20Transfers.information} /> }
                 </div>
             </main>
         </div>  
