@@ -1,6 +1,7 @@
 import React, { useState }from 'react';
 import Alert from '../Alert/Alert';
 import ERC721HoldingsInfoTable from './ERC721HoldingsInfoTable';
+import ERC721TransfersInfoTable from './ERC721TransfersInfoTable';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 
@@ -14,10 +15,15 @@ const ERC721Holdings = () => {
         information: null
     });
 
+    const [ERC721Transfers, updateERC721Transfers] = useState({
+        information: null
+    });
+
     const navigate = useNavigate();
 
     const URL = "https://deep-index.moralis.io/api/v2/";
     const NFT_ENDPOINT = '/nft?chain=eth&format=decimal';
+    const NFT_TRANSFERS_ENDPOINT = '/nft/transfers?chain=eth&format=decimal&direction=both';
 
     const walletHandler = (e) => {
         e.preventDefault();
@@ -72,11 +78,48 @@ const ERC721Holdings = () => {
                 }
             })
             .catch(err => console.log(err));
+
+            axios.get(URL + walletAddress + NFT_TRANSFERS_ENDPOINT, options)
+            .then(response => {
+                if (response.status !== 200){
+                    updateERC721Transfers((prevState) => {
+                        return {
+                            ...prevState,
+                            information: null
+                        }
+                    });
+                }
+                else {
+                    if (response.status === 200 && response.data.result.length === 0){ // If empty, keep state to null
+                        updateERC721Transfers((prevState) => {
+                            return {
+                                ...prevState,
+                                information: null
+                            }
+                        });
+                    }
+                    else {
+                        updateERC721Transfers((prevState) => {
+                            return {
+                                ...prevState,
+                                information: response.data.result // If data exists, add it to state
+                            }
+                        });
+                    }
+                }
+            })
+            .catch(err => console.log(err));
         }
         else {
             updateAlert(true); // Set Alert
             updateEmptyAlert(false); // Remove redundant alerts, and empty data
             updateNFTData((prevState) => {
+                return {
+                    ...prevState,
+                    information: null
+                }
+            });
+            updateERC721Transfers((prevState) => {
                 return {
                     ...prevState,
                     information: null
@@ -94,16 +137,22 @@ const ERC721Holdings = () => {
                     <h2>ERC721 Token Data</h2>
                 </div>
                 <form onSubmit={walletHandler}>
-                    <label style={{marginRight: '0.5rem'}}>Enter Wallet Address (Top 100 NFTs will be displayed): </label>
+                    <label style={{marginRight: '0.5rem'}}>Enter Wallet Address (Top 100 NFTs/Transfers will be displayed): </label>
                     <input type="text" onChange={e => updateWalletAddress(e.target.value)} placeholder="Enter here" required />
                     <br />
                     <button style={{marginTop: '3rem'}} type="submit" class="btn btn-primary">Check Data</button>
                 </form>
                 <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-success' onClick={() => navigate("/")}>Go Home</button>
-                <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { updateAlert(false); updateEmptyAlert(false); updateNFTData((prevState) => { return { ...prevState, information: null }} )}}>Clear</button>
+                <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { updateAlert(false); updateEmptyAlert(false); updateNFTData((prevState) => { return { ...prevState, information: null }}); updateERC721Transfers((prevState) => { return { ...prevState, information: null }})} }>Clear</button>
                 {nftData.information !== null ? <h5 style={{marginTop: '2rem'}}>ERC721 Token Holdings for Wallet: <b>{walletAddress}</b></h5> : null}
                 <div style={{marginTop: '2rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                     { nftData.information === null ? <div /> : <ERC721HoldingsInfoTable data={nftData.information} /> }
+                </div>
+            </main>
+            <main role="main">
+                <div style={{marginTop: '5rem', marginLeft: '5rem'}}>
+                    { ERC721Transfers.information === null ? <div /> : <h5 style={{marginLeft: '8rem'}}>ERC721 Transfers for: <b>{walletAddress}</b></h5> } 
+                    { ERC721Transfers.information === null ? <div /> : <ERC721TransfersInfoTable address={walletAddress} data={ERC721Transfers.information} /> }
                 </div>
             </main>
         </div>  
