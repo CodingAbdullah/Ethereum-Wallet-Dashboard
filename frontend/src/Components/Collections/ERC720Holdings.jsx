@@ -47,7 +47,13 @@ const ERC720Holdings = () => {
                 if (response.status !== 200){
                     updateAlert(true);
                     updateEmptyAlert(false);
-                    updateERC20Holdings((prevState) => {
+                    updateERC20Holdings((prevState) => { // Removing information, when invalid address is added
+                        return {
+                            ...prevState,
+                            information: null
+                        }
+                    });
+                    updateERC20Transfers((prevState) => {
                         return {
                             ...prevState,
                             information: null
@@ -59,6 +65,12 @@ const ERC720Holdings = () => {
                         updateEmptyAlert(true);
                         updateAlert(false);
                         updateERC20Holdings((prevState) => {
+                            return {
+                                ...prevState,
+                                information: null
+                            }
+                        });
+                        updateERC20Transfers((prevState) => { // Removing information, when invalid address is added
                             return {
                                 ...prevState,
                                 information: null
@@ -92,7 +104,7 @@ const ERC720Holdings = () => {
                     });
                 }
                 else {
-                    if (response.status === 200 && response.data.length === 0){ // If empty, keep state to null
+                    if (response.status === 200 && response.data.result.length === 0){ // If empty, keep state to null
                         updateERC20Transfers((prevState) => {
                             return {
                                 ...prevState,
@@ -121,6 +133,12 @@ const ERC720Holdings = () => {
                     information: null
                 }
             });
+            updateERC20Transfers((prevState) => { // Removing information, when invalid address is added
+                return {
+                    ...prevState,
+                    information: null
+                }
+            });
         }
     }   
 
@@ -139,15 +157,19 @@ const ERC720Holdings = () => {
                     <button style={{marginTop: '3rem'}} type="submit" class="btn btn-primary">Check Balances</button>
                 </form>
                 <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-success' onClick={() => navigate("/")}>Go Home</button>
-                <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { updateAlert(false); updateEmptyAlert(false); updateERC20Holdings((prevState) => { return { ...prevState, information: null }} )}}>Clear</button>
+                <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { updateAlert(false); updateEmptyAlert(false); updateERC20Holdings((prevState) => { return { ...prevState, information: null }}); updateERC20Transfers((prevState) => { return { ...prevState, information: null }} )}}>Clear</button>
                 { ERC20Holdings.information !== null ? <h5 style={{marginTop: '2rem'}}>ERC720 Token Holdings for Wallet: <b>{walletAddress}</b></h5> : null }
                 <div style={{marginTop: '2rem'}}>
                     { ERC20Holdings.information === null ? <div /> : <ERC720HoldingsInfoTable data={ERC20Holdings.information} /> }
                 </div>
-                <div style={{marginTop: '2rem'}}>
+            </main>
+            <main role="main">
+                <div style={{marginTop: '5rem', marginLeft: '5rem'}}>
+                    {ERC20Transfers.information === null ? <div /> : <h5 style={{marginLeft: '8rem'}}>ERC20 Transfers</h5>}
                     { ERC20Transfers.information === null ? <div /> : <ERC720TransfersInfoTable data={ERC20Transfers.information} /> }
                 </div>
             </main>
+
         </div>  
     )
 }
