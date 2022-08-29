@@ -151,7 +151,7 @@ const ERC720Holdings = () => {
                     <h2>ERC20 Token Data</h2>
                 </div>
                 <form onSubmit={walletHandler}>
-                    <label style={{marginRight: '0.5rem'}}>Enter Wallet Address (ERC20 token balances in this wallet will be displayed): </label>
+                    <label style={{marginRight: '0.5rem'}}>Enter Wallet Address (ERC20 token balances/transfers in this wallet will be displayed (100 Recent): </label>
                     <input type="text" onChange={e => updateWalletAddress(e.target.value)} placeholder="Enter here" required />
                     <br />
                     <button style={{marginTop: '3rem'}} type="submit" class="btn btn-primary">Check Balances</button>
@@ -165,8 +165,8 @@ const ERC720Holdings = () => {
             </main>
             <main role="main">
                 <div style={{marginTop: '5rem', marginLeft: '5rem'}}>
-                    {ERC20Transfers.information === null ? <div /> : <h5 style={{marginLeft: '8rem'}}>ERC20 Transfers</h5>}
-                    { ERC20Transfers.information === null ? <div /> : <ERC720TransfersInfoTable data={ERC20Transfers.information} /> }
+                    {ERC20Transfers.information === null ? <div /> : <h5 style={{marginLeft: '8rem'}}>ERC20 Transfers for Wallet: <b>{walletAddress}</b></h5>}
+                    { ERC20Transfers.information === null ? <div /> : <ERC720TransfersInfoTable address={walletAddress} data={ERC20Transfers.information} /> }
                 </div>
             </main>
 
