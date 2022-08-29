@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import Alert from '../Alert/Alert';
 import ERC721LookupsInfoTable from './ERC721LookupsInfoTable';
+import ERC721TransferLookupsInfoTable from './ERC721TransferLookupsInfoTable';
 import axios from 'axios';
 
 const ERC721Lookups = () => {
@@ -11,6 +12,10 @@ const ERC721Lookups = () => {
     const [setAlert, updateAlert] = useState(false);
 
     const [tokenData, updateTokenData] = useState({
+        information: null
+    });
+
+    const [tokenTransfers, updateTokenTransfers] = useState({
         information: null
     });
     
@@ -32,12 +37,20 @@ const ERC721Lookups = () => {
                 'X-API-KEY' : process.env.REACT_APP_MORALIS_API_KEY // Moralis API key hidden 
             }
         }
+
         if (tokenAddress.length === 42 && tokenAddress.substring(0, 2) === '0x'){
             axios.get(URL + LOOKUP_ENDPOINT + tokenAddress + "/" + tokenId + "?chain=eth&format=decimal", options)
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
                     updateTokenData((prevState) => { // Reinstate errors if correct information is not entered
+                        return {
+                            ...prevState,
+                            information: null
+                        }
+                    });
+
+                    updateTokenTransfers((prevState) => {
                         return {
                             ...prevState,
                             information: null
@@ -56,10 +69,49 @@ const ERC721Lookups = () => {
                 }
             })
             .catch(err => console.log(err));
+
+            axios.get(URL + LOOKUP_ENDPOINT + tokenAddress + "/" + tokenId + "/transfers?chain=eth&format=decimal", options)
+            .then(response => {
+                if (response.status !== 200){
+                    updateTokenTransfers((prevState) => {
+                        return {
+                            ...prevState,
+                            information: null
+                        }
+                    })
+                }
+                else {
+                    if (response.status === 200 && response.data.result.length === 0){ // If empty, keep state to null
+                        updateTokenTransfers((prevState) => {
+                            return {
+                                ...prevState,
+                                information: null
+                            }
+                        });
+                    }
+                    else {
+                        console.log(response);
+                        updateTokenTransfers((prevState) => {
+                            return {
+                                ...prevState,
+                                information: response.data.result // If data exists, add it to state
+                            }
+                        });
+                    }
+                }
+            })
+            .catch(err => console.log(err));
         }
         else {
             updateAlert(true);
             updateTokenData((prevState) => { // Reinstate errors if correct information is not entered
+                return {
+                    ...prevState,
+                    information: null
+                }
+            });
+
+            updateTokenTransfers((prevState) => {
                 return {
                     ...prevState,
                     information: null
@@ -87,9 +139,13 @@ const ERC721Lookups = () => {
                 </form>
                 <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-success' onClick={() => navigate("/")}>Go Home</button>
                 <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { updateAlert(false); updateTokenData((prevState) => { return { ...prevState, information: null }} )}}>Clear</button>
-                { tokenData.information !== null ? <h5 style={{marginTop: '2rem'}}>Lookup</h5> : null }
-                <div style={{marginTop: '2rem'}}>
+                { tokenData.information !== null ? <h5 style={{marginTop: '2rem'}}>NFT Lookup</h5> : null }
+                <div style={{marginTop: '2rem', marginLeft: '30px'}}>
                     { tokenData.information === null ? <div /> : <ERC721LookupsInfoTable data={tokenData.information} /> }
+                </div>
+                { tokenTransfers.information !== null ? <h5 style={{marginTop: '2rem'}}>NFT Transfers Lookup</h5> : null }
+                <div>
+                    { tokenTransfers.information === null ? <div /> : <ERC721TransferLookupsInfoTable data={tokenTransfers.information} /> }
                 </div>
             </main>
         </div>

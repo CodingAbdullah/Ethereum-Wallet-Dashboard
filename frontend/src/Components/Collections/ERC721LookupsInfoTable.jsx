@@ -21,14 +21,14 @@ const ERC721LookupsInfoTable = (props) => {
                 <tbody>
                     { // Formatting the table rows to show data
                         <tr>
-                            <td style={{border: '1px solid black'}}>{data.name}</td>
-                            <td style={{border: '1px solid black'}}>{data.symbol}</td>
-                            <td style={{border: '1px solid black'}}>{data.owner_of}</td>
-                            <td style={{border: '1px solid black'}}>{data.token_address}</td>
-                            <td style={{border: '1px solid black'}}>{data.token_id}</td>
-                            <td style={{border: '1px solid black'}}>{data.contract_type}</td>
-                            <td style={{border: '1px solid black'}}>{data.amount}</td>
-                            <td style={{border: '1px solid black'}}><a href={"https://opensea.io/assets/ethereum/" + data.token_address + "/" + data.token_id} target="_blank" rel="noreferrer">Link</a></td>
+                            <td style={{border: '1px solid black', fontSize: '11px'}}>{data.name}</td>
+                            <td style={{border: '1px solid black', fontSize: '11px'}}>{data.symbol}</td>
+                            <td style={{border: '1px solid black', fontSize: '11px'}}>{data.owner_of}</td>
+                            <td style={{border: '1px solid black', fontSize: '11px'}}>{data.token_address}</td>
+                            <td style={{border: '1px solid black', fontSize: '11px'}}>{data.token_id}</td>
+                            <td style={{border: '1px solid black', fontSize: '11px'}}>{data.contract_type}</td>
+                            <td style={{border: '1px solid black', fontSize: '11px'}}>{data.amount}</td>
+                            <td style={{border: '1px solid black', fontSize: '11px'}}><a href={"https://opensea.io/assets/ethereum/" + data.token_address + "/" + data.token_id} target="_blank" rel="noreferrer">Link</a></td>
                         </tr>
                     }   
                 </tbody>
