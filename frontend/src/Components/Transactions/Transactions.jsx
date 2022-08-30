@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import Alert from '../Alert/Alert';
+import TransactionsInfoTable from './TransactionsInfoTable';
 
 const Transactions = () => {
     const [amount, updateAmount] = useState(0.00);
@@ -110,35 +111,10 @@ const Transactions = () => {
                 <h5>{"ETH Balance: " + (amount*(1/1000000000000000000)) + " ETH (@ $" + ethPrice.information.ethereum.usd.toFixed(2) + " USD/ETH)"}</h5>
                 <h6>{"Amount in USD: $" + ((amount*(1/1000000000000000000))*(ethPrice.information.ethereum.usd)).toFixed(2) + " USD"}</h6>
                 <h2 style={{marginTop: '2.0rem'}}>Transactions</h2>
-                <table class="table table-dark col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                    <thead>
-                        <tr>
-                            <th scope="col">Block Number</th>
-                            <th scope="col">Time Stamp</th>
-                            <th scope="col">From</th>
-                            <th scope="col">To</th>
-                            <th scope="col">Value</th>
-                            <th scope="col">Gas</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                                transactions === {} ? <div /> :
-                                transactions.information.result.map(record => {
-                                    return (
-                                        <tr>
-                                            <td>{record.blockNumber}</td>
-                                            <td>{record.timeStamp}</td>
-                                            <td>{record.from}</td>
-                                            <td>{record.to}</td>
-                                            <td>{(record.value*(1/1000000000000000000)).toPrecision(4) + " E"}</td>
-                                            <td>{record.gas}</td>
-                                        </tr>
-                                    )
-                                }) 
-                        }                             
-                    </tbody>
-                </table>
+                <h6>Top 1000</h6>
+                <div style={{marginLeft: '100px'}}>
+                    { transactions === {} ? <div /> : <TransactionsInfoTable walletAddress={address} data={transactions.information.result} /> }
+                </div>
                 <button style={{marginTop: '1.5rem'}} class="btn btn-success" onClick={() => { navigate("/"); localStorage.removeItem('walletAddress'); }}>Go Back</button>
             </main>
         )
