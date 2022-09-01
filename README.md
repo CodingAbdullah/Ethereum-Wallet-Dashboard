@@ -3,6 +3,22 @@ A descriptive web app, detailing the history of all transactions including all d
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+All available scripts run under the front end folder of this repository. You must have Node installed on your 
+computer and to have access to the npm package manager which will allow you to download external libraries and
+also run, build, and test your react app.
+
+Additional documentation on the app and its functions will be provided as the project completes.
+
+****** DISCLAIMER **************
+Running this project locally will require you to also acquire separate API keys for running resource requests 
+from Etherscan/Moralis/Opensea. They are hidden in this project under the .env file which was not committed to
+GitHub for obvious security reasons. 
+
+No API keys means failed requests to select API resources. More details on API documentation used, to come 
+as the project nears completion. 
+
+********************************
+
 ## Available Scripts
 
 In the project directory, you can run:
