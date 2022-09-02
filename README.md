@@ -3,21 +3,28 @@ A descriptive web app, detailing the history of all transactions including all d
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+### `Start Here`
+
 All available scripts run under the front end folder of this repository. You must have Node installed on your 
-computer and to have access to the npm package manager which will allow you to download external libraries and
+computer and have access to the npm package manager which will allow you to download external libraries and
 also run, build, and test your react app.
 
 Additional documentation on the app and its functions will be provided as the project completes.
 
-****** DISCLAIMER **************
-Running this project locally will require you to also acquire separate API keys for running resource requests 
-from Etherscan/Moralis/Opensea. They are hidden in this project under the .env file which was not committed to
-GitHub for obvious security reasons. 
+Running this project locally will require you to acquire separate API keys for running API requests to resources. These include various different sites such as Etherscan, Moralis, and Opensea. Devs' keys are hidden in this project under the .env file which was not committed to GitHub for obvious security reasons. 
 
 No API keys means failed requests to select API resources. More details on API documentation used, to come 
 as the project nears completion. 
 
-********************************
+### `Links`
+
+Here are links to the available API resources used in this project:
+[Opensea](https://docs.opensea.io/reference/api-overview)
+[Etherscan](https://etherscan.io/apis)
+[Moralis](https://docs.moralis.io/)
+[ENS](https://docs.ens.domains/)
+[CoinGecko](https://www.coingecko.com/en/api/documentation)
+
 
 ## Available Scripts
 
