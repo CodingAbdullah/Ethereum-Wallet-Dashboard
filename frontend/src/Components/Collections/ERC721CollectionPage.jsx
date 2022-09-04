@@ -117,21 +117,21 @@ const ERC721CollectionPage = () => {
         }
     }
 
-    if (NFTData.information === null || NFTTransfers.information === null || NFTOwners.information === null || NFTTrades.information === null || NFTLowestPrice.information === null) {
-        return <div>Loading...</div>
-    }
-    else {
         return (
             <div className="erc721-collection-page">
-                { setAlert ? <Alert type='danger' /> : null }
-                <form onSubmit={formHandler}>
-                    <label>Enter NFT Contract Address for Analytics</label><br />
-                    <input onChange={e => updateTokenAddress(e.target.value)} type='text' placeholder='Enter Address Here'></input>
-                    <button type='submit' class='btn btn-success'>Submit</button>
-                </form>
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">ERC721 Analytics</h1>
+                    </div>
+                    { setAlert ? <Alert type='danger' /> : null }
+                    <p style={{marginTop: '3rem'}}>Enter Contract Address of your <b>ERC721</b> token for analytics</p>
+                    <form onSubmit={formHandler}>
+                        <input style={{marginRight: '2rem'}} onChange={e => updateTokenAddress(e.target.value)} type='text' placeholder='Enter Address Here'></input>
+                        <button type='submit' class='btn btn-success'>Submit</button>
+                    </form>
+                </main>
             </div>
         )
-    }
 }
 
 export default ERC721CollectionPage;
