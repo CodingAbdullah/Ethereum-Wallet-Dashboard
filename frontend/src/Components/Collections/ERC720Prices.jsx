@@ -213,7 +213,7 @@ const ERC720TokenPrices = () => {
               </div>
             }
           </div>
-          <div style={{marginTop: '3rem', marginBottom: '3.0rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+          <div style={{marginTop: '3rem', marginBottom: '3.0rem'}}>
             {
               // Display data of the valid ERC20 token
               erc20Info.information === null ? <div /> :

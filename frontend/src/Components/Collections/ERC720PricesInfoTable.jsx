@@ -3,8 +3,9 @@ import React from 'react';
 const ERC20PricesInfoTable = (props) => {
     const { data } = props; // Destructure data
 
+    // Display data of the valid ERC20 token
     return (
-        // Display data of the valid ERC20 token
+      <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
         <table style={{border: '1px solid black'}}>
             <thead style={{border: '1px solid black'}}>
               <tr style={{border: '1px solid black'}}>
@@ -73,7 +74,8 @@ const ERC20PricesInfoTable = (props) => {
                 </td>
               </tr>
             </tbody>
-        </table>   
+        </table> 
+      </div>  
     )
 }
 

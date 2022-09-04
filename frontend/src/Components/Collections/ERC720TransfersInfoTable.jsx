@@ -12,7 +12,7 @@ const ERC720TransfersInfoTable = (props) => {
                     <th style={{border: '1px solid black'}} scope="col">Date</th>
                     <th style={{border: '1px solid black'}} scope="col">From</th>
                     <th style={{border: '1px solid black'}} scope="col">To</th>
-                    <th style={{border: '1px solid black'}} scope="col">Direction</th>                    
+                    { address !== null ? <th style={{border: '1px solid black'}} scope="col">Direction</th> : null }                   
                     <th style={{border: '1px solid black'}} scope="col">Value</th>
                 </tr>
                 </thead>
@@ -24,7 +24,15 @@ const ERC720TransfersInfoTable = (props) => {
                                     <td style={{border: '1px solid black'}}>{record.block_timestamp.split("T")[0]}</td>
                                     <td style={{border: '1px solid black'}}>{record.from_address}</td>
                                     <td style={{border: '1px solid black'}}>{record.to_address}</td>
-                                    <td style={{border: '1px solid black', fontSize: '11px'}}>{address.toLowerCase() === record.to_address ? <Badge type="IN" /> : <Badge type="OUT" />}</td>
+                                    { address !== null ? 
+                                        <td style={{border: '1px solid black', fontSize: '11px'}}>
+                                            { address.toLowerCase() === record.to_address ? 
+                                                <Badge type="IN" /> : 
+                                                <Badge type="OUT" />
+                                            }
+                                        </td> : 
+                                        null 
+                                    }
                                     <td style={{border: '1px solid black'}}>{record.value}</td>
                                 </tr>
                             )
