@@ -141,7 +141,7 @@ const ERC720CollectionPage = () => {
                         <h1 class="h2">ERC20 Analytics</h1>
                     </div>
                     { setAlert ? <Alert type='danger' /> : null }
-                    <p style={{marginTop: '3rem'}}>Enter Contract Address of your <b>ERC20</b> token for analytics</p>
+                    <p style={{marginTop: '3rem'}}>Enter Contract Address of an <b>ERC20</b> token for analytics</p>
                     <form onSubmit={formHandler}>
                         <input style={{marginRight: '2rem'}} onChange={e => updateTokenAddress(e.target.value)} type='text' placeholder='Enter Address Here'></input>
                         <button type='submit' class='btn btn-success'>Submit</button>

@@ -145,7 +145,7 @@ const ERC721Holdings = () => {
                 <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-success' onClick={() => navigate("/")}>Go Home</button>
                 <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { updateAlert(false); updateEmptyAlert(false); updateNFTData((prevState) => { return { ...prevState, information: null }}); updateERC721Transfers((prevState) => { return { ...prevState, information: null }})} }>Clear</button>
                 {nftData.information !== null ? <h5 style={{marginTop: '2rem'}}>ERC721 Token Holdings for Wallet: <b>{walletAddress}</b></h5> : null}
-                <div style={{marginTop: '2rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <div style={{marginTop: '2rem'}}>
                     { nftData.information === null ? <div /> : <ERC721HoldingsInfoTable data={nftData.information} /> }
                 </div>
             </main>
