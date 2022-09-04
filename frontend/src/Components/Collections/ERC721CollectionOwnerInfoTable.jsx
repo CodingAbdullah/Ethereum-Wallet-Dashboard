@@ -3,10 +3,17 @@ import React from 'react';
 const ERC721CollectionOwnerInfoTable = (props) => {
     const { data } = props;
 
+    const uniqueOwnerList = new Set();
+
+    for (var i = 0; i < data.length; i++){
+        uniqueOwnerList.add(data[i].owner_of);
+    }
+
     // Display Owner data from an NFT collection
     return (
         <div className="erc721-collection-data-table col-md-9 ml-sm-auto col-lg-10 px-md-4">
             <h5><b>NFT Collection Owner Data</b></h5>
+            <h6><b>Unique Owners within Collection: {uniqueOwnerList.size}</b></h6>
             <table style={{border: '1px solid black'}}>
                 <thead style={{border: '1px solid black'}}>
                 <tr style={{border: '1px solid black'}}>

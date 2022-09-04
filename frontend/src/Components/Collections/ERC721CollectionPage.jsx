@@ -254,16 +254,16 @@ const ERC721CollectionPage = () => {
                     { NFTLowestPrice.information === null ? null : <ERC721LowestCollectionPriceInfoTable data={ NFTLowestPrice.information } />} 
                 </main>
                 <main style={{marginTop: '3rem'}} role="main">
-                    { NFTData.information === null ? null : <ERC721CollectionDataInfoTable quantity={NFTData.information.total} data={ NFTData.information.result } />} 
+                    { NFTData.information === null ? null : <ERC721CollectionDataInfoTable quantity={ NFTData.information.total } data={ NFTData.information.result } />} 
                 </main>
                 <main style={{marginTop: '3rem'}} role="main">
-                    { NFTTransfers.information === null ? null : <ERC721CollectionTransferInfoTable quantity={NFTTransfers.information.total} data={ NFTTransfers.information.result } />} 
+                    { NFTTransfers.information === null ? null : <ERC721CollectionTransferInfoTable quantity={ NFTTransfers.information.total } data={ NFTTransfers.information.result } />} 
                 </main>
                 <main style={{marginTop: '3rem'}} role="main">
                     { NFTOwners.information === null ? null : <ERC721CollectionOwnerInfoTable data={ NFTOwners.information.result } />} 
                 </main>
                 <main style={{marginTop: '3rem'}} role="main">
-                    { NFTTrades.information === null ? null : <ERC721CollectionTradeInfoTable quantity={NFTTrades.information.total} data={ NFTTrades.information.result } />} 
+                    { NFTTrades.information === null ? null : <ERC721CollectionTradeInfoTable quantity={ NFTTrades.information.total } data={ NFTTrades.information.result } />} 
                 </main>
             </div>
         )
