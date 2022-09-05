@@ -25,6 +25,21 @@ const ERC721Holdings = () => {
     const NFT_ENDPOINT = '/nft?chain=eth&format=decimal';
     const NFT_TRANSFERS_ENDPOINT = '/nft/transfers?chain=eth&format=decimal&direction=both';
 
+    const clearHandler = () => {
+        updateNFTData((prevState) => {
+            return {
+                ...prevState,
+                information: null
+            }
+        });
+        updateERC721Transfers((prevState) => {
+            return {
+                ...prevState,
+                information: null
+            }
+        });
+    }
+
     const walletHandler = (e) => {
         e.preventDefault();
 
@@ -113,18 +128,7 @@ const ERC721Holdings = () => {
         else {
             updateAlert(true); // Set Alert
             updateEmptyAlert(false); // Remove redundant alerts, and empty data
-            updateNFTData((prevState) => {
-                return {
-                    ...prevState,
-                    information: null
-                }
-            });
-            updateERC721Transfers((prevState) => {
-                return {
-                    ...prevState,
-                    information: null
-                }
-            });
+            clearHandler();
         }
     }   
 

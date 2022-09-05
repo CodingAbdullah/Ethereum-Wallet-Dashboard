@@ -24,6 +24,23 @@ const ERC721Lookups = () => {
     const URL = 'https://deep-index.moralis.io/api/v2/'; // API endpoints for NFT lookup
     const LOOKUP_ENDPOINT = 'nft/';
 
+    const clearHandler = () => {
+        updateTokenData((prevState) => { // Reinstate errors if correct information is not entered
+            return {
+                ...prevState,
+                information: null
+            }
+        });
+
+        updateTokenTransfers((prevState) => {
+            return {
+                ...prevState,
+                information: null
+            }
+        });
+    }
+
+
     const tokenHandler = (e) => {
         e.preventDefault(); // Prevent Default Behaviour
 
@@ -43,19 +60,7 @@ const ERC721Lookups = () => {
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
-                    updateTokenData((prevState) => { // Reinstate errors if correct information is not entered
-                        return {
-                            ...prevState,
-                            information: null
-                        }
-                    });
-
-                    updateTokenTransfers((prevState) => {
-                        return {
-                            ...prevState,
-                            information: null
-                        }
-                    });
+                    clearHandler();
                 }
                 else {
                     updateAlert(false); // Remove alerts if any exist
@@ -104,19 +109,7 @@ const ERC721Lookups = () => {
         }
         else {
             updateAlert(true);
-            updateTokenData((prevState) => { // Reinstate errors if correct information is not entered
-                return {
-                    ...prevState,
-                    information: null
-                }
-            });
-
-            updateTokenTransfers((prevState) => {
-                return {
-                    ...prevState,
-                    information: null
-                }
-            });
+            clearHandler();
         }
     }
 

@@ -172,7 +172,7 @@ const Home = () => {
                             <p style={{ marginBottom: '2rem' }} class='marquee-paragraph col-md-9 ml-sm-auto col-lg-10 px-md-4'><b>Top 5 Trending Coins: </b>{trendingCoins}</p>
                             <p><b>Active Currencies: </b> {active_cryptocurrencies}</p>      
                             <p><b>Total Market Cap: </b> ${(usd).toFixed(2)}</p>
-                            <p><b>Market Dominance: </b> BTC {(btc).toFixed(2) + "%"} ETH {(eth).toFixed(2) + "%"}</p>
+                            <p><b>Market Dominance: </b> BTC {(btc).toFixed(2) + "%"} <b>|</b> ETH {(eth).toFixed(2) + "%"}</p>
                             <p style={{marginBottom: '4rem'}}><b>24 Hour Market Cap % Change: </b>
                                 <p style={{ display: 'inline', color: market_cap_change_percentage_24h_usd < 0 ? 'red' : 'green', fontWeight: 'bold'}}>
                                     {market_cap_change_percentage_24h_usd < 0 ? "" : "+"}{(market_cap_change_percentage_24h_usd).toFixed(2) + "%"}

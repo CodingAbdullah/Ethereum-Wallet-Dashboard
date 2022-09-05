@@ -26,6 +26,21 @@ const ERC720Holdings = () => {
 
     const ERC20TOKENTRANSFERS_ENDPOINT = '/erc20/transfers?chain=eth';
 
+    const clearHandler = () => {
+        updateERC20Holdings((prevState) => { // Removing information, when invalid address is added
+            return {
+                ...prevState,
+                information: null
+            }
+        });
+        updateERC20Transfers((prevState) => {
+            return {
+                ...prevState,
+                information: null
+            }
+        });
+    }
+
     const walletHandler = (e) => {
         e.preventDefault();
 
@@ -47,35 +62,13 @@ const ERC720Holdings = () => {
                 if (response.status !== 200){
                     updateAlert(true);
                     updateEmptyAlert(false);
-                    updateERC20Holdings((prevState) => { // Removing information, when invalid address is added
-                        return {
-                            ...prevState,
-                            information: null
-                        }
-                    });
-                    updateERC20Transfers((prevState) => {
-                        return {
-                            ...prevState,
-                            information: null
-                        }
-                    });
+                    clearHandler();
                 }
                 else {
                     if (response.status === 200 && response.data.length === 0){ // If empty, display warning
                         updateEmptyAlert(true);
                         updateAlert(false);
-                        updateERC20Holdings((prevState) => {
-                            return {
-                                ...prevState,
-                                information: null
-                            }
-                        });
-                        updateERC20Transfers((prevState) => { // Removing information, when invalid address is added
-                            return {
-                                ...prevState,
-                                information: null
-                            }
-                        });
+                        clearHandler();
                     }
                     else {
                         updateAlert(false); // Remove alerts if any exist
@@ -127,18 +120,7 @@ const ERC720Holdings = () => {
         else {
             updateAlert(true); // Set Alert
             updateEmptyAlert(false); // Remove redundant alerts, and empty data
-            updateERC20Holdings((prevState) => {
-                return {
-                    ...prevState,
-                    information: null
-                }
-            });
-            updateERC20Transfers((prevState) => { // Removing information, when invalid address is added
-                return {
-                    ...prevState,
-                    information: null
-                }
-            });
+            clearHandler();
         }
     }   
 
