@@ -5,7 +5,7 @@ const TransactionsInfoTable = (props) => {
     const { data, walletAddress } = props; // Retrieving data from transactions page
 
     return (
-        <div className='transaction-info-table'>
+        <div className="transactions-data-table">
             <table style={{border: '1px solid black'}}>
                     <thead style={{border: '1px solid black'}}>
                         <tr style={{border: '1px solid black'}}>
