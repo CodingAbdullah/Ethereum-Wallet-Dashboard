@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Alert from '../Alert/Alert';
 import TransactionsInfoTable from '../Transactions/TransactionsInfoTable';
-import ERC720HoldingsInfoTable from '../Collections/ERC720HoldingsInfoTable';
-import ERC721HoldingsInfoTable from '../Collections/ERC721HoldingsInfoTable';
+import ERC720HoldingsInfoTable from '../ERC720Holdings/ERC720HoldingsInfoTable';
+import ERC721HoldingsInfoTable from '../ERC721Holdings/ERC721HoldingsInfoTable';
 
 const WalletStats = () => {
     const [setAlert, updateAlert] = useState(false);
@@ -248,7 +248,7 @@ const WalletStats = () => {
                 <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h3 class="h3"> Balance Information</h3>
                 </div>    
-                <h4 style={{marginTop: '1.5rem'}}><b>{amount > 0 ? "Account: " + walletAddress : null}</b></h4>
+                { amount >= 0 ? <h4 style={{marginTop: '1.5rem'}}><b>{"Account: " + walletAddress}</b></h4> : (walletAddress.length !== 0 && amount >= 0 ? <Alert type="warning" /> : null )}
                 <h5><b>{ETHPrice.information !== null ? "ETH Balance: " + (amount*(1/1000000000000000000)) + " ETH (@ $" + ETHPrice.information.ethereum.usd.toFixed(2) + " USD/ETH)" : null}</b></h5>
                 <h6><b>{ETHPrice.information !== null ? "Amount in USD: $" + ((amount*(1/1000000000000000000))*(ETHPrice.information.ethereum.usd)).toFixed(2) + " USD" : null}</b></h6>
                 <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
