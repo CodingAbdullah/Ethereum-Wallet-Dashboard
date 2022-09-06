@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import Alert from '../Alert/Alert';
-import TransactionsInfoTable from './TransactionsInfoTable';
+import TransactionsInfoTable from '../TransactionsInfoTable/TransactionsInfoTable';
 
 const Transactions = () => {
     const [amount, updateAmount] = useState(0.00);

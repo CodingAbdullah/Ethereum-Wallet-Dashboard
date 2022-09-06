@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import AddressToENSInfoTable from './AddressToENSInfoTable';
+import AddressToENSInfoTable from '../AddressToENSInfoTable/AddressToENSInfoTable';
 import Alert from '../Alert/Alert';
 import axios from 'axios';
 

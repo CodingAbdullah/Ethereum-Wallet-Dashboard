@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Alert from '../Alert/Alert';
-import ERC721LowestCollectionPriceInfoTable from './ERC721CollectionLowestPriceInfoTable';
-import ERC721CollectionDataInfoTable from './ERC721CollectionDataInfoTable';
-import ERC721CollectionTransferInfoTable from './ERC721CollectionTransferInfoTable';
-import ERC721CollectionOwnerInfoTable from './ERC721CollectionOwnerInfoTable';
-import ERC721CollectionTradeInfoTable from './ERC721CollectionTradeInfoTable';
+import ERC721LowestCollectionPriceInfoTable from '../ERC721CollectionLowestPriceInfoTable/ERC721CollectionLowestPriceInfoTable';
+import ERC721CollectionDataInfoTable from '../ERC721CollectionDataInfoTable/ERC721CollectionDataInfoTable';
+import ERC721CollectionTransferInfoTable from '../ERC721CollectionTransferInfoTable/ERC721CollectionTransferInfoTable';
+import ERC721CollectionOwnerInfoTable from '../ERC721CollectionOwnerInfoTable/ERC721CollectionOwnerInfoTable';
+import ERC721CollectionTradeInfoTable from '../ERC721CollectionTradeInfoTable/ERC721CollectionTradeInfoTable';
 
 const ERC721CollectionPage = () => {
 

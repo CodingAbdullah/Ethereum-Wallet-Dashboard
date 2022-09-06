@@ -1,7 +1,7 @@
 import React, { useState }from 'react';
 import Alert from '../Alert/Alert';
-import ERC720HoldingsInfoTable from './ERC720HoldingsInfoTable';
-import ERC720TransfersInfoTable from '../ERC720Transfers/ERC720TransfersInfoTable';
+import ERC720HoldingsInfoTable from '../ERC720HoldingsInfoTable/ERC720HoldingsInfoTable';
+import ERC720TransfersInfoTable from '../ERC720TransfersInfoTable/ERC720TransfersInfoTable';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 

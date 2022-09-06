@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
-import ERC720PricesInfoTable from './ERC720PricesInfoTable';
+import ERC720PricesInfoTable from '../ERC720PricesInfoTable/ERC720PricesInfoTable';
 import { useNavigate } from 'react-router-dom';
 import Alert from '../Alert/Alert';
 import moment from 'moment';

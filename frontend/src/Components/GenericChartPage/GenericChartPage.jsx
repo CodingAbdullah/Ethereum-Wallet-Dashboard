@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useNavigate, useLocation } from 'react-router-dom';
-import CoinSelector from './CoinSelector';
+import CoinSelector from '../CoinSelector/CoinSelector';
 import moment from 'moment';
 
 import {

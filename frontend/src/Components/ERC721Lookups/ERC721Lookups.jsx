@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import Alert from '../Alert/Alert';
-import ERC721LookupsInfoTable from './ERC721LookupsInfoTable';
-import ERC721TransferLookupsInfoTable from '../ERC721Transfers/ERC721TransferLookupsInfoTable';
+import ERC721LookupsInfoTable from '../ERC721LookupsInfoTable/ERC721LookupsInfoTable';
+import ERC721TransferLookupsInfoTable from '../ERC721TransferLookupsInfoTable/ERC721TransferLookupsInfoTable';
 import axios from 'axios';
 
 const ERC721Lookups = () => {

@@ -3,7 +3,7 @@ import Navbar from  '../Navbar/Navbar';
 import Sidebar from '../Sidebar/Sidebar';
 import Home from '../Home/Home';
 import Transactions from '../Transactions/Transactions';
-import PageNotFound from '../MiscellaneousPages/PageNotFound';
+import PageNotFound from '../PageNotFound/PageNotFound';
 import Footer from '../Footer/Footer';
 import About from '../About/About';
 import PricesPage from '../PricesPage/PricesPage';

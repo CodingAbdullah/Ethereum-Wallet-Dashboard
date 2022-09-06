@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Alert from '../Alert/Alert';
-import TransactionsInfoTable from '../Transactions/TransactionsInfoTable';
-import ERC720HoldingsInfoTable from '../ERC720Holdings/ERC720HoldingsInfoTable';
-import ERC721HoldingsInfoTable from '../ERC721Holdings/ERC721HoldingsInfoTable';
+import TransactionsInfoTable from '../TransactionsInfoTable/TransactionsInfoTable';
+import ERC720HoldingsInfoTable from '../ERC720HoldingsInfoTable/ERC720HoldingsInfoTable';
+import ERC721HoldingsInfoTable from '../ERC721HoldingsInfoTable/ERC721HoldingsInfoTable';
 
 const WalletStats = () => {
     const [setAlert, updateAlert] = useState(false);

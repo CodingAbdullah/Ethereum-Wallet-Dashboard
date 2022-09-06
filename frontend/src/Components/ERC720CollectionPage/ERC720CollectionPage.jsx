@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Alert from '../Alert/Alert';
-import ERC720TransfersInfoTable from '../ERC720Transfers/ERC720TransfersInfoTable';
-import ERC720PricesInfoTable from '../ERC720Prices/ERC720PricesInfoTable';
+import ERC720TransfersInfoTable from '../ERC720TransfersInfoTable/ERC720TransfersInfoTable';
+import ERC720PricesInfoTable from '../ERC720PricesInfoTable/ERC720PricesInfoTable';
 
 const ERC720CollectionPage = () => {
 
