@@ -254,9 +254,8 @@ const WalletStats = () => {
                 <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h3 class="h3">Transactions</h3>
                 </div>
-                <p>Recent transactions (100 atmost)</p>
                 <div style={{marginLeft: '100px'}}>
-                    { emptyTransactionAlert && !setAlert ? <Alert type="warning" /> : ( transactions.information !== null ? <TransactionsInfoTable walletAddress={walletAddress} data={transactions.information.result} /> : null ) }
+                    { emptyTransactionAlert && !setAlert ? <Alert type="warning" /> : ( transactions.information !== null ? <><p style={{marginRight: '10rem'}}>100 Most Recent Transactions</p><TransactionsInfoTable walletAddress={walletAddress} data={transactions.information.result} /></> : null ) }
                 </div>
                 <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h3 class="h3">ERC20 Holdings</h3>

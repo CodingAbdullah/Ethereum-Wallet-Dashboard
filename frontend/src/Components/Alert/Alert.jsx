@@ -6,10 +6,10 @@ const Alert = (props) => {
 
     switch(type) {
         case "danger":
-            message = "You need to enter a valid address, outlined below!";
+            message = "You need to enter a valid address!";
             break;
         case "warning":
-            message = "Empty wallet! No assets found!";
+            message = "Empty wallet! No assets/transactions found!";
             break;
         default:
             break;
