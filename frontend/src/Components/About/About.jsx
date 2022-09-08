@@ -21,7 +21,7 @@ const About = () => {
                             <hr />
                     </div>
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <p>Daily/Weekly/Monthly coin charts (more coins to be added later), ENS features (to be added later), wallet analytics, transactions (including internal, ERC20, ERC721, ERC1155, if applicable), 
+                            <p>Daily/Weekly/Monthly coin charts, organized by market cap. In addition, ens lookups, wallet analytics, transactions (including internal, ERC20, ERC721, ERC1155, if applicable), 
                                 and historical information pertaining to a wallet, including historical Ether balance.
                             </p>
                     </div>
@@ -31,7 +31,8 @@ const About = () => {
                     </div>
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <p>Much of the information that is obtained through this app is provided by external, trusted, open-source APIs. 
-                                These are publicly verified and secure meaning that you do not have to worry about security. The APIs used in this project were free of charge, with some limited restrictions [calls/(second/minute/hour), etc.]
+                                These are publicly verified and secure meaning that you do not have to worry about security. The APIs used in this project were free of charge, with some limited restrictions [calls/(second/minute/hour), etc.].
+                                A list of these can be found in the footer section of this app.
                             </p>
                             <hr />
                     </div>
