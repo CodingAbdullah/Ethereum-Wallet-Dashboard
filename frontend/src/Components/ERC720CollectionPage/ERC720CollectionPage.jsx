@@ -153,13 +153,13 @@ const ERC720CollectionPage = () => {
                 </main>
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                     { setPrice === null ? null : <h3 style={{marginTop: '3rem', marginBottom: '1.5rem'}}>Price: $<b>{setPrice.toPrecision(4)}</b> USD</h3> } 
-                    <hr style={{marginTop: '3rem', marginBottom: '3rem'}} />
+                    { ERC20Information.information === null || ERC20Transfers.information === null ? null : <hr style={{marginTop: '3rem', marginBottom: '3rem'}} /> }
                     {
                         // Display data of the valid ERC20 token
                         ERC20Information.information === null ? <div /> :
                         <ERC720PricesInfoTable data={ERC20Information} />
                     }
-                    <hr style={{marginTop: '5rem', marginBottom: '2rem'}} />
+                    { ERC20Information.information === null || ERC20Transfers.information === null ? null : <hr style={{marginTop: '5rem', marginBottom: '2rem'}} /> }
                 </main>
                 <main role="main">
                     <div style={{marginTop: '5rem', marginLeft: '5rem'}}>

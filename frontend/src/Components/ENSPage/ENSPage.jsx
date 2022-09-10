@@ -81,7 +81,7 @@ const ENSPage = () => {
                             <label style={{marginRight: '2rem'}}><b>{"Address ---> ENS Resolver"}</b></label>
                             <input type="text" onChange={e => updateAddressToENS(e.target.value)} />
                             <br />
-                            <button style={{marginTop: '1rem'}} class="btn btn-success" type='submit'>Submit</button>
+                            <button style={{marginTop: '1rem'}} class="btn btn-success" type='submit'>Lookup Reversal</button>
                         </form>
                     </div>
                 </div>

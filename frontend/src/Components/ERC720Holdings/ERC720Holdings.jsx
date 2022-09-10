@@ -147,7 +147,7 @@ const ERC720Holdings = () => {
                 { ERC20Holdings.information !== null ? <h5 style={{marginTop: '2rem'}}>ERC720 Token Holdings for Wallet: <b>{walletAddress}</b></h5> : null }
                 <div style={{marginTop: '2rem'}}>
                     { ERC20Holdings.information === null ? <div /> : <ERC720HoldingsInfoTable data={ERC20Holdings.information} /> }
-                    <hr style={{marginTop: '5rem'}} />
+                    { ERC20Holdings.information === null ? null : <hr style={{marginTop: '5rem'}} /> }
                 </div>
             </main>
             <main role="main">

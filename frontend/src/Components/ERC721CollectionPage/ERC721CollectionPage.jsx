@@ -254,23 +254,23 @@ const ERC721CollectionPage = () => {
                     { NFTData.information === null ? null : <h4>Contract Address: <b>{ tokenAddress }</b></h4>} 
                     { NFTData.information === null ? null : <h4>Total Items: <b>{ NFTData.information.total }</b></h4>} 
                 </main>
-                <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
+                { NFTData.information === null ? null : <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" /> }
                 <main role="main">
                     { NFTLowestPrice.information === null ? null : <ERC721LowestCollectionPriceInfoTable data={ NFTLowestPrice.information } />} 
                 </main>
-                <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
+               { NFTLowestPrice.information === null ? null : <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" /> }
                 <main style={{marginTop: '3rem'}} role="main">
                     { NFTData.information === null ? null : <ERC721CollectionDataInfoTable quantity={ NFTData.information.total } data={ NFTData.information.result } />} 
                 </main>
-                <div style={{marginTop: '2rem'}}  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
+                { NFTData.information === null ? null : <div style={{marginTop: '2rem'}}  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" /> }
                 <main style={{marginTop: '3rem'}} role="main">
                     { NFTTransfers.information === null ? null : <ERC721CollectionTransferInfoTable quantity={ NFTTransfers.information.total } data={ NFTTransfers.information.result } />} 
                 </main>
-                <div style={{marginTop: '2rem'}}  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
+                { NFTTransfers.information === null ? null : <div style={{marginTop: '2rem'}}  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" /> }
                 <main style={{marginTop: '3rem'}} role="main">
                     { NFTOwners.information === null ? null : <ERC721CollectionOwnerInfoTable data={ NFTOwners.information.result } />} 
                 </main>
-                <div style={{marginTop: '2rem'}}  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
+                { NFTOwners.information === null ? null : <div style={{marginTop: '2rem'}}  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" /> }
                 <main style={{marginTop: '3rem'}} role="main">
                     { NFTTrades.information === null ? null : <ERC721CollectionTradeInfoTable quantity={ NFTTrades.information.total } data={ NFTTrades.information.result } />} 
                 </main>

@@ -15,7 +15,7 @@ const AddressToENSInfoTable = (props) => {
                 <tbody>
                     <tr>
                         <td>{data.name}</td>
-                        <td><a href={"https://" + data.name + ".xyz/"} target="_blank" rel="noreferrer">{data.name} link</a></td>
+                        <td><a href={"https://" + data.name + ".xyz/"} target="_blank" rel="noreferrer">{data.name} - Link</a></td>
                     </tr>
                 </tbody>
             </table>        

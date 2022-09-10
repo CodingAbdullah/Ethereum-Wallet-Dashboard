@@ -140,7 +140,7 @@ const ERC721Lookups = () => {
                 <div style={{marginTop: '2rem', marginLeft: '30px'}}>
                     { tokenData.information === null ? <div /> : <ERC721LookupsInfoTable data={tokenData.information} /> }
                 </div>
-                <hr style={{marginTop: '3rem', marginBottom: '3rem'}} />
+                { tokenData.information === null || tokenTransfers.information === null ? null : <hr style={{marginTop: '3rem', marginBottom: '3rem'}} /> }
                 { tokenTransfers.information !== null ? <h5 style={{marginTop: '2rem'}}>NFT Transfers Lookup</h5> : null }
                 <div>
                     { tokenTransfers.information === null ? <div /> : <ERC721TransferLookupsInfoTable data={tokenTransfers.information} /> }
