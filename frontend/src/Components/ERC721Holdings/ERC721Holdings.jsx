@@ -131,29 +131,34 @@ const ERC721Holdings = () => {
             clearHandler();
         }
     }   
-
     return (
         <div className="erc-721-token-page">
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                { setAlert ? <Alert type="danger" /> : null }
-                { isEmpty ? <Alert type="warning" /> : null }
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h2>ERC721 Token Data</h2>
                 </div>
-                <form onSubmit={walletHandler}>
-                    <label style={{marginRight: '0.5rem'}}>Enter Wallet Address (Top 100 NFTs/Transfers will be displayed): </label>
-                    <input type="text" onChange={e => updateWalletAddress(e.target.value)} placeholder="Enter here" required />
-                    <br />
-                    <button style={{marginTop: '3rem'}} type="submit" class="btn btn-primary">Check Data</button>
-                </form>
-                <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-success' onClick={() => navigate("/")}>Go Home</button>
-                <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { updateAlert(false); updateEmptyAlert(false); updateNFTData((prevState) => { return { ...prevState, information: null }}); updateERC721Transfers((prevState) => { return { ...prevState, information: null }})} }>Clear</button>
+                { setAlert ? <Alert type="danger" /> : null }
+                { isEmpty ? <Alert type="warning" /> : null }
+                <div class="jumbotron">
+                    <div class="container">
+                        <form onSubmit={walletHandler}>
+                            <label style={{marginRight: '0.5rem'}}>Enter Wallet Address (Top 100 NFTs/Transfers will be displayed): </label>
+                            <input type="text" onChange={e => updateWalletAddress(e.target.value)} placeholder="Enter here" required />
+                            <br />
+                            <button style={{marginTop: '3rem'}} type="submit" class="btn btn-primary">Check Data</button>
+                        </form>
+                        <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-success' onClick={() => navigate("/")}>Go Home</button>
+                        <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { updateAlert(false); updateEmptyAlert(false); updateNFTData((prevState) => { return { ...prevState, information: null }}); updateERC721Transfers((prevState) => { return { ...prevState, information: null }})} }>Clear</button>
+                    </div>
+                </div>
+                { nftData.information != null ? <hr style={{marginTop: '5rem', marginBottom: '5rem'}} /> : null }
                 {nftData.information !== null ? <h5 style={{marginTop: '2rem'}}>ERC721 Token Holdings for Wallet: <b>{walletAddress}</b></h5> : null}
                 <div style={{marginTop: '2rem'}}>
                     { nftData.information === null ? <div /> : <ERC721HoldingsInfoTable data={nftData.information} /> }
                 </div>
             </main>
             <main role="main">
+                { nftData.information != null ? <hr style={{marginTop: '5rem'}} /> : null }
                 <div style={{marginTop: '5rem', marginLeft: '5rem'}}>
                     { ERC721Transfers.information === null ? <div /> : <h5 style={{marginLeft: '8rem'}}>ERC721 Transfers for: <b>{walletAddress}</b></h5> } 
                     { ERC721Transfers.information === null ? <div /> : <ERC721TransfersInfoTable address={walletAddress} data={ERC721Transfers.information} /> }
