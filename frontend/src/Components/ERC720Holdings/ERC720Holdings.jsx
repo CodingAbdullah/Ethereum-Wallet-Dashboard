@@ -122,32 +122,37 @@ const ERC720Holdings = () => {
             updateEmptyAlert(false); // Remove redundant alerts, and empty data
             clearHandler();
         }
-    }   
+    }  // 0x58ba8a3acb8ae71319c93626c24c3a1f482f0dea
 
     return (
         <div className="erc-721-token-page">
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                { setAlert ? <Alert type="danger" /> : null }
-                { isEmpty ? <Alert type="warning" /> : null }
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h2>ERC20 Token Data</h2>
                 </div>
-                <form onSubmit={walletHandler}>
-                    <label style={{marginRight: '0.5rem'}}>Enter Wallet Address (ERC20 token balances/transfers in this wallet will be displayed (100 Recent): </label>
-                    <input type="text" onChange={e => updateWalletAddress(e.target.value)} placeholder="Enter here" required />
-                    <br />
-                    <button style={{marginTop: '3rem'}} type="submit" class="btn btn-primary">Check Balances</button>
-                </form>
-                <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-success' onClick={() => navigate("/")}>Go Home</button>
-                <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { updateAlert(false); updateEmptyAlert(false); updateERC20Holdings((prevState) => { return { ...prevState, information: null }}); updateERC20Transfers((prevState) => { return { ...prevState, information: null }} )}}>Clear</button>
+                { setAlert ? <Alert type="danger" /> : null }
+                { isEmpty ? <Alert type="warning" /> : null }
+                <div class="jumbotron">
+                    <div class="container">
+                        <form onSubmit={walletHandler}>
+                            <label style={{marginRight: '0.5rem'}}>Enter Wallet Address (ERC20 token balances/transfers in this wallet will be displayed (100 Recent): </label>
+                            <input type="text" onChange={e => updateWalletAddress(e.target.value)} placeholder="Enter here" required />
+                            <br />
+                            <button style={{marginTop: '3rem'}} type="submit" class="btn btn-primary">Check Balances</button>
+                        </form>
+                        <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-success' onClick={() => navigate("/")}>Go Home</button>
+                        <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { updateAlert(false); updateEmptyAlert(false); updateERC20Holdings((prevState) => { return { ...prevState, information: null }}); updateERC20Transfers((prevState) => { return { ...prevState, information: null }} )}}>Clear</button>
+                    </div>
+                </div>
                 { ERC20Holdings.information !== null ? <h5 style={{marginTop: '2rem'}}>ERC720 Token Holdings for Wallet: <b>{walletAddress}</b></h5> : null }
                 <div style={{marginTop: '2rem'}}>
                     { ERC20Holdings.information === null ? <div /> : <ERC720HoldingsInfoTable data={ERC20Holdings.information} /> }
+                    <hr style={{marginTop: '5rem'}} />
                 </div>
             </main>
             <main role="main">
                 <div style={{marginTop: '5rem', marginLeft: '5rem'}}>
-                    {ERC20Transfers.information === null ? <div /> : <h5 style={{marginLeft: '8rem'}}>ERC20 Transfers for Wallet: <b>{walletAddress}</b></h5>}
+                    { ERC20Transfers.information === null ? <div /> : <h5 style={{marginLeft: '8rem'}}>ERC20 Transfers for Wallet: <b>{walletAddress}</b></h5> }
                     { ERC20Transfers.information === null ? <div /> : <ERC720TransfersInfoTable address={walletAddress} data={ERC20Transfers.information} /> }
                 </div>
             </main>

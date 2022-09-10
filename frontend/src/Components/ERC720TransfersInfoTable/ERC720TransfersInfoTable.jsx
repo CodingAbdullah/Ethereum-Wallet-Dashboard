@@ -33,7 +33,12 @@ const ERC720TransfersInfoTable = (props) => {
                                         </td> : 
                                         null 
                                     }
-                                    <td style={{border: '1px solid black'}}>{(record.value*(1/1000000000000000000))}</td>
+                                    <td style={{border: '1px solid black'}}>
+                                        { address != null ?
+                                            record.value :
+                                            (record.value*(1/1000000000000000000))
+                                        }
+                                    </td>
                                 </tr>
                             )
                         }
