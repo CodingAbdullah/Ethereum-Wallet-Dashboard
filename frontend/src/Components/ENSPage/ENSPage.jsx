@@ -12,6 +12,7 @@ const ENSPage = () => {
     });
 
     const [setAlert, updateAlert] = useState(false);
+    const [emptyAlert, updateEmptyAlert] = useState(false);
 
     const ADDRESS_TO_ENS_MORALIS_ENDPOINT = "https://deep-index.moralis.io/api/v2/resolve/";
 
@@ -32,18 +33,20 @@ const ENSPage = () => {
     
             axios.get(ADDRESS_TO_ENS_MORALIS_ENDPOINT + addressToENS + "/reverse", options) // Using Axios library
             .then(response => {
-                console.log(response);
                 updateAddressToEnsData((prevState) => { // Update Address to Ens for the display of tabulated information
                     return {
                         ...prevState,
                         information: response.data
                     }
                 });
+                // Remove unnecessary alerts
                 updateAlert(false);
+                updateEmptyAlert(false); 
              })
             .catch(err => {
                 console.log(err);
-                updateAlert(true); 
+                updateEmptyAlert(true); // Update alerts
+                updateAlert(false);
                 updateAddressToEnsData((prevState) => { // Void previous search of address --> ens
                     return {
                         ...prevState,
@@ -53,7 +56,8 @@ const ENSPage = () => {
             });        
         }
         else {
-            updateAlert(true); // Invalid address
+            updateAlert(true); // Invalid address, display alert
+            updateEmptyAlert(false);
             updateAddressToEnsData((prevState) => { // Void previous search of address --> ens
                 return {
                     ...prevState,
@@ -67,22 +71,29 @@ const ENSPage = () => {
         <div className="ens-page">
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">ENS - Ethereum Naming Service</h1>
+                    <h1 class="h2">ENS Lookups</h1>
                 </div>
-                <h4>ENS Lookups</h4>
-                { setAlert ? <Alert type='danger' /> : null}
-                <form style={{marginTop: '3rem'}} onSubmit={AddressToENSHandler}>
-                    <label style={{marginRight: '2rem'}}>{"Address -> ENS Resolver"}</label>
-                    <input type="text" onChange={e => updateAddressToENS(e.target.value)} />
-                    <br />
-                    <button style={{marginTop: '1rem'}} class="btn btn-success" type='submit'>Submit</button>
-                </form>
+                { setAlert ? <Alert type='danger' /> : null }
+                { emptyAlert ? <Alert type='warning' /> : null }
+                <div class="jumbotron">
+                    <div class="container">
+                        <form onSubmit={AddressToENSHandler}>
+                            <label style={{marginRight: '2rem'}}><b>{"Address ---> ENS Resolver"}</b></label>
+                            <input type="text" onChange={e => updateAddressToENS(e.target.value)} />
+                            <br />
+                            <button style={{marginTop: '1rem'}} class="btn btn-success" type='submit'>Submit</button>
+                        </form>
+                    </div>
+                </div>
                 <div style={{marginTop: '2rem'}}>
                     { addressToEnsData.information === null ? <div /> : 
-                        <div>
+                        <>
+                            <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                <h3 class="h3">Resolver Information</h3>
+                            </div>
                             <h6>ENS Resolver for Wallet Address: <b>{addressToENS}</b></h6>
                             <AddressToENSInfoTable data={addressToEnsData.information } />
-                        </div> 
+                        </>    
                     }
                 </div>
             </main>
