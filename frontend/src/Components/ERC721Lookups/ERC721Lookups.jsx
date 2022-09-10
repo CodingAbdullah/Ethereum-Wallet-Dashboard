@@ -116,26 +116,31 @@ const ERC721Lookups = () => {
     return (
         <div>
              <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                { setAlert ? <Alert type="danger" /> : null }
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h2>ERC721 Token Lookup</h2>
                 </div>
+                { setAlert ? <Alert type="danger" /> : null }
+                <div class="jumbotron">                    
                 <form onSubmit={tokenHandler}>
-                    <h3 style={{marginRight: '0.5rem'}}>Enter ERC721 Contract Address & Token ID for Lookup </h3>
-                    <label>Enter ERC721 Contract Address: </label>
-                    <input type="text" onChange={e => updateTokenAddress(e.target.value)} placeholder="Enter here" required />
+                    <p style={{marginRight: '0.5rem'}}>Enter ERC721 Contract Address & Token ID for Lookup </p>
+                    <input style={{marginTop: '1rem'}} type="text" onChange={e => updateTokenAddress(e.target.value)} placeholder="Enter ERC721 Contract Address:" required />
                     <br />
-                    <label>Enter Token ID: </label>
-                    <input type="text" onChange={e => updateTokenId(e.target.value)} placeholder="Enter here" required />
+                    <input style={{marginTop: '1rem'}} type="number" onChange={e => updateTokenId(e.target.value)} placeholder="Enter Token ID:" required />
                     <br />
                     <button style={{marginTop: '3rem'}} type="submit" class="btn btn-primary">Lookup</button>
                 </form>
-                <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-success' onClick={() => navigate("/")}>Go Home</button>
-                <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { updateAlert(false); updateTokenData((prevState) => { return { ...prevState, information: null }} )}}>Clear</button>
+                    <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-success' onClick={() => navigate("/")}>Go Home</button>
+                    <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { 
+                        updateAlert(false); 
+                        updateTokenData((prevState) => { return { ...prevState, information: null }}); 
+                        updateTokenTransfers((prevState) => { return { ...prevState, information: null}}); 
+                    }}>Clear</button>
+                </div>
                 { tokenData.information !== null ? <h5 style={{marginTop: '2rem'}}>NFT Lookup</h5> : null }
                 <div style={{marginTop: '2rem', marginLeft: '30px'}}>
                     { tokenData.information === null ? <div /> : <ERC721LookupsInfoTable data={tokenData.information} /> }
                 </div>
+                <hr style={{marginTop: '3rem', marginBottom: '3rem'}} />
                 { tokenTransfers.information !== null ? <h5 style={{marginTop: '2rem'}}>NFT Transfers Lookup</h5> : null }
                 <div>
                     { tokenTransfers.information === null ? <div /> : <ERC721TransferLookupsInfoTable data={tokenTransfers.information} /> }

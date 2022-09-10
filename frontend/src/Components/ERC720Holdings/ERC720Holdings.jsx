@@ -122,7 +122,7 @@ const ERC720Holdings = () => {
             updateEmptyAlert(false); // Remove redundant alerts, and empty data
             clearHandler();
         }
-    }  // 0x58ba8a3acb8ae71319c93626c24c3a1f482f0dea
+    } 
 
     return (
         <div className="erc-721-token-page">
