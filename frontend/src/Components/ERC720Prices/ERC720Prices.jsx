@@ -187,22 +187,39 @@ const ERC720TokenPrices = () => {
             <h2>ERC20 Token Market Data</h2>
           </div>
           { formAlert === "invalid" ? <div><Alert type="danger"/></div> : <div/> }
-          <h3 style={{marginTop: '2rem'}}>{erc20Info.information === null ? "Ethereum " : erc20Info.information.name} Price: <b>${erc20Info.information === null ? coinInfo.information[Object.keys(coinInfo.information)[0]].usd : erc20Info.information.market_data.current_price.usd} USD</b></h3> 
-          <h5 style={{marginBottom: '2rem', display: 'inline'}}>24 Hr. % Change:
-            { erc20Info.information === null ? (coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change < 0 ? 
-              <h5 style={{display: 'inline', color: 'red'}}>{" " + coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change.toFixed(2) + "%"}</h5> : 
-              <h5 style={{display: 'inline', color: 'green'}}>{" +" + coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change.toFixed(2) + "%"}</h5>
-            )
-            :
-            (erc20Info.information.market_data.price_change_percentage_24h < 0 ?
-            <h5 style={{display: 'inline', color: 'red'}}>{" " + erc20Info.information.market_data.price_change_percentage_24h.toFixed(2) + "%"}</h5> : 
-            <h5 style={{display: 'inline', color: 'green'}}>{" +" + erc20Info.information.market_data.price_change_percentage_24h.toFixed(2) + "%"}</h5>
-            )
-            }
-          </h5>
-          <br />
+          <div class="jumbotron">
+            <div class="container">
+              <form onSubmit={formHandler} style={{marginTop: '1.5rem'}}>
+                <label style={{marginRight: '0.5rem'}}>ERC20 Contract Address (Defaults to ETH): </label>
+                <input type="text" onChange={(e) => updateContractAddress(e.target.value)} placeholder="Enter here" required />
+                <br />
+                <button style={{marginTop: '1rem'}} type="submit" class="btn btn-primary">Check Data</button>
+              </form>
+              <div>
+                <button class="btn btn-success" style={{marginTop: '3rem'}} onClick={() => navigate("/")}>Go To Dashboard</button>
+              </div>
+            </div>
+          </div>
+          { erc20Info.information !== null && formAlert !== 'invalid' ? <hr style={{marginTop: '5rem', marginBottom: '5rem'}} /> : null }
+          { formAlert === "invalid" ? null : 
+              <>
+                <h3 style={{marginTop: '2rem'}}>{erc20Info.information === null ? "Ethereum " : erc20Info.information.name} Price: <b>${erc20Info.information === null ? coinInfo.information[Object.keys(coinInfo.information)[0]].usd : erc20Info.information.market_data.current_price.usd} USD</b></h3> 
+                <h5 style={{marginBottom: '2rem', display: 'inline'}}>24 Hr. % Change:
+                  { erc20Info.information === null ? (coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change < 0 ? 
+                    <h5 style={{display: 'inline', color: 'red'}}>{" " + coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change.toFixed(2) + "%"}</h5> : 
+                    <h5 style={{display: 'inline', color: 'green'}}>{" +" + coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change.toFixed(2) + "%"}</h5>
+                  )
+                  :
+                  (erc20Info.information.market_data.price_change_percentage_24h < 0 ?
+                  <h5 style={{display: 'inline', color: 'red'}}>{" " + erc20Info.information.market_data.price_change_percentage_24h.toFixed(2) + "%"}</h5> : 
+                  <h5 style={{display: 'inline', color: 'green'}}>{" +" + erc20Info.information.market_data.price_change_percentage_24h.toFixed(2) + "%"}</h5>
+                  )
+                  }
+                </h5>
+              </> 
+          }
           <div>
-            {( chartData === {} || chartData.time === [] ) ? <div>Loading...</div> : 
+            {( chartData === {} || formAlert === 'invalid' || chartData.time === [] ) ? null : 
               <div style={{marginTop: '2rem'}}>
                 <Line 
                   data={data}
@@ -216,19 +233,11 @@ const ERC720TokenPrices = () => {
           <div style={{marginTop: '3rem', marginBottom: '3.0rem'}}>
             {
               // Display data of the valid ERC20 token
-              erc20Info.information === null ? <div /> :
+              erc20Info.information === null || formAlert === 'invalid' ? <div /> :
               <ERC720PricesInfoTable data={erc20Info} />
             }
           </div>
-          <form onSubmit={formHandler} style={{marginTop: '1.5rem'}}>
-            <label style={{marginRight: '0.5rem'}}>ERC20 Contract Address: </label>
-            <input type="text" onChange={(e) => updateContractAddress(e.target.value)} placeholder="Enter here" required />
-            <br />
-            <button style={{marginTop: '1rem'}} type="submit" class="btn btn-primary">Check Data</button>
-          </form>
-          <div>
-            <button class="btn btn-success" style={{marginTop: '3rem'}} onClick={() => navigate("/")}>Go To Dashboard</button>
-          </div>
+          { erc20Info.information !== null && formAlert !== 'invalid' ? <hr style={{ marginTop: '2rem', marginBottom: '2rem' }} /> : null }
         </main>
       </div>
     )
