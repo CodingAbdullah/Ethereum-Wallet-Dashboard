@@ -13,7 +13,7 @@ const ERC720TransfersInfoTable = (props) => {
                     <th style={{border: '1px solid black'}} scope="col">From</th>
                     <th style={{border: '1px solid black'}} scope="col">To</th>
                     { address !== null ? <th style={{border: '1px solid black'}} scope="col">Direction</th> : null }                   
-                    <th style={{border: '1px solid black'}} scope="col">Value</th>
+                    <th style={{border: '1px solid black'}} scope="col">Value In ERC20 Quantity</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -33,7 +33,7 @@ const ERC720TransfersInfoTable = (props) => {
                                         </td> : 
                                         null 
                                     }
-                                    <td style={{border: '1px solid black'}}>{record.value}</td>
+                                    <td style={{border: '1px solid black'}}>{(record.value*(1/1000000000000000000))}</td>
                                 </tr>
                             )
                         }

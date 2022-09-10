@@ -240,12 +240,16 @@ const WalletStats = () => {
                     <h2 class="h2">Wallet Analytics</h2>
                 </div>
                 { setAlert ? <Alert type='danger' /> : null }
-                    <p style={{marginTop: '3rem'}}>Enter wallet Address of your choice for analytics</p>
-                    <form onSubmit={formHandler}>
-                        <input style={{marginRight: '2rem'}} onChange={e => updateWalletAddress(e.target.value)} type='text' placeholder='Enter Address Here'></input>
-                        <button type='submit' class='btn btn-success'>Submit</button>
-                    </form>   
-                <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <div class="jumbotron">
+                        <div class="container">
+                            <p>Enter wallet Address of your choice for analytics</p>
+                            <form onSubmit={formHandler}>
+                                <input style={{marginRight: '2rem'}} onChange={e => updateWalletAddress(e.target.value)} type='text' placeholder='Enter Address Here'></input>
+                                <button type='submit' class='btn btn-success'>Submit</button>
+                            </form> 
+                        </div>
+                    </div>  
+                <div style={{måarginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h3 class="h3"> Balance Information</h3>
                 </div>    
                 { amount >= 0 ? <h4 style={{marginTop: '1.5rem'}}><b>{"Account: " + walletAddress}</b></h4> : (walletAddress.length !== 0 && amount >= 0 ? <Alert type="warning" /> : null )}
@@ -255,7 +259,7 @@ const WalletStats = () => {
                     <h3 class="h3">Transactions</h3>
                 </div>
                 <div style={{marginLeft: '100px'}}>
-                    { emptyTransactionAlert && !setAlert ? <Alert type="warning" /> : ( transactions.information !== null ? <><p style={{marginRight: '10rem'}}>100 Most Recent Transactions</p><TransactionsInfoTable walletAddress={walletAddress} data={transactions.information.result} /></> : null ) }
+                    { emptyTransactionAlert && !setAlert ? <Alert type="warning" /> : ( transactions.information !== null ? <><p style={{marginRight: '10rem'}}>Up to 1000 Most Recent Transactions</p><TransactionsInfoTable walletAddress={walletAddress} data={transactions.information.result} /></> : null ) }
                 </div>
                 <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h3 class="h3">ERC20 Holdings</h3>
