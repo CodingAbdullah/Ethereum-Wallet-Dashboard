@@ -239,29 +239,38 @@ const ERC721CollectionPage = () => {
                         <h1 class="h2">ERC721 Analytics</h1>
                     </div>
                     { setAlert ? <Alert type='danger' /> : null }
-                    <p style={{marginTop: '3rem'}}>Enter Contract Address of an <b>ERC721</b> token for analytics (limited to 100)</p>
-                    <form onSubmit={formHandler}>
-                        <input style={{marginRight: '2rem'}} onChange={e => updateTokenAddress(e.target.value)} type='text' placeholder='Enter Address Here'></input>
-                        <button type='submit' class='btn btn-success'>Submit</button>
-                    </form>
+                    <div class="jumbotron">
+                        <div class="container">
+                            <p>Enter Contract Address of an <b>ERC721</b> token for analytics (limited to 100)</p>
+                            <form onSubmit={formHandler}>
+                                <input style={{marginRight: '2rem'}} onChange={e => updateTokenAddress(e.target.value)} type='text' placeholder='Enter Address Here'></input>
+                                <button type='submit' class='btn btn-success'>Submit</button>
+                            </form>
+                        </div>
+                    </div>
                 </main>
                 <main style={{marginTop: '3rem'}} role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                     { NFTData.information === null ? null : <h4>NFT Collection Name: <b>{ NFTData.information.result[0].name }</b></h4>}
                     { NFTData.information === null ? null : <h4>Contract Address: <b>{ tokenAddress }</b></h4>} 
                     { NFTData.information === null ? null : <h4>Total Items: <b>{ NFTData.information.total }</b></h4>} 
                 </main>
+                <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
                 <main role="main">
                     { NFTLowestPrice.information === null ? null : <ERC721LowestCollectionPriceInfoTable data={ NFTLowestPrice.information } />} 
                 </main>
+                <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
                 <main style={{marginTop: '3rem'}} role="main">
                     { NFTData.information === null ? null : <ERC721CollectionDataInfoTable quantity={ NFTData.information.total } data={ NFTData.information.result } />} 
                 </main>
+                <div style={{marginTop: '2rem'}}  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
                 <main style={{marginTop: '3rem'}} role="main">
                     { NFTTransfers.information === null ? null : <ERC721CollectionTransferInfoTable quantity={ NFTTransfers.information.total } data={ NFTTransfers.information.result } />} 
                 </main>
+                <div style={{marginTop: '2rem'}}  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
                 <main style={{marginTop: '3rem'}} role="main">
                     { NFTOwners.information === null ? null : <ERC721CollectionOwnerInfoTable data={ NFTOwners.information.result } />} 
                 </main>
+                <div style={{marginTop: '2rem'}}  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
                 <main style={{marginTop: '3rem'}} role="main">
                     { NFTTrades.information === null ? null : <ERC721CollectionTradeInfoTable quantity={ NFTTrades.information.total } data={ NFTTrades.information.result } />} 
                 </main>
