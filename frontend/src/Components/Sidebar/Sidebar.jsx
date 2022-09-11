@@ -50,9 +50,9 @@ const Sidebar = () => {
             { price.information === null ? null : 
                 (  
                     <>
-                        <p style={{display: 'inline', color: 'white'}}>24-Hr % Chg:</p>
-                        <p style={{ color: price.information.usd_24h_change < 0 ? 'lightred' : 'lightgreen', marginTop: '1rem', display: 'inline'}}>
-                            { price.information === null ? null : " " + price.information.usd_24h_change.toFixed(2) + "%" }
+                        <p style={{ display: 'inline', color: 'white' }}>24-Hr % Chg:</p>
+                        <p style={{ color: price.information.usd_24h_change < 0 ? 'red' : 'lightgreen', marginTop: '1rem', display: 'inline' }}>
+                            <b>{ price.information.usd_24h_change > 0 ? " +" + price.information.usd_24h_change.toFixed(2) + "%" : price.information.usd_24h_change.toFixed(2) + "%" }</b>
                         </p> 
                     </>
                 ) 
