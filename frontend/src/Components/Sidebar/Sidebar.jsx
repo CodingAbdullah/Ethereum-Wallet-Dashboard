@@ -1,10 +1,63 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../Sidebar/Sidebar.css';
+import axios from 'axios';
 
 const Sidebar = () => {
+    const QUERY_STRING_ETHEREUM = "?ids=ethereum&vs_currencies=usd&include_24hr_change=true";
+    const COINGECKO_URL = "https://api.coingecko.com/api/v3";
+    const API_ENDPOINT = "/simple/price";
+
+    const [price, updatePrice] = useState({
+        information: null
+    });
+
+    const [status, updateStatus] = useState(false);
+
+    const clearHandler = () => { // Clear handler function to remove data
+        updatePrice((prevState => {
+            return {
+                ...prevState,
+                information: null
+            }
+        }));
+        updateStatus(false);
+    }
+
+    useEffect(() => {
+        axios.get(COINGECKO_URL + API_ENDPOINT + QUERY_STRING_ETHEREUM) // Retrieve price information right after render
+        .then(response => {
+            if (response.status === 200){
+                updatePrice((prevState) => {
+                    return {
+                        ...prevState,
+                        information: response.data.ethereum
+                    }
+                });
+                updateStatus(true);
+            }
+            else {
+                clearHandler();
+            }
+        })
+        .catch(err => {
+            clearHandler();
+        }) 
+        }, [])
 
     return (
         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
+            <div style={{ color: 'white', marginTop: '1rem'}}>ETH Price: { price.information == null ? "Loading" : "$" + price.information.usd.toFixed(2) }</div>
+            { price.information === null ? null : 
+                (  
+                    <>
+                        <p style={{display: 'inline', color: 'white'}}>24-Hr % Chg:</p>
+                        <p style={{ color: price.information.usd_24h_change < 0 ? 'lightred' : 'lightgreen', marginTop: '1rem', display: 'inline'}}>
+                            { price.information === null ? null : " " + price.information.usd_24h_change.toFixed(2) + "%" }
+                        </p> 
+                    </>
+                ) 
+            }
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
             <div class="sidebar-sticky pt-3">
                 <table class="table table-striped table-dark">
                     <tbody>
