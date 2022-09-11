@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 import axios from 'axios';
 import Alert from '../Alert/Alert';
 import ERC721LowestCollectionPriceInfoTable from '../ERC721CollectionLowestPriceInfoTable/ERC721CollectionLowestPriceInfoTable';
@@ -17,6 +18,8 @@ const ERC721CollectionPage = () => {
     const TRANSFERS_ENDPOINT = '/transfers';
     const OWNERS_ENDPOINT = '/owners';
     const TRADES_ENDPOINT = '/trades';
+
+    const navigate = useNavigate();
 
     const [NFTData, updateNFTData] = useState({
         information: null
@@ -38,7 +41,7 @@ const ERC721CollectionPage = () => {
         information: null
     });
 
-    const clearHandler = () => { // Clear data if there is an error, function to be invoked
+    const alertHandler = () => { // Clear data if there is an error, function to be invoked
         updateNFTData((prevState) => {
             return {
                 ...prevState,
@@ -75,6 +78,12 @@ const ERC721CollectionPage = () => {
         });
     }
 
+    const clearHandler = () => {
+        // Clear data and remove alerts
+        alertHandler();
+        updateAlert(false);
+    }
+    
     const formHandler = e => {
         e.preventDefault();
 
@@ -96,11 +105,11 @@ const ERC721CollectionPage = () => {
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
-                    clearHandler();
+                    alertHandler();
                 }
                 else {
                     if (response.status === 200 && response.data.total === 0){ // If empty, clear data
-                        clearHandler();
+                        alertHandler();
                     }
                     else {
                         updateAlert(false); // Remove alerts if any exist
@@ -114,7 +123,7 @@ const ERC721CollectionPage = () => {
                 }
             })
             .catch(err => {
-                clearHandler();
+                alertHandler();
                 setAlert(true);
             });
 
@@ -123,11 +132,11 @@ const ERC721CollectionPage = () => {
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
-                    clearHandler();
+                    alertHandler();
                 }
                 else {
                     if (response.status === 200 && Object.keys(response).length === 0){ // If empty, clear
-                        clearHandler();
+                        alertHandler();
                     }
                     else {
                         updateAlert(false); // Remove alerts if any exist
@@ -141,7 +150,7 @@ const ERC721CollectionPage = () => {
                 }
             })
             .catch(err => {
-                clearHandler();
+                alertHandler();
                 setAlert(true);
             });
 
@@ -150,11 +159,11 @@ const ERC721CollectionPage = () => {
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
-                    clearHandler();
+                    alertHandler();
                 }
                 else {
                     if (response.status === 200 && response.data.total === 0){ // If empty, clear data
-                        clearHandler();
+                        alertHandler();
                     }
                     else {
                         updateAlert(false); // Remove alerts if any exist
@@ -168,7 +177,7 @@ const ERC721CollectionPage = () => {
                 }
             })
             .catch(err => {
-                clearHandler();
+                alertHandler();
                 setAlert(true);
             });
 
@@ -177,11 +186,11 @@ const ERC721CollectionPage = () => {
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
-                    clearHandler();
+                    alertHandler();
                 }
                 else {
                     if (response.status === 200 && response.data.total === 0){ // If empty, clear data
-                        clearHandler();
+                        alertHandler();
                     }
                     else {
                         updateAlert(false); // Remove alerts if any exist
@@ -195,7 +204,7 @@ const ERC721CollectionPage = () => {
                 }
             })
             .catch(err => {
-                clearHandler();
+                alertHandler();
                 setAlert(true);
             });
 
@@ -204,11 +213,11 @@ const ERC721CollectionPage = () => {
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
-                    clearHandler();
+                    alertHandler();
                 }
                 else {
                     if (response.status === 200 && response.data.total === 0){ // If empty, clear data
-                        clearHandler();
+                        alertHandler();
                     }
                     else {
                         updateAlert(false); // Remove alerts if any exist
@@ -222,13 +231,13 @@ const ERC721CollectionPage = () => {
                 }
             })
             .catch(err => {
-                clearHandler();
+                alertHandler();
                 setAlert(true);
             });            
         }
         else {
             updateAlert(true); // Set Alert
-            clearHandler();
+            alertHandler();
         }
     }
 
@@ -246,6 +255,8 @@ const ERC721CollectionPage = () => {
                                 <input style={{marginRight: '2rem'}} onChange={e => updateTokenAddress(e.target.value)} type='text' placeholder='Enter Address Here'></input>
                                 <button type='submit' class='btn btn-success'>Submit</button>
                             </form>
+                            <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
+                            <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={clearHandler}>Clear</button> 
                         </div>
                     </div>
                 </main>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Alert from '../Alert/Alert';
 import ERC720TransfersInfoTable from '../ERC720TransfersInfoTable/ERC720TransfersInfoTable';
@@ -18,6 +19,8 @@ const ERC720CollectionPage = () => {
         information: null
     });
 
+    const navigate = useNavigate();
+
     const ERC20_MORALIS_URL = 'https://deep-index.moralis.io/api/v2/erc20/'; // API Endpoints for ERC20 lookup
     const COINGECKO_URL = 'https://api.coingecko.com/api/v3'; // API Endpoints
     
@@ -25,8 +28,25 @@ const ERC720CollectionPage = () => {
     const PRICE_ENDPOINT = '/price'
     const ERC20_INFO_ENDPOINT = '/coins/ethereum/contract/' + tokenAddress;
         
-    const clearHandler = () => {
+    const alertHandler = () => {
         updateAlert(true); // Add alerts if any don't exist, and clear all information for analytics
+        updateTransfers((prevState) => {
+            return {
+                ...prevState,
+                information: null
+            }
+        });
+        updateERC20Price(null);
+        updateERC20Information((prevState) => {
+            return {
+                ...prevState,
+                information: null
+            }
+        });
+    }
+
+    const clearHandler = () => {
+        updateAlert(false); // Add alerts if any don't exist, and clear all information for analytics
         updateTransfers((prevState) => {
             return {
                 ...prevState,
@@ -62,12 +82,12 @@ const ERC720CollectionPage = () => {
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
-                    clearHandler();
+                    alertHandler();
                 }
                 else {
                     if (response.status === 200 && response.data.result.length === 0){ // If empty, remove information
                         updateAlert(false);
-                        clearHandler();
+                        alertHandler();
                     }
                     else {
                         updateAlert(false); // Remove alerts if any exist
@@ -83,17 +103,18 @@ const ERC720CollectionPage = () => {
             })
             .catch(err => {
                 console.log(err)
-                clearHandler();
+                alertHandler();
             });
 
             axios.get(ERC20_MORALIS_URL + tokenAddress + PRICE_ENDPOINT, options) // ERC20 endpoint for retrieving information related to price
                 .then(response => {
                     console.log(response);
                     if (response.status !== 200){
-                        clearHandler();                    }
+                        alertHandler();                    
+                    }
                     else {
                         if (response.status === 200 && Object.keys(response.data).length === 0){ // If empty, clear price
-                            clearHandler();                            
+                            alertHandler();                            
                         }
                         else {
                             updateERC20Price(response.data.usdPrice);
@@ -102,14 +123,14 @@ const ERC720CollectionPage = () => {
                 })
                 .catch(err => {
                     console.log(err);
-                    clearHandler();
+                    alertHandler();
                 });
             
             axios.get(COINGECKO_URL + ERC20_INFO_ENDPOINT) // Retrieve price of ERC20 coin from coingecko
             .then(response => {
                 console.log(response);
                 if (response.status !== 200){
-                    clearHandler();
+                    alertHandler();
                 }
                 else {
                     if (response.status === 200 && Object.keys(response).length > 0) { // Check results to see if they match criteria
@@ -121,17 +142,17 @@ const ERC720CollectionPage = () => {
                         })
                     }
                     else {
-                        clearHandler();
+                        alertHandler();
                     }
                 }
             })
             .catch(err => {
                 console.log(err)
-                clearHandler();
+                alertHandler();
             });
         }
         else {
-            clearHandler();
+            alertHandler();
         }   
     }
         return (
@@ -148,6 +169,8 @@ const ERC720CollectionPage = () => {
                                 <input style={{marginRight: '2rem'}} onChange={e => updateTokenAddress(e.target.value)} type='text' placeholder='Enter Address Here'></input>
                                 <button type='submit' class='btn btn-success'>Submit</button>
                             </form> 
+                            <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
+                            <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={clearHandler}>Clear</button>
                         </div>  
                     </div>
                 </main>

@@ -91,6 +91,17 @@ const ERC720TokenPrices = () => {
       fetchCoins();
     }, [])
 
+    const clearHandler = () => {
+      // Remove data and chart information
+      updateErc20Info((prevState) => {
+        return {
+          ...prevState,
+          information: null
+        }
+      });
+
+      updateAlert("");
+    }
 
   const formHandler = async (e) => {
     e.preventDefault();
@@ -193,10 +204,11 @@ const ERC720TokenPrices = () => {
                 <label style={{marginRight: '0.5rem'}}>ERC20 Contract Address (Defaults to ETH): </label>
                 <input type="text" onChange={(e) => updateContractAddress(e.target.value)} placeholder="Enter here" required />
                 <br />
-                <button style={{marginTop: '1rem'}} type="submit" class="btn btn-primary">Check Data</button>
+                <button style={{marginTop: '1rem'}} type="submit" class="btn btn-success">Check Data</button>
               </form>
               <div>
-                <button class="btn btn-success" style={{marginTop: '3rem'}} onClick={() => navigate("/")}>Go To Dashboard</button>
+                <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
+                <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={clearHandler}>Clear</button>              
               </div>
             </div>
           </div>

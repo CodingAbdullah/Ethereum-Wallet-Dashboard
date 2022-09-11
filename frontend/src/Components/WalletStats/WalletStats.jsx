@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 import axios from 'axios';
 import Alert from '../Alert/Alert';
 import TransactionsInfoTable from '../TransactionsInfoTable/TransactionsInfoTable';
@@ -12,6 +13,8 @@ const WalletStats = () => {
     const [emptyERC721Alert, updateERC721Alert] = useState(false);
 
     const [walletAddress, updateWalletAddress] = useState("");
+    
+    const navigate = useNavigate();
 
     const [amount, updateAmount] = useState(-1);
     const [ETHPrice, updateETHPrice] = useState({
@@ -46,7 +49,7 @@ const WalletStats = () => {
     const page = 1;
     const sort = 'asc';
 
-    const clearHandler = () => { // Clear data upon error
+    const alertHandler = () => { // Clear data upon error
         updateAmount(-1);
         updateETHPrice((prevState) => {
             return {
@@ -72,6 +75,15 @@ const WalletStats = () => {
                 information: null
             }
         });
+    }
+
+    const clearHandler = () => {
+        // Clear out errors and alerts
+        alertHandler();
+        updateAlert(false);
+        updateTransactionAlert(false);
+        updateERC20Alert(false);
+        updateERC721Alert(false);
     }
 
     const formHandler = (e) => {   
@@ -104,7 +116,7 @@ const WalletStats = () => {
                     updateERC20Alert(false);
                     updateERC721Alert(false);
                     updateTransactionAlert(false); 
-                    clearHandler();              
+                    alertHandler();              
                 }
             })
             .catch(err => {
@@ -142,7 +154,7 @@ const WalletStats = () => {
                     });
                 }
                 else {
-                    clearHandler();
+                    alertHandler();
                     updateTransactionAlert(false);
                 }
 
@@ -163,7 +175,7 @@ const WalletStats = () => {
                 if (response.status !== 200){
                     updateAlert(true);
                     updateERC20Alert(false);
-                    clearHandler();
+                    alertHandler();
                 }
                 else {
                     if (response.status === 200 && response.data.length === 0){ // If empty, display warning
@@ -196,7 +208,7 @@ const WalletStats = () => {
                 if (response.status !== 200){
                     updateAlert(true);
                     updateERC721Alert(false);
-                    clearHandler();
+                    alertHandler();
                 }
                 else {
                     if (response.status === 200 && response.data.total === 0){ // If empty, display warning
@@ -229,7 +241,7 @@ const WalletStats = () => {
             updateERC20Alert(false);
             updateERC721Alert(false);
             updateTransactionAlert(false);
-            clearHandler();
+            alertHandler();
         }
     }
 
@@ -242,11 +254,13 @@ const WalletStats = () => {
                 { setAlert ? <Alert type='danger' /> : null }
                     <div class="jumbotron">
                         <div class="container">
-                            <p>Enter wallet Address of your choice for analytics</p>
+                            <p>Enter wallet address of your choice for analytics</p>
                             <form onSubmit={formHandler}>
                                 <input style={{marginRight: '2rem'}} onChange={e => updateWalletAddress(e.target.value)} type='text' placeholder='Enter Address Here'></input>
                                 <button type='submit' class='btn btn-success'>Submit</button>
-                            </form> 
+                            </form>
+                            <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
+                            <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={clearHandler}>Clear</button> 
                         </div>
                     </div>  
                 { amount < 0 ? null : 
