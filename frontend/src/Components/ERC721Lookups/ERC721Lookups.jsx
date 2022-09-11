@@ -123,9 +123,9 @@ const ERC721Lookups = () => {
                 <div class="jumbotron">                    
                 <form onSubmit={tokenHandler}>
                     <p style={{marginRight: '0.5rem'}}>Enter ERC721 Contract Address & Token ID for Lookup </p>
-                    <input style={{marginTop: '1rem'}} type="text" onChange={e => updateTokenAddress(e.target.value)} placeholder="Enter ERC721 Contract Address:" required />
+                    <input style={{marginTop: '1rem'}} type="text" onChange={e => updateTokenAddress(e.target.value)} placeholder="Enter ERC721 Contract Address" required />
                     <br />
-                    <input style={{marginTop: '1rem'}} type="number" onChange={e => updateTokenId(e.target.value)} placeholder="Enter Token ID:" required />
+                    <input style={{marginTop: '1rem'}} type="number" onChange={e => updateTokenId(e.target.value)} placeholder="Enter Token ID" required />
                     <br />
                     <button style={{marginTop: '3rem'}} type="submit" class="btn btn-primary">Lookup</button>
                 </form>

@@ -46,7 +46,7 @@ const Sidebar = () => {
 
     return (
         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
-            <div style={{ color: 'white', marginTop: '1rem'}}>ETH Price: { price.information == null ? "Loading" : "$" + price.information.usd.toFixed(2) }</div>
+            <div style={{ color: 'white', marginTop: '1rem'}}>ETH Price: <b>{ price.information == null ? "Loading" : "$" + price.information.usd.toFixed(2) }</b></div>
             { price.information === null ? null : 
                 (  
                     <>

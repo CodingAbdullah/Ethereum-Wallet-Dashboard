@@ -182,7 +182,7 @@ const Home = () => {
                                 <div class="col-md-6">
                                     <img src={require("../../assets/images/bitcoin.svg").default} width="75" height="75" alt="logo" /><br /> 
                                     <h4>BTC</h4>
-                                    <p>Price: <b>${btcPrice.information.bitcoin.usd} USD</b></p> 
+                                    <p>Price: <b>${ btcPrice.information.bitcoin.usd.toFixed(2) } USD</b></p> 
                                     <p style={{ display: 'inline' }}>24 Hour % Change: </p> 
                                     <b><p style={{ display: 'inline', color: btcColourChange }}>{btcColourChange === "red" ? btcPrice.information.bitcoin.usd_24h_change.toFixed(2) + "%": "+" + btcPrice.information.bitcoin.usd_24h_change.toFixed(2) + "%"}</p></b>
                                     <br />
@@ -191,7 +191,7 @@ const Home = () => {
                                 <div class="col-md-6">
                                     <img src={require("../../assets/images/ethereum.svg").default} width="75" height="75" alt="logo" /><br />
                                     <h4>ETH</h4>
-                                    <p>Price: <b>${ethPrice.information.ethereum.usd} USD</b></p>
+                                    <p>Price: <b>${ ethPrice.information.ethereum.usd.toFixed(2) } USD</b></p>
                                     <p style={{ display: 'inline' }}>24 Hour % Change: </p>
                                     <b><p style={{ display: 'inline', color: ethColourChange }}>{ ethColourChange === "red" ? ethPrice.information.ethereum.usd_24h_change.toFixed(2) + "%": "+" + ethPrice.information.ethereum.usd_24h_change.toFixed(2) + "%"}</p></b> 
                                     <br />

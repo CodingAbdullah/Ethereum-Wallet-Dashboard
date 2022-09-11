@@ -253,7 +253,7 @@ const GenericChartPage = () => {
       <div>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
           <h3 style={{marginTop: '2rem'}}>{astheticNaming + " "} Price: <b>${coinInfo.information[Object.keys(coinInfo.information)[0]].usd} USD</b></h3> 
-          <h5 style={{marginBottom: '2rem', display: 'inline'}}>24 Hr. % Change:
+          <h5 style={{marginBottom: '2rem', display: 'inline'}}>24-Hr % Chg:
             { coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change < 0 ? 
               <h5 style={{display: 'inline', color: 'red'}}>{" " + coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change.toFixed(2) +"%"}</h5> : 
               <h5 style={{display: 'inline', color: 'green'}}>{" +" + coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change.toFixed(2) + "%"}</h5>
