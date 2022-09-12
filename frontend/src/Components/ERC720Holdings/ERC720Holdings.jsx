@@ -138,9 +138,9 @@ const ERC720Holdings = () => {
                             <label style={{marginRight: '0.5rem'}}>Enter Wallet Address (ERC20 token balances/transfers in this wallet will be displayed (100 Recent): </label>
                             <input type="text" onChange={e => updateWalletAddress(e.target.value)} placeholder="Enter here" required />
                             <br />
-                            <button style={{marginTop: '3rem'}} type="submit" class="btn btn-primary">Check Balances</button>
+                            <button style={{marginTop: '2rem'}} type="submit" class="btn btn-success">Check Balances</button>
                         </form>
-                        <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-success' onClick={() => navigate("/")}>Go Home</button>
+                        <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
                         <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { updateAlert(false); updateEmptyAlert(false); updateERC20Holdings((prevState) => { return { ...prevState, information: null }}); updateERC20Transfers((prevState) => { return { ...prevState, information: null }} )}}>Clear</button>
                     </div>
                 </div>

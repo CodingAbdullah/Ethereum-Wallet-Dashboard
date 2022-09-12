@@ -127,9 +127,9 @@ const ERC721Lookups = () => {
                     <br />
                     <input style={{marginTop: '1rem'}} type="number" onChange={e => updateTokenId(e.target.value)} placeholder="Enter Token ID" required />
                     <br />
-                    <button style={{marginTop: '3rem'}} type="submit" class="btn btn-primary">Lookup</button>
+                    <button style={{marginTop: '2rem'}} type="submit" class="btn btn-success">Lookup</button>
                 </form>
-                    <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-success' onClick={() => navigate("/")}>Go Home</button>
+                    <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
                     <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { 
                         updateAlert(false); 
                         updateTokenData((prevState) => { return { ...prevState, information: null }}); 

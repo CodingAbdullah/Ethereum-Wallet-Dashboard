@@ -256,8 +256,9 @@ const WalletStats = () => {
                         <div class="container">
                             <p>Enter wallet address of your choice for analytics</p>
                             <form onSubmit={formHandler}>
-                                <input style={{marginRight: '2rem'}} onChange={e => updateWalletAddress(e.target.value)} type='text' placeholder='Enter Address Here'></input>
-                                <button type='submit' class='btn btn-success'>Submit</button>
+                                <input onChange={e => updateWalletAddress(e.target.value)} type='text' placeholder='Enter Address Here'></input>
+                                <br />
+                                <button style={{marginTop: '2rem'}} type='submit' class='btn btn-success'>Submit</button>
                             </form>
                             <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
                             <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={clearHandler}>Clear</button> 

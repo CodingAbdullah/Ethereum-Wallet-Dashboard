@@ -145,9 +145,9 @@ const ERC721Holdings = () => {
                             <label style={{marginRight: '0.5rem'}}>Enter Wallet Address (Top 100 NFTs/Transfers will be displayed): </label>
                             <input type="text" onChange={e => updateWalletAddress(e.target.value)} placeholder="Enter here" required />
                             <br />
-                            <button style={{marginTop: '3rem'}} type="submit" class="btn btn-primary">Check Data</button>
+                            <button style={{marginTop: '2rem'}} type="submit" class="btn btn-success">Check Data</button>
                         </form>
-                        <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-success' onClick={() => navigate("/")}>Go Home</button>
+                        <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
                         <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { updateAlert(false); updateEmptyAlert(false); updateNFTData((prevState) => { return { ...prevState, information: null }}); updateERC721Transfers((prevState) => { return { ...prevState, information: null }})} }>Clear</button>
                     </div>
                 </div>

@@ -94,7 +94,7 @@ const ENSPage = () => {
                             <label style={{marginRight: '2rem'}}><b>{"Address ---> ENS Resolver"}</b></label>
                             <input type="text" onChange={e => updateAddressToENS(e.target.value)} />
                             <br />
-                            <button style={{marginTop: '1rem'}} class="btn btn-success" type='submit'>Lookup Reversal</button>
+                            <button style={{marginTop: '2rem'}} class="btn btn-success" type='submit'>Lookup Reversal</button>
                         </form>
                         <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
                         <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={clearHandler}>Clear</button>  
@@ -107,7 +107,7 @@ const ENSPage = () => {
                                 <h3 class="h3">Resolver Information</h3>
                             </div>
                             <h6>ENS Resolver for Wallet Address: <b>{addressToENS}</b></h6>
-                            <AddressToENSInfoTable data={addressToEnsData.information } />
+                            <AddressToENSInfoTable data={ addressToEnsData.information } />
                         </>    
                     }
                 </div>
