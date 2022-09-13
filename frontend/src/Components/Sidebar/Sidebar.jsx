@@ -52,7 +52,7 @@ const Sidebar = () => {
                     <>
                         <p style={{ display: 'inline', color: 'white' }}>24-Hr % Chg:</p>
                         <p style={{ color: price.information.usd_24h_change < 0 ? 'red' : 'lightgreen', marginTop: '1rem', display: 'inline' }}>
-                            <b>{ price.information.usd_24h_change > 0 ? " +" + price.information.usd_24h_change.toFixed(2) + "%" : price.information.usd_24h_change.toFixed(2) + "%" }</b>
+                            <b>{ price.information.usd_24h_change > 0 ? " +" + price.information.usd_24h_change.toFixed(2) + "%" : " " + price.information.usd_24h_change.toFixed(2) + "%" }</b>
                         </p> 
                     </>
                 ) 
@@ -103,6 +103,7 @@ const Sidebar = () => {
                         </tr>
                     </tbody>
                 </table>
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
             </div>
         </nav>
     );
