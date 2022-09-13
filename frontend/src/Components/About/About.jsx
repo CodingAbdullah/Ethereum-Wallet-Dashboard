@@ -37,7 +37,7 @@ const About = () => {
                             <hr />
                     </div>
                     <div>
-                        <button class="btn btn-success" style={{marginTop: '1.5rem'}} onClick={() => navigate("/")}>Go Home</button>
+                        <button class="btn btn-success" style={{marginTop: '1.5rem', marginRight: '2.5rem'}} onClick={() => navigate("/")}>Go Home</button>
                     </div>
                 </main>
         </div>

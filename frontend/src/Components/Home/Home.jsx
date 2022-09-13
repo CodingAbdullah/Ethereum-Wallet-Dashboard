@@ -139,7 +139,7 @@ const Home = () => {
     }
 
     if (btcPrice.information === null || ethPrice.information === null || trendingCoins === '' || globalMarketData.information === null) {
-        return <div>Loading...</div>
+        return <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">Loading...</div>
     }
     else {
         // global market data information, destructuring data

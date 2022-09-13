@@ -40,10 +40,13 @@ const Navbar = () => {
                 <h3 style={{color: "white"}}>Ethereum Wallet</h3>
                 { formAlert === "invalid" ? <Alert type="danger" /> : <div /> }
                 {
-                    ( window.location.pathname === '/transactions' || window.location.pathname === '/erc20-token-prices') ? <div /> : <form class="form-inline" onSubmit={formHandler}>
-                        <input class="form-control mr-sm-2" type="search" min="42" max="42" placeholder="Enter Wallet Address" onChange={(e) => updateWalletAddress(e.target.value)} aria-label="Search" required />
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form> 
+                    ( window.location.pathname === '/transactions' ? 
+                        <div /> : 
+                        <form class="form-inline" onSubmit={formHandler}>
+                            <input class="form-control mr-sm-2" type="search" min="42" max="42" placeholder="Enter Wallet Address" onChange={(e) => updateWalletAddress(e.target.value)} aria-label="Search" required />
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+                    ) 
                 }
             </nav>
         </div>

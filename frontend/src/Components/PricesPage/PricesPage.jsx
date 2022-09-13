@@ -33,7 +33,7 @@ const PricesPage = () => {
 
     // Props to be added later after more filtering and testing, the layout is complete for now
     if (coinInfo.length !== 30){
-        return <div>Loading...</div>
+        return <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">Loading...</div>
     }
     else {
         let cards = [];

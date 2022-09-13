@@ -187,7 +187,7 @@ const ERC720TokenPrices = () => {
 
   // Display Title, 24 Hr. Price% Change, Price of Coin
   if (coinInfo.information === null || chartData === {}) {
-    return <div>Loading...</div>
+    return <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">Loading...</div>
   }
   else {
     // Generic coin setup using Object keys from API responses to generate output, code added when user requests a display of a valid ERC 20 token
