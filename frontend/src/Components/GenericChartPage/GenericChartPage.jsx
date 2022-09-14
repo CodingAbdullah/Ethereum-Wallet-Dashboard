@@ -69,9 +69,6 @@ const GenericChartPage = () => {
             }
           });
         })
-        .catch((error) => {
-          console.log(error);
-        });
 
         await fetch(URL + CURRENCY_ENDPOINT + QUERY_STRING) // Get current coin price
         .then(response => response.json())
@@ -85,9 +82,6 @@ const GenericChartPage = () => {
             });
           }
         })
-        .catch(err => {
-          console.log(err);
-        });
       };
       fetchCoins();
     }, [])
@@ -139,9 +133,6 @@ const GenericChartPage = () => {
             }
           });
         })
-        .catch((error) => {
-          console.log(error);
-        });
       }
       else if (value === '30'){
         await fetch(URL + "/coins/" + v +  "/market_chart?vs_currency=usd&days=30&interval=daily") // Generic id setup
@@ -159,9 +150,6 @@ const GenericChartPage = () => {
             }
           });
         })
-        .catch((error) => {
-          console.log(error);
-        });
       }
       else {
         await fetch(URL + "/coins/" + v + "/market_chart?vs_currency=usd&days=1&interval=hourly") // Generic id setup
@@ -179,9 +167,6 @@ const GenericChartPage = () => {
             }
           });
         })
-        .catch((error) => {
-          console.log(error);
-        });
       }
 
        // Current coin price 
@@ -197,9 +182,6 @@ const GenericChartPage = () => {
            });
          }
        })
-       .catch(err => {
-         console.log(err);
-       });
     }
     fetchCoins(displayChart);
   }, [displayChart, toggleSelect]); // Dependencies will be both toggle and what day to display. Re-render on each request

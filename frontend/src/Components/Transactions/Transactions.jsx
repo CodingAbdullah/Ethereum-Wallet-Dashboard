@@ -42,8 +42,7 @@ const Transactions = () => {
                 localStorage.clear();                
             }
         })
-        .catch(err => {
-            console.log(err);
+        .catch(() => {
             updateValidity(false); // Message was not ok, therefore ask to redirect
         });
 
@@ -64,8 +63,7 @@ const Transactions = () => {
                 });
             }
         })
-        .catch(err => {
-            console.log(err); 
+        .catch(() => {
             updateValidity(false); // Message was not ok, therefore ask to redirect
         });
 
@@ -86,8 +84,7 @@ const Transactions = () => {
                     updateValidity(false); // Message was not ok, therefore ask to redirect
                 }
             })
-            .catch(err => {
-                console.log(err); 
+            .catch(() => {
                 updateValidity(false); // Message was not ok, therefore ask to redirect
             });
     }, []);

@@ -101,8 +101,7 @@ const ERC720CollectionPage = () => {
                     }
                 }
             })
-            .catch(err => {
-                console.log(err)
+            .catch(() => {
                 alertHandler();
             });
 
@@ -121,8 +120,7 @@ const ERC720CollectionPage = () => {
                         }
                     }
                 })
-                .catch(err => {
-                    console.log(err);
+                .catch(() => {
                     alertHandler();
                 });
             
@@ -146,8 +144,7 @@ const ERC720CollectionPage = () => {
                     }
                 }
             })
-            .catch(err => {
-                console.log(err)
+            .catch(() => {
                 alertHandler();
             });
         }

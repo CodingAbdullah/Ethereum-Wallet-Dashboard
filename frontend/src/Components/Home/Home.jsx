@@ -57,7 +57,6 @@ const Home = () => {
                 }
             }
         })
-        .catch(err => console.log(err));
 
         // Ethereum Price Action
         fetch(URL + API_ENDPOINT + QUERY_STRING_ETHEREUM)
@@ -80,7 +79,6 @@ const Home = () => {
                 }
             }
         })
-        .catch(err => console.log(err)); 
 
         // Get trending information
         fetch(URL + TRENDINGCOINS_ENDPOINT)
@@ -99,9 +97,6 @@ const Home = () => {
                 updateTrendingCoins(finalDisplay);
             }
         })
-        .catch(err => {
-            console.log(err);
-        });
 
         fetch(URL + GLOBALMARKETDATA_ENDPOINT) // Fetch global data
         .then(response => response.json())
@@ -115,7 +110,6 @@ const Home = () => {
                 });
             }
         })
-        .catch(err => console.log(err));
     }, []);
 
     const formHandler = (e) => {

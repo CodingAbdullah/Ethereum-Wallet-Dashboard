@@ -39,7 +39,7 @@ const Sidebar = () => {
                 clearHandler();
             }
         })
-        .catch(err => {
+        .catch(() => {
             clearHandler();
         }) 
         }, [])

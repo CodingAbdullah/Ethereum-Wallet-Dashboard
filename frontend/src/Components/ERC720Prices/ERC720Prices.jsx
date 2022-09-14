@@ -67,9 +67,6 @@ const ERC720TokenPrices = () => {
             }
           });
         })
-        .catch((error) => {
-          console.log(error);
-        });
 
         // Get current ETH price
         await fetch(URL + "/simple/price?ids=ethereum&vs_currencies=usd&include_24hr_change=true") 
@@ -84,9 +81,6 @@ const ERC720TokenPrices = () => {
             });
           }
         })
-        .catch(err => {
-          console.log(err);
-        });
       };
       fetchCoins();
     }, [])
@@ -124,8 +118,7 @@ const ERC720TokenPrices = () => {
           });
         }
       })
-      .catch(err => {
-        console.log(err); // Display error if contract is not found
+      .catch(() => {
         updateAlert('invalid');
       }); 
 
@@ -144,9 +137,6 @@ const ERC720TokenPrices = () => {
             }
           });
         })
-        .catch((error) => {
-          console.log(error);
-        });
       }
     else {
         if (formAlert === "invalid"){ // If the format is not of length 42 and start with 0x (hex), throw error

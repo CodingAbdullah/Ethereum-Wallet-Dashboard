@@ -122,7 +122,7 @@ const ERC721CollectionPage = () => {
                     }
                 }
             })
-            .catch(err => {
+            .catch(() => {
                 alertHandler();
                 setAlert(true);
             });
@@ -149,7 +149,7 @@ const ERC721CollectionPage = () => {
                     }
                 }
             })
-            .catch(err => {
+            .catch(() => {
                 alertHandler();
                 setAlert(true);
             });
@@ -176,7 +176,7 @@ const ERC721CollectionPage = () => {
                     }
                 }
             })
-            .catch(err => {
+            .catch(() => {
                 alertHandler();
                 setAlert(true);
             });
@@ -203,7 +203,7 @@ const ERC721CollectionPage = () => {
                     }
                 }
             })
-            .catch(err => {
+            .catch(() => {
                 alertHandler();
                 setAlert(true);
             });
@@ -230,7 +230,7 @@ const ERC721CollectionPage = () => {
                     }
                 }
             })
-            .catch(err => {
+            .catch(() => {
                 alertHandler();
                 setAlert(true);
             });            

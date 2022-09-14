@@ -70,10 +70,8 @@ const ERC721Lookups = () => {
                             information: response.data
                         }
                     });
-                    console.log(response);
                 }
             })
-            .catch(err => console.log(err));
 
             axios.get(URL + LOOKUP_ENDPOINT + tokenAddress + "/" + tokenId + "/transfers?chain=eth&format=decimal", options)
             .then(response => {
@@ -95,7 +93,6 @@ const ERC721Lookups = () => {
                         });
                     }
                     else {
-                        console.log(response);
                         updateTokenTransfers((prevState) => {
                             return {
                                 ...prevState,
@@ -105,7 +102,6 @@ const ERC721Lookups = () => {
                     }
                 }
             })
-            .catch(err => console.log(err));
         }
         else {
             updateAlert(true);

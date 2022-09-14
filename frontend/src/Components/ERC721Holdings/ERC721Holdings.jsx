@@ -92,7 +92,6 @@ const ERC721Holdings = () => {
                     }
                 }
             })
-            .catch(err => console.log(err));
 
             axios.get(URL + walletAddress + NFT_TRANSFERS_ENDPOINT, options)
             .then(response => {
@@ -123,7 +122,6 @@ const ERC721Holdings = () => {
                     }
                 }
             })
-            .catch(err => console.log(err));
         }
         else {
             updateAlert(true); // Set Alert

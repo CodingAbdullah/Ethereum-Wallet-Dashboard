@@ -56,8 +56,7 @@ const ENSPage = () => {
                 updateAlert(false);
                 updateEmptyAlert(false); 
              })
-            .catch(err => {
-                console.log(err);
+            .catch(() => {
                 updateEmptyAlert(true); // Update alerts
                 updateAlert(false);
                 updateAddressToEnsData((prevState) => { // Void previous search of address --> ens

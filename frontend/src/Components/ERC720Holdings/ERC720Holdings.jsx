@@ -83,7 +83,6 @@ const ERC720Holdings = () => {
                     }
                 }
             })
-            .catch(err => console.log(err));
 
             // Get ERC20Transfers of particular wallet
             axios.get(URL + walletAddress + ERC20TOKENTRANSFERS_ENDPOINT, options)
@@ -115,7 +114,6 @@ const ERC720Holdings = () => {
                     }
                 }
             })
-            .catch(err => {console.log(err)})
         }
         else {
             updateAlert(true); // Set Alert
