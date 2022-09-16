@@ -8,6 +8,7 @@ import Footer from '../Footer/Footer';
 import About from '../About/About';
 import PricesPage from '../PricesPage/PricesPage';
 import Collections from '../Collections/Collections';
+import GasTrackerPage from '../GasTrackerPage/GasTrackerPage';
 import ENSPage from '../ENSPage/ENSPage';
 import ERC720CollectionPage from '../ERC720CollectionPage/ERC720CollectionPage';
 import ERC720Holdings from '../ERC720Holdings/ERC720Holdings';
@@ -43,6 +44,7 @@ const App = () => {
             <Route exact path="/erc721-lookups" element={<ERC721Lookups />}></Route>
             <Route exact path="/collections/erc720-collection" element={<ERC720CollectionPage />}></Route>
             <Route exact path="/collections/erc721-collection" element={<ERC721CollectionPage />}></Route>
+            <Route exact path="/gas-tracker" element={<GasTrackerPage />}></Route>
             <Route exact path="/walletAnalytics" element={<WalletStats />}></Route>
             <Route exact path="/chart" element={<GenericChartPage />}></Route>
             <Route exact path="*" element={<PageNotFound />}></Route>

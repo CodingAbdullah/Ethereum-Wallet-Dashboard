@@ -98,12 +98,15 @@ const Sidebar = () => {
                             <td><a style={{color: 'white'}} href="/ens-lookup">ENS Lookups</a></td>
                         </tr>
                         <tr>
+                            <td><img src={require("../../assets/images/gas.png")} width="35" height="30" alt="logo" /></td>
+                            <td><a style={{color: 'white'}} href="/gas-tracker">Gas Station</a></td>
+                        </tr>
+                        <tr>
                             <td><img src={require("../../assets/images/about.png")} width="35" height="30" alt="logo" /></td>
                             <td><a style={{color: 'white'}} href="/about">About</a></td>
                         </tr>
                     </tbody>
                 </table>
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
             </div>
         </nav>
     );

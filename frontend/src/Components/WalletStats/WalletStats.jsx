@@ -118,7 +118,7 @@ const WalletStats = () => {
                     updateTransactionAlert(false); 
                     alertHandler();              
                 }
-            })
+            });
 
             // ETH Price calculator
             fetch(ETHPRICE_URL + API_ENDPOINT + QUERY_STRING_ETHEREUM)
@@ -132,7 +132,7 @@ const WalletStats = () => {
                         }
                     });
                 }
-            })
+            });
 
             // Transactions of a particular account, if the address of the particular one entered is valid
             fetch(ETHERSCAN_URL + '?module=' + mod + "&action=txlist&address=" + walletAddress + "&startblock=" + startBlock 
@@ -158,7 +158,7 @@ const WalletStats = () => {
                 else {
                     updateTransactionAlert(false);
                 }
-            })
+            });
 
             // ERC20 endpoint for retrieving information related to holdings
             axios.get(MORALIS_URL + walletAddress + ERC20TOKEN_ENDPOINT, options)
@@ -190,7 +190,7 @@ const WalletStats = () => {
                         });
                     }
                 }
-            })
+            });
 
             // NFT endpoint for retrieving information related to holdings
             axios.get(MORALIS_URL + walletAddress + NFT_ENDPOINT, options)
@@ -222,7 +222,7 @@ const WalletStats = () => {
                         });
                     }
                 }
-            })
+            });
         }
         else {
             // Invalid address means invalid alert display, remove other alerts, clear data
