@@ -71,21 +71,17 @@ const GasTrackerPage = () => {
                             <p>MsSinceLastBlock: <b>{gasInfo.information.msSinceLastBlock}</b></p>
                         </div>
                     </div>
-                    { gasInfo.information !== null ? 
                     <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h3 class="h3">Block Prices</h3>
-                        </div> : null 
-                    }
+                    </div> 
                     <div style={{marginTop: '2rem'}}>
-                        { gasInfo.information !== null  ? <GasBlockPriceCard /> : null }
+                        { <GasBlockPriceCard /> }
                     </div>
-                    { gasInfo.information !== null ? 
                         <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <h3 class="h3">Base Fees</h3>
-                        </div> : null 
-                    }
+                        </div>  
                     <div style={{marginTop: '2rem'}}>
-                        { gasInfo.information !== null ? <GasBaseFeeCard />  : null }
+                        {  <GasBaseFeeCard /> }
                     </div>
                 </main>
             </div>
