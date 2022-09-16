@@ -98,7 +98,7 @@ const SidebarMetricsSection = () => {
                 (
                     <>
                         <p style={{ display: 'inline', color: 'white' }}>Gas Price:</p>
-                        <p style={{display: 'inline', color: 'white'}}><b>{ " " + gasInfo.information.maxPrice + " "} </b>Gwei</p>
+                        <p style={{ display: 'inline', color: 'white' }}><b>{ " " + gasInfo.information.maxPrice + " " }</b>Gwei</p>
                     </>
                 )
             }
