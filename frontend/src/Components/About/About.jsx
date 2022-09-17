@@ -36,8 +36,18 @@ const About = () => {
                             </p>
                             <hr />
                     </div>
+
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h4>Author/Developer Information</h4>
+                            <hr />
+                    </div>
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <p>If you are interested in learning more about the developer behind this project, you can visit their bio here:
+                                <a style={{ color: 'black' }} href="https://kingabdul.eth.xyz/" target="_blank" rel="noreferrer"> <b>About The Developer</b></a>
+                            </p>
+                    </div>
                     <div>
-                        <button class="btn btn-success" style={{marginTop: '1.5rem', marginRight: '2.5rem'}} onClick={() => navigate("/")}>Go Home</button>
+                        <button class="btn btn-success" style={{marginTop: '1.5rem', marginRight: '1rem'}} onClick={() => navigate("/")}>Go Home</button>
                     </div>
                 </main>
         </div>

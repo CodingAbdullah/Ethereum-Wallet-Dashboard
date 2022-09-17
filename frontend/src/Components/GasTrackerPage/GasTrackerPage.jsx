@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import axios from 'axios';
 import GasBaseFeeCard from '../GasBaseFeeCard/GasBaseFeeCard';
 import GasBlockPriceCard from '../GasBlockPriceCard/GasBlockPriceCard';
 
 const GasTrackerPage = () => {
-    const BLOCKNATIVE_URL = 'https://api.blocknative.com/gasprices/blockprices'
+    const BLOCKNATIVE_URL = 'https://api.blocknative.com/gasprices/blockprices';
+
+    const navigate = useNavigate();
 
     const [gasInfo, updateGasInfo] = useState({
         information: null
@@ -82,15 +85,18 @@ const GasTrackerPage = () => {
                             )
                         })}
                     </div>
-                        <div style={{marginTop: '4rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h3 class="h3">Base Fees</h3>
-                        </div>  
+                    <div style={{marginTop: '4rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h3 class="h3">Base Fees</h3>
+                    </div>  
                     <div style={{marginTop: '2rem'}} class="row">
                         { gasInfo.information.estimatedBaseFees.map(base => {
                             return (
                                 <GasBaseFeeCard information={base} />
                             )
                         })}
+                    </div>
+                    <div>
+                        <button style={{marginTop: '3rem', marginRight: '1rem'}} onClick={() => navigate("/")}class='btn btn-success'>Go To Dashboard</button>
                     </div>
                 </main>
             </div>

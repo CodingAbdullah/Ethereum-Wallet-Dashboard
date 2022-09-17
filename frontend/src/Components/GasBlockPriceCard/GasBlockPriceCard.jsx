@@ -29,7 +29,7 @@ const GasBlockPriceCard = (props) => {
     else {
         // Display the relevant API information passed from parent component
         return (
-            <div class="card" style={{width: '18rem', borderColor: color}}>
+            <div class="card" style={{width: '18rem', marginLeft: '0.25rem', borderColor: color}}>
                 <div class="card-body">
                     <h4 class="card-title">Estimated Price</h4>
                     <p>Confidence: <b>{information.confidence}</b></p> 

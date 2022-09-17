@@ -9,10 +9,10 @@ const Sidebar = () => {
         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
             <SidebarMetricsSection />
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
-            <div class="sidebar-sticky pt-3">
+            <div class="sidebar-sticky">
                 <table class="table table-striped table-dark">
                     <tbody>
-                        <tr class="col-sm-3">
+                        <tr>
                             <td><img src={require("../../assets/images/dashboard.png")} width="35" height="30" alt="logo" /></td>
                             <td><a style={{color: 'white'}} href="/">Dashboard</a></td>
                         </tr>
@@ -22,7 +22,7 @@ const Sidebar = () => {
                         </tr>
                         <tr>
                             <td><img src={require("../../assets/images/collections.png")} width="35" height="30" alt="logo" /></td>
-                            <td><a style={{color: 'white'}} href="/collections">Collections</a></td>
+                            <td><a style={{color: 'white'}} href="/collections">Token Analytics</a></td>
                          </tr>
                         <tr>
                             <td><img src={require("../../assets/images/charts.png")} width="35" height="30" alt="logo" /></td>
