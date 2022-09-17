@@ -10,6 +10,10 @@ import PricesPage from '../PricesPage/PricesPage';
 import Collections from '../Collections/Collections';
 import GasTrackerPage from '../GasTrackerPage/GasTrackerPage';
 import ENSPage from '../ENSPage/ENSPage';
+import ENSToAddressResolverPage from '../ENSToAddressResolverPage/ENSToAddressResolverPage';
+import AddressToENSResolverPage from '../AddressToENSResolverPage/AddressToENSResolverPage';
+import ENSTransferByIdPage from '../ENSTransferByIdPage/ENSTransferByIdPage';
+import ENSTransferByNamePage from '../ENSTransferByNamePage/ENSTransferByNamePage';
 import ERC720CollectionPage from '../ERC720CollectionPage/ERC720CollectionPage';
 import ERC720Holdings from '../ERC720Holdings/ERC720Holdings';
 import ERC720Prices from '../ERC720Prices/ERC720Prices';
@@ -38,6 +42,10 @@ const App = () => {
             <Route exact path="/prices" element={<PricesPage />}></Route>
             <Route exact path="/collections" element={<Collections />}></Route>
             <Route exact path="/ens-lookup" element={<ENSPage />}></Route>
+            <Route exact path="/ens-lookup/address-to-ens-lookup" element={<AddressToENSResolverPage />}></Route>
+            <Route exact path="/ens-lookup/ens-to-address-lookup" element={<ENSToAddressResolverPage />}></Route>
+            <Route exact path="/ens-lookup/ens-transfers-by-name" element={<ENSTransferByNamePage />}></Route>
+            <Route exact path="/ens-lookup/ens-transfers-by-id" element={<ENSTransferByIdPage />}></Route>
             <Route exact path="/erc20-holdings" element={<ERC720Holdings />}></Route>
             <Route exact path="/erc20-token-prices" element={<ERC720Prices />}></Route>
             <Route exact path="/erc721-holdings" element={<ERC721Holdings />}></Route>

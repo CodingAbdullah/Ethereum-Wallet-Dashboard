@@ -1,119 +1,32 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router';
-import AddressToENSInfoTable from '../AddressToENSInfoTable/AddressToENSInfoTable';
-import Alert from '../Alert/Alert';
-import axios from 'axios';
 
-const ENSPage = () => {
+const Collections = () => {
     const navigate = useNavigate();
-    const [addressToENS, updateAddressToENS] = useState('');
 
-    const [addressToEnsData, updateAddressToEnsData] = useState({
-        information: null
-    });
-
-    const [setAlert, updateAlert] = useState(false);
-    const [emptyAlert, updateEmptyAlert] = useState(false);
-
-    const ADDRESS_TO_ENS_MORALIS_ENDPOINT = "https://deep-index.moralis.io/api/v2/resolve/";
-
-    const clearHandler = () => {
-        updateAddressToEnsData((prevState) => {
-            return {
-                ...prevState,
-                information: null
-            }
-        });
-
-        updateAlert(false);
-        updateEmptyAlert(false);
-    }
-
-    const AddressToENSHandler = (e) => {
-        e.preventDefault();
-        
-        // ENS APIs go here.. Address ---> ENS Resolver second
-        if (addressToENS.length === 42 && addressToENS.substring(0, 2) === '0x'){
-            const options = {   
-                method: 'GET', 
-                mode: 'no-cors', // no-cors, *cors, same-origin
-                headers: { 
-                    'content-type' : 'application/json', 
-                    'access-control-allow-origin': '*',
-                    'X-API-KEY' : process.env.REACT_APP_MORALIS_API_KEY // Transpose API key hidden 
-                }
-            }
-    
-            axios.get(ADDRESS_TO_ENS_MORALIS_ENDPOINT + addressToENS + "/reverse", options) // Using Axios library
-            .then(response => {
-                updateAddressToEnsData((prevState) => { // Update Address to Ens for the display of tabulated information
-                    return {
-                        ...prevState,
-                        information: response.data
-                    }
-                });
-                // Remove unnecessary alerts
-                updateAlert(false);
-                updateEmptyAlert(false); 
-             })
-            .catch(() => {
-                updateEmptyAlert(true); // Update alerts
-                updateAlert(false);
-                updateAddressToEnsData((prevState) => { // Void previous search of address --> ens
-                    return {
-                        ...prevState,
-                        information: null
-                    }
-                });  
-            });        
-        }
-        else {
-            updateAlert(true); // Invalid address, display alert
-            updateEmptyAlert(false);
-            updateAddressToEnsData((prevState) => { // Void previous search of address --> ens
-                return {
-                    ...prevState,
-                    information: null
-                }
-            });
-        }
-    }
-    
+    // Allow for navigation to different ENS lookups
     return (
-        <div className="ens-page">
+        <div>
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">ENS Lookups</h1>
                 </div>
-                { setAlert ? <Alert type='danger' /> : null }
-                { emptyAlert ? <Alert type='warning' /> : null }
                 <div class="jumbotron">
                     <div class="container">
-                        <form onSubmit={AddressToENSHandler}>
-                            <label style={{marginRight: '2rem'}}>Address<b>{" ---> "}</b> ENS Resolver</label>
-                            <input type="text" onChange={e => updateAddressToENS(e.target.value)} />
-                            <br />
-                            <button style={{marginTop: '2rem'}} class="btn btn-success" type='submit'>Lookup Reversal</button>
-                        </form>
-                        <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
-                        <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={clearHandler}>Clear</button>  
+                        <div>
+                            <label><b>Address {' -----> '} ENS</b></label><button onClick={() => navigate("/ens-lookup/address-to-ens-lookup")} style={{marginLeft: '4.8rem'}} class='btn btn-success'>View</button>
+                            <hr style={{marginTop: '2rem', marginBottom: '2rem'}} />
+                            <label><b>ENS { ' -----> '} Address</b></label><button onClick={() => navigate("/ens-lookup/ens-to-address-lookup")} style={{marginLeft: '4.8rem'}} class='btn btn-success'>View</button>
+                            <hr style={{marginTop: '2rem', marginBottom: '2rem'}} />
+                            <label><b>ENS Transfers By Name</b></label><button onClick={() => navigate("/ens-lookup/ens-transfers-by-name")} style={{marginLeft: '3rem'}} class='btn btn-success'>View</button>
+                            <hr style={{marginTop: '2rem', marginBottom: '2rem'}} />
+                            <label><b>ENS Transfers By Token Id</b></label><button onClick={() => navigate("/ens-lookup/ens-transfers-by-id")} style={{marginLeft: '2rem'}} class='btn btn-success'>View</button>
+                        </div>
                     </div>
                 </div>
-                <div style={{marginTop: '2rem'}}>
-                    { addressToEnsData.information === null ? <div /> : 
-                        <>
-                            <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                <h3 class="h3">Resolver Information</h3>
-                            </div>
-                            <h6>ENS Resolver for Wallet Address: <b>{addressToENS}</b></h6>
-                            <AddressToENSInfoTable data={ addressToEnsData.information } />
-                        </>    
-                    }
-                </div>
-            </main>
-        </div>
+            </main> 
+        </div> 
     )
 }
 
-
-export default ENSPage;
+export default Collections;

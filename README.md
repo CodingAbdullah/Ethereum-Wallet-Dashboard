@@ -22,7 +22,8 @@ Here are links to the available API resources used in this project:
 [Opensea](https://docs.opensea.io/reference/api-overview)
 [Etherscan](https://etherscan.io/apis)
 [Moralis](https://docs.moralis.io/)
-[ENS](https://docs.ens.domains/)
+[Transpose](https://transpose.io/)
+[Blocknative](https://blocknative.com/)
 [CoinGecko](https://www.coingecko.com/en/api/documentation)
 
 

@@ -11,7 +11,7 @@ const Sidebar = () => {
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
             <div class="sidebar-sticky">
                 <table class="table table-striped table-dark">
-                    <tbody data-toggle="tooltip" data-placement="right" title="Tooltip on right">
+                    <tbody>
                         <tr>
                             <td><img src={require("../../assets/images/dashboard.png")} width="35" height="30" alt="logo" /></td>
                             <td><a style={{color: 'white'}} href="/">Dashboard</a></td>
