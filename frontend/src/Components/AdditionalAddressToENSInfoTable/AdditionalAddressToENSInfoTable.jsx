@@ -44,40 +44,45 @@ const AdditionalAddressToENSInfoTable = (props) => {
             console.log(err);
         });   
     }, []);
-     
-    return (
-        <div>
-            { 
-            additionalEnsData.information !== null ? (
-                <table style={{border: '1px solid black'}}>
-                    <thead style={{border: '1px solid black'}}>
-                        <tr style={{border: '1px solid black'}}>
-                            <th style={{border: '1px solid black'}} scope="col">Registration Date</th>
-                            <th style={{border: '1px solid black'}} scope="col">Expiration Date</th>
-                            <th style={{border: '1px solid black'}} scope="col">Grace Period Expiration</th>
-                            <th style={{border: '1px solid black'}} scope="col">Premium Period Expiration</th>
-                            <th style={{border: '1px solid black'}} scope="col">In Grace Period</th>
-                            <th style={{border: '1px solid black'}} scope="col">In Premium Period</th>
-                            <th style={{border: '1px solid black'}} scope="col">Is Expired</th>
-                            <th style={{border: '1px solid black'}} scope="col">Last Refreshed</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr style={{border: '1px solid black'}}>
-                            <td style={{border: '1px solid black'}}>{additionalEnsData.information.results[0].registration_timestamp.split("Z")[0]}</td>
-                            <td style={{border: '1px solid black'}}>{additionalEnsData.information.results[0].expiration_timestamp.split("Z")[0]}</td>
-                            <td style={{border: '1px solid black'}}>{additionalEnsData.information.results[0].grace_period_ends.split("Z")[0]}</td>
-                            <td style={{border: '1px solid black'}}>{additionalEnsData.information.results[0].premium_period_ends.split("Z")[0]}</td>
-                            <td style={{border: '1px solid black'}}>{additionalEnsData.information.results[0].in_grace_period === false ? "No" :  "Yes"}</td>
-                            <td style={{border: '1px solid black'}}>{additionalEnsData.information.results[0].in_premium_period === false ? "No" : "Yes"}</td>
-                            <td style={{border: '1px solid black'}}>{additionalEnsData.information.results[0].is_expired === false ? "No" : "Yes"}</td>
-                            <td style={{border: '1px solid black'}}>{additionalEnsData.information.results[0].last_refreshed.split("Z")[0]}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            ) 
-            : null }
-        </div>
-    )
+
+    if (additionalEnsData.information === null){
+        return <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">Loading...</div>
+    }
+    else { 
+        return (
+            <div style={{marginLeft: '1rem'}}>
+                { 
+                additionalEnsData.information !== null ? (
+                    <table style={{border: '1px solid black'}}>
+                        <thead style={{border: '1px solid black'}}>
+                            <tr style={{border: '1px solid black'}}>
+                                <th style={{border: '1px solid black'}} scope="col">Registration Date</th>
+                                <th style={{border: '1px solid black'}} scope="col">Expiration Date</th>
+                                <th style={{border: '1px solid black'}} scope="col">Grace Period Expiration</th>
+                                <th style={{border: '1px solid black'}} scope="col">Premium Period Expiration</th>
+                                <th style={{border: '1px solid black'}} scope="col">In Grace Period</th>
+                                <th style={{border: '1px solid black'}} scope="col">In Premium Period</th>
+                                <th style={{border: '1px solid black'}} scope="col">Is Expired</th>
+                                <th style={{border: '1px solid black'}} scope="col">Last Refreshed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style={{border: '1px solid black'}}>
+                                <td style={{border: '1px solid black'}}>{additionalEnsData.information.results[0].registration_timestamp.split("Z")[0]}</td>
+                                <td style={{border: '1px solid black'}}>{additionalEnsData.information.results[0].expiration_timestamp.split("Z")[0]}</td>
+                                <td style={{border: '1px solid black'}}>{additionalEnsData.information.results[0].grace_period_ends.split("Z")[0]}</td>
+                                <td style={{border: '1px solid black'}}>{additionalEnsData.information.results[0].premium_period_ends.split("Z")[0]}</td>
+                                <td style={{border: '1px solid black'}}>{additionalEnsData.information.results[0].in_grace_period === false ? "No" :  "Yes"}</td>
+                                <td style={{border: '1px solid black'}}>{additionalEnsData.information.results[0].in_premium_period === false ? "No" : "Yes"}</td>
+                                <td style={{border: '1px solid black'}}>{additionalEnsData.information.results[0].is_expired === false ? "No" : "Yes"}</td>
+                                <td style={{border: '1px solid black'}}>{additionalEnsData.information.results[0].last_refreshed.split("Z")[0]}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                ) 
+                : null }
+            </div>
+        )
+    }
 }
 export default AdditionalAddressToENSInfoTable;
