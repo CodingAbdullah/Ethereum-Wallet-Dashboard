@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 const AddressToENSInfoTable = (props) => {
     const { data } = props;
 

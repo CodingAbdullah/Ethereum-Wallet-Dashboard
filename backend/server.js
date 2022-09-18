@@ -1,7 +1,7 @@
 require("dotenv").config({ path: '.env'}); // Incorporate environment variables file
 const express = require("express");
 const cors = require("cors"); // Allow Cross Origin Resource Sharing
-const addressToEnsRouter = require("./Routes/AddressToEnsRouter");
+const addressENSRouter = require("./Routes/AddressENSRouter");
 
 const app = express(); // Sign up node server
 
@@ -14,4 +14,4 @@ app.use(express.json({ extended: false}));
 app.use(express.urlencoded({ extended: false}));
 
 app.use(cors()); // Enable cors;
-app.use("/", addressToEnsRouter); // Enable API resource to server
+app.use("/", addressENSRouter); // Enable API resource to server

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import AddressToENSInfoTable from '../AddressToENSInfoTable/AddressToENSInfoTable';
-import AdditionalAddressToENSInfoTable from '../AdditionalAddressToENSInfoTable/AdditionalAddressToENSInfoTable';
+import AdditionalAddressENSInfoTable from '../AdditionalAddressENSInfoTable/AdditionalAddressENSInfoTable';
 import ENSOwnershipInfoTable from '../ENSOwnershipInfoTable/ENSOwnershipInfoTable';
 import ENSResolverInfoTable from '../ENSResolverInfoTable/ENSResolverInfoTable';
 import Alert from '../Alert/Alert';
@@ -120,7 +120,7 @@ const AddressToENSResolverPage = () => {
                             <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                 <h3 class="h3">Additional Information</h3>
                             </div>
-                            <AdditionalAddressToENSInfoTable data={ addressToEnsData.information } />
+                            <AdditionalAddressENSInfoTable data={ addressToEnsData.information } />
                         </>    
                     }
                 </div>
