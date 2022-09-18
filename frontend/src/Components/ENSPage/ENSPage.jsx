@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 
-const Collections = () => {
+const ENSPage = () => {
     const navigate = useNavigate();
 
     // Allow for navigation to different ENS lookups
@@ -14,11 +14,11 @@ const Collections = () => {
                 <div class="jumbotron">
                     <div class="container">
                         <div>
-                            <label><b>Address {' -----> '} ENS</b></label><button onClick={() => navigate("/ens-lookup/address-to-ens-lookup")} style={{marginLeft: '4.8rem'}} class='btn btn-success'>View</button>
+                            <label><b>Address { ' -----> ' } ENS</b></label><button onClick={() => navigate("/ens-lookup/address-to-ens-lookup")} style={{marginLeft: '4.8rem'}} class='btn btn-success'>View</button>
                             <hr style={{marginTop: '2rem', marginBottom: '2rem'}} />
-                            <label><b>ENS { ' -----> '} Address</b></label><button onClick={() => navigate("/ens-lookup/ens-to-address-lookup")} style={{marginLeft: '4.8rem'}} class='btn btn-success'>View</button>
+                            <label><b>ENS { ' -----> ' } Address</b></label><button onClick={() => navigate("/ens-lookup/ens-to-address-lookup")} style={{marginLeft: '4.8rem'}} class='btn btn-success'>View</button>
                             <hr style={{marginTop: '2rem', marginBottom: '2rem'}} />
-                            <label><b>ENS Transfers By Name</b></label><button onClick={() => navigate("/ens-lookup/ens-transfers-by-name")} style={{marginLeft: '3rem'}} class='btn btn-success'>View</button>
+                            <label style={{marginRight: '0.1rem'}}><b>ENS Transfers By Name</b></label><button onClick={() => navigate("/ens-lookup/ens-transfers-by-name")} style={{marginLeft: '3rem'}} class='btn btn-success'>View</button>
                             <hr style={{marginTop: '2rem', marginBottom: '2rem'}} />
                             <label><b>ENS Transfers By Token Id</b></label><button onClick={() => navigate("/ens-lookup/ens-transfers-by-id")} style={{marginLeft: '2rem'}} class='btn btn-success'>View</button>
                         </div>
@@ -29,4 +29,4 @@ const Collections = () => {
     )
 }
 
-export default Collections;
+export default ENSPage;

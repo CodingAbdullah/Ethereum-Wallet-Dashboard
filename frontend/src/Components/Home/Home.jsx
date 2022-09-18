@@ -163,7 +163,7 @@ const Home = () => {
                             <h1 class="h2">Market Data</h1>
                         </div>
                         <div class="container">                   
-                            <p style={{ marginBottom: '2rem' }} class='marquee-paragraph col-md-9 ml-sm-auto col-lg-10 px-md-4'><b>Top 5 Trending Coins: </b>{trendingCoins}</p>
+                            <p style={{ marginBottom: '2rem' }} class='marquee-paragraph'><b>Top 5 Trending Coins: </b>{trendingCoins}</p>
                             <p><b>Active Currencies: </b> {active_cryptocurrencies}</p>      
                             <p><b>Total Market Cap: </b> ${(usd).toFixed(2)}</p>
                             <p><b>Market Dominance: </b> BTC {(btc).toFixed(2) + "%"} <b>|</b> ETH {(eth).toFixed(2) + "%"}</p>
