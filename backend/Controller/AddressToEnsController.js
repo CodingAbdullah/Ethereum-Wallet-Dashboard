@@ -15,3 +15,19 @@ exports.additionalENSInformation = (req, res) => {
         })
     });
 }
+
+exports.ensOwnershipInformation = (req, res) => {
+    const { walletAddress } = JSON.parse(req.body.body);
+
+    sdk.get('/ens-records-by-owner', { owner_address: walletAddress })
+    .then(response => {
+        res.status(200).json({
+            information: response // Send response with status 200 and information
+        });
+    })
+    .catch(err => {
+        res.status(400).json({
+            information: err // Send response with status 400 and information
+        });
+    })
+}
