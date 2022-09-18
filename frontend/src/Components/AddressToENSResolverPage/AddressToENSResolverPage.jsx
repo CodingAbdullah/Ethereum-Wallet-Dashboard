@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import AddressToENSInfoTable from '../AddressToENSInfoTable/AddressToENSInfoTable';
 import AdditionalAddressToENSInfoTable from '../AdditionalAddressToENSInfoTable/AdditionalAddressToENSInfoTable';
 import ENSOwnershipInfoTable from '../ENSOwnershipInfoTable/ENSOwnershipInfoTable';
+import ENSResolverInfoTable from '../ENSResolverInfoTable/ENSResolverInfoTable';
 import Alert from '../Alert/Alert';
 import axios from 'axios';
 
@@ -12,10 +13,6 @@ const AddressToENSResolverPage = () => {
 
     // State set up for retrieving information related to ENS resolvers, ENS names that resolve to the owner, ENS names that resolve to a given account
     const [addressToEnsData, updateAddressToEnsData] = useState({
-        information: null
-    });
-
-    const [ensResolverData, updateEnsResolverData] = useState({
         information: null
     });
 
@@ -131,9 +128,19 @@ const AddressToENSResolverPage = () => {
                     { addressToEnsData.information === null ? <div /> : 
                         <>
                             <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                <h3 class="h3">ENS Names Resolving To Owner</h3>
+                                <h3 class="h3">ENS Names Belonging To Owner</h3>
                             </div>
                             <ENSOwnershipInfoTable address={ addressToENS } />
+                        </>    
+                    }
+                </div>
+                <div style={{marginTop: '2rem'}}>
+                    { addressToEnsData.information === null ? <div /> : 
+                        <>
+                            <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                <h3 class="h3">ENS Names Resolving To Address</h3>
+                            </div>
+                            <ENSResolverInfoTable address={ addressToENS } />
                         </>    
                     }
                 </div>
