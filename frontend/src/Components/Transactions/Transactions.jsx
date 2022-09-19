@@ -26,7 +26,7 @@ const Transactions = () => {
         const startBlock = 0;
         const endBlock = 99999999;
         const page = 1;
-        const sort = 'asc';
+        const sort = 'desc';
         updateAddress(addr);
     
         // ETH balance of a particular account, run checks to see validity
@@ -108,7 +108,7 @@ const Transactions = () => {
                 <h5>{"ETH Balance: " + (amount*(1/1000000000000000000)) + " ETH (@ $" + ethPrice.information.ethereum.usd.toFixed(2) + " USD/ETH)"}</h5>
                 <h6>{"Amount in USD: $" + ((amount*(1/1000000000000000000))*(ethPrice.information.ethereum.usd)).toFixed(2) + " USD"}</h6>
                 <h2 style={{marginTop: '2.0rem'}}>Transactions</h2>
-                <h6>Top 100 or maximum done by wallet</h6>
+                <h6>Top 1000 or maximum done by wallet</h6>
                 <div style={{marginLeft: '100px'}}>
                     { transactions === {} ? <div /> : <TransactionsInfoTable walletAddress={address} data={transactions.information.result} /> }
                 </div>
