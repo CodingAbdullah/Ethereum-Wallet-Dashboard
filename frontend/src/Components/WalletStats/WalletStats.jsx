@@ -47,7 +47,7 @@ const WalletStats = () => {
     const startBlock = 0;
     const endBlock = 99999999;
     const page = 1;
-    const sort = 'asc';
+    const sort = 'desc';
 
     const alertHandler = () => { // Clear data upon error
         updateAmount(-1);
@@ -262,12 +262,12 @@ const WalletStats = () => {
                 <h5><b>{ETHPrice.information !== null ? "ETH Balance: " + (amount*(1/1000000000000000000)) + " ETH (@ $" + ETHPrice.information.ethereum.usd.toFixed(2) + " USD/ETH)" : null}</b></h5>
                 <h6><b>{ETHPrice.information !== null ? "Amount in USD: $" + ((amount*(1/1000000000000000000))*(ETHPrice.information.ethereum.usd)).toFixed(2) + " USD" : null}</b></h6>
                 { transactions.information !== null  || emptyTransactionAlert ? 
-                    <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h3 class="h3">Transactions</h3>
+                    <div style={{marginTop: '3rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h3 class="h3">Transactions (Up to 1000)</h3>
                     </div> : null 
                 }
                 <div style={{marginLeft: '100px'}}>
-                    { emptyTransactionAlert && !setAlert ? <Alert type="warning" /> : ( transactions.information !== null ? <><p style={{marginRight: '10rem'}}>Up to 1000 Most Recent Transactions</p><TransactionsInfoTable walletAddress={walletAddress} data={transactions.information.result} /></> : null ) }
+                    { emptyTransactionAlert && !setAlert ? <Alert type="warning" /> : ( transactions.information !== null ? <TransactionsInfoTable walletAddress={walletAddress} data={transactions.information.result} /> : null ) }
                 </div>
                 { ERC20Holdings.information !== null || emptyERC20Alert ? 
                     <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">

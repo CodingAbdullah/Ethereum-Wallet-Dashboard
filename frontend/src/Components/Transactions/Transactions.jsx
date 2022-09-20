@@ -109,7 +109,7 @@ const Transactions = () => {
                 <h6>{"Amount in USD: $" + ((amount*(1/1000000000000000000))*(ethPrice.information.ethereum.usd)).toFixed(2) + " USD"}</h6>
                 <h2 style={{marginTop: '2.0rem'}}>Transactions</h2>
                 <h6>Top 1000 or maximum done by wallet</h6>
-                <div style={{marginLeft: '100px'}}>
+                <div style={{marginLeft: '75px'}}>
                     { transactions === {} ? <div /> : <TransactionsInfoTable walletAddress={address} data={transactions.information.result} /> }
                 </div>
                 <button style={{marginTop: '1.5rem'}} class="btn btn-success" onClick={() => { navigate("/"); localStorage.removeItem('walletAddress'); }}>Go Back</button>

@@ -24,7 +24,7 @@ const TransactionsInfoTable = (props) => {
                                 return (
                                     <tr style={{border: '1px solid black'}}>
                                         <td style={{border: '1px solid black', fontSize: '11px'}}>{record.blockNumber}</td>
-                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{record.timeStamp}</td>
+                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{new Date(record.timeStamp*1000).toString().split("GMT")[0].trim() +"-EST"}</td>
                                         <td style={{border: '1px solid black', fontSize: '11px'}}>{record.from}</td>
                                         <td style={{border: '1px solid black', fontSize: '11px'}}>{record.to}</td>
                                         <td style={{border: '1px solid black', fontSize: '11px'}}>{walletAddress.toLowerCase() === record.to ? <Badge type="IN" /> : <Badge type="OUT" />}</td>
