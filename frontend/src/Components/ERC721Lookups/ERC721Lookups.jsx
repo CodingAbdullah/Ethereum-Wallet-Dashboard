@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import Alert from '../Alert/Alert';
 import ERC721LookupsInfoTable from '../ERC721LookupsInfoTable/ERC721LookupsInfoTable';
 import ERC721TransferLookupsInfoTable from '../ERC721TransferLookupsInfoTable/ERC721TransferLookupsInfoTable';
+import ERC721SalesLookupsInfoTable from '../ERC721SalesLookupsInfoTable/ERC721SalesLookupsInfoTable';
 import axios from 'axios';
 
 const ERC721Lookups = () => {
@@ -129,17 +130,22 @@ const ERC721Lookups = () => {
                     <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { 
                         updateAlert(false); 
                         updateTokenData((prevState) => { return { ...prevState, information: null }}); 
-                        updateTokenTransfers((prevState) => { return { ...prevState, information: null}}); 
+                        updateTokenTransfers((prevState) => { return { ...prevState, information: null }}); 
                     }}>Clear</button>
                 </div>
-                { tokenData.information !== null ? <h5 style={{marginTop: '2rem'}}>NFT Lookup</h5> : null }
-                <div style={{marginTop: '2rem', marginLeft: '30px'}}>
+                { tokenData.information !== null ? <h5 style={{ marginTop: '2rem' }}>ERC721 Token Information</h5> : null }
+                <div style={{ marginTop: '2rem', marginLeft: '7.5rem'}}>
                     { tokenData.information === null ? <div /> : <ERC721LookupsInfoTable data={tokenData.information} /> }
                 </div>
-                { tokenData.information === null || tokenTransfers.information === null ? null : <hr style={{marginTop: '3rem', marginBottom: '3rem'}} /> }
-                { tokenTransfers.information !== null ? <h5 style={{marginTop: '2rem'}}>NFT Transfers Lookup</h5> : null }
+                { tokenData.information === null || tokenTransfers.information === null ? null : <hr style={{ marginTop: '3rem', marginBottom: '3rem' }} /> }
+                { tokenTransfers.information !== null ? <h5 style={{ marginTop: '2rem' }}>ERC721 Token Transfers</h5> : null }
                 <div>
                     { tokenTransfers.information === null ? <div /> : <ERC721TransferLookupsInfoTable data={tokenTransfers.information} /> }
+                </div>
+                { tokenData.information === null || tokenTransfers.information === null ? null : <hr style={{ marginTop: '3rem', marginBottom: '3rem' }} /> }
+                { tokenTransfers.information !== null ? <h5 style={{ marginTop: '2rem' }}>ERC721 Token Sales</h5> : null }
+                <div>
+                    { tokenTransfers.information === null ? <div /> : <ERC721SalesLookupsInfoTable address={tokenAddress} tokenId={tokenId} /> }
                 </div>
             </main>
         </div>
