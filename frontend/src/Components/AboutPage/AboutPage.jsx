@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 
-const About = () => {
+const AboutPage = () => {
     const navigate = useNavigate();
     return (
         <div className='about'>
@@ -54,4 +54,4 @@ const About = () => {
     )
 }
 
-export default About;
+export default AboutPage;

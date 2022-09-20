@@ -1,13 +1,13 @@
 import './App.css';
 import Navbar from  '../Navbar/Navbar';
 import Sidebar from '../Sidebar/Sidebar';
-import Home from '../Home/Home';
-import Transactions from '../Transactions/Transactions';
-import PageNotFound from '../PageNotFound/PageNotFound';
+import HomePage from '../HomePage/HomePage';
+import TransactionsPage from '../TransactionsPage/TransactionsPage';
+import PageNotFoundPage from '../PageNotFoundPage/PageNotFoundPage';
 import Footer from '../Footer/Footer';
-import About from '../About/About';
+import AboutPage from '../AboutPage/AboutPage';
 import PricesPage from '../PricesPage/PricesPage';
-import Collections from '../Collections/Collections';
+import CollectionsPage from '../CollectionsPage/CollectionsPage';
 import GasTrackerPage from '../GasTrackerPage/GasTrackerPage';
 import ENSPage from '../ENSPage/ENSPage';
 import ENSToAddressResolverPage from '../ENSToAddressResolverPage/ENSToAddressResolverPage';
@@ -15,12 +15,12 @@ import AddressToENSResolverPage from '../AddressToENSResolverPage/AddressToENSRe
 import ENSTransferByIdPage from '../ENSTransferByIdPage/ENSTransferByIdPage';
 import ENSTransferByNamePage from '../ENSTransferByNamePage/ENSTransferByNamePage';
 import ERC720CollectionPage from '../ERC720CollectionPage/ERC720CollectionPage';
-import ERC720Holdings from '../ERC720Holdings/ERC720Holdings';
-import ERC720Prices from '../ERC720Prices/ERC720Prices';
+import ERC720HoldingsPage from '../ERC720HoldingsPage/ERC720HoldingsPage';
+import ERC720PricesPage from '../ERC720PricesPage/ERC720PricesPage';
 import ERC721CollectionPage from '../ERC721CollectionPage/ERC721CollectionPage';
-import ERC721Lookups from '../ERC721Lookups/ERC721Lookups';
-import ERC721Holdings from '../ERC721Holdings/ERC721Holdings';
-import WalletStats from '../WalletStats/WalletStats';
+import ERC721LookupsPage from '../ERC721LookupsPage/ERC721LookupsPage';
+import ERC721HoldingsPage from '../ERC721HoldingsPage/ERC721HoldingsPage';
+import WalletStatsPage from '../WalletStatsPage/WalletStatsPage';
 import GenericChartPage from '../GenericChartPage/GenericChartPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -36,26 +36,26 @@ const App = () => {
         </div>
         <div> 
           <Routes>
-            <Route exact path="/" element={<Home />}></Route>
-            <Route exact path="/about" element={<About />}></Route>
-            <Route exact path="/transactions" element={<Transactions />}></Route>
+            <Route exact path="/" element={<HomePage />}></Route>
+            <Route exact path="/about" element={<AboutPage />}></Route>
+            <Route exact path="/transactions" element={<TransactionsPage />}></Route>
             <Route exact path="/prices" element={<PricesPage />}></Route>
-            <Route exact path="/collections" element={<Collections />}></Route>
+            <Route exact path="/collections" element={<CollectionsPage />}></Route>
             <Route exact path="/ens-lookup" element={<ENSPage />}></Route>
             <Route exact path="/ens-lookup/address-to-ens-lookup" element={<AddressToENSResolverPage />}></Route>
             <Route exact path="/ens-lookup/ens-to-address-lookup" element={<ENSToAddressResolverPage />}></Route>
             <Route exact path="/ens-lookup/ens-transfers-by-name" element={<ENSTransferByNamePage />}></Route>
             <Route exact path="/ens-lookup/ens-transfers-by-id" element={<ENSTransferByIdPage />}></Route>
-            <Route exact path="/erc20-holdings" element={<ERC720Holdings />}></Route>
-            <Route exact path="/erc20-token-prices" element={<ERC720Prices />}></Route>
-            <Route exact path="/erc721-holdings" element={<ERC721Holdings />}></Route>
-            <Route exact path="/erc721-lookups" element={<ERC721Lookups />}></Route>
+            <Route exact path="/erc20-holdings" element={<ERC720HoldingsPage />}></Route>
+            <Route exact path="/erc20-token-prices" element={<ERC720PricesPage />}></Route>
+            <Route exact path="/erc721-holdings" element={<ERC721HoldingsPage />}></Route>
+            <Route exact path="/erc721-lookups" element={<ERC721LookupsPage />}></Route>
             <Route exact path="/collections/erc720-collection" element={<ERC720CollectionPage />}></Route>
             <Route exact path="/collections/erc721-collection" element={<ERC721CollectionPage />}></Route>
             <Route exact path="/gas-tracker" element={<GasTrackerPage />}></Route>
-            <Route exact path="/walletAnalytics" element={<WalletStats />}></Route>
+            <Route exact path="/walletAnalytics" element={<WalletStatsPage />}></Route>
             <Route exact path="/chart" element={<GenericChartPage />}></Route>
-            <Route exact path="*" element={<PageNotFound />}></Route>
+            <Route exact path="*" element={<PageNotFoundPage />}></Route>
           </Routes>
         </div>
         <div>

@@ -4,7 +4,7 @@ import ENSTransferByIdInfoTable from '../ENSTransferByIdInfoTable/ENSTransferByI
 import Alert from '../Alert/Alert';
 import axios from 'axios';
 
-const ENSTransfersByIdPage = () => {
+const ENSTransferByIdPage = () => {
     const navigate = useNavigate();
     const [tokenID, updateTokenID] = useState('');
 
@@ -105,4 +105,4 @@ const ENSTransfersByIdPage = () => {
     )
 }
 
-export default ENSTransfersByIdPage;
+export default ENSTransferByIdPage;

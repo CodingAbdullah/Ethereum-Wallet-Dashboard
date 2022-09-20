@@ -6,7 +6,7 @@ import ERC721TransferLookupsInfoTable from '../ERC721TransferLookupsInfoTable/ER
 import ERC721SalesLookupsInfoTable from '../ERC721SalesLookupsInfoTable/ERC721SalesLookupsInfoTable';
 import axios from 'axios';
 
-const ERC721Lookups = () => {
+const ERC721LookupsPage = () => {
 
     const [tokenAddress, updateTokenAddress] = useState(""); // Initialize ERC721 contract attributes
     const [tokenId, updateTokenId] = useState("");    
@@ -153,4 +153,4 @@ const ERC721Lookups = () => {
 
 }
 
-export default ERC721Lookups;
+export default ERC721LookupsPage;

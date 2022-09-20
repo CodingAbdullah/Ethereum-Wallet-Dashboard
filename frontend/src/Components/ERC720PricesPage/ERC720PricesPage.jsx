@@ -27,7 +27,7 @@ ChartJS.register(
 );
 
 
-const ERC720TokenPrices = () => {
+const ERC720TokenPricesPage = () => {
     const navigate = useNavigate();
 
     const [tokenContractAddress, updateContractAddress] = useState('0xde0B295669a9FD93d5F28D9Ec85E40f4cb697BAe'); // Set default to EthDev contract address 
@@ -262,4 +262,4 @@ const ERC720TokenPrices = () => {
     }
 }    
 
-export default ERC720TokenPrices;
+export default ERC720TokenPricesPage;

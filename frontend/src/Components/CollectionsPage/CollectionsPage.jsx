@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 
-const Collections = () => {
+const CollectionsPage = () => {
     const navigate = useNavigate();
 
     return (
@@ -24,4 +24,4 @@ const Collections = () => {
     )
 }
 
-export default Collections;
+export default CollectionsPage;
