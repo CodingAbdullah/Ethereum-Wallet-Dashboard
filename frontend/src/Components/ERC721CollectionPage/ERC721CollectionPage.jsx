@@ -6,7 +6,7 @@ import ERC721LowestCollectionPriceInfoTable from '../ERC721CollectionLowestPrice
 import ERC721CollectionDataInfoTable from '../ERC721CollectionDataInfoTable/ERC721CollectionDataInfoTable';
 import ERC721CollectionTransferInfoTable from '../ERC721CollectionTransferInfoTable/ERC721CollectionTransferInfoTable';
 import ERC721CollectionOwnerInfoTable from '../ERC721CollectionOwnerInfoTable/ERC721CollectionOwnerInfoTable';
-import ERC721CollectionTradeInfoTable from '../ERC721CollectionTradeInfoTable/ERC721CollectionTradeInfoTable';
+import ERC721CollectionSalesInfoTable from '../ERC721CollectionSalesInfoTable/ERC721CollectionSalesInfoTable';
 
 const ERC721CollectionPage = () => {
 
@@ -284,7 +284,7 @@ const ERC721CollectionPage = () => {
                 </main>
                 { NFTOwners.information === null ? null : <div style={{marginTop: '2rem'}}  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" /> }
                 <main style={{marginTop: '3rem'}} role="main">
-                    { NFTTrades.information === null ? null : <ERC721CollectionTradeInfoTable quantity={ NFTTrades.information.total } data={ NFTTrades.information.result } />} 
+                    { NFTTrades.information === null ? null : <ERC721CollectionSalesInfoTable quantity={ NFTTrades.information.total } data={ NFTTrades.information.result } />} 
                 </main>
             </div>
         )
