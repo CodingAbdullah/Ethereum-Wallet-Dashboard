@@ -266,8 +266,8 @@ const WalletStats = () => {
                         <h3 class="h3">Transactions (Up to 1000)</h3>
                     </div> : null 
                 }
-                <div style={{marginLeft: '100px'}}>
-                    { emptyTransactionAlert && !setAlert ? <Alert type="warning" /> : ( transactions.information !== null ? <TransactionsInfoTable walletAddress={walletAddress} data={transactions.information.result} /> : null ) }
+                <div>
+                    { emptyTransactionAlert && !setAlert ? <Alert type="warning" /> : ( transactions.information !== null ? <div style={{marginLeft: '5rem'}}><TransactionsInfoTable walletAddress={walletAddress} data={transactions.information.result} /></div> : null ) }
                 </div>
                 { ERC20Holdings.information !== null || emptyERC20Alert ? 
                     <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -275,7 +275,7 @@ const WalletStats = () => {
                     </div> : null 
                 }
                 <div style={{marginTop: '2rem'}}>
-                    { ERC20Holdings.information === null && emptyERC20Alert ? <Alert type="warning" /> : ( ERC20Holdings.information !== null ? <ERC720HoldingsInfoTable data={ERC20Holdings.information} />  : null ) }
+                    { ERC20Holdings.information === null && emptyERC20Alert ? <Alert type="warning" /> : ( ERC20Holdings.information !== null ? <div style={{marginLeft: '10rem'}}><ERC720HoldingsInfoTable data={ERC20Holdings.information} /></div>  : null ) }
                 </div>
                 { ERC721Holdings.information !== null || emptyERC721Alert ? 
                     <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -283,7 +283,7 @@ const WalletStats = () => {
                     </div> : null 
                 }
                 <div style={{marginTop: '2rem'}}>
-                    { ERC721Holdings.information === null  && emptyERC721Alert ? <Alert type='warning' /> : ( ERC721Holdings.information !== null ? <ERC721HoldingsInfoTable data={ERC721Holdings.information} /> : null ) }
+                    { ERC721Holdings.information === null  && emptyERC721Alert ? <Alert type='warning' /> : ( ERC721Holdings.information !== null ? <div style={{marginLeft: '18.5rem'}}><ERC721HoldingsInfoTable data={ERC721Holdings.information} /></div> : null ) }
                 </div>
             </main>
         </div>

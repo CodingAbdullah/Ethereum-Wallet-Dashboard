@@ -4,7 +4,7 @@ const ERC720HoldingsInfoTable = (props) => {
     const { data } = props;
 
     return (
-        <div style={{marginLeft: '10rem'}}>
+        <div>
             <table style={{border: '1px solid black'}}>
                 <thead style={{border: '1px solid black'}}>
                 <tr style={{border: '1px solid black'}}>

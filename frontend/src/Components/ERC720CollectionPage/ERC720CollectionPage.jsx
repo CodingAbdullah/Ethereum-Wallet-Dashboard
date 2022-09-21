@@ -21,11 +21,12 @@ const ERC720CollectionPage = () => {
 
     const navigate = useNavigate();
 
-    const ERC20_MORALIS_URL = 'https://deep-index.moralis.io/api/v2/erc20/'; // API Endpoints for ERC20 lookup
+    // Node Server endpoints
+    const NODE_SERVER_URL = 'http://localhost:5000';
+    const NODE_SERVER_TOKEN_PRICE_ENDPOINT = '/erc20-token-price';
+    const NODE_SERVER_TOKEN_TRANSFER_ENDPOINT = '/erc20-transfer';
+
     const COINGECKO_URL = 'https://api.coingecko.com/api/v3'; // API Endpoints
-    
-    const TRANSFERS_ENDPOINT = '/transfers';
-    const PRICE_ENDPOINT = '/price'
     const ERC20_INFO_ENDPOINT = '/coins/ethereum/contract/' + tokenAddress;
         
     const alertHandler = () => {
@@ -67,25 +68,23 @@ const ERC720CollectionPage = () => {
 
         // Set options for fetch and flight responses
         const options = {
-            method: 'GET',
-            mode: 'no-cors',
+            method: 'POST',
+            body: JSON.stringify({ address : tokenAddress }),
             headers: {
                 'content-type' : 'application/json', 
                 'accept': 'application/json',
-                'access-control-allow-origin': '*',
-                'X-API-KEY' : process.env.REACT_APP_MORALIS_API_KEY // Transpose API key hidden 
             }
         }
 
         if (tokenAddress.length === 42 && tokenAddress.substring(0, 2) === '0x'){
-            axios.get(ERC20_MORALIS_URL + tokenAddress + TRANSFERS_ENDPOINT, options) // ERC20 endpoint for retrieving information related to transfers
+            axios.post(NODE_SERVER_URL + NODE_SERVER_TOKEN_TRANSFER_ENDPOINT, options) // ERC20 endpoint for retrieving information related to transfers
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
                     alertHandler();
                 }
                 else {
-                    if (response.status === 200 && response.data.result.length === 0){ // If empty, remove information
+                    if (response.status === 200 && response.data.information.result.length === 0){ // If empty, remove information
                         updateAlert(false);
                         alertHandler();
                     }
@@ -94,33 +93,33 @@ const ERC720CollectionPage = () => {
                         updateTransfers((prevState) => {
                             return {
                                 ...prevState,
-                                information: response.data.result
+                                information: response.data.information.result
                             }
                         });
-                        console.log(response);
                     }
                 }
             })
-            .catch(() => {
+            .catch((err) => {
+                console.log(err);
                 alertHandler();
             });
 
-            axios.get(ERC20_MORALIS_URL + tokenAddress + PRICE_ENDPOINT, options) // ERC20 endpoint for retrieving information related to price
+            axios.post(NODE_SERVER_URL + NODE_SERVER_TOKEN_PRICE_ENDPOINT, options) // ERC20 endpoint for retrieving information related to price
                 .then(response => {
-                    console.log(response);
                     if (response.status !== 200){
                         alertHandler();                    
                     }
                     else {
-                        if (response.status === 200 && Object.keys(response.data).length === 0){ // If empty, clear price
+                        if (response.status === 200 && Object.keys(response.data.information).length === 0){ // If empty, clear price
                             alertHandler();                            
                         }
                         else {
-                            updateERC20Price(response.data.usdPrice);
+                            updateERC20Price(response.data.information.usdPrice);
                         }
                     }
                 })
-                .catch(() => {
+                .catch((err) => {
+                    console.log(err);
                     alertHandler();
                 });
             

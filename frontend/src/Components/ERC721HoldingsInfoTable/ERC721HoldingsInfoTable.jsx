@@ -4,7 +4,7 @@ const ERC721HoldingsInfoTable = (props) => {
     const { data } = props; // Destructure data
 
     return (
-        <div style={{marginLeft: '18rem'}}>
+        <div>
             <table style={{border: '1px solid black'}}>
                 <thead style={{border: '1px solid black'}}>
                 <tr style={{border: '1px solid black'}}>
