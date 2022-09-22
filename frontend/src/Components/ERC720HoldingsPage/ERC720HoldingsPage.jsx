@@ -21,10 +21,10 @@ const ERC720HoldingsPage = () => {
 
     const navigate = useNavigate();
 
-    const URL = "https://deep-index.moralis.io/api/v2/";
-    const ERC20TOKEN_ENDPOINT = '/erc20?chain=eth';
+    const NODE_SERVER_URL = "http://localhost:5000";
+    const ERC20TOKEN_ENDPOINT = '/address-erc20-holdings';
 
-    const ERC20TOKENTRANSFERS_ENDPOINT = '/erc20/transfers?chain=eth';
+    const ERC20TOKENTRANSFERS_ENDPOINT = '/address-erc20-transfers';
 
     const clearHandler = () => {
         updateERC20Holdings((prevState) => { // Removing information, when invalid address is added
@@ -44,20 +44,17 @@ const ERC720HoldingsPage = () => {
     const walletHandler = (e) => {
         e.preventDefault();
 
-        // Set options for fetch and flight responses
-        const options = {
-            method: 'GET',
-            mode: 'no-cors',
-            headers: {
-                'content-type' : 'application/json', 
-                'accept': 'application/json',
-                'access-control-allow-origin': '*',
-                'X-API-KEY' : process.env.REACT_APP_MORALIS_API_KEY // Moralis API key hidden 
-            }
-        }
-
         if (walletAddress.length === 42 && walletAddress.substring(0, 2) === '0x'){
-            axios.get(URL + walletAddress + ERC20TOKEN_ENDPOINT, options) // ERC20 endpoint for retrieving information related to holdings
+             // Set options for fetch and flight responses
+            const options = {
+                method: 'POST',
+                body: JSON.stringify({ address: walletAddress }),
+                headers: {
+                    'content-type' : 'application/json', 
+                }
+            }
+
+            axios.post(NODE_SERVER_URL + ERC20TOKEN_ENDPOINT, options) // ERC20 endpoint for retrieving information related to holdings
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
@@ -65,7 +62,7 @@ const ERC720HoldingsPage = () => {
                     clearHandler();
                 }
                 else {
-                    if (response.status === 200 && response.data.length === 0){ // If empty, display warning
+                    if (response.status === 200 && response.data.information.length === 0){ // If empty, display warning
                         updateEmptyAlert(true);
                         updateAlert(false);
                         clearHandler();
@@ -77,15 +74,15 @@ const ERC720HoldingsPage = () => {
                         updateERC20Holdings((prevState) => {
                             return {
                                 ...prevState,
-                                information: response.data
+                                information: response.data.information
                             }
                         });
                     }
                 }
-            })
+            });
 
             // Get ERC20Transfers of particular wallet
-            axios.get(URL + walletAddress + ERC20TOKENTRANSFERS_ENDPOINT, options)
+            axios.post(NODE_SERVER_URL + ERC20TOKENTRANSFERS_ENDPOINT, options)
             .then(response => {
                 if (response.status !== 200){
                     updateERC20Transfers((prevState) => {
@@ -96,7 +93,7 @@ const ERC720HoldingsPage = () => {
                     });
                 }
                 else {
-                    if (response.status === 200 && response.data.result.length === 0){ // If empty, keep state to null
+                    if (response.status === 200 && response.data.information.result.length === 0){ // If empty, keep state to null
                         updateERC20Transfers((prevState) => {
                             return {
                                 ...prevState,
@@ -108,12 +105,12 @@ const ERC720HoldingsPage = () => {
                         updateERC20Transfers((prevState) => {
                             return {
                                 ...prevState,
-                                information: response.data.result // If data exists, add it to state
+                                information: response.data.information.result // If data exists, add it to state
                             }
                         });
                     }
                 }
-            })
+            });
         }
         else {
             updateAlert(true); // Set Alert
@@ -142,11 +139,13 @@ const ERC720HoldingsPage = () => {
                         <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { updateAlert(false); updateEmptyAlert(false); updateERC20Holdings((prevState) => { return { ...prevState, information: null }}); updateERC20Transfers((prevState) => { return { ...prevState, information: null }} )}}>Clear</button>
                     </div>
                 </div>
-                { ERC20Holdings.information !== null ? <h5 style={{marginTop: '2rem'}}>ERC720 Token Holdings for Wallet: <b>{walletAddress}</b></h5> : null }
-                <div style={{marginTop: '2rem'}}>
-                    { ERC20Holdings.information === null ? <div /> : <ERC720HoldingsInfoTable data={ERC20Holdings.information} /> }
-                    { ERC20Holdings.information === null ? null : <hr style={{marginTop: '5rem'}} /> }
-                </div>
+                <main role="main">
+                    <div style={{marginTop: '2rem'}}>
+                        { ERC20Holdings.information === null ? <div /> : <h5 style={{marginTop: '2rem'}}>ERC720 Token Holdings for Wallet: <b>{walletAddress}</b></h5> }
+                        { ERC20Holdings.information === null ? <div /> : <ERC720HoldingsInfoTable data={ERC20Holdings.information} /> }
+                    </div>           
+                </main>
+                { ERC20Holdings.information === null ? null : <hr style={{marginTop: '5rem'}} /> }
             </main>
             <main role="main">
                 <div style={{marginTop: '5rem', marginLeft: '5rem'}}>
