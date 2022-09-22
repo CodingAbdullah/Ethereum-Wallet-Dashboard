@@ -5,15 +5,17 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### `Start Here`
 
-All available scripts run under the front end folder of this repository. You must have Node installed on your 
-computer and have access to the npm package manager which will allow you to download external libraries and
-also run, build, and test your react app.
+All available scripts run under the front end folder of this repository. You must have Node installed on your  computer and have access to the npm package manager which will allow you to download external libraries and also run, build, and test your react app.
 
-Additional documentation on the app and its functions will be provided as the project completes.
+For security reasons, many APIs that require Authorization, will be moved to the backend and be made available for frontend usage via node server with connected routes. It is from these routes that API calls will be made to fetch information and send as responses to the frontend.
 
-Running this project locally will require you to acquire separate API keys for running API requests to resources. These include various different sites such as Etherscan, Moralis, and Opensea. Dev's keys are hidden in this project under the .env file which was not committed to GitHub for security reasons. 
+Therefore, this is now a full stack project and it is required to have both the frontend and backend servers running simultaneously on different ports for correct communication and function.
 
-No API keys means failed requests to select API resources. More details on API documentation used, to come as the project nears completion. 
+Running this project locally will require you to acquire separate API keys for running API requests to resources. These include various different sites such as Etherscan, Moralis, and Alchemy. Dev's keys are hidden in this project under the .env file which was not committed to GitHub for security reasons. 
+
+Additional documentation on the app and the API resources used will be provided as the project completes.
+
+No API keys means failed requests to select API resources.
 
 ### `Links`
 
