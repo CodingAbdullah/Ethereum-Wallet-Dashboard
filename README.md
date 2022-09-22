@@ -11,15 +11,15 @@ also run, build, and test your react app.
 
 Additional documentation on the app and its functions will be provided as the project completes.
 
-Running this project locally will require you to acquire separate API keys for running API requests to resources. These include various different sites such as Etherscan, Moralis, and Opensea. Devs' keys are hidden in this project under the .env file which was not committed to GitHub for obvious security reasons. 
+Running this project locally will require you to acquire separate API keys for running API requests to resources. These include various different sites such as Etherscan, Moralis, and Opensea. Dev's keys are hidden in this project under the .env file which was not committed to GitHub for security reasons. 
 
-No API keys means failed requests to select API resources. More details on API documentation used, to come 
-as the project nears completion. 
+No API keys means failed requests to select API resources. More details on API documentation used, to come as the project nears completion. 
 
 ### `Links`
 
-Here are links to the available API resources used in this project:
-[Opensea](https://docs.opensea.io/reference/api-overview)
+Here are links to the available API resources used in this project. NOTE: Opensea API resources are NOT available at this time as they are not issuing API keys. Hence, an alternate platform, Alchemy will be used instead.
+
+[Alchemy](https://docs.alchemy.com/reference/)
 [Etherscan](https://etherscan.io/apis)
 [Moralis](https://docs.moralis.io/)
 [Transpose](https://transpose.io/)
