@@ -5,21 +5,23 @@ const addressENSRouter = require("./Routes/AddressENSRouter");
 const ENSTransferRouter = require("./Routes/ENSTransferRouter");
 const ERC720CollectionRouter = require("./Routes/ERC720CollectionRouter");
 const ERC720HoldingsRouter = require("./Routes/ERC720HoldingsRouter");
+const ERC721CollectionRouter = require('./Routes/ERC721CollectionRouter');
 const ERC721LookupRouter = require("./Routes/ERC721LookupRouter");
 
-const app = express(); // Sign up node server
+const app = express(); // Spin up a node server
 
 app.listen(process.env.PORT || 8080, () => {
     console.log("Listening to PORT " + process.env.PORT || 8080); // Set listening port. If not available, default to 8080
 });
 
 // Set up req-res structure
-app.use(express.json({ extended: false}));
-app.use(express.urlencoded({ extended: false}));
+app.use(express.json({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
 
-app.use(cors()); // Enable cors;
+app.use(cors()); // Enable cors
 app.use("/", addressENSRouter); // Enable API resource to server
 app.use("/", ENSTransferRouter);
-app.use("/", ERC721LookupRouter);
 app.use("/", ERC720CollectionRouter);
 app.use("/", ERC720HoldingsRouter);
+app.use("/", ERC721CollectionRouter);
+app.use("/", ERC721LookupRouter);

@@ -13,11 +13,11 @@ const ERC721CollectionPage = () => {
     const [tokenAddress, updateTokenAddress] = useState("");
     const [setAlert, updateAlert] = useState(false);
 
-    const MORALIS_URL = 'https://deep-index.moralis.io/api/v2/nft'; // API endpoints for NFT Analytics
-    const LOWESTPRICE_ENDPOINT = '/lowestprice';
-    const TRANSFERS_ENDPOINT = '/transfers';
-    const OWNERS_ENDPOINT = '/owners';
-    const TRADES_ENDPOINT = '/trades';
+    const NODE_SERVER_URL = 'http://localhost:5000'; // Node Server for API end points
+    const LOWESTPRICE_ENDPOINT = '/erc721-collection-lowest-sale';
+    const TRANSFERS_ENDPOINT = '/erc721-collection-transfers';
+    const OWNERS_ENDPOINT = '/erc721-collection-owners';
+    const TRADES_ENDPOINT = '/erc721-collection-sales';
 
     const navigate = useNavigate();
 
@@ -87,28 +87,26 @@ const ERC721CollectionPage = () => {
     const formHandler = e => {
         e.preventDefault();
 
-        // Set options for fetch and flight responses
-        const options = {
-            method: 'GET',
-            mode: 'no-cors',
-            headers: {
-                'content-type' : 'application/json', 
-                'accept': 'application/json',
-                'access-control-allow-origin': '*',
-                'X-API-KEY' : process.env.REACT_APP_MORALIS_API_KEY // Transpose API key hidden 
-            }
-        }
-
         if (tokenAddress.length === 42 && tokenAddress.substring(0, 2) === '0x'){
+
+            // Set options for fetch and flight responses
+            const options = {
+                method: 'POST',
+                body: JSON.stringify({ address: tokenAddress }),
+                headers: {
+                    'content-type' : 'application/json', 
+                }
+            }
+
             // Collection Data
-            axios.get(MORALIS_URL + "/" + tokenAddress, options) // NFT endpoint for retrieving information related to collection
+            axios.post(NODE_SERVER_URL + "/erc721-collection-data", options) // NFT endpoint for retrieving information related to collection
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
                     alertHandler();
                 }
                 else {
-                    if (response.status === 200 && response.data.total === 0){ // If empty, clear data
+                    if (response.status === 200 && response.data.information.total === 0){ // If empty, clear data
                         alertHandler();
                     }
                     else {
@@ -116,7 +114,7 @@ const ERC721CollectionPage = () => {
                         updateNFTData((prevState) => {
                             return {
                                 ...prevState,
-                                information: response.data
+                                information: response.data.information
                             }
                         });
                     }
@@ -124,18 +122,18 @@ const ERC721CollectionPage = () => {
             })
             .catch(() => {
                 alertHandler();
-                setAlert(true);
+                updateAlert(true);
             });
 
             // Lowest Price Data
-            axios.get(MORALIS_URL + "/" + tokenAddress + LOWESTPRICE_ENDPOINT, options) // NFT endpoint for retrieving information related to collection
+            axios.post(NODE_SERVER_URL + LOWESTPRICE_ENDPOINT, options) // NFT endpoint for retrieving information related to collection
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
                     alertHandler();
                 }
                 else {
-                    if (response.status === 200 && Object.keys(response).length === 0){ // If empty, clear
+                    if (response.status === 200 && Object.keys(response.information).length === 0){ // If empty, clear
                         alertHandler();
                     }
                     else {
@@ -143,7 +141,7 @@ const ERC721CollectionPage = () => {
                         updateNFTLowestPrice((prevState) => {
                             return {
                                 ...prevState,
-                                information: response.data
+                                information: response.data.information
                             }
                         });
                     }
@@ -151,18 +149,18 @@ const ERC721CollectionPage = () => {
             })
             .catch(() => {
                 alertHandler();
-                setAlert(true);
+                updateAlert(true);
             });
 
-            // NFT Transfers Data
-            axios.get(MORALIS_URL + "/" + tokenAddress + TRANSFERS_ENDPOINT, options) // NFT endpoint for retrieving information related to collection
+            // Transfers Data
+            axios.post(NODE_SERVER_URL + TRANSFERS_ENDPOINT, options) // NFT endpoint for retrieving information related to collection
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
                     alertHandler();
                 }
                 else {
-                    if (response.status === 200 && response.data.total === 0){ // If empty, clear data
+                    if (response.status === 200 && response.data.information.total === 0){ // If empty, clear data
                         alertHandler();
                     }
                     else {
@@ -170,7 +168,7 @@ const ERC721CollectionPage = () => {
                         updateNFTTransfers((prevState) => {
                             return {
                                 ...prevState,
-                                information: response.data
+                                information: response.data.information
                             }
                         });
                     }
@@ -178,18 +176,18 @@ const ERC721CollectionPage = () => {
             })
             .catch(() => {
                 alertHandler();
-                setAlert(true);
+                updateAlert(true);
             });
 
             // Owners Data
-            axios.get(MORALIS_URL + "/" + tokenAddress + OWNERS_ENDPOINT, options) // NFT endpoint for retrieving information related to collection
+            axios.post(NODE_SERVER_URL + OWNERS_ENDPOINT, options) // NFT endpoint for retrieving information related to collection
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
                     alertHandler();
                 }
                 else {
-                    if (response.status === 200 && response.data.total === 0){ // If empty, clear data
+                    if (response.status === 200 && response.data.information.total === 0){ // If empty, clear data
                         alertHandler();
                     }
                     else {
@@ -197,7 +195,7 @@ const ERC721CollectionPage = () => {
                         updateNFTOwners((prevState) => {
                             return {
                                 ...prevState,
-                                information: response.data
+                                information: response.data.information
                             }
                         });
                     }
@@ -205,18 +203,18 @@ const ERC721CollectionPage = () => {
             })
             .catch(() => {
                 alertHandler();
-                setAlert(true);
+                updateAlert(true);
             });
 
             // Trades Data
-            axios.get(MORALIS_URL + "/" + tokenAddress + TRADES_ENDPOINT, options) // NFT endpoint for retrieving information related to collection
+            axios.post(NODE_SERVER_URL + TRADES_ENDPOINT, options) // NFT endpoint for retrieving information related to collection
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
                     alertHandler();
                 }
                 else {
-                    if (response.status === 200 && response.data.total === 0){ // If empty, clear data
+                    if (response.status === 200 && response.data.information.total === 0){ // If empty, clear data
                         alertHandler();
                     }
                     else {
@@ -224,7 +222,7 @@ const ERC721CollectionPage = () => {
                         updateNFTTrades((prevState) => {
                             return {
                                 ...prevState,
-                                information: response.data
+                                information: response.data.information
                             }
                         });
                     }
@@ -232,7 +230,7 @@ const ERC721CollectionPage = () => {
             })
             .catch(() => {
                 alertHandler();
-                setAlert(true);
+                updateAlert(true);
             });            
         }
         else {
