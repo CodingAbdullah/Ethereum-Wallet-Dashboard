@@ -22,8 +22,9 @@ const ERC721LookupsPage = () => {
     
     const navigate = useNavigate();
 
-    const URL = 'https://deep-index.moralis.io/api/v2/'; // API endpoints for NFT lookup
-    const LOOKUP_ENDPOINT = 'nft/';
+    const NODE_SERVER_URL = 'http://localhost:5000'; // API endpoints for NFT lookup
+    const LOOKUP_ENDPOINT = '/erc721-lookup-by-id';
+    const TRANSFER_LOOKUP_ENDPOINT = '/erc721-lookup-transfer-by-id';
 
     const clearHandler = () => {
         updateTokenData((prevState) => { // Reinstate errors if correct information is not entered
@@ -46,18 +47,15 @@ const ERC721LookupsPage = () => {
         e.preventDefault(); // Prevent Default Behaviour
 
         const options = {
-            method: 'GET',
-            mode: 'no-cors',
+            method: 'POST',
+            body: JSON.stringify({ address: tokenAddress, id: tokenId }),
             headers: {
                 'content-type' : 'application/json', 
-                'accept': 'application/json',
-                'access-control-allow-origin': '*',
-                'X-API-KEY' : process.env.REACT_APP_MORALIS_API_KEY // Moralis API key hidden 
             }
         }
 
         if (tokenAddress.length === 42 && tokenAddress.substring(0, 2) === '0x'){
-            axios.get(URL + LOOKUP_ENDPOINT + tokenAddress + "/" + tokenId + "?chain=eth&format=decimal", options)
+            axios.post(NODE_SERVER_URL + LOOKUP_ENDPOINT , options)
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
@@ -68,13 +66,13 @@ const ERC721LookupsPage = () => {
                     updateTokenData((prevState) => {
                         return {
                              ...prevState,
-                            information: response.data
+                            information: response.data.information
                         }
                     });
                 }
             })
 
-            axios.get(URL + LOOKUP_ENDPOINT + tokenAddress + "/" + tokenId + "/transfers?chain=eth&format=decimal", options)
+            axios.post(NODE_SERVER_URL + TRANSFER_LOOKUP_ENDPOINT, options)
             .then(response => {
                 if (response.status !== 200){
                     updateTokenTransfers((prevState) => {
@@ -85,7 +83,7 @@ const ERC721LookupsPage = () => {
                     })
                 }
                 else {
-                    if (response.status === 200 && response.data.result.length === 0){ // If empty, keep state to null
+                    if (response.status === 200 && response.data.information.result.length === 0){ // If empty, keep state to null
                         updateTokenTransfers((prevState) => {
                             return {
                                 ...prevState,
@@ -97,7 +95,7 @@ const ERC721LookupsPage = () => {
                         updateTokenTransfers((prevState) => {
                             return {
                                 ...prevState,
-                                information: response.data.result // If data exists, add it to state
+                                information: response.data.information.result // If data exists, add it to state
                             }
                         });
                     }
