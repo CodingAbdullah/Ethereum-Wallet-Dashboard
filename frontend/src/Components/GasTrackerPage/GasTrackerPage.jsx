@@ -6,7 +6,8 @@ import GasBaseFeeCard from '../GasBaseFeeCard/GasBaseFeeCard';
 import GasBlockPriceCard from '../GasBlockPriceCard/GasBlockPriceCard';
 
 const GasTrackerPage = () => {
-    const BLOCKNATIVE_URL = 'https://api.blocknative.com/gasprices/blockprices';
+    const NODE_SERVER_URL = 'http://localhost:5000';
+    const GAS_TRACK_ENDPOINT = '/gas-track'
 
     const navigate = useNavigate();
 
@@ -26,21 +27,20 @@ const GasTrackerPage = () => {
     useEffect(() => {
         const options = {
             method: 'GET',
-            mode: 'no-cors',
             headers: {
                 'content-type' : 'application/json', 
-                'accept': 'application/json',
-                'Authorization' : process.env.REACT_APP_BLK_API_KEY // BlockNative API key hidden 
+                'accept': 'application/json'
             }
         };
 
-       axios.get(BLOCKNATIVE_URL, options)
+       axios.get(NODE_SERVER_URL + GAS_TRACK_ENDPOINT, options)
        .then(res => {
+            console.log(res);
             if (res.status === 200){
                 updateGasInfo((prevState) => { // If successful, update information
                     return {
                         ...prevState,
-                        information: res.data
+                        information: res.data.information
                     }
                 });
             }
