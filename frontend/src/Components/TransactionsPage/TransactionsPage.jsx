@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import Alert from '../Alert/Alert';
 import TransactionsInfoTable from '../TransactionsInfoTable/TransactionsInfoTable';
+import axios from 'axios';
 
 const Transactions = () => {
     const [amount, updateAmount] = useState(0.00);
-    const [validAddress, updateValidity] = useState(null);
+    const [emptyAlert, updateEmptyAlert] = useState(false);
     const [address, updateAddress] = useState("");
+
     const [ethPrice, updateETHPrice] = useState({ 
         information: null // ETH Price Tracker
     }); 
@@ -14,44 +16,80 @@ const Transactions = () => {
         information: null // Transactions
     }); 
     
+    // Endpoints to be used
+    const NODE_SERVER_URL = "http://localhost:5000";
+    const TRANSACTION_BALANCE_ENDPOINT = '/address-transaction-amount';
+    const TRANSACTION_HISTORY_ENDPOINT = '/address-transaction-history';
+
+    const ETHPRICE_URL = "https://api.coingecko.com/api/v3";
+    const PRICE_ENDPOINT = "/simple/price";
+    const QUERY_STRING_ETHEREUM = "?ids=ethereum&vs_currencies=usd&include_24hr_change=true";
+
     const navigate = useNavigate();
 
     useEffect(() => {
-        const URL = "https://api.etherscan.io/api";
-        const mod = "account";
-        const action = "balance";
         const addr = localStorage.getItem('walletAddress');
-        const tag = "latest";
-        const API_KEY = process.env.REACT_APP_ETHERSCAN_API_KEY; // Custom API KEY generated and hidden under .env file
-        const startBlock = 0;
-        const endBlock = 99999999;
-        const page = 1;
-        const sort = 'desc';
         updateAddress(addr);
+
+        // Redirect if invalid wallet is asked to be entered again as it is removed from system
+        if ((addr === null) || (addr.length !== 42) || (addr.substring(0, 2) !== '0x')){
+            navigate('/');
+        }
+
+        const options = {
+            method: 'POST',
+            body: JSON.stringify({ address : addr }),
+            headers: {
+                'content-type': 'application/json'
+            }
+        };
     
         // ETH balance of a particular account, run checks to see validity
-        fetch(URL + "?module=" + mod + "&action=" + action + "&address=" + addr + "&tag=" + tag + "&apikey=" + API_KEY)
-        .then(response => response.json())
-        .then(res => {
-            if (res.message === 'OK'){
-                updateAmount(res.result);
-                updateValidity(true);
+        axios.post(NODE_SERVER_URL + TRANSACTION_BALANCE_ENDPOINT, options)
+        .then(response => {
+            // Display messages according to order of response
+            if (response.data.information.message === 'OK' && response.status === 200){
+                updateAmount(response.data.information.result);
+                updateEmptyAlert(false);
+
+                // Transactions of a particular account, IF the address of the particular one entered is valid
+                axios.post(NODE_SERVER_URL + TRANSACTION_HISTORY_ENDPOINT, options)
+                .then(response => {
+                    if (response.status !== 200){
+                        updateEmptyAlert(true);
+                        localStorage.clear();                
+                    }
+                    else if (response.data.information.message === 'OK' && response.status === 200){
+                        updateTransactions((prevState) => {
+                            return {
+                                ...prevState,
+                                information: response.data.information
+                            }
+                        });
+                        updateEmptyAlert(false);
+                    }
+                    else if (response.data.information.message === 'No transactions found' && response.status === 200){
+                        updateEmptyAlert(true);
+                        localStorage.clear();                
+                    }
+                })
+                .catch(() => {
+                    updateEmptyAlert(true); // Message was not ok, therefore ask to redirect
+                    localStorage.clear();                
+                });
             }
             else {
-                updateValidity(false); // Message was not ok, therefore ask to redirect
+                updateEmptyAlert(true);
                 localStorage.clear();                
             }
         })
         .catch(() => {
-            updateValidity(false); // Message was not ok, therefore ask to redirect
+            updateEmptyAlert(true);
+            localStorage.clear();                
         });
 
         // ETH Price
-        const ETHPRICE_URL = "https://api.coingecko.com/api/v3";
-        const API_ENDPOINT = "/simple/price";
-        const QUERY_STRING_ETHEREUM = "?ids=ethereum&vs_currencies=usd&include_24hr_change=true";
-
-        fetch(ETHPRICE_URL + API_ENDPOINT + QUERY_STRING_ETHEREUM)
+        fetch(ETHPRICE_URL + PRICE_ENDPOINT + QUERY_STRING_ETHEREUM)
         .then(response => response.json())
         .then(res => {
             if (res.ethereum !== undefined) {
@@ -62,57 +100,39 @@ const Transactions = () => {
                     }
                 });
             }
-        })
-        .catch(() => {
-            updateValidity(false); // Message was not ok, therefore ask to redirect
         });
-
-        // Transactions of a particular account, IF the address of the particular one entered is valid
-        fetch(URL + '?module=' + mod + "&action=txlist&address=" + addr + "&startblock=" + startBlock 
-            + '&endblock=' + endBlock + "&page=" + page + "&offset=" + 1000 + "&sort=" + sort + "&apikey=" + API_KEY)
-            .then(response => response.json())
-            .then(res => {
-                if (res.message === 'OK'){
-                    updateTransactions((prevState) => {
-                        return {
-                            ...prevState,
-                            information: res
-                        }
-                    });
-                }
-                else {
-                    updateValidity(false); // Message was not ok, therefore ask to redirect
-                }
-            })
-            .catch(() => {
-                updateValidity(false); // Message was not ok, therefore ask to redirect
-            });
     }, []);
-
-    if (validAddress === null || address === '' || ethPrice === {} || transactions.information === null) {
-        return <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">Loading...</div>
-    }
-    else if (validAddress === false || address === ''){
+    
+    // Conditionally render page based on alerts when wallet is either empty or invalid
+    if ( emptyAlert ) {
         return (
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                <Alert type="danger" />
-                <button class="btn btn-success" onClick={() => { navigate("/"); localStorage.clear(); }}>Go Home</button>
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Transactions</h1>
+                </div>
+                <Alert type='warning' />
+                <button className='btn btn-success' onClick={() => navigate("/")} style={{ marginTop: '3rem' }}>Go Home</button>
             </main>
         )
+    }
+    else if ( address === '' || ethPrice === {} || transactions.information === null ) {
+        return <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">Loading...</div>
     }
     else {
         return ( 
             // Adding items here for now, later, all will be styled
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                <h3 style={{marginTop: '1.5rem'}}>{"Account: " + address}</h3>
-                <h5>{"ETH Balance: " + (amount*(1/1000000000000000000)) + " ETH (@ $" + ethPrice.information.ethereum.usd.toFixed(2) + " USD/ETH)"}</h5>
-                <h6>{"Amount in USD: $" + ((amount*(1/1000000000000000000))*(ethPrice.information.ethereum.usd)).toFixed(2) + " USD"}</h6>
-                <h2 style={{marginTop: '2.0rem'}}>Transactions</h2>
-                <h6>Top 1000 or maximum done by wallet</h6>
-                <div style={{marginLeft: '75px'}}>
-                    { transactions === {} ? <div /> : <TransactionsInfoTable walletAddress={address} data={transactions.information.result} /> }
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Transactions</h1>
                 </div>
-                <button style={{marginTop: '1.5rem'}} class="btn btn-success" onClick={() => { navigate("/"); localStorage.removeItem('walletAddress'); }}>Go Back</button>
+                <h3 style={{ marginTop: '1.5rem' }}>{ "Account: " + address }</h3>
+                <h5>{ "ETH Balance: " + (amount*(1/1000000000000000000)) + " ETH (@ $" + ethPrice.information.ethereum.usd.toFixed(2) + " USD/ETH)" }</h5>
+                <h6>{ "Amount in USD: $" + ((amount*(1/1000000000000000000))*(ethPrice.information.ethereum.usd)).toFixed(2) + " USD" }</h6>
+                <h6 style={{ marginTop: '3rem' }}>Top 1000 or maximum done by wallet</h6>
+                <div style={{ marginLeft: '75px' }}>
+                    { transactions === {} ? <div /> : <TransactionsInfoTable walletAddress={address} data={ transactions.information.result } /> }
+                </div>
+                <button style={{ marginTop: '1.5rem' }} class="btn btn-success" onClick={() => { navigate("/"); localStorage.removeItem('walletAddress'); }}>Go Back</button>
             </main>
         )
     }

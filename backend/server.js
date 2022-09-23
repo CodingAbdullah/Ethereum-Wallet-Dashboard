@@ -9,6 +9,7 @@ const ERC721CollectionRouter = require('./Routes/ERC721CollectionRouter');
 const ERC721LookupRouter = require("./Routes/ERC721LookupRouter");
 const ERC721HoldingsRouter = require('./Routes/ERC721HoldingsRouter');
 const GasTrackerRouter = require('./Routes/GasTrackerRouter');
+const TransactionsRouter = require('./Routes/TransactionsRouter');
 
 const app = express(); // Spin up a node server
 
@@ -29,3 +30,4 @@ app.use("/", ERC721CollectionRouter);
 app.use("/", ERC721LookupRouter);
 app.use("/", ERC721HoldingsRouter);
 app.use("/", GasTrackerRouter);
+app.use("/", TransactionsRouter);
