@@ -96,5 +96,19 @@ exports.getERC721CollectionSales = (req, res) => {
 
 exports.getERC721CollectionFloorPrice = (req, res) => {
     const { address } = JSON.parse(req.body.body);
+    
+    sdk.server('https://eth-mainnet.g.alchemy.com/nft/v2');
+    sdk.getFloorPrice({ apiKey: process.MORALIS_API_KEY , contractAddress: address })
+    .then(response => res.status(200).json({ information: response }))
+    .catch(err => res.status(400).json({ information: err }));
 
+}
+
+exports.getERC721CollectionAttributes = (req, res) => {
+    const { address } = JSON.parse(req.body.body);
+
+    sdk.server('https://eth-mainnet.g.alchemy.com/nft/v2');
+    sdk.summarizeNFTAttributes({ contractAddress: address, apiKey: process.env.MORALIS_API_KEY })
+    .then(response => res.status(200).json({ information: response }))
+    .catch(err => res.status(400).json({ information: err }));
 }
