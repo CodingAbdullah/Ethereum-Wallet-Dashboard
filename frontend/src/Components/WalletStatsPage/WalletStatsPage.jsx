@@ -33,21 +33,16 @@ const WalletStats = () => {
         information: null
     });
 
-    const MORALIS_URL = "https://deep-index.moralis.io/api/v2/";
-    const ERC20TOKEN_ENDPOINT = '/erc20?chain=eth';
-    const NFT_ENDPOINT = '/nft?chain=eth&format=decimal';
+    // Endpoints and URLs
+    const NODE_SERVER_URL = 'http://localhost:5000';
     const ETHPRICE_URL = "https://api.coingecko.com/api/v3";
-    const API_ENDPOINT = "/simple/price";
     const QUERY_STRING_ETHEREUM = "?ids=ethereum&vs_currencies=usd&include_24hr_change=true";
-    const ETHERSCAN_URL = "https://api.etherscan.io/api";
-    const mod = "account";
-    const action = "balance";
-    const tag = "latest";
-    const API_KEY = process.env.REACT_APP_ETHERSCAN_API_KEY; // Custom API KEY generated and hidden under .env file
-    const startBlock = 0;
-    const endBlock = 99999999;
-    const page = 1;
-    const sort = 'desc';
+
+    const TRANSACTION_DETAIL_ENDPOINT = "/address-transaction-details";
+    const ADDRESS_ERC20HOLDINGS_ENDPOINT = '/address-erc20-holdings';
+    const API_ENDPOINT = "/simple/price";
+    const ADDRESS_ERC721HOLDINGS_ENDPOINT = "/address-erc721-holdings";
+    const ADDRESS_DETAILS_ENDPOINT = "/address-details";
 
     const alertHandler = () => { // Clear data upon error
         updateAmount(-1);
@@ -91,23 +86,19 @@ const WalletStats = () => {
 
         // Set options for fetch and flight responses
         const options = {
-            method: 'GET',
-            mode: 'no-cors',
+            method: 'POST',
+            body: JSON.stringify({ address: walletAddress }),
             headers: {
-                'content-type' : 'application/json', 
-                'accept': 'application/json',
-                'access-control-allow-origin': '*',
-                'X-API-KEY' : process.env.REACT_APP_MORALIS_API_KEY // Moralis API key hidden 
+                'content-type' : 'application/json' 
             }
         }
 
         // Gather wallet analytics using API resources and running checks to see if wallet address is valid
         if (walletAddress.length === 42 && walletAddress.substring(0, 2) === '0x'){
-            fetch(ETHERSCAN_URL + "?module=" + mod + "&action=" + action + "&address=" + walletAddress + "&tag=" + tag + "&apikey=" + API_KEY)
-            .then(response => response.json())
+            axios.post(NODE_SERVER_URL + ADDRESS_DETAILS_ENDPOINT, options)
             .then(res => {
-                if (res.message === 'OK'){
-                    updateAmount(res.result);
+                if (res.data.information.message === 'OK'){
+                    updateAmount(res.data.information.result);
                     updateAlert(false);
                 }
                 else {
@@ -135,15 +126,13 @@ const WalletStats = () => {
             });
 
             // Transactions of a particular account, if the address of the particular one entered is valid
-            fetch(ETHERSCAN_URL + '?module=' + mod + "&action=txlist&address=" + walletAddress + "&startblock=" + startBlock 
-            + '&endblock=' + endBlock + "&page=" + page + "&offset=" + 1000 + "&sort=" + sort + "&apikey=" + API_KEY)
-            .then(response => response.json())
+            axios.post(NODE_SERVER_URL + TRANSACTION_DETAIL_ENDPOINT , options)
             .then(res => {
-                if (res.message === 'OK'){
+                if (res.data.information.message === 'OK'){
                     updateTransactions((prevState) => { // Get Transaction data 
                         return {
                             ...prevState,
-                            information: res
+                            information: res.data.information
                         }
                     });
                 }
@@ -152,7 +141,7 @@ const WalletStats = () => {
                     updateTransactionAlert(false);
                 }
 
-                if (res.result.length === 0) {
+                if (res.data.information.result.length === 0) {
                     updateTransactionAlert(true);
                 }
                 else {
@@ -161,7 +150,7 @@ const WalletStats = () => {
             });
 
             // ERC20 endpoint for retrieving information related to holdings
-            axios.get(MORALIS_URL + walletAddress + ERC20TOKEN_ENDPOINT, options)
+            axios.post(NODE_SERVER_URL + ADDRESS_ERC20HOLDINGS_ENDPOINT, options)
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
@@ -169,7 +158,7 @@ const WalletStats = () => {
                     alertHandler();
                 }
                 else {
-                    if (response.status === 200 && response.data.length === 0){ // If empty, display warning
+                    if (response.status === 200 && response.data.information.length === 0){ // If empty, display warning
                         updateERC20Alert(true);
                         updateAlert(false);
                         updateERC20Holdings((prevState) => {
@@ -185,15 +174,15 @@ const WalletStats = () => {
                         updateERC20Holdings((prevState) => {
                             return {
                                 ...prevState,
-                                information: response.data
+                                information: response.data.information
                             }
                         });
                     }
                 }
             });
 
-            // NFT endpoint for retrieving information related to holdings
-            axios.get(MORALIS_URL + walletAddress + NFT_ENDPOINT, options)
+            // ERC721 endpoint for retrieving information related to holdings
+            axios.post(NODE_SERVER_URL + ADDRESS_ERC721HOLDINGS_ENDPOINT, options)
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
@@ -201,7 +190,7 @@ const WalletStats = () => {
                     alertHandler();
                 }
                 else {
-                    if (response.status === 200 && response.data.total === 0){ // If empty, display warning
+                    if (response.status === 200 && response.data.information.result.length === 0){ // If empty, display warning
                         updateERC721Alert(true);
                         updateAlert(false);
                         updateERC721Holdings((prevState) => {
@@ -217,7 +206,7 @@ const WalletStats = () => {
                         updateERC721Holdings((prevState) => {
                             return {
                                 ...prevState,
-                                information: response.data
+                                information: response.data.information
                             }
                         });
                     }
@@ -247,43 +236,43 @@ const WalletStats = () => {
                             <form onSubmit={formHandler}>
                                 <input onChange={e => updateWalletAddress(e.target.value)} type='text' placeholder='Enter Address Here'></input>
                                 <br />
-                                <button style={{marginTop: '2rem'}} type='submit' class='btn btn-success'>Submit</button>
+                                <button style={{ marginTop: '2rem' }} type='submit' class='btn btn-success'>Submit</button>
                             </form>
-                            <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
-                            <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={clearHandler}>Clear</button> 
+                            <button style={{ marginTop: '2rem', display: 'inline' }} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
+                            <button style={{ marginTop: '2rem', marginLeft: '2rem' }} class='btn btn-warning' onClick={clearHandler}>Clear</button> 
                         </div>
                     </div>  
                 { amount < 0 ? null : 
-                    <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <div style={{ marginTop: '2rem' }} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h3 class="h3"> Balance Information</h3>
                     </div> 
                 }  
                 { amount >= 0 ? <h4 style={{marginTop: '1.5rem'}}><b>{"Account: " + walletAddress}</b></h4> : (walletAddress.length !== 0 && amount >= 0 ? <Alert type="warning" /> : null )}
-                <h5><b>{ETHPrice.information !== null ? "ETH Balance: " + (amount*(1/1000000000000000000)) + " ETH (@ $" + ETHPrice.information.ethereum.usd.toFixed(2) + " USD/ETH)" : null}</b></h5>
-                <h6><b>{ETHPrice.information !== null ? "Amount in USD: $" + ((amount*(1/1000000000000000000))*(ETHPrice.information.ethereum.usd)).toFixed(2) + " USD" : null}</b></h6>
+                <h5><b>{ ETHPrice.information !== null ? "ETH Balance: " + (amount*(1/1000000000000000000)) + " ETH (@ $" + ETHPrice.information.ethereum.usd.toFixed(2) + " USD/ETH)" : null }</b></h5>
+                <h6><b>{ ETHPrice.information !== null ? "Amount in USD: $" + ((amount*(1/1000000000000000000))*(ETHPrice.information.ethereum.usd)).toFixed(2) + " USD" : null }</b></h6>
                 { transactions.information !== null  || emptyTransactionAlert ? 
-                    <div style={{marginTop: '3rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <div style={{ marginTop: '3rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h3 class="h3">Transactions (Up to 1000)</h3>
                     </div> : null 
                 }
                 <div>
-                    { emptyTransactionAlert && !setAlert ? <Alert type="warning" /> : ( transactions.information !== null ? <div style={{marginLeft: '5rem'}}><TransactionsInfoTable walletAddress={walletAddress} data={transactions.information.result} /></div> : null ) }
+                    { emptyTransactionAlert && !setAlert ? <Alert type="warning" /> : ( transactions.information !== null ? <div style={{ marginLeft: '5rem' }}><TransactionsInfoTable walletAddress={ walletAddress } data={ transactions.information.result } /></div> : null ) }
                 </div>
                 { ERC20Holdings.information !== null || emptyERC20Alert ? 
-                    <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <div style={{ marginTop: '2rem' }} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h3 class="h3">ERC20 Holdings</h3>
                     </div> : null 
                 }
-                <div style={{marginTop: '2rem'}}>
-                    { ERC20Holdings.information === null && emptyERC20Alert ? <Alert type="warning" /> : ( ERC20Holdings.information !== null ? <div style={{marginLeft: '10rem'}}><ERC720HoldingsInfoTable data={ERC20Holdings.information} /></div>  : null ) }
+                <div style={{ marginTop: '2rem' }}>
+                    { ERC20Holdings.information === null && emptyERC20Alert ? <Alert type="warning" /> : ( ERC20Holdings.information !== null ? <div style={{ marginLeft: '10rem' }}><ERC720HoldingsInfoTable data={ ERC20Holdings.information } /></div>  : null ) }
                 </div>
                 { ERC721Holdings.information !== null || emptyERC721Alert ? 
-                    <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <div style={{ marginTop: '2rem' }} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h3 class="h3">ERC721 Holdings</h3>
                     </div> : null 
                 }
-                <div style={{marginTop: '2rem'}}>
-                    { ERC721Holdings.information === null  && emptyERC721Alert ? <Alert type='warning' /> : ( ERC721Holdings.information !== null ? <div style={{marginLeft: '18.5rem'}}><ERC721HoldingsInfoTable data={ERC721Holdings.information} /></div> : null ) }
+                <div style={{ marginTop: '2rem' }}>
+                    { ERC721Holdings.information === null  && emptyERC721Alert ? <Alert type='warning' /> : ( ERC721Holdings.information !== null ? <div style={{ marginLeft: '18.5rem' }}><ERC721HoldingsInfoTable data={ ERC721Holdings.information } /></div> : null ) }
                 </div>
             </main>
         </div>
