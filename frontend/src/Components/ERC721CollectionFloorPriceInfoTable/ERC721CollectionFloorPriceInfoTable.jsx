@@ -3,14 +3,6 @@ import React from 'react';
 const ERC721CollectionFloorPriceInfoTable = (props) => {
     const { data } = props;
     const market_places = Object.keys(data.information); // Extract marketplace keys from data object
-//    market_places = ['opensea', 'lookrare'];
-    /* data: { 
-            information: { 
-                opensea:   {}, 
-                looksrare: {} 
-            } 
-        }
-    */
 
     let marketPlaceValues = []; // Map marketplace values into key-value pairs
 
@@ -39,8 +31,8 @@ const ERC721CollectionFloorPriceInfoTable = (props) => {
                                     <td style={{border: '1px solid black'}}>{Object.keys(marketplace)[0]}</td>
                                     <td style={{border: '1px solid black'}}>{marketplace[Object.keys(marketplace)[0]].floorPrice}</td>
                                     <td style={{border: '1px solid black'}}>{marketplace[Object.keys(marketplace)[0]].priceCurrency}</td>
-                                    <td style={{border: '1px solid black'}}>{marketplace[Object.keys(marketplace)[0]].retrievedAt.split("T")[0] + ' - ' + (marketplace[Object.keys(marketplace)[0]].retrievedAt).split("T")[1].split("Z")[0].split(".")[0]}</td>
-                                    <td style={{border: '1px solid black'}}>{marketplace[Object.keys(marketplace)[0]].collectionUrl}</td>
+                                    <td style={{border: '1px solid black'}}>{marketplace[Object.keys(marketplace)[0]].retrievedAt.split("T")[0] + ' - ' + (marketplace[Object.keys(marketplace)[0]].retrievedAt).split("T")[1].split(".")[0]}</td>
+                                    <td style={{border: '1px solid black'}}><a href={marketplace[Object.keys(marketplace)[0]].collectionUrl} target="_blank" rel="noreferrer" >{marketplace[Object.keys(marketplace)[0]].collectionUrl}</a></td>
                                 </tr>
                             )
                         })
