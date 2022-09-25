@@ -7,6 +7,7 @@ import ERC721CollectionDataInfoTable from '../ERC721CollectionDataInfoTable/ERC7
 import ERC721CollectionTransferInfoTable from '../ERC721CollectionTransferInfoTable/ERC721CollectionTransferInfoTable';
 import ERC721CollectionOwnerInfoTable from '../ERC721CollectionOwnerInfoTable/ERC721CollectionOwnerInfoTable';
 import ERC721CollectionSalesInfoTable from '../ERC721CollectionSalesInfoTable/ERC721CollectionSalesInfoTable';
+import ERC721CollectionFloorPriceInfoTable from '../ERC721CollectionFloorPriceInfoTable/ERC721CollectionFloorPriceInfoTable';
 
 const ERC721CollectionPage = () => {
 
@@ -18,10 +19,16 @@ const ERC721CollectionPage = () => {
     const TRANSFERS_ENDPOINT = '/erc721-collection-transfers';
     const OWNERS_ENDPOINT = '/erc721-collection-owners';
     const TRADES_ENDPOINT = '/erc721-collection-sales';
+    const FLOOR_PRICE_ENDPOINT = '/erc721-collection-floor-price';
+    const COLLECTION_ATTRIBUTES_ENDPOINT = '/erc721-collection-attributes'; 
 
     const navigate = useNavigate();
 
     const [NFTData, updateNFTData] = useState({
+        information: null
+    });
+
+    const [NFTFloorPrice, updateNFTFloorPrice] = useState({
         information: null
     });
 
@@ -71,6 +78,13 @@ const ERC721CollectionPage = () => {
         });
 
         updateNFTLowestPrice((prevState) => {
+            return {
+                ...prevState,
+                information: null
+            }
+        });
+
+        updateNFTFloorPrice((prevState) => {
             return {
                 ...prevState,
                 information: null
@@ -231,7 +245,28 @@ const ERC721CollectionPage = () => {
             .catch(() => {
                 alertHandler();
                 updateAlert(true);
-            });            
+            });    
+            
+            // Floor Price Data
+            axios.post(NODE_SERVER_URL + FLOOR_PRICE_ENDPOINT, options)
+            .then(response => {
+                if (response.status !== 200){
+                    updateAlert(true);
+                    alertHandler();
+                }
+                else {
+                    updateNFTFloorPrice((prevState) => {
+                        return {
+                            ...prevState,
+                            information: response.data
+                        }
+                    });
+                }
+            })
+            .catch(() => {
+                alertHandler();
+                updateAlert(true);
+            })
         }
         else {
             updateAlert(true); // Set Alert
@@ -243,7 +278,7 @@ const ERC721CollectionPage = () => {
             <div className="erc721-collection-page">
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">ERC721 Analytics</h1>
+                        <h1 class="h2">ERC721 Collection Analytics</h1>
                     </div>
                     { setAlert ? <Alert type='danger' /> : null }
                     <div class="jumbotron">
@@ -271,6 +306,10 @@ const ERC721CollectionPage = () => {
                { NFTLowestPrice.information === null ? null : <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" /> }
                 <main style={{marginTop: '3rem'}} role="main">
                     { NFTData.information === null ? null : <ERC721CollectionDataInfoTable quantity={ NFTData.information.total } data={ NFTData.information.result } />} 
+                </main>
+                { NFTFloorPrice.information === null ? null : <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" /> }
+                <main style={{marginTop: '3rem'}} role="main">
+                    { NFTFloorPrice.information === null ? null : <ERC721CollectionFloorPriceInfoTable data={ NFTFloorPrice.information } />} 
                 </main>
                 { NFTData.information === null ? null : <div style={{marginTop: '2rem'}}  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" /> }
                 <main style={{marginTop: '3rem'}} role="main">
