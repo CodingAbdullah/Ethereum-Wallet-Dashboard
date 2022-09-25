@@ -116,6 +116,6 @@ exports.getERC721CollectionAttributes = (req, res) => {
     // Run backend request
     sdk.server('https://eth-mainnet.g.alchemy.com/nft/v2');
     sdk.summarizeNFTAttributes({ contractAddress: address, apiKey: process.env.ALCHEMY_API_KEY })
-    .then(response => { console.log(response); res.status(200).json({ information: response })})
+    .then(response => { res.status(200).json({ information: response })})
     .catch(err => res.status(400).json({ information: err }));
 }
