@@ -6,7 +6,7 @@ const Footer = () => {
     const statement = "Copyright "  + new Date().getFullYear() + ". Powered By ";
 
     return (
-            <div class="footer-container container">
+            <div class="footer footer-container container">
                 <footer class="footer col-md-9 ml-sm-auto col-lg-10 px-md-4">
                     <div class="container">
                         <p style={{ marginLeft: '2.5rem', marginTop: '-0.08rem' }} className="copyright-paragraph">

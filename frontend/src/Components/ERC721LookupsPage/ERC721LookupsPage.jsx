@@ -5,6 +5,7 @@ import ERC721LookupsInfoTable from '../ERC721LookupsInfoTable/ERC721LookupsInfoT
 import ERC721TransferLookupsInfoTable from '../ERC721TransferLookupsInfoTable/ERC721TransferLookupsInfoTable';
 import ERC721SalesLookupsInfoTable from '../ERC721SalesLookupsInfoTable/ERC721SalesLookupsInfoTable';
 import axios from 'axios';
+import ERC721RarityLookupsInfoTable from '../ERC721RarityLookupsInfoTable/ERC721RarityLookupsInfoTable';
 
 const ERC721LookupsPage = () => {
 
@@ -20,11 +21,17 @@ const ERC721LookupsPage = () => {
         information: null
     });
     
+    const [tokenRarity, updateTokenRarity] = useState({
+        information: null
+    });
+
     const navigate = useNavigate();
 
-    const NODE_SERVER_URL = 'http://localhost:5000'; // API endpoints for NFT lookup
+    const NODE_SERVER_URL = 'http://localhost:5000'; // API endpoints for ERC721 lookups
     const LOOKUP_ENDPOINT = '/erc721-lookup-by-id';
     const TRANSFER_LOOKUP_ENDPOINT = '/erc721-lookup-transfer-by-id';
+    const RARITY_LOOKUP_ENDPOINT = '/erc721-lookup-rarity-by-id';
+
 
     const clearHandler = () => {
         updateTokenData((prevState) => { // Reinstate errors if correct information is not entered
@@ -35,6 +42,13 @@ const ERC721LookupsPage = () => {
         });
 
         updateTokenTransfers((prevState) => {
+            return {
+                ...prevState,
+                information: null
+            }
+        });
+
+        updateTokenRarity((prevState) => {
             return {
                 ...prevState,
                 information: null
@@ -72,7 +86,7 @@ const ERC721LookupsPage = () => {
                 }
             })
 
-            axios.post(NODE_SERVER_URL + TRANSFER_LOOKUP_ENDPOINT, options)
+            axios.post(NODE_SERVER_URL + TRANSFER_LOOKUP_ENDPOINT, options) // Get transfer data
             .then(response => {
                 if (response.status !== 200){
                     updateTokenTransfers((prevState) => {
@@ -101,6 +115,18 @@ const ERC721LookupsPage = () => {
                     }
                 }
             })
+
+            axios.post(NODE_SERVER_URL + RARITY_LOOKUP_ENDPOINT, options) // API endpoint for finding collection rarity
+            .then(response => {
+                console.log(response); 
+                updateTokenRarity((prevState) => {
+                    return {
+                        ...prevState,
+                        information: response.data.information
+                    }
+                });
+            })
+            .catch((e) => console.log(e));
         }
         else {
             updateAlert(true);
@@ -116,34 +142,32 @@ const ERC721LookupsPage = () => {
                 </div>
                 { setAlert ? <Alert type="danger" /> : null }
                 <div class="jumbotron">                    
-                <form onSubmit={tokenHandler}>
-                    <p style={{marginRight: '0.5rem'}}>Enter ERC721 Contract Address & Token ID for Lookup </p>
-                    <input style={{marginTop: '1rem'}} type="text" onChange={e => updateTokenAddress(e.target.value)} placeholder="Enter ERC721 Contract Address" required />
+                <form onSubmit={ tokenHandler }>
+                    <p style={{ marginRight: '0.5rem' }}>Enter ERC721 Contract Address & Token ID for Lookup </p>
+                    <input style={{ marginTop: '1rem' }} type="text" onChange={e => updateTokenAddress(e.target.value)} placeholder="Enter ERC721 Contract Address" required />
                     <br />
-                    <input style={{marginTop: '1rem'}} type="number" onChange={e => updateTokenId(e.target.value)} placeholder="Enter Token ID" required />
+                    <input style={{marginTop: '1rem' }} type="number" onChange={e => updateTokenId(e.target.value)} placeholder="Enter Token ID" required />
                     <br />
-                    <button style={{marginTop: '2rem'}} type="submit" class="btn btn-success">Lookup</button>
+                    <button style={{marginTop: '2rem' }} type="submit" class="btn btn-success">Lookup</button>
                 </form>
-                    <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
-                    <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { 
+                    <button style={{ marginTop: '2rem', display: 'inline' }} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
+                    <button style={{ marginTop: '2rem', marginLeft: '2rem' }} class='btn btn-warning' onClick={() => { 
                         updateAlert(false); 
                         updateTokenData((prevState) => { return { ...prevState, information: null }}); 
                         updateTokenTransfers((prevState) => { return { ...prevState, information: null }}); 
                     }}>Clear</button>
                 </div>
-                { tokenData.information !== null ? <h5 style={{ marginTop: '2rem' }}>ERC721 Token Information</h5> : null }
-                <div style={{ marginTop: '2rem', marginLeft: '7.5rem'}}>
-                    { tokenData.information === null ? <div /> : <ERC721LookupsInfoTable data={tokenData.information} /> }
+                <div style={{ marginTop: '2rem'}}>
+                    { tokenData.information === null ? <div /> : <div style={{ marginLeft: '2rem' }}><ERC721LookupsInfoTable data={ tokenData.information } /></div> }
                 </div>
-                { tokenData.information === null || tokenTransfers.information === null ? null : <hr style={{ marginTop: '3rem', marginBottom: '3rem' }} /> }
-                { tokenTransfers.information !== null ? <h5 style={{ marginTop: '2rem' }}>ERC721 Token Transfers</h5> : null }
                 <div>
-                    { tokenTransfers.information === null ? <div /> : <ERC721TransferLookupsInfoTable data={tokenTransfers.information} /> }
+                    { tokenRarity.information === null ? <div /> : <ERC721RarityLookupsInfoTable data={ tokenRarity.information } /> }
                 </div>
-                { tokenData.information === null || tokenTransfers.information === null ? null : <hr style={{ marginTop: '3rem', marginBottom: '3rem' }} /> }
-                { tokenTransfers.information !== null ? <h5 style={{ marginTop: '2rem' }}>ERC721 Token Sales</h5> : null }
                 <div>
-                    { tokenTransfers.information === null ? <div /> : <ERC721SalesLookupsInfoTable address={tokenAddress} tokenId={tokenId} /> }
+                    { tokenTransfers.information === null ? <div /> : <ERC721TransferLookupsInfoTable data={ tokenTransfers.information } /> }
+                </div>
+                <div>
+                    { tokenData.information === null ? <div /> : <ERC721SalesLookupsInfoTable address={ tokenAddress } tokenId={ tokenId } /> }
                 </div>
             </main>
         </div>

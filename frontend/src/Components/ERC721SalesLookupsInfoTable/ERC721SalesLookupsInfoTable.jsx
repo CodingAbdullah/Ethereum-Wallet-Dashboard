@@ -47,36 +47,39 @@ const ERC721SalesLookupInfoTable = (props) => {
     }
     else {
         return (
-            <div className='erc721-sales-lookups-info-table'>
-                <table style={{border: '1px solid black', fontSize: '9px'}}>
-                    <thead style={{border: '1px solid black', fontSize: '9px'}}>
-                        <tr style={{border: '1px solid black', fontSize: '9px'}}>
-                            <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">Transaction Hash</th>
-                            <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">Time Stamp</th>
-                            <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">Exchange Name-Version</th>
-                            <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">ETH Price</th>
-                            <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">USD Price</th>
-                            <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">Buyer</th>
-                            <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">Seller</th>
-                        </tr>
-                    </thead>
-                    <tbody style={{border: '1px solid black', fontSize: '10px'}}>
-                        { ERC721SalesInfo.information.results.map(record => {
-                            return (
-                                    <tr style={{border: '1px solid black', fontSize: '10px'}}>
-                                        <td style={{border: '1px solid black', fontSize: '10px'}}>{record.transaction_hash}</td>
-                                        <td style={{border: '1px solid black', fontSize: '10px'}}>{record.timestamp.split("Z")[0]}</td>
-                                        <td style={{border: '1px solid black', fontSize: '10px'}}>{record.exchange_name + '-' + record.contract_version}</td>
-                                        <td style={{border: '1px solid black', fontSize: '10px'}}>{record.eth_price}</td>
-                                        <td style={{border: '1px solid black', fontSize: '10px'}}>{"$" + record.usd_price.toFixed(2)}</td>
-                                        <td style={{border: '1px solid black', fontSize: '10px'}}>{record.buyer}</td>
-                                        <td style={{border: '1px solid black', fontSize: '10px'}}>{record.seller}</td>
-                                    </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>   
-            </div>
+            <>
+                <h5>ERC721 Token Sales</h5>
+                <div className='erc721-sales-lookups-info-table'>
+                    <table style={{border: '1px solid black', fontSize: '9px'}}>
+                        <thead style={{border: '1px solid black', fontSize: '9px'}}>
+                            <tr style={{border: '1px solid black', fontSize: '9px'}}>
+                                <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">Transaction Hash</th>
+                                <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">Time Stamp</th>
+                                <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">Exchange Name-Version</th>
+                                <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">ETH Price</th>
+                                <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">USD Price</th>
+                                <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">Buyer</th>
+                                <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">Seller</th>
+                            </tr>
+                        </thead>
+                        <tbody style={{border: '1px solid black', fontSize: '10px'}}>
+                            { ERC721SalesInfo.information.results.map(record => {
+                                return (
+                                        <tr style={{border: '1px solid black', fontSize: '10px'}}>
+                                            <td style={{border: '1px solid black', fontSize: '10px'}}>{record.transaction_hash}</td>
+                                            <td style={{border: '1px solid black', fontSize: '10px'}}>{record.timestamp.split("Z")[0]}</td>
+                                            <td style={{border: '1px solid black', fontSize: '10px'}}>{record.exchange_name + '-' + record.contract_version}</td>
+                                            <td style={{border: '1px solid black', fontSize: '10px'}}>{record.eth_price}</td>
+                                            <td style={{border: '1px solid black', fontSize: '10px'}}>{"$" + record.usd_price.toFixed(2)}</td>
+                                            <td style={{border: '1px solid black', fontSize: '10px'}}>{record.buyer}</td>
+                                            <td style={{border: '1px solid black', fontSize: '10px'}}>{record.seller}</td>
+                                        </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>    
+                </div>
+            </>
         )
     }
 }
