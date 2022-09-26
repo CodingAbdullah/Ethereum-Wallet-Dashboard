@@ -154,7 +154,8 @@ const Home = () => {
                                     <h1 class="display-5" style={{ marginBottom: '2rem' }}>Welcome!</h1>
                                     <p>Your one-stop shop to check the bearings of anything Ethereum! Anything you need to investigate on the blockchain is provided to you ready-made for free. We do the work for you, so you don't have to. Just plug and play!</p> 
                                     <p>Deep dive into collections, wallet information, price action, ENS and much more! Enter the <b>public</b> address below (42-digit hex code) of a wallet to track activity!</p> 
-                                    <p>Please note that all activity documented here is on the <b>mainnet</b> network. <b>ERC-1155</b> data not available as of yet. To view information on any <b>testnet</b>, please visit the <b>Wallet/Testnet</b> item on the left sidebar. 
+                                    <p>Please note that all activity documented here is on the <b>mainnet</b> network. <b>ERC-1155</b> data not available as of yet. </p>
+                                    <p><b>Testnets: Kovan, Rinkeby, Ropsten</b> are all deprecated post-merge. <b>Goerli, Sepolia</b> testnets are available. To view information on any <b>testnet</b>, please visit the <b>Wallet/Testnet</b> item on the left sidebar. 
                                        There, you can decide which network to view wallet information from (<b>mainnet</b> by default), cheers! <b></b>
                                     </p>
                                     <form style={{ marginTop: '3rem'}} onSubmit={formHandler}>

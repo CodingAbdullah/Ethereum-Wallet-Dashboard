@@ -38,23 +38,23 @@ const App = () => {
           <Routes>
             <Route exact path="/" element={<HomePage />}></Route>
             <Route exact path="/about" element={<AboutPage />}></Route>
-            <Route exact path="/transactions" element={<TransactionsPage />}></Route>
-            <Route exact path="/prices" element={<PricesPage />}></Route>
             <Route exact path="/collections" element={<CollectionsPage />}></Route>
+            <Route exact path="/collections/erc720-collection" element={<ERC720CollectionPage />}></Route>
+            <Route exact path="/collections/erc721-collection" element={<ERC721CollectionPage />}></Route>
+            <Route exact path="/chart" element={<GenericChartPage />}></Route>
             <Route exact path="/ens-lookup" element={<ENSPage />}></Route>
             <Route exact path="/ens-lookup/address-to-ens-lookup" element={<AddressToENSResolverPage />}></Route>
             <Route exact path="/ens-lookup/ens-to-address-lookup" element={<ENSToAddressResolverPage />}></Route>
-            <Route exact path="/ens-lookup/ens-transfers-by-name" element={<ENSTransferByNamePage />}></Route>
             <Route exact path="/ens-lookup/ens-transfers-by-id" element={<ENSTransferByIdPage />}></Route>
+            <Route exact path="/ens-lookup/ens-transfers-by-name" element={<ENSTransferByNamePage />}></Route>
             <Route exact path="/erc20-holdings" element={<ERC720HoldingsPage />}></Route>
             <Route exact path="/erc20-token-prices" element={<ERC720PricesPage />}></Route>
             <Route exact path="/erc721-holdings" element={<ERC721HoldingsPage />}></Route>
             <Route exact path="/erc721-lookups" element={<ERC721LookupsPage />}></Route>
-            <Route exact path="/collections/erc720-collection" element={<ERC720CollectionPage />}></Route>
-            <Route exact path="/collections/erc721-collection" element={<ERC721CollectionPage />}></Route>
             <Route exact path="/gas-tracker" element={<GasTrackerPage />}></Route>
+            <Route exact path="/prices" element={<PricesPage />}></Route>
+            <Route exact path="/transactions" element={<TransactionsPage />}></Route>
             <Route exact path="/walletAnalytics" element={<WalletStatsPage />}></Route>
-            <Route exact path="/chart" element={<GenericChartPage />}></Route>
             <Route exact path="*" element={<PageNotFoundPage />}></Route>
           </Routes>
         </div>
