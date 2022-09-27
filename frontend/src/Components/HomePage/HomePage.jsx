@@ -153,16 +153,16 @@ const Home = () => {
                                 <div class="container">
                                     <h1 class="display-5" style={{ marginBottom: '2rem' }}>Welcome!</h1>
                                     <p>Your one-stop shop to check the bearings of anything Ethereum! Anything you need to investigate on the blockchain is provided to you ready-made for free. We do the work for you, so you don't have to. Just plug and play!</p> 
-                                    <p>Deep dive into collections, wallet information, price action, ENS and much more! Enter the <b>public</b> address below (42-digit hex code) of a wallet to track activity!</p> 
+                                    <p>Deep dive into collections, wallet information, price action, ENS and much more! Here is a link to all <b>EVM-compatible</b> chains and their respective IDs:
+                                        <a style={{ color: 'black', fontStyle: 'italic' }} href="https://chainlist.org" target="_blank" rel="noreferrer"><b> ChainList</b></a>
+                                    </p> 
                                     <p>Please note that all activity documented here is on the <b>mainnet</b> network, by default. <b>ERC-1155</b> data not available as of yet. 
                                         <b> Sepolia testnet</b> might not be available on select requests as it is a new testnet. 
                                     </p>
                                     <p>To view information on any <b>testnet</b>, please visit the <b>Wallet/Testnet</b> item on the left sidebar. 
                                        There, you can decide which network to view wallet information from (<b>mainnet</b> by default).
                                     </p>
-                                    <p>Here is a link to all <b>EVM-compatible</b> chains and their respective IDs:
-                                        <a style={{ color: 'black', fontStyle: 'italic' }} href="https://chainlist.org" target="_blank" rel="noreferrer"> ChainList</a>, cheers!
-                                    </p>
+                                    <p>Enter the <b>public</b> address below (42-digit hex code) of a wallet to track activity, cheers!</p>
                                     <form style={{ marginTop: '3rem'}} onSubmit={formHandler}>
                                         <input class="form-control mr-sm-2" type="search" placeholder="Enter Wallet Address (0xa2e3se4u5F...)" max="42" min="42" aria-label="Search" onChange={(e) => updateWalletAddress(e.target.value)} required />
                                         <button class="btn btn-outline-success wallet-search-button" type="submit">Search &raquo;</button>
@@ -174,10 +174,10 @@ const Home = () => {
                         </div>
                         <div class="container">                   
                             <p style={{ marginBottom: '2rem' }} class='marquee-paragraph'><b>Top 5 Trending Coins: </b>{trendingCoins}</p>
-                            <p><b>Active Currencies: </b> {active_cryptocurrencies}</p>      
-                            <p><b>Total Market Cap: </b> ${(usd).toFixed(2)}</p>
-                            <p><b>Market Dominance: </b> BTC {(btc).toFixed(2) + "%"} <b>|</b> ETH {(eth).toFixed(2) + "%"}</p>
-                            <p style={{marginBottom: '4rem'}}><b>24 Hour Market Cap % Change: </b>
+                            <p style={{marginRight: '0.5rem'}}><b>Active Currencies: </b> {active_cryptocurrencies}</p>      
+                            <p style={{marginRight: '0.5rem'}}><b>Total Market Cap: </b> ${(usd).toFixed(2)}</p>
+                            <p style={{marginRight: '0.5rem'}}><b>Market Dominance: </b> BTC {(btc).toFixed(2) + "%"} <b>|</b> ETH {(eth).toFixed(2) + "%"}</p>
+                            <p style={{marginBottom: '4rem', marginRight: '0.5rem'}}><b>24 Hour Market Cap % Change: </b>
                                 <p style={{ display: 'inline', color: market_cap_change_percentage_24h_usd < 0 ? 'red' : 'green', fontWeight: 'bold'}}>
                                     {market_cap_change_percentage_24h_usd < 0 ? "" : "+"}{(market_cap_change_percentage_24h_usd).toFixed(2) + "%"}
                                 </p>

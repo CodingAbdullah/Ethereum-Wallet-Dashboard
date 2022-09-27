@@ -13,48 +13,48 @@ const Sidebar = () => {
                 <table class="table table-striped table-dark">
                     <tbody>
                         <tr>
-                            <td><img src={require("../../assets/images/dashboard.png")} width="35" height="30" alt="logo" /></td>
-                            <td><a style={{color: 'white'}} href="/">Dashboard</a></td>
+                            <td><img src={require("../../assets/images/about.png")} width="35" height="30" alt="logo" /></td>
+                            <td><a style={{color: 'white'}} href="/about">About</a></td>
                         </tr>
-                        <tr>
-                            <td><img src={require("../../assets/images/analytics.png")} width="35" height="30" alt="logo" /></td>
-                            <td><a style={{color: 'white'}} href="/walletAnalytics">Wallet/Testnet Analytics</a></td>
-                        </tr>
-                        <tr>
-                            <td><img src={require("../../assets/images/collections.png")} width="35" height="30" alt="logo" /></td>
-                            <td><a style={{color: 'white'}} href="/collections">Token Analytics</a></td>
-                         </tr>
                         <tr>
                             <td><img src={require("../../assets/images/charts.png")} width="35" height="30" alt="logo" /></td>
                             <td><a style={{color: 'white'}} href="/prices">Coin Prices</a></td>
                         </tr>
                         <tr>
-                            <td><img src={require("../../assets/images/token.png")} width="35" height="30" alt="logo" /></td>
-                            <td><a style={{color: 'white'}} href="/erc20-token-prices">ERC20 Token Prices</a></td>
-                        </tr>
-                        <tr>
-                            <td><img src={require("../../assets/images/erc20Token.png")} width="35" height="30" alt="logo" /></td>
-                            <td><a style={{color: 'white'}} href="/erc20-holdings">ERC20 Token Holdings</a></td>
-                        </tr>
-                        <tr>
-                            <td><img src={require("../../assets/images/nft.png")} width="35" height="30" alt="logo" /></td>
-                            <td><a style={{color: 'white'}} href="/erc721-lookups">ERC721 Token Lookups</a></td>
-                        </tr>
-                        <tr>
-                            <td><img src={require("../../assets/images/erc721Holdings.png")} width="35" height="30" alt="logo" /></td>
-                            <td><a style={{color: 'white'}} href="/erc721-holdings">ERC721 Token Holdings</a></td>
+                            <td><img src={require("../../assets/images/dashboard.png")} width="35" height="30" alt="logo" /></td>
+                            <td><a style={{color: 'white'}} href="/">Dashboard</a></td>
                         </tr>
                         <tr>
                             <td><img src={require("../../assets/images/ensTwo.png")} width="35" height="30" alt="logo" /></td>
                             <td><a style={{color: 'white'}} href="/ens-lookup">ENS Lookups</a></td>
                         </tr>
                         <tr>
+                            <td><img src={require("../../assets/images/erc20Token.png")} width="35" height="30" alt="logo" /></td>
+                            <td><a style={{color: 'white'}} href="/erc20-holdings">ERC20 Token Holdings</a></td>
+                        </tr>
+                        <tr>
+                            <td><img src={require("../../assets/images/token.png")} width="35" height="30" alt="logo" /></td>
+                            <td><a style={{color: 'white'}} href="/erc20-token-prices">ERC20 Token Prices</a></td>
+                        </tr>
+                        <tr>
+                            <td><img src={require("../../assets/images/erc721Holdings.png")} width="35" height="30" alt="logo" /></td>
+                            <td><a style={{color: 'white'}} href="/erc721-holdings">ERC721 Token Holdings</a></td>
+                        </tr>
+                        <tr>
+                            <td><img src={require("../../assets/images/nft.png")} width="35" height="30" alt="logo" /></td>
+                            <td><a style={{color: 'white'}} href="/erc721-lookups">ERC721 Token Lookups</a></td>
+                        </tr>
+                        <tr>
                             <td><img src={require("../../assets/images/gas.png")} width="35" height="30" alt="logo" /></td>
                             <td><a style={{color: 'white'}} href="/gas-tracker">Gas Station</a></td>
                         </tr>
                         <tr>
-                            <td><img src={require("../../assets/images/about.png")} width="35" height="30" alt="logo" /></td>
-                            <td><a style={{color: 'white'}} href="/about">About</a></td>
+                            <td><img src={require("../../assets/images/collections.png")} width="35" height="30" alt="logo" /></td>
+                            <td><a style={{color: 'white'}} href="/collections">Token Analytics</a></td>
+                        </tr>
+                        <tr>
+                            <td><img src={require("../../assets/images/analytics.png")} width="35" height="30" alt="logo" /></td>
+                            <td><a style={{color: 'white'}} href="/walletAnalytics">Wallet/Testnet Analytics</a></td>
                         </tr>
                     </tbody>
                 </table>

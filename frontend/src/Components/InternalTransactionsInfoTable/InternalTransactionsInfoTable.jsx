@@ -4,6 +4,7 @@ import Badge from '../Badge/Badge';
 const InternalTransactionsInfoTable = (props) => {
     const { data, walletAddress } = props;
 
+    // Display internal transactions from etherscan data
     return (
         <div className="internal-transactions-data-table">
             <table style={{border: '1px solid black'}}>
