@@ -1,11 +1,11 @@
 import React from 'react';
 import Badge from '../Badge/Badge';
 
-const TransactionsInfoTable = (props) => {
-    const { data, walletAddress } = props; // Retrieving data from transactions page
+const InternalTransactionsInfoTable = (props) => {
+    const { data, walletAddress } = props;
 
     return (
-        <div className="transactions-data-table">
+        <div className="internal-transactions-data-table">
             <table style={{border: '1px solid black'}}>
                     <thead style={{border: '1px solid black'}}>
                         <tr style={{border: '1px solid black'}}>
@@ -36,9 +36,8 @@ const TransactionsInfoTable = (props) => {
                         }                             
                     </tbody>
             </table>
-            <hr style={{ marginTop: '3rem', marginBottom: '0.5rem', marginLeft: '-2rem' }} />
         </div>
     )
 }
 
-export default TransactionsInfoTable;
+export default InternalTransactionsInfoTable;

@@ -2,24 +2,32 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import Alert from '../Alert/Alert';
 import TransactionsInfoTable from '../TransactionsInfoTable/TransactionsInfoTable';
+import InternalTransactionsInfoTable from '../InternalTransactionsInfoTable/InternalTransactionsInfoTable';
 import axios from 'axios';
 
 const Transactions = () => {
     const [amount, updateAmount] = useState(0.00);
     const [emptyAlert, updateEmptyAlert] = useState(false);
+    const [emptyInteralTransactionAlert, updateEmptyInternalTransactionAlert] = useState(false);
     const [address, updateAddress] = useState("");
 
     const [ethPrice, updateETHPrice] = useState({ 
         information: null // ETH Price Tracker
     }); 
+    
     const [transactions, updateTransactions] = useState({ 
         information: null // Transactions
     }); 
+
+    const [internalTransactions, updateInternalTransactions] = useState({
+        information: null // Internal Transactions of a wallet
+    });
     
     // Endpoints to be used
     const NODE_SERVER_URL = "http://localhost:5000";
     const TRANSACTION_BALANCE_ENDPOINT = '/address-transaction-amount';
     const TRANSACTION_HISTORY_ENDPOINT = '/address-transaction-history';
+    const INTERNAL_TRANSACTION_HISTORY_ENDPOINT = '/address-internal-transaction-history';
 
     const ETHPRICE_URL = "https://api.coingecko.com/api/v3";
     const PRICE_ENDPOINT = "/simple/price";
@@ -57,6 +65,7 @@ const Transactions = () => {
                 .then(response => {
                     if (response.status !== 200){
                         updateEmptyAlert(true);
+                        updateEmptyInternalTransactionAlert(true);
                         localStorage.clear();                
                     }
                     else if (response.data.information.message === 'OK' && response.status === 200){
@@ -70,21 +79,50 @@ const Transactions = () => {
                     }
                     else if (response.data.information.message === 'No transactions found' && response.status === 200){
                         updateEmptyAlert(true);
+                        updateEmptyInternalTransactionAlert(true);
                         localStorage.clear();                
                     }
                 })
                 .catch(() => {
                     updateEmptyAlert(true); // Message was not ok, therefore ask to redirect
+                    updateEmptyInternalTransactionAlert(true);
+                    localStorage.clear();                
+                });
+
+                // Wallet Interal Transaction History
+                axios.post(NODE_SERVER_URL + INTERNAL_TRANSACTION_HISTORY_ENDPOINT, options)
+                .then(response => {
+                    if (response.status !== 200){
+                        updateEmptyInternalTransactionAlert(true);
+                        localStorage.clear();                
+                    }
+                    else if (response.data.information.message === 'OK' && response.status === 200){
+                        updateInternalTransactions((prevState) => {
+                            return {
+                                ...prevState,
+                                information: response.data.information
+                            }
+                        });
+                        updateEmptyInternalTransactionAlert(false);
+                    }
+                    else if (response.data.information.message === 'No transactions found' && response.status === 200){
+                        updateEmptyInternalTransactionAlert(true);
+                    }
+                })
+                .catch(() => {
+                    updateEmptyInternalTransactionAlert(true); // Message was not ok, therefore ask to redirect
                     localStorage.clear();                
                 });
             }
             else {
                 updateEmptyAlert(true);
+                updateEmptyInternalTransactionAlert(true);
                 localStorage.clear();                
             }
         })
         .catch(() => {
             updateEmptyAlert(true);
+            updateEmptyInternalTransactionAlert(true);
             localStorage.clear();                
         });
 
@@ -115,7 +153,7 @@ const Transactions = () => {
             </main>
         )
     }
-    else if ( address === '' || ethPrice === {} || transactions.information === null ) {
+    else if ( address === '' || ethPrice === {} || transactions.information === null || transactions.information === null) {
         return <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">Loading...</div>
     }
     else {
@@ -130,8 +168,15 @@ const Transactions = () => {
                 <h6>{ "Amount in USD: $" + ((amount*(1/1000000000000000000))*(ethPrice.information.ethereum.usd)).toFixed(2) + " USD" }</h6>
                 <h6 style={{ marginTop: '3rem' }}>Top 1000 or maximum done by wallet</h6>
                 <div style={{ marginLeft: '75px' }}>
-                    { transactions === {} ? <div /> : <TransactionsInfoTable walletAddress={address} data={ transactions.information.result } /> }
+                    { transactions.information === null ? null : <TransactionsInfoTable walletAddress={ address } data={ transactions.information.result } /> }
                 </div>
+                <h6 style={{ marginTop: '3rem' }}><b>Internal Transactions</b></h6>
+                <h6>Top 1000 or maximum done by wallet</h6>
+                { emptyInteralTransactionAlert ? <Alert type='warning-empty-internal' /> :
+                    <div style={{ marginLeft: '75px' }}>
+                        { internalTransactions.information === null ? null : <InternalTransactionsInfoTable walletAddress={ address } data={ internalTransactions.information.result } /> }
+                    </div>
+                }
                 <button style={{ marginTop: '1.5rem' }} class="btn btn-success" onClick={() => { navigate("/"); localStorage.removeItem('walletAddress'); }}>Go Back</button>
             </main>
         )

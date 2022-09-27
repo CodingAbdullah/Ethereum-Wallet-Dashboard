@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Alert = (props) => {
-    const { type } = props;
+    let { type } = props;
     let message = "";
 
     switch(type) {
@@ -10,6 +10,10 @@ const Alert = (props) => {
             break;
         case "warning":
             message = "Empty wallet! No assets/transactions found!";
+            break;
+        case "warning-empty-internal":
+            message = "No internal transactions found!";
+            type = "warning";
             break;
         default:
             break;

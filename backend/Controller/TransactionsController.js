@@ -22,8 +22,19 @@ exports.getAddressTransactionBalance = (req, res) => {
 exports.getAddressTransactionHistory = (req, res) => {
     const { address } = JSON.parse(req.body.body);
 
+    // Gather list of transactions in descending order
     axios.get(ETHERSCAN_URL + '?module=' + mod + "&action=txlist&address=" + address + "&startblock=" + startBlock 
     + '&endblock=' + endBlock + "&page=" + page + "&offset=" + 1000 + "&sort=" + sort + "&apikey=" + API_KEY)
     .then(response => res.status(200).json({ information: response.data }))
+    .catch(err => res.status(400).json({ information: err }));
+}
+
+exports.getAddressInternalTransactionHistory = (req, res) => {
+    const { address } = JSON.parse(req.body.body);
+
+    // Gather data about internal transactions (L2.. bridges, etc)
+    axios.get(ETHERSCAN_URL + '?module=' + mod + '&action=txlistinternal&address=' + address + '&startblock=' + startBlock
+    + '&endblock=' + endBlock + '&page=' + page + '&offset=' + 1000 + '&sort=' + sort + '&apikey=' + API_KEY) 
+    .then(response => { res.status(200).json({ information: response.data })})
     .catch(err => res.status(400).json({ information: err }));
 }
