@@ -1,7 +1,8 @@
 require('dotenv').config({ path: '../.env'});
 const axios = require('axios');
+const MORALIS_URL = require('../Utils/APIURLReference').MORALIS_URL;
+const NETWORK_MAPPER = require('../Utils/NetworkMapper').NETWORK_MAPPER;
 
-const MORALIS_URL = "https://deep-index.moralis.io/api/v2/";
 const ETHERSCAN_URL = "https://api.etherscan.io/api";
 const mod = "account";
 const action = "balance";

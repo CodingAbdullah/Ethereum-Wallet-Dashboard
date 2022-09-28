@@ -1,7 +1,8 @@
 import React from 'react';
 
 const Alert = (props) => {
-    let { type } = props;
+    const { type } = props;
+    const alertType = type.split('-')[0];
     let message = "";
 
     switch(type) {
@@ -13,7 +14,9 @@ const Alert = (props) => {
             break;
         case "warning-empty-internal":
             message = "No internal transactions found!";
-            type = "warning";
+            break;
+        case "warning-unavailable-testnet":
+            message =  "Testnet data not available for this request";
             break;
         default:
             break;
@@ -21,7 +24,7 @@ const Alert = (props) => {
 
     return (
         <div className="alert">
-            <div style={{ marginBottom: '-1rem' }} class={`alert alert-${type}`} role="alert">
+            <div style={{ marginBottom: '-1rem' }} class={`alert alert-${alertType}`} role="alert">
                 { message }
             </div>
         </div>

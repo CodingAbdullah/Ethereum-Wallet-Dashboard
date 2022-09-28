@@ -1,5 +1,6 @@
 require('dotenv').config({ path: '../.env'});
 const axios = require('axios');
+const MORALIS_URL = require('../Utils/APIURLReference').MORALIS_URL;
 
 exports.getAddressTokenHoldings = (req, res) => { 
     const { address } = JSON.parse(req.body.body); // Get address for request to Moralis
@@ -14,7 +15,7 @@ exports.getAddressTokenHoldings = (req, res) => {
         } 
     }
 
-    axios.get('https://deep-index.moralis.io/api/v2/' + address + '/erc20?chain=eth', options) // Pass in address and chain values
+    axios.get(MORALIS_URL + address + '/erc20?chain=eth', options) // Pass in address and chain values
     .then(response => {
         res.status(200).json({
             information: response.data
@@ -40,7 +41,7 @@ exports.getAddressTokenTransfers = (req, res) => {
         } 
     }
 
-    axios.get('https://deep-index.moralis.io/api/v2/' + address + '/erc20/transfers?chain=eth', options) // Pass in address and chain values
+    axios.get(MORALIS_URL + address + '/erc20/transfers?chain=eth', options) // Pass in address and chain values
     .then(response => {
         res.status(200).json({
             information: response.data

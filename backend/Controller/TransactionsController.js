@@ -1,4 +1,5 @@
 require('dotenv').config({ path: '../.env' });
+const NETWORK_MAPPER = require('../Utils/NetworkMapper').NETWORK_MAPPER;
 const axios = require('axios');
 
 const ETHERSCAN_URL = "https://api.etherscan.io/api";

@@ -1,9 +1,10 @@
 require('dotenv').config({ path: '../.env' });
+const BLK_URL = require('../Utils/APIURLReference').BLOCKNATIVE_URL;
 const axios = require('axios');
 
 exports.gasTrackInformation = (req, res) => {
+
     // Add blocknative credentials
-    const BLK_URL = 'https://api.blocknative.com/gasprices/blockprices';
     const options = {
         method: 'GET',
         headers: {
