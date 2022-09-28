@@ -47,7 +47,7 @@ const AboutPage = () => {
                             </p>
                     </div>
                     <div>
-                        <button class="btn btn-success" style={{marginTop: '1.5rem', marginRight: '1rem'}} onClick={() => navigate("/")}>Go Home</button>
+                        <button class="btn btn-success" style={{ marginTop: '1.5rem' }} onClick={() => navigate("/")}>Go Home</button>
                     </div>
                 </main>
         </div>

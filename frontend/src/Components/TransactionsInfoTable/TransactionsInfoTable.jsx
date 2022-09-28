@@ -2,7 +2,7 @@ import React from 'react';
 import Badge from '../Badge/Badge';
 
 const TransactionsInfoTable = (props) => {
-    const { data, walletAddress } = props; // Retrieving data from transactions page
+    const { data, walletAddress, isMatic } = props; // Retrieving data from transactions page
 
     return (
         <div className="transactions-data-table">
@@ -28,7 +28,7 @@ const TransactionsInfoTable = (props) => {
                                         <td style={{border: '1px solid black', fontSize: '11px'}}>{record.from}</td>
                                         <td style={{border: '1px solid black', fontSize: '11px'}}>{record.to}</td>
                                         <td style={{border: '1px solid black', fontSize: '11px'}}>{walletAddress.toLowerCase() === record.to ? <Badge type="IN" /> : <Badge type="OUT" />}</td>
-                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{(record.value*(1/1000000000000000000)).toPrecision(4) + " ETH"}</td>
+                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{isMatic ? (record.value*(1/1000000000000000000)).toPrecision(4) + " MATIC" : (record.value*(1/1000000000000000000)).toPrecision(4) + " ETH"}</td>
                                         <td style={{border: '1px solid black', fontSize: '11px'}}>{record.gas}</td>
                                     </tr>
                                 )

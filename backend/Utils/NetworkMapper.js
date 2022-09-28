@@ -1,5 +1,5 @@
 // To be used to configure which blockchain network to access information
-export const NETWORK_MAPPER = {
+exports.NETWORK_MAPPER = {
     'eth' : 'https://api.etherscan.io/api',
     'goerli' : 'https://api-goerli.etherscan.io/api',  
     'kovan' : 'https://api-kovan.etherscan.io/api',

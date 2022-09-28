@@ -235,10 +235,10 @@ const GenericChartPage = () => {
       <div>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
           <h3 style={{marginTop: '2rem'}}>{astheticNaming + " "} Price: 
-            <b>
+            <b style={{ marginLeft: '0.25rem' }}>
               ${coinInfo.information[Object.keys(coinInfo.information)[0]].usd >= 1 ? 
               (coinInfo.information[Object.keys(coinInfo.information)[0]].usd).toFixed(2) : 
-              coinInfo.information[Object.keys(coinInfo.information)[0]].usd } USD
+               coinInfo.information[Object.keys(coinInfo.information)[0]].usd } USD
             </b>
           </h3> 
           <h5 style={{marginBottom: '2rem', display: 'inline'}}>24-Hr % Chg:
@@ -261,11 +261,11 @@ const GenericChartPage = () => {
               </div>
             }
           </div>
-          <div class="button-section" style={{marginTop: '1rem'}}>
+          <div class="button-section" style={{marginTop: '1rem', marginLeft: '1rem'}}>
             {buttons}
           </div>
           <div>
-            <button class="btn btn-success" onClick={() => navigate("/")}>Go To Dashboard</button>
+            <button class="btn btn-success" style={{marginRight: '0.25rem'}} onClick={() => navigate("/")}>Go To Dashboard</button>
           </div>
         </main>
       </div>
