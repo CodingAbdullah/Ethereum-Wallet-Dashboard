@@ -160,7 +160,7 @@ const Home = () => {
                                         <b> Sepolia testnet</b> might not be available on select requests as it is a new testnet. 
                                     </p>
                                     <p>To view information on any <b>testnet</b>, please visit the <b>Wallet/Testnet</b> item on the left sidebar. 
-                                       There, you can decide which network to view wallet information from (<b>mainnet</b> by default).
+                                       There, you can decide which network to view wallet information from (<b>mainnet</b> by default). The <b> Ropsten</b> testnet is now discontinued.
                                     </p>
                                     <p>Enter the <b>public</b> address below (42-digit hex code) of a wallet to track activity, cheers!</p>
                                     <form style={{ marginTop: '3rem'}} onSubmit={formHandler}>

@@ -18,8 +18,6 @@ const NetworkSelector = (props) => {
                 <input className="form-check-input" name='network-type' type="radio" onChange={ props.blockchainNetwork } value="rinkeby" />
                 <label id='network-label' class="form-check-label">Rinkeby Testnet</label>
                 <br />
-                <input className="form-check-input" name='network-type' type="radio" onChange={ props.blockchainNetwork } value="ropsten" />
-                <label id='network-label' class="form-check-label">Ropsten Testnet</label>
                 <input className="form-check-input" name='network-type' type="radio" onChange={ props.blockchainNetwork } value="sepolia" />
                 <label id='network-label' class="form-check-label">Sepolia Testnet</label>
                 <input className="form-check-input" name='network-type' type="radio" onChange={ props.blockchainNetwork } value="polygon" />
