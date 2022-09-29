@@ -9,6 +9,7 @@ import ERC721CollectionOwnerInfoTable from '../ERC721CollectionOwnerInfoTable/ER
 import ERC721CollectionSalesInfoTable from '../ERC721CollectionSalesInfoTable/ERC721CollectionSalesInfoTable';
 import ERC721CollectionFloorPriceInfoTable from '../ERC721CollectionFloorPriceInfoTable/ERC721CollectionFloorPriceInfoTable';
 import ERC721CollectionAttributeSummaryInfoTable from '../ERC721CollectionAttributeSummaryInfoTable/ERC721CollectionAttributeSummaryInfoTable';
+import NetworkSelector from '../NetworkSelector/NetworkSelector';
 
 const ERC721CollectionPage = () => {
 
@@ -52,6 +53,12 @@ const ERC721CollectionPage = () => {
     const [NFTLowestPrice, updateNFTLowestPrice] = useState({
         information: null
     });
+
+    const [networkID, updateNetworkID] = useState('eth'); // Network selector set to default value
+
+    const updateNetworkHandler = (e) => {
+        updateNetworkID(e.target.value);
+    }
 
     const alertHandler = () => { // Clear data if there is an error, function to be invoked
         updateNFTData((prevState) => {
@@ -311,8 +318,9 @@ const ERC721CollectionPage = () => {
                         <div class="container">
                             <p>Enter Contract Address of an <b>ERC721</b> token for analytics (limited to 100)</p>
                             <form onSubmit={formHandler}>
-                                <input onChange={e => updateTokenAddress(e.target.value)} type='text' placeholder='Enter Address Here'></input>
+                                <input style={{marginLeft: '0.5rem'}} onChange={e => updateTokenAddress(e.target.value)} type='text' placeholder='Enter Address Here'></input>
                                 <br />
+                                <NetworkSelector blockchainNetwork={ updateNetworkHandler } />
                                 <button style={{marginTop: '2rem'}} type='submit' class='btn btn-success'>Submit</button>
                             </form>
                             <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>

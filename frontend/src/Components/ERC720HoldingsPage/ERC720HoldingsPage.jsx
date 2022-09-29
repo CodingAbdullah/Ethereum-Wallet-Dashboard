@@ -2,6 +2,7 @@ import React, { useState }from 'react';
 import Alert from '../Alert/Alert';
 import ERC720HoldingsInfoTable from '../ERC720HoldingsInfoTable/ERC720HoldingsInfoTable';
 import ERC720TransfersInfoTable from '../ERC720TransfersInfoTable/ERC720TransfersInfoTable';
+import NetworkSelector from '../NetworkSelector/NetworkSelector';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 
@@ -25,6 +26,12 @@ const ERC720HoldingsPage = () => {
     const ERC20TOKEN_ENDPOINT = '/address-erc20-holdings';
 
     const ERC20TOKENTRANSFERS_ENDPOINT = '/address-erc20-transfers';
+
+    const [networkID, updateNetworkID] = useState('eth'); // Network selector set to default value
+
+    const updateNetworkHandler = (e) => {
+        updateNetworkID(e.target.value);
+    }
 
     const clearHandler = () => {
         updateERC20Holdings((prevState) => { // Removing information, when invalid address is added
@@ -133,6 +140,7 @@ const ERC720HoldingsPage = () => {
                             <label style={{marginRight: '0.5rem'}}>Enter Wallet Address (ERC20 token balances/transfers in this wallet will be displayed (100 Recent): </label>
                             <input type="text" onChange={e => updateWalletAddress(e.target.value)} placeholder="Enter here" required />
                             <br />
+                            <NetworkSelector blockchainNetwork={ updateNetworkHandler } />
                             <button style={{marginTop: '2rem'}} type="submit" class="btn btn-success">Check Balances</button>
                         </form>
                         <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>

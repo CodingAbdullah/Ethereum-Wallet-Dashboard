@@ -2,6 +2,7 @@ import React, { useState }from 'react';
 import Alert from '../Alert/Alert';
 import ERC721HoldingsInfoTable from '../ERC721HoldingsInfoTable/ERC721HoldingsInfoTable';
 import ERC721TransfersInfoTable from '../ERC721TransfersInfoTable/ERC721TransfersInfoTable';
+import NetworkSelector from '../NetworkSelector/NetworkSelector';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 
@@ -24,6 +25,12 @@ const ERC721HoldingsPage = () => {
     const NODE_SERVER_URL = "http://localhost:5000"; // Modifying end points for the backend server
     const NFT_ENDPOINT = '/address-erc721-holdings';
     const NFT_TRANSFERS_ENDPOINT = '/address-erc721-transfers';
+
+    const [networkID, updateNetworkID] = useState('eth'); // Network selector set to default value
+
+    const updateNetworkHandler = (e) => {
+        updateNetworkID(e.target.value);
+    }
 
     const clearHandler = () => {
         updateNFTData((prevState) => {
@@ -140,6 +147,7 @@ const ERC721HoldingsPage = () => {
                             <label style={{ marginRight: '0.5rem' }}>Enter Wallet Address (Top 100 NFTs/Transfers will be displayed): </label>
                             <input type="text" onChange={e => updateWalletAddress(e.target.value)} placeholder="Enter here" required />
                             <br />
+                            <NetworkSelector blockchainNetwork={ updateNetworkHandler } />
                             <button style={{ marginTop: '2rem' }} type="submit" class="btn btn-success">Check Data</button>
                         </form>
                         <button style={{ marginTop: '2rem', display: 'inline' }} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>

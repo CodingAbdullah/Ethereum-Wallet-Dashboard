@@ -4,8 +4,9 @@ import Alert from '../Alert/Alert';
 import ERC721LookupsInfoTable from '../ERC721LookupsInfoTable/ERC721LookupsInfoTable';
 import ERC721TransferLookupsInfoTable from '../ERC721TransferLookupsInfoTable/ERC721TransferLookupsInfoTable';
 import ERC721SalesLookupsInfoTable from '../ERC721SalesLookupsInfoTable/ERC721SalesLookupsInfoTable';
-import axios from 'axios';
 import ERC721RarityLookupsInfoTable from '../ERC721RarityLookupsInfoTable/ERC721RarityLookupsInfoTable';
+import NetworkSelector from '../NetworkSelector/NetworkSelector';
+import axios from 'axios';
 
 const ERC721LookupsPage = () => {
 
@@ -32,6 +33,11 @@ const ERC721LookupsPage = () => {
     const TRANSFER_LOOKUP_ENDPOINT = '/erc721-lookup-transfer-by-id';
     const RARITY_LOOKUP_ENDPOINT = '/erc721-lookup-rarity-by-id';
 
+    const [networkID, updateNetworkID] = useState('eth'); // Network selector set to default value
+
+    const updateNetworkHandler = (e) => {
+        updateNetworkID(e.target.value);
+    }
 
     const clearHandler = () => {
         updateTokenData((prevState) => { // Reinstate errors if correct information is not entered
@@ -148,6 +154,7 @@ const ERC721LookupsPage = () => {
                     <br />
                     <input style={{marginTop: '1rem' }} type="number" onChange={e => updateTokenId(e.target.value)} placeholder="Enter Token ID" required />
                     <br />
+                    <NetworkSelector blockchainNetwork={ updateNetworkHandler } />
                     <button style={{marginTop: '2rem' }} type="submit" class="btn btn-success">Lookup</button>
                 </form>
                     <button style={{ marginTop: '2rem', display: 'inline' }} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>

@@ -3,11 +3,22 @@ import './NetworkSelector.css';
 
 const NetworkSelector = (props) => {
     // Add in options for Mainnet, Kovan, Goerli, Rinkeby, Ropsten, Sepolia testnets. L2 ---> Polygon and their testnet, Mumbai
-    return (
-        <main role="main">            
-            <label style={{ marginTop: '3rem' }}>
-                <p style={{ marginBottom: '0.5rem' }}>Network Selector (<b>mainnet</b> by default)</p>
-            </label>
+    let optionsValue = null;
+    let location = window.location.pathname; // On select pathnames, modify the name of networks available to user
+
+    if (location ==='/erc20-token-prices' || location === '/collections/erc720-collection' || location === '/collections/erc721-collection') {
+        optionsValue = (
+            <div style={{ marginLeft: '2.0rem' }} className="form-check">
+                <input className="form-check-input" name='network-type' type="radio" onChange={ props.blockchainNetwork } value="eth" />
+                <label id='network-label' class="form-check-label">Ethereum Mainnet</label>
+                <br />
+                <input className="form-check-input" name='network-type' type="radio" onChange={ props.blockchainNetwork } value="polygon" />
+                <label id='network-label' class="form-check-label">Polygon Mainnet</label>
+            </div>
+        )   
+    }
+    else {
+        optionsValue = (
             <div className="form-check">
                 <input className="form-check-input" name='network-type' type="radio" onChange={ props.blockchainNetwork } value="eth" />
                 <label id='network-label' class="form-check-label">Ethereum Mainnet</label>
@@ -25,6 +36,14 @@ const NetworkSelector = (props) => {
                 <input className="form-check-input" name='network-type' type="radio" onChange={ props.blockchainNetwork } value="polygon-mumbai" />
                 <label id="network-label">Polygon Mumbai Testnet</label>
             </div>
+        )
+    }
+    return (
+        <main role="main">            
+            <label style={{ marginTop: '3rem' }}>
+                <p style={{ marginBottom: '0.5rem' }}>Network Selector (<b>mainnet</b> by default)</p>
+            </label>
+            {optionsValue}
         </main>
     )
 }
