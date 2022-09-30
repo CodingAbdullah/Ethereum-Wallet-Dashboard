@@ -1,6 +1,6 @@
 import React from 'react';
 
-const HomeDescriptionSection = (props) => {
+const HomePageDescriptionSection = (props) => {
 
     // Decoupled from home page to make components leaner, functions passed down from parent as props
     return (
@@ -28,4 +28,4 @@ const HomeDescriptionSection = (props) => {
 
 }
 
-export default HomeDescriptionSection;
+export default HomePageDescriptionSection;

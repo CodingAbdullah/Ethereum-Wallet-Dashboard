@@ -3,6 +3,7 @@ const MORALIS_URL = require('../Utils/APIURLReference').MORALIS_URL;
 const ALCHEMY_URL = require('../Utils/APIURLReference').ALCHEMY_URL;
 const sdk = require('api')('@alchemy-docs/v1.0#qy41utl8d89ars'); // SDK ID for Alchemy package found through docs
 const axios = require('axios');
+
 exports.getERC721CollectionData = (req, res) => {
     const { address } = JSON.parse(req.body.body);
 

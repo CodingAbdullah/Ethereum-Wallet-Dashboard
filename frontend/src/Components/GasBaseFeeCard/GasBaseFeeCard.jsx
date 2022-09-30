@@ -4,7 +4,6 @@ const GasBaseFeeCard = (props) => {
     const { information } = props;
 
     // Return Estimated base fees using the Object.keys() operator for dealing with dynamic keys
-    
     if (Object.keys(information)[0] === 'pending+5'){
         return null;
     }

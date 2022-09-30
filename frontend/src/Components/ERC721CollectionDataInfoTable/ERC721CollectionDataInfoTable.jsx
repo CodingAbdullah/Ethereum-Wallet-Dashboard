@@ -3,6 +3,12 @@ import React from 'react';
 const ERC721CollectionDataInfoTable = (props) => {
     const { data } = props;
 
+    let offSetData = [];
+
+    for (var i = 0 ; i < Math.floor( data.length / 4 ); i ++) {
+        offSetData.push(data[i]); // Only take a sample of data to display
+    }
+
     // Posting sample data from the collection along with their token hashes
     return (
         <div className="erc721-collection-data-table col-md-9 ml-sm-auto col-lg-10 px-md-4">
@@ -20,7 +26,7 @@ const ERC721CollectionDataInfoTable = (props) => {
                 </thead>
                 <tbody>
                     {
-                        data.map(record => {
+                        offSetData.map(record => {
                             return (
                                 <tr style={{border: '1px solid black'}}>
                                     <td style={{border: '1px solid black', fontSize: '18px'}}>{record.token_hash}</td>

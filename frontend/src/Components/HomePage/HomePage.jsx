@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
-import HomeDescriptionSection from '../HomeDescriptionSection/HomeDescriptionSection';
+import HomePageDescriptionSection from '../HomePageDescriptionSection/HomePageDescriptionSection';
 import Alert from '../Alert/Alert';
 
 const Home = () => {
@@ -33,8 +33,8 @@ const Home = () => {
     const QUERY_STRING_BITCOIN = "?ids=bitcoin&vs_currencies=usd&include_24hr_change=true";
     const QUERY_STRING_ETHEREUM = "?ids=ethereum&vs_currencies=usd&include_24hr_change=true";
 
-    useEffect(() => {
 
+    useEffect(() => {
         // Clear local storage of wallet address
         localStorage.removeItem("walletAddress");
 
@@ -156,7 +156,7 @@ const Home = () => {
                             <h1 class="h2">Dashboard</h1>
                         </div>
                         { formAlert === "invalid" ? <div><Alert type="danger"/></div> : <div/> }
-                        <HomeDescriptionSection form={formHandler} updatingAddress={updateAddress} />
+                        <HomePageDescriptionSection form={formHandler} updatingAddress={updateAddress} />
                         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <h1 class="h2">Market Data</h1>
                         </div>

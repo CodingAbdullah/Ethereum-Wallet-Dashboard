@@ -347,7 +347,7 @@ const ERC721CollectionPage = () => {
                 </main>
                 { NFTAttributes.information === null ? null : <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" /> }
                 <main style={{marginTop: '3rem'}} role="main">
-                    { NFTAttributes.information === null ? null : <ERC721CollectionAttributeSummaryInfoTable data={ NFTAttributes.information } />} 
+                    { NFTAttributes.information === null ? null : <><h5><b>Collection Attributes</b></h5><ERC721CollectionAttributeSummaryInfoTable data={ NFTAttributes.information } /></>} 
                 </main>
                 { NFTData.information === null ? null : <div style={{marginTop: '2rem'}}  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" /> }
                 <main style={{marginTop: '3rem'}} role="main">
