@@ -1,5 +1,5 @@
 require('dotenv').config({ path: '../.env'});
-const MORALIS_URL = require('../Utils/APIURLReference').MORALIS_URL;
+const MORALIS_URL = require('../Utils/NetworkMapper').NETWORK_MAPPER.moralis_url;
 const axios = require('axios');
 
 exports.getAddressTokenHoldings = (req, res) => { 

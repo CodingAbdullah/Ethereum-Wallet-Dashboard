@@ -1,6 +1,6 @@
 require('dotenv').config({ path: '../.env'});
-const MORALIS_URL = require('../Utils/APIURLReference').MORALIS_URL;
-const ALCHEMY_URL = require('../Utils/APIURLReference').ALCHEMY_URL;
+const MORALIS_URL = require('../Utils/NetworkMapper').NETWORK_MAPPER.moralis_url;
+const ALCHEMY_URL = require('../Utils/NetworkMapper').NETWORK_MAPPER.alchemy_url;
 const sdk = require('api')('@alchemy-docs/v1.0#qy41utl8d89ars'); // SDK ID for Alchemy package found through docs
 const axios = require('axios');
 

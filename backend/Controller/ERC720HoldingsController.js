@@ -1,6 +1,6 @@
 require('dotenv').config({ path: '../.env'});
 const axios = require('axios');
-const MORALIS_URL = require('../Utils/APIURLReference').MORALIS_URL;
+const MORALIS_URL = require('../Utils/NetworkMapper').NETWORK_MAPPER.moralis_url;
 
 exports.getAddressTokenHoldings = (req, res) => { 
     const { address } = JSON.parse(req.body.body); // Get address for request to Moralis

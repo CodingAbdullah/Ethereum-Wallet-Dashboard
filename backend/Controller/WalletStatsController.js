@@ -1,6 +1,6 @@
 require('dotenv').config({ path: '../.env'});
 const axios = require('axios');
-const MORALIS_URL = require('../Utils/APIURLReference').MORALIS_URL;
+const MORALIS_URL = require('../Utils/NetworkMapper').NETWORK_MAPPER.moralis_url;
 const NETWORK_MAPPER = require('../Utils/NetworkMapper').NETWORK_MAPPER;
 
 const mod = "account";

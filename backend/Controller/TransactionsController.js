@@ -1,8 +1,7 @@
 require('dotenv').config({ path: '../.env' });
-const NETWORK_MAPPER = require('../Utils/NetworkMapper').NETWORK_MAPPER;
+const ETHERSCAN_ETH_URL = require('../Utils/NetworkMapper').NETWORK_MAPPER.eth;
 const axios = require('axios');
 
-const ETHERSCAN_URL = "https://api.etherscan.io/api";
 const mod = "account";
 const action = "balance";
 const tag = "latest";
@@ -15,7 +14,7 @@ const sort = 'desc';
 exports.getAddressTransactionBalance = (req, res) => {
     const { address } = JSON.parse(req.body.body);
     
-    axios.get(ETHERSCAN_URL + "?module=" + mod + "&action=" + action + "&address=" + address + "&tag=" + tag + "&apikey=" + API_KEY)
+    axios.get(ETHERSCAN_ETH_URL + "?module=" + mod + "&action=" + action + "&address=" + address + "&tag=" + tag + "&apikey=" + API_KEY)
     .then(response => res.status(200).json({ information: response.data }))
     .catch(err => res.status(400).json({ information: err }));
 }
@@ -24,7 +23,7 @@ exports.getAddressTransactionHistory = (req, res) => {
     const { address } = JSON.parse(req.body.body);
 
     // Gather list of transactions in descending order
-    axios.get(ETHERSCAN_URL + '?module=' + mod + "&action=txlist&address=" + address + "&startblock=" + startBlock 
+    axios.get(ETHERSCAN_ETH_URL + '?module=' + mod + "&action=txlist&address=" + address + "&startblock=" + startBlock 
     + '&endblock=' + endBlock + "&page=" + page + "&offset=" + 1000 + "&sort=" + sort + "&apikey=" + API_KEY)
     .then(response => res.status(200).json({ information: response.data }))
     .catch(err => res.status(400).json({ information: err }));
@@ -34,7 +33,7 @@ exports.getAddressInternalTransactionHistory = (req, res) => {
     const { address } = JSON.parse(req.body.body);
 
     // Gather data about internal transactions (L2.. bridges, etc)
-    axios.get(ETHERSCAN_URL + '?module=' + mod + '&action=txlistinternal&address=' + address + '&startblock=' + startBlock
+    axios.get(ETHERSCAN_ETH_URL + '?module=' + mod + '&action=txlistinternal&address=' + address + '&startblock=' + startBlock
     + '&endblock=' + endBlock + '&page=' + page + '&offset=' + 1000 + '&sort=' + sort + '&apikey=' + API_KEY) 
     .then(response => { res.status(200).json({ information: response.data })})
     .catch(err => res.status(400).json({ information: err }));

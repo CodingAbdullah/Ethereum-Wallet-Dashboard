@@ -1,5 +1,5 @@
 require('dotenv').config({ path: '../.env' });
-const BLK_URL = require('../Utils/APIURLReference').BLOCKNATIVE_URL;
+const BLK_URL = require('../Utils/NetworkMapper').NETWORK_MAPPER.blocknative_url;
 const axios = require('axios');
 
 exports.gasTrackInformation = (req, res) => {

@@ -1,7 +1,7 @@
 require('dotenv').config({ path: '../.env' });
 const sdk = require('api')('@transpose/v0#klm8731l7j8jla0'); // Unique identifier for Transpose APIs found in docs
-const MORALIS_URL = require('../Utils/APIURLReference').MORALIS_URL;
-const ALCHEMY_URL = require('../Utils/APIURLReference').ALCHEMY_URL;
+const MORALIS_URL = require('../Utils/NetworkMapper').NETWORK_MAPPER.moralis_url;
+const ALCHEMY_URL = require('../Utils/NetworkMapper').NETWORK_MAPPER.alchemy_url;
 const axios = require('axios');
 
 exports.erc721SalesById = (req, res) => {
