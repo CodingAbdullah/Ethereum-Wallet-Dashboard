@@ -3,7 +3,9 @@ const MORALIS_URL = require('../Utils/NetworkMapper').NETWORK_MAPPER.moralis_url
 const axios = require('axios');
 
 exports.getAddressTokenHoldings = (req, res) => { 
-    const { address } = JSON.parse(req.body.body); // Get address for request to Moralis
+    const { address, network } = JSON.parse(req.body.body); // Get address for request to Moralis
+
+    let refinedNetwork = network === 'polygon-mumbai' ? 'mumbai' : network; // Filter network based on name and remove hashes
 
     // Pass in API key for backend request
     const options = {
@@ -15,7 +17,7 @@ exports.getAddressTokenHoldings = (req, res) => {
         } 
     }
 
-    axios.get(MORALIS_URL + address + '/nft?chain=eth&format=decimal', options) // Pass in address and chain values
+    axios.get(MORALIS_URL + address + '/nft?chain=' + refinedNetwork + '&format=decimal', options) // Pass in address and chain values
     .then(response => {
         res.status(200).json({
             information: response.data
@@ -29,7 +31,9 @@ exports.getAddressTokenHoldings = (req, res) => {
 }   
 
 exports.getAddressTokenTransfers = (req, res) => { 
-    const { address } = JSON.parse(req.body.body); // Get address for request to Moralis
+    const { address, network } = JSON.parse(req.body.body); // Get address for request to Moralis
+
+    let refinedNetwork = network === 'polygon-mumbai' ? 'mumbai' : network; // Filter network based on name and remove hashes
 
     // Pass in API key for backend request
     const options = {
@@ -41,7 +45,7 @@ exports.getAddressTokenTransfers = (req, res) => {
         } 
     }
 
-    axios.get(MORALIS_URL + address + '/nft/transfers?chain=eth&format=decimal&direction=both', options) // Pass in address and chain values
+    axios.get(MORALIS_URL + address + '/nft/transfers?chain=' + refinedNetwork + '&format=decimal&direction=both', options) // Pass in address and chain values
     .then(response => {
         res.status(200).json({
             information: response.data
