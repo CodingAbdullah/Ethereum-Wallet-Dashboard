@@ -130,7 +130,7 @@ const WalletStats = () => {
                 }
             });
 
-                // ETH Price calculator
+                // Matic-Network Price calculator
                 fetch(COIN_GECKO_URL + API_ENDPOINT + QUERY_STRING_MATIC_NETWORK)
                 .then(response => response.json())
                 .then(res => {
@@ -161,7 +161,6 @@ const WalletStats = () => {
             // Transactions of a particular account, if the address of the particular one entered is valid
             axios.post(NODE_SERVER_URL + TRANSACTION_DETAIL_ENDPOINT , options)
             .then(res => {
-                console.log(res);
                 if (res.data.information.message === 'OK'){
                     updateTransactions((prevState) => { // Get Transaction data 
                         return {
@@ -292,7 +291,7 @@ const WalletStats = () => {
                         </div> : null 
                 }
                 <div>
-                    { emptyTransactionAlert && !setAlert ? <Alert type="warning" /> : ( transactions.information !== null ? <div style={{ marginLeft: '5rem' }}><TransactionsInfoTable walletAddress={ walletAddress } isMatic={networkID.split("-")[0] === 'polygon' ? true : false } data={ transactions.information.result } /></div> : null ) }
+                    { emptyTransactionAlert && !setAlert ? <Alert type="warning" /> : ( transactions.information !== null ? <div style={{ marginLeft: '5rem' }}><TransactionsInfoTable walletAddress={ walletAddress } isMatic={networkID.split("-")[0] === 'polygon' ? true : false } networkFetch = { transactions.information.isMoralis } data={ transactions.information.result } /></div> : null ) }
                 </div>
                 { 
                     ERC20Holdings.information !== null || emptyERC20Alert ? 

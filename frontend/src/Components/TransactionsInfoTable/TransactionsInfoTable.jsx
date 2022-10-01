@@ -2,7 +2,7 @@ import React from 'react';
 import Badge from '../Badge/Badge';
 
 const TransactionsInfoTable = (props) => {
-    const { data, walletAddress, isMatic } = props; // Retrieving data from transactions page
+    const { data, walletAddress, isMatic, networkFetch } = props; // Retrieving data from transactions page
 
     return (
         <div className="transactions-data-table">
@@ -23,11 +23,11 @@ const TransactionsInfoTable = (props) => {
                             data.map(record => {
                                 return (
                                     <tr style={{border: '1px solid black'}}>
-                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{record.blockNumber}</td>
-                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{new Date(record.timeStamp*1000).toString().split("GMT")[0].trim() +"-EST"}</td>
-                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{record.from}</td>
-                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{record.to}</td>
-                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{walletAddress.toLowerCase() === record.to ? <Badge type="IN" /> : <Badge type="OUT" />}</td>
+                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{networkFetch ? record.block_number : record.blockNumber}</td>
+                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{networkFetch ?  record.block_timestamp.split(".")[0] : new Date(record.timeStamp*1000).toString().split("GMT")[0].trim() +"-EST"}</td>
+                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{networkFetch ? record.from_address : record.from}</td>
+                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{networkFetch ? record.to_address : record.to}</td>
+                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{networkFetch ? ( walletAddress.toLowerCase() === record.to_address ? <Badge type="IN" /> : <Badge type="OUT" /> ) : ( walletAddress.toLowerCase() === record.to ? <Badge type="IN" /> : <Badge type="OUT" /> )}</td>
                                         <td style={{border: '1px solid black', fontSize: '11px'}}>{isMatic ? (record.value*(1/1000000000000000000)).toPrecision(4) + " MATIC" : (record.value*(1/1000000000000000000)).toPrecision(4) + " ETH"}</td>
                                         <td style={{border: '1px solid black', fontSize: '11px'}}>{record.gas}</td>
                                     </tr>

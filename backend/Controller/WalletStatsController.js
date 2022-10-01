@@ -11,37 +11,83 @@ const endBlock = 99999999;
 const page = 1;
 const sort = 'desc';
 
+// ETH/Sepolia from Etherscan
+// Everything else from Moralis or Polygonscan
+
 exports.addressDetails = (req, res) => {
     const { address, network } = JSON.parse(req.body.body);
 
-    // Gather wallet analytics using API resources and running checks to see if wallet address is valid
-    axios.get(NETWORK_MAPPER[network] + "?module=" + mod + "&action=" + action + "&address=" + address + "&tag=" + tag + "&apikey=" + 
-    (network === 'polygon' ? process.env.POLYGON_API_KEY : process.env.ETHERSCAN_API_KEY))
-    .then(response => res.status(200).json({ information: response.data }))
-    .catch(err => res.status(400).json({ information: err }));
+    if (network === 'eth' || network === 'sepolia' || network.split('-')[0] === 'polygon'){
+        // Gather wallet analytics using API resources and running checks to see if wallet address is valid
+        axios.get(NETWORK_MAPPER[network] + "?module=" + mod + "&action=" + action + "&address=" + address + "&tag=" + tag + "&apikey=" + 
+        ((network === 'polygon' || network === 'polygon-mumbai') ? process.env.POLYGON_API_KEY : process.env.ETHERSCAN_API_KEY))
+        .then(response => res.status(200).json({ information: response.data }))
+        .catch(err => res.status(400).json({ information: err }));
+    }
+    else {
+        const options = {
+            method: 'GET',
+            headers: {
+                'content-type' : 'application/json',
+                'X-API-KEY' : process.env.MORALIS_API_KEY
+            }
+        }
+        
+        // Transactions endpoint for retrieving information related to an wallet's activity on an ETH testnet
+        axios.get(MORALIS_URL + address + '/balance?chain=' + network, options)
+        .then(response => { 
+            console.log(response)
+            res.status(200).json({ 
+                information: { message: 'OK', result: response.data.balance }  
+            })
+        })
+        .catch(err => 
+            res.status(400).json({ 
+                information: err 
+        }));
+
+    }
 
 }
 
 exports.transactionsByAddress = (req, res) => {
     const { address, network } = JSON.parse(req.body.body);
 
-    // Transactions of a particular account, if the address of the particular one entered is valid
-    axios.get(NETWORK_MAPPER[network] + '?module=' + mod + "&action=txlist&address=" + address + "&startblock=" + startBlock 
-    + '&endblock=' + endBlock + "&page=" + page + "&offset=" + 1000 + "&sort=" + sort + "&apikey=" + 
-    (network === 'polygon' ? process.env.POLYGON_API_KEY : process.env.ETHERSCAN_API_KEY))
-    .then(response => res.status(200).json({ information: response.data }))
-    .catch(err => res.status(400).json({ information: err }));
-
+    if (network === 'eth' || network === 'sepolia' || network.split('-')[0] === 'polygon'){
+        // Transactions of a particular account, if the address of the particular one entered is valid
+        axios.get(NETWORK_MAPPER[network] + '?module=' + mod + "&action=txlist&address=" + address + "&startblock=" + startBlock 
+        + '&endblock=' + endBlock + "&page=" + page + "&offset=" + 1000 + "&sort=" + sort + "&apikey=" + 
+        ((network === 'polygon' || network === 'polygon-mumbai') ? process.env.POLYGON_API_KEY : process.env.ETHERSCAN_API_KEY))
+        .then(response => res.status(200).json({ information: response.data, isMoralis: false }))
+        .catch(err => res.status(400).json({ information: err }));
+    }
+    else {
+        const options = {
+            method: 'GET',
+            headers: {
+                'content-type' : 'application/json',
+                'X-API-KEY' : process.env.MORALIS_API_KEY
+            }
+        }
+        
+        // Transactions endpoint for retrieving information related to a wallet's activity, on an ETH testnet
+        axios.get(MORALIS_URL + address + '?chain=' + network, options)
+        .then(response => { 
+            console.log(response)
+            res.status(200).json({ 
+                information: { message: 'OK', isMoralis: true, result: response.data.result },
+                isMoralis : true
+            })
+        })
+        .catch(err => 
+            res.status(400).json({ 
+                information: err 
+        }));
+    }
 }
 
 exports.addressERC20Holdings = (req, res) => {
     const { address, network } = JSON.parse(req.body.body);
-
-    if (network === 'sepolia') { // Exit with a response of a warning flag, no Sepolia testnet access on Moralis
-        res.status(200).json({
-            information: { warning : 'Sepolia' }
-        });
-    }
 
     let refinedNetwork = network === 'polygon-mumbai' ? 'mumbai' : network;
     const ERC20TOKEN_ENDPOINT = '/erc20?chain=' + refinedNetwork;
@@ -57,7 +103,6 @@ exports.addressERC20Holdings = (req, res) => {
     // ERC20 endpoint for retrieving information related to holdings
     axios.get(MORALIS_URL + address + ERC20TOKEN_ENDPOINT, options)
     .then(response => { 
-        console.log(response)
         res.status(200).json({ 
             information: response.data 
         })
@@ -71,12 +116,6 @@ exports.addressERC20Holdings = (req, res) => {
 exports.addressERC721Holdings = (req, res) => {
     const { address, network } = JSON.parse(req.body.body);
     
-    if (network === 'sepolia') { // Exit with a response of a warning flag, no Sepolia testnet access on Moralis
-        res.status(200).json({
-            information: { warning : 'Sepolia' }
-        });
-    }
-
     let refinedNetwork = network === 'polygon-mumbai' ? 'mumbai' : network;
     const NFT_ENDPOINT = '/nft?chain=' + refinedNetwork + '&format=decimal';
 

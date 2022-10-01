@@ -168,7 +168,7 @@ const Transactions = () => {
                 <h6>{ "Amount in USD: $" + ((amount*(1/1000000000000000000))*(ethPrice.information.ethereum.usd)).toFixed(2) + " USD" }</h6>
                 <h6 style={{ marginTop: '3rem' }}>Top 1000 or maximum done by wallet</h6>
                 <div style={{ marginLeft: '75px' }}>
-                    { transactions.information === null ? null : <TransactionsInfoTable walletAddress={ address } data={ transactions.information.result } /> }
+                    { transactions.information === null ? null : <TransactionsInfoTable walletAddress={ address } networkFetch={false} data={ transactions.information.result } /> }
                 </div>
                 <h6 style={{ marginTop: '3rem' }}><b>Internal Transactions</b></h6>
                 <h6>Top 1000 or maximum done by wallet</h6>
