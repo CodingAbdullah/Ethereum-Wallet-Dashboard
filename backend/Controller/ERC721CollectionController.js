@@ -38,9 +38,7 @@ exports.getLowestERC721CollectionSale = (req, res) => {
     axios.get(MORALIS_URL + 'nft/' + address + LOWESTPRICE_ENDPOINT, options)
     .then(response => res.status(200).json({ information: response.data }))
     .catch(err => res.status(400).json({ information: err }));
-
 }
-
 
 exports.getERC721CollectionTransfers = (req, res) => {
     const { address } = JSON.parse(req.body.body);
@@ -58,7 +56,6 @@ exports.getERC721CollectionTransfers = (req, res) => {
     axios.get(MORALIS_URL + 'nft/' + address + TRANSFERS_ENDPOINT, options)
     .then(response => res.status(200).json({ information: response.data }))
     .catch(err => res.status(400).json({ information: err }));
-
 }
 
 exports.getERC721CollectionOwners = (req, res) => {
@@ -77,7 +74,6 @@ exports.getERC721CollectionOwners = (req, res) => {
     axios.get(MORALIS_URL + 'nft/' + address + OWNERS_ENDPOINT, options)
     .then(response => res.status(200).json({ information: response.data }))
     .catch(err => res.status(400).json({ information: err }));  
-
 }
 
 exports.getERC721CollectionSales = (req, res) => {
@@ -96,7 +92,6 @@ exports.getERC721CollectionSales = (req, res) => {
     axios.get(MORALIS_URL + 'nft/' + address + TRADES_ENDPOINT, options)
     .then(response => res.status(200).json({ information: response.data }))
     .catch(err => res.status(400).json({ information: err }));
-
 }
 
 exports.getERC721CollectionFloorPrice = (req, res) => {
@@ -108,7 +103,6 @@ exports.getERC721CollectionFloorPrice = (req, res) => {
     sdk.getFloorPrice({ apiKey: process.ALCHEMY_API_KEY , contractAddress: address })
     .then(response => res.status(200).json({ information: response }))
     .catch(err => res.status(400).json({ information: err }));
-
 }
 
 exports.getERC721CollectionAttributes = (req, res) => {

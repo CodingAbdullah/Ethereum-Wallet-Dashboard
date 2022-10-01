@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const ERC721CollectionController = require('../Controller/ERC721CollectionController');
 
-
 // Add routes to be passed to node backend server
 router.post('/erc721-collection-data', ERC721CollectionController.getERC721CollectionData);
 router.post('/erc721-collection-lowest-sale', ERC721CollectionController.getLowestERC721CollectionSale);

@@ -3,7 +3,6 @@ import { Line } from 'react-chartjs-2';
 import ERC720PricesInfoTable from '../ERC720PricesInfoTable/ERC720PricesInfoTable';
 import { useNavigate } from 'react-router-dom';
 import Alert from '../Alert/Alert';
-import NetworkSelector from '../NetworkSelector/NetworkSelector';
 import moment from 'moment';
 
 import {
@@ -44,16 +43,11 @@ const ERC720TokenPricesPage = () => {
 
     const [chartData, setChartData] = useState({}); // Data for data points on chart
 
-    const [networkID, updateNetworkID] = useState('eth'); // Network selector set to default value
-
     // API information
     const URL= "https://api.coingecko.com/api/v3";
     const ERC20_INFO_ENDPOINT = '/coins/ethereum/contract/' + tokenContractAddress;
     const ERC20_PRICE_ENDPOINT = '/coins/ethereum/contract/' + tokenContractAddress + '/market_chart?vs_currency=usd&days=0.05';
 
-    const updateNetworkHandler = (e) => {
-      updateNetworkID(e.target.value);
-  }
 
     // Get Ethereum data initially
     useEffect(() => {
@@ -216,7 +210,6 @@ const ERC720TokenPricesPage = () => {
                   <label style={{marginRight: '0.5rem'}}>ERC20 Contract Address (Defaults to ETH): </label>
                   <input type="text" onChange={(e) => updateContractAddress(e.target.value)} placeholder="Enter here" required />
                   <br />
-                  <NetworkSelector blockchainNetwork={ updateNetworkHandler } />
                   <button style={{marginTop: '2rem'}} type="submit" class="btn btn-success">Check Data</button>
                 </form>
                 <div>

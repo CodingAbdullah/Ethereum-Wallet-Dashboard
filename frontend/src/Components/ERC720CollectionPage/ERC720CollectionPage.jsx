@@ -4,7 +4,6 @@ import axios from 'axios';
 import Alert from '../Alert/Alert';
 import ERC720TransfersInfoTable from '../ERC720TransfersInfoTable/ERC720TransfersInfoTable';
 import ERC720PricesInfoTable from '../ERC720PricesInfoTable/ERC720PricesInfoTable';
-import NetworkSelector from '../NetworkSelector/NetworkSelector';
 
 const ERC720CollectionPage = () => {
 
@@ -20,8 +19,6 @@ const ERC720CollectionPage = () => {
         information: null
     });
 
-    const [networkID, updateNetworkID] = useState('eth'); // Network selector set to default value
-
     const navigate = useNavigate();
 
     // Node Server endpoints
@@ -31,11 +28,6 @@ const ERC720CollectionPage = () => {
 
     const COINGECKO_URL = 'https://api.coingecko.com/api/v3'; // API Endpoints
     const ERC20_INFO_ENDPOINT = '/coins/ethereum/contract/' + tokenAddress;
-        
-    
-    const updateNetworkHandler = (e) => {
-        updateNetworkID(e.target.value);
-    }
 
     const alertHandler = () => {
         updateAlert(true); // Add alerts if any don't exist, and clear all information for analytics
@@ -172,7 +164,6 @@ const ERC720CollectionPage = () => {
                             <form onSubmit={formHandler}>
                                 <input onChange={e => updateTokenAddress(e.target.value)} type='text' placeholder='Enter Address Here'></input>
                                 <br />
-                                <NetworkSelector blockchainNetwork={ updateNetworkHandler } />
                                 <button style={{marginTop: '2rem'}} type='submit' class='btn btn-success'>Submit</button>
                             </form> 
                             <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
