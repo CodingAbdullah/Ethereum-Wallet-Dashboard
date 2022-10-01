@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ERC721LookupsInfoTable = (props) => {
-    const { data } = props;
+    const { data, isMatic } = props;
 
     return (
         <>
@@ -30,7 +30,11 @@ const ERC721LookupsInfoTable = (props) => {
                                 <td style={{border: '1px solid black', fontSize: '11px'}}>{data.token_id}</td>
                                 <td style={{border: '1px solid black', fontSize: '11px'}}>{data.contract_type}</td>
                                 <td style={{border: '1px solid black', fontSize: '11px'}}>{data.amount}</td>
-                                <td style={{border: '1px solid black', fontSize: '11px'}}><a href={"https://opensea.io/assets/ethereum/" + data.token_address + "/" + data.token_id} target="_blank" rel="noreferrer">Link</a></td>
+                                <td style={{border: '1px solid black', fontSize: '11px'}}>
+                                    <a href={isMatic ? ( "https://opensea.io/assets/matic/" + data.token_address + "/" + data.token_id ) : 
+                                            ( "https://opensea.io/assets/ethereum/" + data.token_address + "/" + data.token_id )} target="_blank" rel="noreferrer">Link
+                                    </a>
+                                </td>
                             </tr>
                         }   
                     </tbody>

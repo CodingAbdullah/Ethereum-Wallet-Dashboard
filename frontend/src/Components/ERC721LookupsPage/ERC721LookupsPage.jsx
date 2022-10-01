@@ -26,6 +26,8 @@ const ERC721LookupsPage = () => {
         information: null
     });
 
+    // information: response.data.information/invalidNetwork
+
     const navigate = useNavigate();
 
     const NODE_SERVER_URL = 'http://localhost:5000'; // API endpoints for ERC721 lookups
@@ -36,7 +38,7 @@ const ERC721LookupsPage = () => {
     const [networkID, updateNetworkID] = useState('eth'); // Network selector set to default value
 
     const updateNetworkHandler = (e) => {
-        updateNetworkID(e.target.value);
+        updateNetworkID(e.target.value); // Adding state to track network ID  
     }
 
     const clearHandler = () => {
@@ -68,7 +70,7 @@ const ERC721LookupsPage = () => {
 
         const options = {
             method: 'POST',
-            body: JSON.stringify({ address: tokenAddress, id: tokenId }),
+            body: JSON.stringify({ address: tokenAddress, id: tokenId, network: networkID }),
             headers: {
                 'content-type' : 'application/json', 
             }
@@ -165,7 +167,7 @@ const ERC721LookupsPage = () => {
                     }}>Clear</button>
                 </div>
                 <div style={{ marginTop: '2rem'}}>
-                    { tokenData.information === null ? <div /> : <div style={{ marginLeft: '2rem' }}><ERC721LookupsInfoTable data={ tokenData.information } /></div> }
+                    { tokenData.information === null ? <div /> : <div style={{ marginLeft: '2rem' }}><ERC721LookupsInfoTable isMatic={networkID.split('-')[0] === 'polygon' ? true : false } data={ tokenData.information } /></div> }
                 </div>
                 <div>
                     { tokenRarity.information === null ? <div /> : <ERC721RarityLookupsInfoTable data={ tokenRarity.information } /> }
@@ -174,7 +176,7 @@ const ERC721LookupsPage = () => {
                     { tokenTransfers.information === null ? <div /> : <ERC721TransferLookupsInfoTable data={ tokenTransfers.information } /> }
                 </div>
                 <div>
-                    { tokenData.information === null ? <div /> : <ERC721SalesLookupsInfoTable address={ tokenAddress } tokenId={ tokenId } /> }
+                    { tokenData.information === null ? <div /> : <ERC721SalesLookupsInfoTable address={ tokenAddress } tokenId={ tokenId } networkId = { networkID } /> }
                 </div>
             </main>
         </div>

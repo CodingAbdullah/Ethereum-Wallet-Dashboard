@@ -16,7 +16,7 @@ const Alert = (props) => {
             message = "No internal transactions found!";
             break;
         case "warning-unavailable-testnet":
-            message =  "Testnet data not available for this request";
+            message =  "Mainnet/Testnet data not available for this request";
             break;
         default:
             break;

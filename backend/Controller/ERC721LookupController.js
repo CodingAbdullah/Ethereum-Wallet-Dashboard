@@ -9,11 +9,14 @@ exports.erc721SalesById = (req, res) => {
 
     sdk.get('/sales-by-token-id?contract_address=' + address + '&token_id=' + id + '&order=desc', { 'x-api-key': process.env.TRANSPOSE_API_KEY })
     .then(response => res.status(200).json({ information: response }))
-    .catch(err => res.status(400).json({ information: err }))
+    .catch(err => res.status(400).json({ information: err }));
+    
 }
 
 exports.erc721TokenLookup = (req, res) => {
-    const { address, id } = JSON.parse(req.body.body);
+    const { address, id, network } = JSON.parse(req.body.body);
+
+    let refinedNetwork = network === 'polygon-mumbai' ? 'mumbai' : network;
 
     const options = {
         method: 'GET',
@@ -24,14 +27,15 @@ exports.erc721TokenLookup = (req, res) => {
         } 
     }
 
-    axios.get(MORALIS_URL + 'nft/' + address + "/" + id + "?chain=eth&format=decimal", options)
+    axios.get(MORALIS_URL + 'nft/' + address + "/" + id + "?chain=" + refinedNetwork + "&format=decimal", options)
     .then(response => res.status(200).json({ information: response.data }))
     .catch(err => res.status(400).json({ information: err }));
 }
 
 exports.erc721TokenTransferLookup = (req, res) => {
-    const { address, id } = JSON.parse(req.body.body);
+    const { address, id, network } = JSON.parse(req.body.body);
 
+    let refinedNetwork = network === 'polygon-mumbai' ? 'mumbai' : network;
     const LOOKUP_ENDPOINT = '/transfers';
 
     const options = {
@@ -40,32 +44,40 @@ exports.erc721TokenTransferLookup = (req, res) => {
             'content-type': 'application/json',
             'accept' : 'application/json',
             'X-API-KEY' : process.env.MORALIS_API_KEY
-        } 
+        }
     }
 
-    axios.get(MORALIS_URL + 'nft/' + address + "/" + id + LOOKUP_ENDPOINT + "?chain=eth&format=decimal", options)
+    axios.get(MORALIS_URL + 'nft/' + address + "/" + id + LOOKUP_ENDPOINT + "?chain=" + refinedNetwork + "&format=decimal", options)
     .then(response => res.status(200).json({ information: response.data }))
     .catch(err => res.status(400).json({ information: err }));
 }
 
 exports.erc721TokenRarityLookup = (req, res) => {
-    const { address, id } = JSON.parse(req.body.body);
+    const { address, id, network } = JSON.parse(req.body.body);
 
-    const options = {
-        method: 'GET',
-        headers: {
-            'content-type': 'application/json'
-        }
-    };
-
-    // API endpoint for finding the rarity
-    axios.get(ALCHEMY_URL + '/' + process.env.ALCHEMY_API_KEY + "/computeRarity?contractAddress=" + address + "&tokenId=" + id, options)
-    .then(response => {
+    if (network !== 'eth') {
+        // Throw an alert on this message
         res.status(200).json({
-            information: { data: response.data } 
+            information: { data: null } 
+        });
+    }
+    else {
+        const options = {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json'
+            }
+        };
+
+        // API endpoint for finding the rarity
+        axios.get(ALCHEMY_URL + '/' + process.env.ALCHEMY_API_KEY + "/computeRarity?contractAddress=" + address + "&tokenId=" + id, options)
+        .then(response => {
+            res.status(200).json({
+                information: { data: response.data }
+            })
         })
-    })
-    .catch(err => {
-        console.log(err);
-    })
+        .catch(err => {
+            console.log(err);
+        });
+    }
 }
