@@ -36,7 +36,6 @@ exports.addressDetails = (req, res) => {
         // Transactions endpoint for retrieving information related to an wallet's activity on an ETH testnet
         axios.get(MORALIS_URL + address + '/balance?chain=' + network, options)
         .then(response => { 
-            console.log(response)
             res.status(200).json({ 
                 information: { message: 'OK', result: response.data.balance }  
             })
@@ -73,7 +72,6 @@ exports.transactionsByAddress = (req, res) => {
         // Transactions endpoint for retrieving information related to a wallet's activity, on an ETH testnet
         axios.get(MORALIS_URL + address + '?chain=' + network, options)
         .then(response => { 
-            console.log(response)
             res.status(200).json({ 
                 information: { message: 'OK', isMoralis: true, result: response.data.result },
                 isMoralis : true
@@ -130,7 +128,6 @@ exports.addressERC721Holdings = (req, res) => {
     // ERC721 endpoint for retrieving information related to holdings
     axios.get(MORALIS_URL + address + NFT_ENDPOINT, options)
     .then(response => {
-        console.log(response);
         res.status(200).json({
             information: response.data
         })

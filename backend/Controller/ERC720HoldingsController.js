@@ -3,7 +3,9 @@ const axios = require('axios');
 const MORALIS_URL = require('../Utils/NetworkMapper').NETWORK_MAPPER.moralis_url;
 
 exports.getAddressTokenHoldings = (req, res) => { 
-    const { address } = JSON.parse(req.body.body); // Get address for request to Moralis
+    const { address, network } = JSON.parse(req.body.body); // Get address for request to Moralis
+
+    let refinedNetwork = (network === 'polygon-mumbai' ? 'mumbai' : network);
 
     // Pass in API key for backend request
     const options = {
@@ -15,7 +17,7 @@ exports.getAddressTokenHoldings = (req, res) => {
         } 
     }
 
-    axios.get(MORALIS_URL + address + '/erc20?chain=eth', options) // Pass in address and chain values
+    axios.get(MORALIS_URL + address + '/erc20?chain=' + refinedNetwork, options) // Pass in address and chain values
     .then(response => {
         res.status(200).json({
             information: response.data
@@ -29,7 +31,9 @@ exports.getAddressTokenHoldings = (req, res) => {
 }   
 
 exports.getAddressTokenTransfers = (req, res) => { 
-    const { address } = JSON.parse(req.body.body); // Get address for request to Moralis
+    const { address, network } = JSON.parse(req.body.body); // Get address for request to Moralis
+
+    let refinedNetwork = network === 'polygon-mumbai' ? 'mumbai' : network;
 
     // Pass in API key for backend request
     const options = {
@@ -41,7 +45,7 @@ exports.getAddressTokenTransfers = (req, res) => {
         } 
     }
 
-    axios.get(MORALIS_URL + address + '/erc20/transfers?chain=eth', options) // Pass in address and chain values
+    axios.get(MORALIS_URL + address + '/erc20/transfers?chain=' + refinedNetwork, options) // Pass in address and chain values
     .then(response => {
         res.status(200).json({
             information: response.data

@@ -55,7 +55,7 @@ const ERC720HoldingsPage = () => {
              // Set options for fetch and flight responses
             const options = {
                 method: 'POST',
-                body: JSON.stringify({ address: walletAddress }),
+                body: JSON.stringify({ address: walletAddress, network : networkID }),
                 headers: {
                     'content-type' : 'application/json', 
                 }
@@ -131,6 +131,7 @@ const ERC720HoldingsPage = () => {
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h2>ERC20 Token Holdings</h2>
+                    <label>{ networkID }</label>
                 </div>
                 { setAlert ? <Alert type="danger" /> : null }
                 { isEmpty ? <Alert type="warning" /> : null }
