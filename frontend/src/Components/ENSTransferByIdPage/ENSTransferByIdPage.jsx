@@ -89,8 +89,8 @@ const ENSTransferByIdPage = () => {
                         <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={clearHandler}>Clear</button>  
                     </div>
                 </div>
-                <div style={{marginTop: '2rem'}}>
-                    { ENSTransferData.information === null ? <div /> : 
+                <div style={{ marginTop: '2rem' }}>
+                    { ENSTransferData.information === null ? null : 
                         <>
                             <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                 <h3 class="h3">ENS Transfers</h3>

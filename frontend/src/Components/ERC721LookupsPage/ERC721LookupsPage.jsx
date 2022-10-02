@@ -167,16 +167,16 @@ const ERC721LookupsPage = () => {
                     }}>Clear</button>
                 </div>
                 <div style={{ marginTop: '2rem'}}>
-                    { tokenData.information === null ? <div /> : <div style={{ marginLeft: '2rem' }}><ERC721LookupsInfoTable isMatic={networkID.split('-')[0] === 'polygon' ? true : false } data={ tokenData.information } /></div> }
+                    { tokenData.information === null ? null : <div style={{ marginLeft: '2rem' }}><ERC721LookupsInfoTable isMatic={ networkID.split('-')[0] === 'polygon' ? true : false } data={ tokenData.information } /></div> }
                 </div>
                 <div>
-                    { tokenRarity.information === null ? <div /> : <ERC721RarityLookupsInfoTable data={ tokenRarity.information } /> }
+                    { tokenRarity.information === null ? null : <ERC721RarityLookupsInfoTable data={ tokenRarity.information } /> }
                 </div>
                 <div>
-                    { tokenTransfers.information === null ? <div /> : <ERC721TransferLookupsInfoTable data={ tokenTransfers.information } /> }
+                    { tokenTransfers.information === null ? null : <ERC721TransferLookupsInfoTable data={ tokenTransfers.information } /> }
                 </div>
                 <div>
-                    { tokenData.information === null ? <div /> : <ERC721SalesLookupsInfoTable address={ tokenAddress } tokenId={ tokenId } networkId = { networkID } /> }
+                    { tokenData.information === null ? null : <ERC721SalesLookupsInfoTable address={ tokenAddress } tokenId={ tokenId } networkId = { networkID } /> }
                 </div>
             </main>
         </div>

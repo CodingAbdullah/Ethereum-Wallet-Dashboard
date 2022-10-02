@@ -104,47 +104,45 @@ const ENSToAddressResolverPage = () => {
                         <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={clearHandler}>Clear</button>  
                     </div>
                 </div>
-                <div style={{marginTop: '2rem'}}>
-                    { ENSToAddressData.information === null ? <div /> : 
+                {
+                    ENSToAddressData.information === null ? null :
                         <>
-                            <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                <h3 class="h3">Resolver Information</h3>
+                            <div style={{marginTop: '2rem'}}>
+                                    <>
+                                        <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                            <h3 class="h3">Resolver Information</h3>
+                                        </div>
+                                        <h6>Address Resolver for ENS: <b>{ENSToAddress}</b></h6>
+                                        <ENSToAddressInfoTable data={ ENSToAddressData.information } address={ENSToAddress } />
+                                    </>
+                                
                             </div>
-                            <h6>Address Resolver for ENS: <b>{ENSToAddress}</b></h6>
-                            <ENSToAddressInfoTable data={ ENSToAddressData.information } address={ ENSToAddress } />
-                        </>    
-                    }
-                </div>
-                <div style={{marginTop: '2rem'}}>
-                    { ENSToAddressData.information === null ? <div /> : 
-                        <>
-                            <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                <h3 class="h3">Additional Information</h3>
+                            <div style={{marginTop: '2rem'}}>
+                                    <>
+                                        <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                            <h3 class="h3">Additional Information</h3>
+                                        </div>
+                                        <AdditionalAddressENSInfoTable data={{ name: ENSToAddress }} />
+                                    </>    
                             </div>
-                            <AdditionalAddressENSInfoTable data={{ name: ENSToAddress }} />
-                        </>    
-                    }
-                </div>
-                <div style={{marginTop: '2rem'}}>
-                    { ENSToAddressData.information === null ? <div /> : 
-                        <>
-                            <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                <h3 class="h3">ENS Names Belonging To Owner</h3>
+                            <div style={{marginTop: '2rem'}}>
+                                    <>
+                                        <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                            <h3 class="h3">ENS Names Belonging To Owner</h3>
+                                        </div>
+                                        <ENSOwnershipInfoTable address={ ENSToAddress } />
+                                    </>    
                             </div>
-                            <ENSOwnershipInfoTable address={ ENSToAddress } />
-                        </>    
-                    }
-                </div>
-                <div style={{marginTop: '2rem'}}>
-                    { ENSToAddressData.information === null ? <div /> : 
-                        <>
-                            <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                <h3 class="h3">ENS Names Resolving To Address</h3>
+                            <div style={{marginTop: '2rem'}}>
+                                    <>
+                                        <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                            <h3 class="h3">ENS Names Resolving To Address</h3>
+                                        </div>
+                                        <ENSResolverInfoTable address={ ENSToAddress } />
+                                    </>    
                             </div>
-                            <ENSResolverInfoTable address={ ENSToAddress } />
-                        </>    
-                    }
-                </div>
+                        </>
+                }
             </main>
         </div>
     )

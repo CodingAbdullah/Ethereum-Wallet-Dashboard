@@ -158,14 +158,14 @@ const ERC721HoldingsPage = () => {
                 { nftData.information != null ? <hr style={{ marginTop: '5rem', marginBottom: '5rem' }} /> : null }
                 { nftData.information !== null ? <h5 style={{ marginTop: '2rem' }}>ERC-721/1155 Token Holdings for Wallet: <b>{ walletAddress }</b></h5> : null}
                 <div style={{ marginTop: '2rem' }}>
-                    { nftData.information === null ? <div /> : <ERC721HoldingsInfoTable data={ nftData.information } /> }
+                    { nftData.information === null ? null : <ERC721HoldingsInfoTable data={ nftData.information } /> }
                 </div>
             </main>
             <main role="main">
                 { nftData.information != null ? <hr style={{ marginTop: '5rem' }} /> : null }
                 <div style={{ marginTop: '5rem', marginLeft: '5rem' }}>
-                    { ERC721Transfers.information === null ? <div /> : <h5 style={{ marginLeft: '8rem' }}>ERC-721/1155 Transfers for: <b>{ walletAddress }</b></h5> } 
-                    { ERC721Transfers.information === null ? <div /> : <ERC721TransfersInfoTable address={ walletAddress } data={ ERC721Transfers.information } /> }
+                    { ERC721Transfers.information === null ? null : <h5 style={{ marginLeft: '8rem' }}>ERC-721/1155 Transfers for: <b>{ walletAddress }</b></h5> } 
+                    { ERC721Transfers.information === null ? null : <ERC721TransfersInfoTable address={ walletAddress } data={ ERC721Transfers.information } /> }
                 </div>
             </main>
         </div>  

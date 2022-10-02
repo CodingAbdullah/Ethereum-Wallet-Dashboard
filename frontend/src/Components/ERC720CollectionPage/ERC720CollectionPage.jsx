@@ -173,18 +173,18 @@ const ERC720CollectionPage = () => {
                 </main>
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                     { setPrice === null ? null : <h3 style={{marginTop: '3rem', marginBottom: '1.5rem'}}>Price: $<b>{setPrice.toPrecision(4)}</b> USD</h3> } 
-                    { ERC20Information.information === null || ERC20Transfers.information === null ? null : <hr style={{marginTop: '3rem', marginBottom: '3rem'}} /> }
+                    { (ERC20Information.information === null || ERC20Transfers.information === null) ? null : <hr style={{marginTop: '3rem', marginBottom: '3rem'}} /> }
                     {
                         // Display data of the valid ERC20 token
-                        ERC20Information.information === null ? <div /> :
+                        ERC20Information.information === null ? null :
                         <ERC720PricesInfoTable data={ERC20Information} />
                     }
-                    { ERC20Information.information === null || ERC20Transfers.information === null ? null : <hr style={{marginTop: '5rem', marginBottom: '2rem'}} /> }
+                    { (ERC20Information.information === null || ERC20Transfers.information === null) ? null : <hr style={{marginTop: '5rem', marginBottom: '2rem'}} /> }
                 </main>
                 <main role="main">
                     <div style={{marginTop: '5rem', marginLeft: '5rem'}}>
-                        { ERC20Transfers.information === null ? <div /> : <h5 style={{marginLeft: '8rem'}}>Top 100 Transfers for Token: <b>{tokenAddress}</b></h5> }
-                        { ERC20Transfers.information === null ? <div /> : <ERC720TransfersInfoTable address={null} data={ERC20Transfers.information} /> }
+                        { ERC20Transfers.information === null ? null : <h5 style={{ marginLeft: '8rem' }}>Top 100 Transfers for Token: <b>{tokenAddress}</b></h5> }
+                        { ERC20Transfers.information === null ? null : <ERC720TransfersInfoTable address={null} data={ERC20Transfers.information} /> }
                     </div>
                 </main>
             </div>

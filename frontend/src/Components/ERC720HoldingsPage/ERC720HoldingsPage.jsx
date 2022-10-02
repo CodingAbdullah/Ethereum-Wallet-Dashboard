@@ -150,16 +150,16 @@ const ERC720HoldingsPage = () => {
                 </div>
                 <main role="main">
                     <div style={{marginTop: '2rem'}}>
-                        { ERC20Holdings.information === null ? <div /> : <h5 style={{marginTop: '2rem'}}>ERC720 Token Holdings for Wallet: <b>{walletAddress}</b></h5> }
-                        { ERC20Holdings.information === null ? <div /> : <ERC720HoldingsInfoTable data={ERC20Holdings.information} /> }
+                        { ERC20Holdings.information === null ? null : <h5 style={{marginTop: '2rem'}}>ERC720 Token Holdings for Wallet: <b>{walletAddress}</b></h5> }
+                        { ERC20Holdings.information === null ? null : <ERC720HoldingsInfoTable data={ERC20Holdings.information} /> }
                     </div>           
                 </main>
                 { ERC20Holdings.information === null ? null : <hr style={{marginTop: '5rem'}} /> }
             </main>
             <main role="main">
                 <div style={{marginTop: '5rem', marginLeft: '5rem'}}>
-                    { ERC20Transfers.information === null ? <div /> : <h5 style={{marginLeft: '8rem'}}>ERC20 Transfers for Wallet: <b>{walletAddress}</b></h5> }
-                    { ERC20Transfers.information === null ? <div /> : <ERC720TransfersInfoTable address={walletAddress} data={ERC20Transfers.information} /> }
+                    { ERC20Transfers.information === null ? null : <h5 style={{marginLeft: '8rem'}}>ERC20 Transfers for Wallet: <b>{walletAddress}</b></h5> }
+                    { ERC20Transfers.information === null ? null : <ERC720TransfersInfoTable address={walletAddress} data={ERC20Transfers.information} /> }
                 </div>
             </main>
 
