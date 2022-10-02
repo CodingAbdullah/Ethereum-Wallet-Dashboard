@@ -155,17 +155,29 @@ const ERC721HoldingsPage = () => {
                         <button style={{ marginTop: '2rem', marginLeft: '2rem' }} class='btn btn-warning' onClick={() => { updateAlert(false); updateEmptyAlert(false); updateNFTData((prevState) => { return { ...prevState, information: null }}); updateERC721Transfers((prevState) => { return { ...prevState, information: null }})} }>Clear</button>
                     </div>
                 </div>
-                { nftData.information != null ? <hr style={{ marginTop: '5rem', marginBottom: '5rem' }} /> : null }
-                { nftData.information !== null ? <h5 style={{ marginTop: '2rem' }}>ERC-721/1155 Token Holdings for Wallet: <b>{ walletAddress }</b></h5> : null}
+                {
+                    nftData.information !== null ? 
+                        <>
+                            <hr style={{ marginTop: '5rem', marginBottom: '5rem' }} />
+                            <h5 style={{ marginTop: '2rem' }}>ERC-721/1155 Token Holdings for Wallet: <b>{ walletAddress }</b></h5>
+                        </>
+                    : null
+                }
+
                 <div style={{ marginTop: '2rem' }}>
                     { nftData.information === null ? null : <ERC721HoldingsInfoTable data={ nftData.information } /> }
                 </div>
             </main>
             <main role="main">
-                { nftData.information != null ? <hr style={{ marginTop: '5rem' }} /> : null }
+                { nftData.information !== null ? <hr style={{ marginTop: '5rem' }} /> : null }
                 <div style={{ marginTop: '5rem', marginLeft: '5rem' }}>
-                    { ERC721Transfers.information === null ? null : <h5 style={{ marginLeft: '8rem' }}>ERC-721/1155 Transfers for: <b>{ walletAddress }</b></h5> } 
-                    { ERC721Transfers.information === null ? null : <ERC721TransfersInfoTable address={ walletAddress } data={ ERC721Transfers.information } /> }
+                    {
+                        ERC721Transfers.information === null ? null :
+                            <>
+                                <h5 style={{ marginLeft: '8rem' }}>ERC-721/1155 Transfers for: <b>{ walletAddress }</b></h5> 
+                                <ERC721TransfersInfoTable address={ walletAddress } data={ ERC721Transfers.information } />
+                            </>
+                    }
                 </div>
             </main>
         </div>  

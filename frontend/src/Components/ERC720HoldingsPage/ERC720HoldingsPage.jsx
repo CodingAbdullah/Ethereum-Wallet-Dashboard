@@ -148,21 +148,30 @@ const ERC720HoldingsPage = () => {
                         <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { updateAlert(false); updateEmptyAlert(false); updateERC20Holdings((prevState) => { return { ...prevState, information: null }}); updateERC20Transfers((prevState) => { return { ...prevState, information: null }} )}}>Clear</button>
                     </div>
                 </div>
-                <main role="main">
-                    <div style={{marginTop: '2rem'}}>
-                        { ERC20Holdings.information === null ? null : <h5 style={{marginTop: '2rem'}}>ERC720 Token Holdings for Wallet: <b>{walletAddress}</b></h5> }
-                        { ERC20Holdings.information === null ? null : <ERC720HoldingsInfoTable data={ERC20Holdings.information} /> }
-                    </div>           
-                </main>
-                { ERC20Holdings.information === null ? null : <hr style={{marginTop: '5rem'}} /> }
+                {
+                    ERC20Holdings.information === null ? null :
+                        <>
+                            <main role="main">
+                                <div style={{marginTop: '2rem'}}>
+                                    <h5 style={{marginTop: '2rem'}}>ERC720 Token Holdings for Wallet: <b>{walletAddress}</b></h5>
+                                    <ERC720HoldingsInfoTable data={ERC20Holdings.information} />
+                                </div>           
+                            </main>
+                            <hr style={{marginTop: '5rem'}} /> 
+                        </>
+                }
             </main>
-            <main role="main">
-                <div style={{marginTop: '5rem', marginLeft: '5rem'}}>
-                    { ERC20Transfers.information === null ? null : <h5 style={{marginLeft: '8rem'}}>ERC20 Transfers for Wallet: <b>{walletAddress}</b></h5> }
-                    { ERC20Transfers.information === null ? null : <ERC720TransfersInfoTable address={walletAddress} data={ERC20Transfers.information} /> }
-                </div>
-            </main>
-
+            {
+                ERC20Holdings.information === null ? null :
+                    <>
+                        <main role="main">
+                            <div style={{marginTop: '5rem', marginLeft: '5rem'}}>
+                                <h5 style={{marginLeft: '8rem'}}>ERC20 Transfers for Wallet: <b>{walletAddress}</b></h5>
+                                <ERC720TransfersInfoTable address={walletAddress} data={ERC20Transfers.information} />
+                            </div>
+                        </main>
+                    </>
+            }
         </div>  
     )
 }
