@@ -4,9 +4,9 @@ import PriceCoinCard from '../PriceCoinCard/PriceCoinCard';
 
 const PricesPage = () => {
     // Display these for each of the cards
-    const top15CoinCaps = { Bitcoin: 'BTC',  Ethereum: 'ETH' ,  USD: 'USDC' ,  binancecoin: 'BNB' ,  Ripple: 'XRP' , 
-     'binance-usd': 'BUSD' ,  Cardano: 'ADA' ,  Solana: 'SOL' ,  Polkadot: 'DOT' , Dogecoin: 'DOGE' ,  dai: 'DAI' , 
-     'matic-network': 'MATIC' ,  'avalanche-2': 'AVAX' , Uniswap: 'UNI' ,  'shiba-inu': 'SHIB' }; 
+    const top15CoinCaps = { Bitcoin: 'BTC',  Ethereum: 'ETH' ,  litecoin: 'LTC' ,  binancecoin: 'BNB' ,  Ripple: 'XRP' , 
+      algorand: 'ALGO' ,  Cardano: 'ADA' ,  Solana: 'SOL' ,  Polkadot: 'DOT' , Dogecoin: 'DOGE' ,  chainlink: 'LINK' , 
+     'matic-network': 'MATIC' ,  'avalanche-2': 'AVAX' , Uniswap: 'UNI' ,  optimism: 'OP' }; 
 
     const [coinInfo, updateCoinInfo] = useState([]);
 
@@ -43,7 +43,7 @@ const PricesPage = () => {
         return (
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                 <h1 style={{ marginTop: '1.5rem', marginBottom: '1rem' }}>Prices Chart</h1>
-                <p>Here is the list of the latest prices on the top 15 coins by <b>market cap.</b> </p>
+                <p>Here is the list of the latest prices on the top 15 coins by <b>popularity.</b></p>
                 <div style={{ marginLeft: '2.25rem' }} class="container col-md-9 ml-sm-auto col-lg-10 px-md-4">
                     <div style={{marginLeft: '1.5rem'}} class="row">
                         {
