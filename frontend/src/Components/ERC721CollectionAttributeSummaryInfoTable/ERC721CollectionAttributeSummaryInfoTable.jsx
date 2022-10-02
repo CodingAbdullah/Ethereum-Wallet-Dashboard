@@ -20,17 +20,17 @@ const ERC721CollectionAttributeSummaryInfoTable = (props) => {
     }
     
     // Map attributes and sub attributes into tables/sub-tables
-    const tabulatedNestedAttributes = keyAttributeList.map(record => {
+    const tabulatedNestedAttributes = keyAttributeList.map((record, key) => {
         return (
                 <>
-                    <tr>
+                    <tr id={key}>
                         <th style={{border: '1px solid black', fontSize: '10.5px'}}>{Object.keys(record)[0]}</th>
                         <th style={{border: '1px solid black', fontSize: '10.5px'}}>-</th>
                     </tr>
                         {       
-                            record[Object.keys(record)[0]].map(subrecords => {
+                            record[Object.keys(record)[0]].map((subrecords, key) => {
                                 return (
-                                    <tr>
+                                    <tr id={key}>
                                         <td>{Object.keys(subrecords)[0]}</td>
                                         <td>{subrecords[Object.keys(subrecords)[0]]}</td>
                                     </tr>

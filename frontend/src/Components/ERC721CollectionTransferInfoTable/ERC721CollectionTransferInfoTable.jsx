@@ -20,9 +20,9 @@ const ERC721CollectionTransferInfoTable = (props) => {
                 </thead>
                 <tbody>
                     {
-                        data.map(record => {
+                        data.map((record, key) => {
                             return (
-                                <tr style={{border: '1px solid black'}}>
+                                <tr id={key} style={{border: '1px solid black'}}>
                                     <td style={{border: '1px solid black', fontSize: '15.5px'}}>{record.token_id}</td>
                                     <td style={{border: '1px solid black', fontSize: '15.5px'}}>{record.from_address}</td>
                                     <td style={{border: '1px solid black', fontSize: '15.5px'}}>{record.to_address}</td>

@@ -15,9 +15,9 @@ const ERC721HoldingsInfoTable = (props) => {
                 </tr>
                 </thead>
                 <tbody style={{border: '1px solid black'}}>
-                    { data.result.map(record => {
+                    { data.result.map((record, key) => {
                         return (
-                                <tr style={{border: '1px solid black'}}>
+                                <tr id={key} style={{border: '1px solid black'}}>
                                     <td style={{border: '1px solid black'}}>{record.name}</td>
                                     <td style={{border: '1px solid black'}}>{record.token_address}</td>
                                     <td style={{border: '1px solid black'}}>{record.symbol}</td>

@@ -47,9 +47,9 @@ const PricesPage = () => {
                 <div style={{ marginLeft: '2.25rem' }} class="container col-md-9 ml-sm-auto col-lg-10 px-md-4">
                     <div style={{marginLeft: '1.5rem'}} class="row">
                         {
-                           cards.map(coin => {
+                           cards.map((coin, key) => {
                                 return (
-                                    <PriceCoinCard name={ Object.keys(coin.res)[0] } coinInfo={coin.res} /> // Display child components by passing properties to them
+                                    <PriceCoinCard id={key} name={ Object.keys(coin.res)[0] } coinInfo={coin.res} /> // Display child components by passing properties to them
                                 );
                             })
                         }

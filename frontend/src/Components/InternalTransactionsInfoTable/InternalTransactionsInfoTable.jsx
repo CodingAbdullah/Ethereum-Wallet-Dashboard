@@ -21,9 +21,9 @@ const InternalTransactionsInfoTable = (props) => {
                     </thead>
                     <tbody style={{border: '1px solid black'}}>
                         {
-                            data.map(record => {
+                            data.map((record, key) => {
                                 return (
-                                    <tr style={{border: '1px solid black'}}>
+                                    <tr id={key} style={{border: '1px solid black'}}>
                                         <td style={{border: '1px solid black', fontSize: '11px'}}>{record.blockNumber}</td>
                                         <td style={{border: '1px solid black', fontSize: '11px'}}>{new Date(record.timeStamp*1000).toString().split("GMT")[0].trim() +"-EST"}</td>
                                         <td style={{border: '1px solid black', fontSize: '11px'}}>{record.from}</td>

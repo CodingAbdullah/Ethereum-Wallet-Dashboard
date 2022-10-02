@@ -78,9 +78,9 @@ const GasTrackerPage = () => {
                         <h3 class="h3">Block Prices</h3>
                     </div> 
                     <div style={{marginTop: '2rem'}} class="row">
-                        { gasInfo.information.blockPrices[0].estimatedPrices.map(block => {
+                        { gasInfo.information.blockPrices[0].estimatedPrices.map((block, key) => {
                             return (
-                                <GasBlockPriceCard information={block}/>
+                                <GasBlockPriceCard id={key} information={block}/>
                             )
                         })}
                     </div>
@@ -88,9 +88,9 @@ const GasTrackerPage = () => {
                         <h3 class="h3">Base Fees</h3>
                     </div>  
                     <div style={{marginTop: '2rem'}} class="row">
-                        { gasInfo.information.estimatedBaseFees.map(base => {
+                        { gasInfo.information.estimatedBaseFees.map((base, key) => {
                             return (
-                                <GasBaseFeeCard information={base} />
+                                <GasBaseFeeCard id={key} information={base} />
                             )
                         })}
                     </div>

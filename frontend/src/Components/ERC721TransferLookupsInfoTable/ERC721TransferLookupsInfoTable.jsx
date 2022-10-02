@@ -19,9 +19,9 @@ const ERC721TransferLookupsInfoTable = (props) => {
                     </thead>
                     <tbody>
                         {
-                            data.map(record => {
+                            data.map((record, key) => {
                                 return (
-                                    <tr>
+                                    <tr id={key}>
                                         <td style={{border: '1px solid black', fontSize: '11px'}}>{record.block_timestamp.split("T")[0]}</td>
                                         <td style={{border: '1px solid black', fontSize: '11px'}}>{record.transaction_hash}</td>
                                         <td style={{border: '1px solid black', fontSize: '11px'}}>{record.from_address}</td>

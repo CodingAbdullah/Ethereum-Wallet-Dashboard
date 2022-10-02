@@ -69,9 +69,9 @@ const ERC721SalesLookupInfoTable = (props) => {
                             </tr>
                         </thead>
                         <tbody style={{border: '1px solid black', fontSize: '10px'}}>
-                            { ERC721SalesInfo.information.results.map(record => {
+                            { ERC721SalesInfo.information.results.map((record, key) => {
                                 return (
-                                        <tr style={{border: '1px solid black', fontSize: '10px'}}>
+                                        <tr id={key} style={{border: '1px solid black', fontSize: '10px'}}>
                                             <td style={{border: '1px solid black', fontSize: '10px'}}>{record.transaction_hash}</td>
                                             <td style={{border: '1px solid black', fontSize: '10px'}}>{record.timestamp.split("Z")[0]}</td>
                                             <td style={{border: '1px solid black', fontSize: '10px'}}>{record.exchange_name + '-' + record.contract_version}</td>

@@ -11,11 +11,11 @@ const HomePageDescriptionSection = (props) => {
                 <p>Deep dive into collections, wallet information, price action, ENS and much more! Here is a link to all <b>EVM-compatible</b> chains and their respective IDs:
                     <a style={{ color: 'black', fontStyle: 'italic' }} href="https://chainlist.org" target="_blank" rel="noreferrer"><b> ChainList</b></a>
                 </p> 
-                <p>Please note that all activity documented here is on the <b>mainnet</b> network, by default. <b>ERC-1155</b> data not available as of yet. 
-                    <b> Sepolia testnet</b> might not be available on select requests as it is a new testnet and the <b>Ropsten testnet</b> is now discontinued.
-                </p>
-                <p>To view information on any <b>testnet</b>, please visit the <b>Wallet/Testnet</b> item on the left sidebar. 
-                There, you can decide which network to view wallet information from (<b>mainnet</b> by default).
+                <p>Please note that all activity documented here is on the <b>mainnet</b> network, by default. Some information might not be available on certain networks. 
+                <br />
+                <b>ERC-1155</b> token related data is also not available.</p>
+                <p> To view information on any <b>testnet</b>, please visit the <b>Wallet/Testnet</b> item on the left sidebar. 
+                    There, you can decide which network to view wallet information from (<b>mainnet</b> by default).
                 </p>
                 <p>Enter the <b>public</b> address below (42-digit hex code) of a wallet to track activity, cheers!</p>
                 <form style={{ marginTop: '3rem'}} onSubmit={props.form}>

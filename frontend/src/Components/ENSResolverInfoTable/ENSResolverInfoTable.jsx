@@ -69,9 +69,9 @@ const ENSResolverInfoTable = (props) => {
                         </thead>
                         <tbody>
                                 {
-                                    ensResolverData.information.results.map(record => {
+                                    ensResolverData.information.results.map((record, key) => {
                                         return (
-                                            <tr style={{border: '1px solid black', fontSize: '12.5px'}}>
+                                            <tr id={key} style={{border: '1px solid black', fontSize: '12.5px'}}>
                                                 <td style={{border: '1px solid black', fontSize: '12.5px'}}>{record.ens_name}</td>
                                                 <td style={{border: '1px solid black', fontSize: '12.5px'}}>{record.registration_timestamp.split("Z")[0]}</td>
                                                 <td style={{border: '1px solid black', fontSize: '12.5px'}}>{record.expiration_timestamp.split("Z")[0]}</td>

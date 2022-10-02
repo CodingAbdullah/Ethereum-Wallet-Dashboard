@@ -18,10 +18,10 @@ const ERC721TransfersInfoTable = (props) => {
                 </tr>
                 </thead>
                 <tbody>
-                    { data.map(record => {
+                    { data.map((record, key) => {
                         // Display information, format date display
                             return (
-                                <tr style={{border: '1px solid black'}}>
+                                <tr id={key} style={{border: '1px solid black'}}>
                                     <td style={{border: '1px solid black', fontSize: '11px'}}>{record.block_timestamp.split("T")[0]}</td>
                                     <td style={{border: '1px solid black', fontSize: '11px'}}>{record.token_address}</td>
                                     <td style={{border: '1px solid black', fontSize: '11px'}}>{record.token_id}</td>

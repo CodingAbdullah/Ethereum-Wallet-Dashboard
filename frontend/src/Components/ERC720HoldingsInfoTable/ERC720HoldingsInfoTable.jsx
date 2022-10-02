@@ -15,14 +15,14 @@ const ERC720HoldingsInfoTable = (props) => {
                 </tr>
                 </thead>
                 <tbody>
-                    { data.map(record => {
+                    { data.map((record, key) => {
 
                         if (record.name === null){ // Conditional Rendering.. no null names to be displayed
                             return null;
                         }
                         else {
                             return (
-                                <tr style={{border: '1px solid black'}}>
+                                <tr id={key} style={{border: '1px solid black'}}>
                                     <td style={{border: '1px solid black'}}>{record.name}</td>
                                     <td style={{border: '1px solid black'}}>{record.token_address}</td>
                                     <td style={{border: '1px solid black'}}>{record.symbol}</td>

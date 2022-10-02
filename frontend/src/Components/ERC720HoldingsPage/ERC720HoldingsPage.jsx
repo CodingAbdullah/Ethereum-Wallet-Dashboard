@@ -162,7 +162,7 @@ const ERC720HoldingsPage = () => {
                 }
             </main>
             {
-                ERC20Holdings.information === null ? null :
+                ERC20Transfers.information === null ? null :
                     <>
                         <main role="main">
                             <div style={{marginTop: '5rem', marginLeft: '5rem'}}>

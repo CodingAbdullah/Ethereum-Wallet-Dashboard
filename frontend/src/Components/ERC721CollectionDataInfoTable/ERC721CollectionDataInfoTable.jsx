@@ -26,9 +26,9 @@ const ERC721CollectionDataInfoTable = (props) => {
                 </thead>
                 <tbody>
                     {
-                        offSetData.map(record => {
+                        offSetData.map((record, key) => {
                             return (
-                                <tr style={{border: '1px solid black'}}>
+                                <tr id={key} style={{border: '1px solid black'}}>
                                     <td style={{border: '1px solid black', fontSize: '18px'}}>{record.token_hash}</td>
                                     <td style={{border: '1px solid black', fontSize: '18px'}}>{record.token_address}</td>
                                     <td style={{border: '1px solid black', fontSize: '18px'}}>{record.token_id}</td>

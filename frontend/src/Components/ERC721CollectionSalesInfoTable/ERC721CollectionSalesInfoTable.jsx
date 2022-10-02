@@ -21,7 +21,7 @@ const ERC721CollectionTradeInfoTable = (props) => {
                 </thead>
                 <tbody>
                     {
-                        data.map(record => {
+                        data.map((record, key) => {
                             let ids = ''; // Data manipulation for display
                             if (record.token_ids.length > 1){
                                 for (var i = 0 ; i < record.token_ids.length; i++){
@@ -33,7 +33,7 @@ const ERC721CollectionTradeInfoTable = (props) => {
                                 ids = record.token_ids; // Else, keep id as is
                             }
                             return (
-                                <tr style={{border: '1px solid black'}}>
+                                <tr id={key} style={{border: '1px solid black'}}>
                                     <td style={{border: '1px solid black', fontSize: '10.5px'}}>{record.buyer_address}</td>
                                     <td style={{border: '1px solid black', fontSize: '10.5px'}}>{record.seller_address}</td>
                                     <td style={{border: '1px solid black', fontSize: '10.5px'}}>{record.token_address}</td>

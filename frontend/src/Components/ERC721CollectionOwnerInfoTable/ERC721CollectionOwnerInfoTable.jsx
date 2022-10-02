@@ -27,9 +27,9 @@ const ERC721CollectionOwnerInfoTable = (props) => {
                 </thead>
                 <tbody>
                     {
-                        data.map(record => {
+                        data.map((record, key) => {
                             return (
-                                <tr style={{border: '1px solid black'}}>
+                                <tr id={key} style={{border: '1px solid black'}}>
                                     <td style={{border: '1px solid black', fontSize: '17px'}}>{record.owner_of}</td>
                                     <td style={{border: '1px solid black', fontSize: '17px'}}>{record.token_address}</td>
                                     <td style={{border: '1px solid black', fontSize: '17px'}}>{record.token_id}</td>

@@ -25,9 +25,9 @@ const ERC721CollectionFloorPriceInfoTable = (props) => {
                 <tbody>
                     {
                         // Render values from the dynamically created array of objects mapped into a single array
-                        marketPlaceValues.map(marketplace => {
+                        marketPlaceValues.map((marketplace, key) => {
                             return (
-                                <tr style={{border: '1px solid black'}}>
+                                <tr id={key} style={{border: '1px solid black'}}>
                                     <td style={{border: '1px solid black'}}>{Object.keys(marketplace)[0]}</td>
                                     <td style={{border: '1px solid black'}}>{marketplace[Object.keys(marketplace)[0]].floorPrice}</td>
                                     <td style={{border: '1px solid black'}}>{marketplace[Object.keys(marketplace)[0]].priceCurrency}</td>

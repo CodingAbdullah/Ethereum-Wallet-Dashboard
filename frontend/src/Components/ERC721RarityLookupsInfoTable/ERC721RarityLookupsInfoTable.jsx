@@ -22,9 +22,9 @@ const ERC721RarityLookupsInfoTable = (props) => {
                         </thead>
                         <tbody>
                             { // Formatting the table rows to show data
-                                data.data.map(record => {
+                                data.data.map((record, key) => {
                                     return (
-                                        <tr>                                
+                                        <tr id={key}>                                
                                             <td style={{border: '1px solid black', fontSize: '11px'}}>{record.trait_type}</td>
                                             <td style={{border: '1px solid black', fontSize: '11px'}}>{record.value}</td>
                                             <td style={{border: '1px solid black', fontSize: '11px'}}>{((record.prevalence)*100).toFixed(2) + "%"}</td>

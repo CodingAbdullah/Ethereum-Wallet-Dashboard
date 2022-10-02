@@ -20,9 +20,9 @@ const ENSTransferByNameInfoTable = (props) => {
                     </thead>
                     <tbody>
                             {
-                                data.information.results.map(record => {
+                                data.information.results.map((record, key) => {
                                     return (
-                                        <tr style={{border: '1px solid black', fontSize: '10px'}}>
+                                        <tr id={key} style={{border: '1px solid black', fontSize: '10px'}}>
                                             <td style={{border: '1px solid black', fontSize: '10px'}}>{record.timestamp.split("Z")[0]}</td>
                                             <td style={{border: '1px solid black', fontSize: '10px'}}>{record.ens_name}</td>
                                             <td style={{border: '1px solid black', fontSize: '10px'}}>{record.transaction_hash}</td>
