@@ -131,28 +131,26 @@ const WalletStats = () => {
             });
 
                 // Matic-Network Price calculator
-                fetch(COIN_GECKO_URL + API_ENDPOINT + QUERY_STRING_MATIC_NETWORK)
-                .then(response => response.json())
+                axios.get(COIN_GECKO_URL + API_ENDPOINT + QUERY_STRING_MATIC_NETWORK)
                 .then(res => {
-                    if (res['matic-network'] !== undefined) {
+                    if (res.data['matic-network'] !== undefined) {
                         updateMaticPrice((prevState) => { // Update MATIC price information
                             return {
                                 ...prevState,
-                                information: res
+                                information: res.data
                             }
                         });
                     }
                 });
 
                 // ETH Price calculator
-                fetch(COIN_GECKO_URL + API_ENDPOINT + QUERY_STRING_ETHEREUM)
-                .then(response => response.json())
+                axios.get(COIN_GECKO_URL + API_ENDPOINT + QUERY_STRING_ETHEREUM)
                 .then(res => {
-                    if (res.ethereum !== undefined) {
+                    if (res.data.ethereum !== undefined) {
                         updateEthPrice((prevState) => { // Update ETH price information
                             return {
                                 ...prevState,
-                                information: res
+                                information: res.data
                             }
                         });
                     }

@@ -43,7 +43,13 @@ const PriceCoinCard = (props) => {
                     { imagery }
                     <br />
                     <h4 class="card-title">{modifiedName}</h4>
-                    <p>Price: <b>${relevantInfo.information[Object.keys(coinInfo)[0]].usd} USD</b></p> 
+                    <p>
+                        Price:  <b>${   relevantInfo.information[Object.keys(coinInfo)[0]].usd < 1 ? 
+                                        relevantInfo.information[Object.keys(coinInfo)[0]].usd : 
+                                      ( relevantInfo.information[Object.keys(coinInfo)[0]].usd ).toFixed(2) 
+                                    } USD
+                                </b>
+                    </p> 
                     <p style={{ display: 'inline' }}>24 Hr% Change: </p> 
                     <b><p style={{ display: 'inline', color: colorChange }}>
                     {   

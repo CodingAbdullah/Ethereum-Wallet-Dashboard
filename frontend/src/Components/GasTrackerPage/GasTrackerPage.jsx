@@ -35,7 +35,6 @@ const GasTrackerPage = () => {
 
        axios.get(NODE_SERVER_URL + GAS_TRACK_ENDPOINT, options)
        .then(res => {
-            console.log(res);
             if (res.status === 200){
                 updateGasInfo((prevState) => { // If successful, update information
                     return {

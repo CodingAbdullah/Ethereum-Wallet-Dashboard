@@ -127,14 +127,13 @@ const Transactions = () => {
         });
 
         // ETH Price
-        fetch(ETHPRICE_URL + PRICE_ENDPOINT + QUERY_STRING_ETHEREUM)
-        .then(response => response.json())
+        axios.get(ETHPRICE_URL + PRICE_ENDPOINT + QUERY_STRING_ETHEREUM)
         .then(res => {
-            if (res.ethereum !== undefined) {
+            if (res.data.ethereum !== undefined) {
                 updateETHPrice((prevState) => {
                     return {
                         ...prevState,
-                        information: res
+                        information: res.data
                     }
                 });
             }

@@ -17,7 +17,7 @@ const Footer = () => {
                             <a style={{ color:'black' }} href="https://moralis.io/" target="_blank" rel="noreferrer"><img style={{ marginRight: '0.15rem' }} src={require("../../assets/images/moralis.png")} width="25" height="25" alt="logo" />Moralis</a><span style={{ marginLeft: '0.25rem', marginRight: '0.25rem' }}><b>|</b></span>
                             <a style={{ color:'black' }} href="https://transpose.io/" target="_blank" rel="noreferrer"><img style={{ marginRight: '0.25rem'}} src={require("../../assets/images/transpose.png")} width="20" height="20" alt="logo" />Transpose</a>
                         </p>
-                        <p style={{ marginLeft: '3.5rem', marginTop: '-0.75rem' }} className="copyright-paragraph" >{statement} <a style={{ color: 'black' }} href="https://reactjs.org/">React</a><img className="react-logo" src={require("../../assets/images/logo.svg").default} alt="logo" /></p>
+                        <p style={{ marginLeft: '3.5rem', marginTop: '-0.75rem' }} className="copyright-paragraph">{ statement } <a style={{ color: 'black' }} href="https://reactjs.org/">React</a><img className="react-logo" src={require("../../assets/images/logo.svg").default} alt="logo" /></p>
                     </div>
                 </footer>
             </div>

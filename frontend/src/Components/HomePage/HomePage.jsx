@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
 import HomePageDescriptionSection from '../HomePageDescriptionSection/HomePageDescriptionSection';
 import Alert from '../Alert/Alert';
+import axios from 'axios';
 
 const Home = () => {
 
@@ -39,18 +40,17 @@ const Home = () => {
         localStorage.removeItem("walletAddress");
 
         // Bitcoin Price Action
-        fetch(URL + API_ENDPOINT + QUERY_STRING_BITCOIN)
-        .then(response => response.json())
+        axios.get(URL + API_ENDPOINT + QUERY_STRING_BITCOIN)
         .then(res => {
-            if (res.bitcoin !== undefined) {
+            if (res.data.bitcoin !== undefined) {
                 updateBtcPrice((prevState) => {
                     return {
                         ...prevState,
-                        information: res
+                        information: res.data
                     }
                 });
 
-                if (res.bitcoin.usd_24h_change < 0) {
+                if (res.data.bitcoin.usd_24h_change < 0) {
                     updateBtcColourChange("red");
                 }
                 else {
@@ -60,19 +60,18 @@ const Home = () => {
         })
 
         // Ethereum Price Action
-        fetch(URL + API_ENDPOINT + QUERY_STRING_ETHEREUM)
-        .then(response => response.json())
+        axios.get(URL + API_ENDPOINT + QUERY_STRING_ETHEREUM)
         .then(res => {
 
-            if (res.ethereum !== undefined) {
+            if (res.data.ethereum !== undefined) {
                 updateEthPrice((prevState) => {
                     return {
                         ...prevState,
-                        information: res
+                        information: res.data
                     }
                 });
 
-                if (res.ethereum.usd_24h_change < 0){
+                if (res.data.ethereum.usd_24h_change < 0){
                     updateEthColourChange("red");
                 }
                 else {
@@ -82,16 +81,15 @@ const Home = () => {
         })
 
         // Get trending information
-        fetch(URL + TRENDINGCOINS_ENDPOINT)
-        .then(response => response.json())
+        axios.get(URL + TRENDINGCOINS_ENDPOINT)
         .then(res => {
             let finalDisplay = '';
             if (res !== {}) { 
                 let information = '';
-                for (var i = 0; i < res.coins.length - 2; i++){ // Use 5 instead of the 7 this API fetches
-                    information += res.coins[i].item.name;
+                for (var i = 0; i < res.data.coins.length - 2; i++){ // Use 5 instead of the 7 this API fetches
+                    information += res.data.coins[i].item.name;
                     information += ' - ';
-                    information += res.coins[i].item.symbol;
+                    information += res.data.coins[i].item.symbol;
                     finalDisplay += information;
                     information = ' | ';
                 }
@@ -99,14 +97,13 @@ const Home = () => {
             }
         })
 
-        fetch(URL + GLOBALMARKETDATA_ENDPOINT) // Fetch global data
-        .then(response => response.json())
+        axios.get(URL + GLOBALMARKETDATA_ENDPOINT) // Fetch global data
         .then(res => {
-            if (res !== {}){
+            if (res.data !== {}){
                 updateGlobalMarketData((prevState) => {
                     return {
                         ...prevState,
-                        information: res
+                        information: res.data
                     }
                 });
             }
