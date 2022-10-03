@@ -36,7 +36,6 @@ const TransactionsInfoTable = (props) => {
                         }                             
                     </tbody>
             </table>
-            <hr style={{ marginTop: '3rem', marginBottom: '0.5rem', marginLeft: '-2rem' }} />
         </div>
     )
 }
