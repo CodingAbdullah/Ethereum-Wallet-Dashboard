@@ -151,25 +151,24 @@ const ERC720HoldingsPage = () => {
                 {
                     ERC20Holdings.information === null ? null :
                         <>
-                            <main role="main">
-                                <div style={{marginTop: '2rem'}}>
-                                    <h5 style={{marginTop: '2rem'}}>ERC720 Token Holdings for Wallet: <b>{walletAddress}</b></h5>
-                                    <ERC720HoldingsInfoTable data={ERC20Holdings.information} />
-                                </div>           
+                            <main role="main" >
+                            <div style={{marginTop: '5rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                <h3 class="h3">ERC20 Holdings</h3>
+                            </div>
                             </main>
-                            <hr style={{marginTop: '5rem'}} /> 
+                            <ERC720HoldingsInfoTable data={ERC20Holdings.information} />
                         </>
                 }
             </main>
             {
                 ERC20Transfers.information === null ? null :
                     <>
-                        <main role="main">
-                            <div style={{marginTop: '5rem', marginLeft: '5rem'}}>
-                                <h5 style={{marginLeft: '8rem'}}>ERC20 Transfers for Wallet: <b>{walletAddress}</b></h5>
-                                <ERC720TransfersInfoTable address={walletAddress} data={ERC20Transfers.information} />
+                        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                            <div style={{marginTop: '5rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                <h3 class="h3">ERC20 Transfers</h3>
                             </div>
                         </main>
+                        <ERC720TransfersInfoTable address={walletAddress} data={ERC20Transfers.information} />
                     </>
             }
         </div>  

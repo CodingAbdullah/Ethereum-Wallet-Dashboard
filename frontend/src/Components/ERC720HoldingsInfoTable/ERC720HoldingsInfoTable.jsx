@@ -4,7 +4,6 @@ const ERC720HoldingsInfoTable = (props) => {
     const { data } = props;
 
     return (
-        <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
             <table style={{border: '1px solid black'}}>
                 <thead style={{border: '1px solid black'}}>
                 <tr style={{border: '1px solid black'}}>
@@ -33,7 +32,6 @@ const ERC720HoldingsInfoTable = (props) => {
                     })}
                 </tbody>
             </table>
-        </div>  
     )
 }
 
