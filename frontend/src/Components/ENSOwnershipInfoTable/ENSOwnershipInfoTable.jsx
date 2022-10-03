@@ -50,7 +50,7 @@ const ENSOwnershipInfoTable = (props) => {
     }
     else {
         return (
-            <div style={{marginLeft: '2rem'}}>
+            <div>
                 { 
                 ensOwnershipData.information !== null ? (
                     <table style={{border: '1px solid black', fontSize: '12.5px'}}>

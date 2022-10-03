@@ -5,7 +5,7 @@ const ENSTransferByNameInfoTable = (props) => {
     
     // Display transfers from API call
     return (            
-        <div style={{marginLeft: '1rem'}}>
+        <div>
             { 
                 <table style={{border: '1px solid black', fontSize: '10.5px'}}>
                     <thead style={{border: '1px solid black', fontSize: '10.5px'}}>

@@ -50,7 +50,7 @@ const AdditionalAddressToENSInfoTable = (props) => {
     }
     else { 
         return (
-            <div style={{marginLeft: '1rem'}}>
+            <div>
                 { 
                 additionalEnsData.information !== null ? (
                     <table style={{border: '1px solid black'}}>

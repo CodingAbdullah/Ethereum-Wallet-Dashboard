@@ -106,7 +106,6 @@ const ENSTransferByNamePage = () => {
                             <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                 <h3 class="h3">ENS Transfers</h3>
                             </div>
-                            <h6>Transfers for Domain Name: <b>{ensAddress}</b></h6>
                             { ENSTransferData.information.information.results.length === 0 ? <Alert type="warning" />  : <ENSTransferByNameInfoTable data={ ENSTransferData.information } /> }
                         </>    
                     }
