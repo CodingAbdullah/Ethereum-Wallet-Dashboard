@@ -352,7 +352,7 @@ const ERC721CollectionPage = () => {
                                     <h3 class="h3">Sample Collection Transfer Data</h3>
                                 </div>
                             </main>
-                            <ERC721CollectionTransferInfoTable quantity={ NFTTransfers.information.total } data={ NFTTransfers.information.result } />
+                            <ERC721CollectionTransferInfoTable data={ NFTTransfers.information.result } />
                         </>
                 }
                 {
@@ -363,7 +363,7 @@ const ERC721CollectionPage = () => {
                                     <h3 class="h3">Recent Collection Sales</h3>
                                 </div>
                             </main>
-                            <ERC721CollectionSalesInfoTable quantity={ NFTTrades.information.total } data={ NFTTrades.information.result } />
+                            <ERC721CollectionSalesInfoTable data={ NFTTrades.information.result } />
                         </>
                 }
             </div>

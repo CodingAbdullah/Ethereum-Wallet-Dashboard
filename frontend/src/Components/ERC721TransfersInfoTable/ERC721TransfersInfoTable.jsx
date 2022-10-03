@@ -5,7 +5,6 @@ const ERC721TransfersInfoTable = (props) => {
     const { data, address } = props;
 
     return (
-        <div style={{marginLeft: '15rem'}}>
             <table style={{border: '1px solid black'}}>
                 <thead style={{border: '1px solid black'}}>
                 <tr style={{border: '1px solid black'}}>
@@ -34,7 +33,6 @@ const ERC721TransfersInfoTable = (props) => {
                     )}
                 </tbody>
             </table>
-        </div>  
     )
 }
 

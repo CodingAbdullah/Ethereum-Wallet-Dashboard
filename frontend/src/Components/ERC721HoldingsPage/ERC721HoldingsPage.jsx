@@ -155,26 +155,32 @@ const ERC721HoldingsPage = () => {
                         <button style={{ marginTop: '2rem', marginLeft: '2rem' }} class='btn btn-warning' onClick={() => { updateAlert(false); updateEmptyAlert(false); updateNFTData((prevState) => { return { ...prevState, information: null }}); updateERC721Transfers((prevState) => { return { ...prevState, information: null }})} }>Clear</button>
                     </div>
                 </div>
-                {
-                    nftData.information !== null ? 
-                        <>
-                            <hr style={{ marginTop: '5rem', marginBottom: '5rem' }} />
-                            <h5 style={{ marginTop: '2rem' }}>ERC-721 Token Holdings for Wallet: <b>{ walletAddress }</b></h5>
-                        </>
-                    : null
-                }
-
-                <div style={{ marginTop: '2rem' }}>
-                    { nftData.information === null ? null : <ERC721HoldingsInfoTable data={ nftData.information } /> }
-                </div>
             </main>
-            <main role="main">
-                { nftData.information !== null ? <hr style={{ marginTop: '5rem' }} /> : null }
-                <div style={{ marginTop: '5rem', marginLeft: '5rem' }}>
+            <main style={{marginTop: '-3rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                    <div>
+                        {
+                            nftData.information === null ? null :
+                                <>
+                                    <main style={{marginTop: '5rem'}} role="main">
+                                        <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                            <h3 class="h3">ERC-721 Token Holdings</h3>
+                                        </div>
+                                    </main>
+                                    <ERC721HoldingsInfoTable data={ nftData.information } />
+                                </>
+                        }
+                    </div>
+            </main>
+            <main style={{marginTop: '2rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                <div>
                     {
                         ERC721Transfers.information === null ? null :
                             <>
-                                <h5 style={{ marginLeft: '8rem' }}>ERC-721 Transfers for: <b>{ walletAddress }</b></h5> 
+                                <main style={{marginTop: '5rem'}} role="main">
+                                    <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                        <h3 class="h3">Sample ERC-721 Transfers</h3>
+                                    </div>
+                                </main>
                                 <ERC721TransfersInfoTable address={ walletAddress } data={ ERC721Transfers.information } />
                             </>
                     }

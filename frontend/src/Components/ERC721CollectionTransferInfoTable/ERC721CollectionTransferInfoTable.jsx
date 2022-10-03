@@ -1,13 +1,11 @@
 import React from 'react';
 
 const ERC721CollectionTransferInfoTable = (props) => {
-    const { data, quantity } = props;
+    const { data } = props;
 
     // Retrieve transfers from the entire collection
     return (
         <div style={{marginTop: '3rem'}} className="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-            <h5 style={{marginRight: '5rem'}}><b>NFT Transfers from Wallet to Wallet</b></h5>
-            <h6 style={{marginRight: '5rem'}}><b>Total NFT Transfers: {quantity}</b></h6>
             <table style={{border: '1px solid black'}} >
                 <thead style={{border: '1px solid black'}}>
                 <tr style={{border: '1px solid black'}}>
