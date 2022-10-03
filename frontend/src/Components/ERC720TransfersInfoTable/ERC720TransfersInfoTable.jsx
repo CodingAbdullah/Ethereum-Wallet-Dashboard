@@ -25,7 +25,7 @@ const ERC720TransfersInfoTable = (props) => {
                                     <td style={{border: '1px solid black'}}>{record.from_address}</td>
                                     <td style={{border: '1px solid black'}}>{record.to_address}</td>
                                     { address !== null ? 
-                                        <td style={{border: '1px solid black', fontSize: '11px'}}>
+                                        <td style={{ border: '1px solid black', fontSize: '11px' }}>
                                             { address.toLowerCase() === record.to_address ? 
                                                 <Badge type="IN" /> : 
                                                 <Badge type="OUT" />

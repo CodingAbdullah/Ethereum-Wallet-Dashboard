@@ -59,7 +59,7 @@ const GenericChartPage = () => {
         .then(res => {
           setChartData(prevState => {
             let days = [];
-            for (var i = 1; i < 31; i++){
+            for (var i = 1; i < 15; i++){
               days.push(moment().subtract(i, 'days').calendar());
             }
             return {
@@ -214,8 +214,8 @@ const GenericChartPage = () => {
   }
 
   let buttonDaysArray = ["Last Day", "Last 14 Days", "Last 30 Days"];
-  let buttons = buttonDaysArray.map(day =>  {
-    return <button onClick={() => buttonHandler(day)} style={{marginTop: '2rem', marginRight: '1rem', marginBottom: '5rem', paddingLeft: '0.5rem', paddingRight: '0.5rem'}} class="btn btn-secondary">{day}</button>
+  let buttons = buttonDaysArray.map((day, key) =>  {
+    return <button id={key} onClick={() => buttonHandler(day)} style={{marginTop: '2rem', marginRight: '1rem', marginBottom: '5rem', paddingLeft: '0.5rem', paddingRight: '0.5rem'}} class="btn btn-secondary">{day}</button>
   });
 
   const selectHandler = (e) => {

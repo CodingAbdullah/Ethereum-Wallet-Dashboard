@@ -5,7 +5,6 @@ import Alert from '../Alert/Alert';
 import ERC721LowestCollectionPriceInfoTable from '../ERC721CollectionLowestPriceInfoTable/ERC721CollectionLowestPriceInfoTable';
 import ERC721CollectionDataInfoTable from '../ERC721CollectionDataInfoTable/ERC721CollectionDataInfoTable';
 import ERC721CollectionTransferInfoTable from '../ERC721CollectionTransferInfoTable/ERC721CollectionTransferInfoTable';
-import ERC721CollectionOwnerInfoTable from '../ERC721CollectionOwnerInfoTable/ERC721CollectionOwnerInfoTable';
 import ERC721CollectionSalesInfoTable from '../ERC721CollectionSalesInfoTable/ERC721CollectionSalesInfoTable';
 import ERC721CollectionFloorPriceInfoTable from '../ERC721CollectionFloorPriceInfoTable/ERC721CollectionFloorPriceInfoTable';
 import ERC721CollectionAttributeSummaryInfoTable from '../ERC721CollectionAttributeSummaryInfoTable/ERC721CollectionAttributeSummaryInfoTable';
@@ -18,7 +17,6 @@ const ERC721CollectionPage = () => {
     const NODE_SERVER_URL = 'http://localhost:5000'; // Node Server for API end points
     const LOWESTPRICE_ENDPOINT = '/erc721-collection-lowest-sale';
     const TRANSFERS_ENDPOINT = '/erc721-collection-transfers';
-    const OWNERS_ENDPOINT = '/erc721-collection-owners';
     const TRADES_ENDPOINT = '/erc721-collection-sales';
     const FLOOR_PRICE_ENDPOINT = '/erc721-collection-floor-price';
     const COLLECTION_ATTRIBUTES_ENDPOINT = '/erc721-collection-attributes'; 
@@ -38,10 +36,6 @@ const ERC721CollectionPage = () => {
     });
 
     const[NFTAttributes, updateNFTAttributes] = useState({
-        information: null
-    });
-
-    const [NFTOwners, updateNFTOwners] = useState({
         information: null
     });
 
@@ -68,13 +62,6 @@ const ERC721CollectionPage = () => {
             }
         });
 
-        updateNFTOwners((prevState) => {
-            return {
-                ...prevState,
-                information: null
-            }
-        });
-
         updateNFTTrades((prevState) => {
             return {
                 ...prevState,
@@ -95,6 +82,14 @@ const ERC721CollectionPage = () => {
                 information: null
             }
         });
+
+        updateNFTAttributes((prevState) => {
+            return {
+                ...prevState,
+                information: null
+            }
+        });
+        
     }
 
     const clearHandler = () => {
@@ -185,33 +180,6 @@ const ERC721CollectionPage = () => {
                     else {
                         updateAlert(false); // Remove alerts if any exist
                         updateNFTTransfers((prevState) => {
-                            return {
-                                ...prevState,
-                                information: response.data.information
-                            }
-                        });
-                    }
-                }
-            })
-            .catch(() => {
-                alertHandler();
-                updateAlert(true);
-            });
-
-            // Owners Data
-            axios.post(NODE_SERVER_URL + OWNERS_ENDPOINT, options) // NFT endpoint for retrieving information related to collection
-            .then(response => {
-                if (response.status !== 200){
-                    updateAlert(true);
-                    alertHandler();
-                }
-                else {
-                    if (response.status === 200 && response.data.information.total === 0){ // If empty, clear data
-                        alertHandler();
-                    }
-                    else {
-                        updateAlert(false); // Remove alerts if any exist
-                        updateNFTOwners((prevState) => {
                             return {
                                 ...prevState,
                                 information: response.data.information
@@ -328,77 +296,74 @@ const ERC721CollectionPage = () => {
                                 <h4>Contract Address: <b>{ tokenAddress }</b></h4> 
                                 <h4>Total Items: <b>{ NFTData.information.total }</b></h4> 
                             </main>
-                            <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />           
                         </>  
                 }
                 {
                     NFTLowestPrice.information === null ? null : 
                         <>
-                            <main role="main">
-                                <ERC721LowestCollectionPriceInfoTable data={ NFTLowestPrice.information } /> 
+                            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                                <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                    <h3 class="h3">Lowest Price Sale</h3>
+                                </div>
                             </main>
-                            <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
+                            <ERC721LowestCollectionPriceInfoTable data={ NFTLowestPrice.information } /> 
                         </>
                 }
                 {
                     NFTData.information === null ? null :
                         <>
-                            <main style={{marginTop: '3rem'}} role="main">
-                                <ERC721CollectionDataInfoTable quantity={ NFTData.information.total } data={ NFTData.information.result } />
+                            <main style={{marginTop: '5rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                                <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                    <h3 class="h3">Sample Collection Data</h3>
+                                </div>
                             </main>
+                            <ERC721CollectionDataInfoTable quantity={ NFTData.information.total } data={ NFTData.information.result } />
                         </>
                 }
                 {
                     NFTFloorPrice.information === null ? null :
                         <>
-                            <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
-                            <main style={{marginTop: '3rem'}} role="main">
-                                <ERC721CollectionFloorPriceInfoTable data={ NFTFloorPrice.information } />
+                            <main style={{marginTop: '5rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                                <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                    <h3 class="h3">Collection Floor Price</h3>
+                                </div>                                
                             </main>
+                            <ERC721CollectionFloorPriceInfoTable data={ NFTFloorPrice.information } />
                         </>
                 }
                 {
                     NFTAttributes.information === null ? null :
                         <>
-                            <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
-                            <main style={{marginTop: '3rem'}} role="main">
+                            <main style={{marginTop: '5rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
                                 <>
-                                    <h5><b>Collection Attributes</b></h5>
-                                    <ERC721CollectionAttributeSummaryInfoTable data={ NFTAttributes.information } />
+                                    <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                        <h3 class="h3">Collection Attributes</h3>
+                                    </div>
                                 </> 
                             </main>
-                        </>
-                }
-                {
-                    NFTData.information === null ? null :
-                        <>
-                            <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
+                            <ERC721CollectionAttributeSummaryInfoTable data={ NFTAttributes.information } />
                         </>
                 }
                 {
                     NFTTransfers.information === null ? null :
                         <>
-                            <main style={{marginTop: '3rem'}} role="main">
-                                <ERC721CollectionTransferInfoTable quantity={ NFTTransfers.information.total } data={ NFTTransfers.information.result } />
+                            <main style={{marginTop: '5rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                                <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                    <h3 class="h3">Sample Collection Transfer Data</h3>
+                                </div>
                             </main>
-                            <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
-                        </>
-                }
-                {
-                    NFTOwners.information === null ? null :
-                        <>                    
-                            <main style={{marginTop: '3rem'}} role="main">
-                                <ERC721CollectionOwnerInfoTable data={ NFTOwners.information.result } />
-                            </main>
-                            <div style={{marginTop: '2rem'}}  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" />
+                            <ERC721CollectionTransferInfoTable quantity={ NFTTransfers.information.total } data={ NFTTransfers.information.result } />
                         </>
                 }
                 {
                     NFTTrades.information === null ? null :
                         <>
-                            <main style={{marginTop: '3rem'}} role="main">
-                                <ERC721CollectionSalesInfoTable quantity={ NFTTrades.information.total } data={ NFTTrades.information.result } />
+                            <main style={{marginTop: '5rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                                <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                    <h3 class="h3">Recent Collection Sales</h3>
+                                </div>
                             </main>
+                            <ERC721CollectionSalesInfoTable quantity={ NFTTrades.information.total } data={ NFTTrades.information.result } />
                         </>
                 }
             </div>

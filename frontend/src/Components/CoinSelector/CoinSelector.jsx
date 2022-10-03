@@ -11,7 +11,7 @@ const CoinSelector = (props) => {
                 <option value="binancecoin">Binance</option>
                 <option value="bitcoin">Bitcoin</option>
                 <option value="cardano">Cardano</option>
-                <option value="chainlink">Chainlin</option>
+                <option value="chainlink">Chainlink</option>
                 <option value="dogecoin">Dogecoin</option>
                 <option value="ethereum">Ethereum</option>
                 <option value="litecoin">Litecoin</option>

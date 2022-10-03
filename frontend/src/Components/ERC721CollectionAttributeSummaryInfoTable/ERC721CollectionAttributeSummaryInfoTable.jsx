@@ -44,9 +44,9 @@ const ERC721CollectionAttributeSummaryInfoTable = (props) => {
     return (
             <div class="container col-md-9 ml-sm-auto col-lg-10 px-md-4">
                         {
-                            tabulatedNestedAttributes.map(tabulatedValues => {
+                            tabulatedNestedAttributes.map((tabulatedValues, key) => {
                                 return (
-                                    <table class="container col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                                    <table id={key} class="container col-md-9 ml-sm-auto col-lg-10 px-md-4">
                                         <table class="container col-md-9 ml-sm-auto col-lg-10 px-md-4" style={{ marginBottom: '2rem', border: '1px solid black', fontSize: '10.5px', width: '100%' }}>
                                             <tr style={{ border: '1px solid black', fontSize: '10.5x' }}>
                                                 <th style={{ border: '1px solid black', fontSize: '10.5px' }}>Attributes</th>

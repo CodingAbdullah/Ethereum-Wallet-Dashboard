@@ -12,7 +12,6 @@ const ERC721CollectionDataInfoTable = (props) => {
     // Posting sample data from the collection along with their token hashes
     return (
         <div className="erc721-collection-data-table col-md-9 ml-sm-auto col-lg-10 px-md-4">
-            <h5><b>Sample Collection Data</b></h5>
             <table style={{border: '1px solid black'}}>
                 <thead style={{border: '1px solid black'}}>
                 <tr style={{border: '1px solid black'}}>

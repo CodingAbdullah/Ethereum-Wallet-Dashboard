@@ -58,24 +58,6 @@ exports.getERC721CollectionTransfers = (req, res) => {
     .catch(err => res.status(400).json({ information: err }));
 }
 
-exports.getERC721CollectionOwners = (req, res) => {
-    const { address } = JSON.parse(req.body.body);
-    const OWNERS_ENDPOINT = '/owners';
-
-    const options = {
-        method: 'GET',
-        headers: {
-            'content-type' : 'application/json',
-            'x-api-key' : process.env.MORALIS_API_KEY 
-        }
-    };
-
-    // Run backend request
-    axios.get(MORALIS_URL + 'nft/' + address + OWNERS_ENDPOINT, options)
-    .then(response => res.status(200).json({ information: response.data }))
-    .catch(err => res.status(400).json({ information: err }));  
-}
-
 exports.getERC721CollectionSales = (req, res) => {
     const { address } = JSON.parse(req.body.body);
     const TRADES_ENDPOINT = '/trades';
