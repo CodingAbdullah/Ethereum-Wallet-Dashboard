@@ -5,7 +5,6 @@ const ERC721TransferLookupsInfoTable = (props) => {
 
     return (
         <>
-            <h5>ERC721 Token Transfers</h5>
             <div className='erc721-transfer-lookup-table'>
                 <table style={{border: '1px solid black'}}>
                     <thead style={{border: '1px solid black'}}>
@@ -34,7 +33,6 @@ const ERC721TransferLookupsInfoTable = (props) => {
                     </tbody>
                 </table>
             </div>
-            <hr style={{ marginTop: '3rem', marginBottom: '3rem' }} /> 
         </>
     )
 }

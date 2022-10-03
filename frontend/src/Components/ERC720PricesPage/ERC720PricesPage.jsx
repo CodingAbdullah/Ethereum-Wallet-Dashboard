@@ -218,10 +218,9 @@ const ERC720TokenPricesPage = () => {
                 </div>
               </div>
             </div>
-            { erc20Info.information !== null && formAlert !== 'invalid' ? <hr style={{marginTop: '5rem', marginBottom: '5rem'}} /> : null }
             { formAlert === "invalid" ? null : 
                 <>
-                  <h3 style={{marginTop: '2rem'}}>{erc20Info.information === null ? "Ethereum " : erc20Info.information.name} Price: <b>${erc20Info.information === null ? coinInfo.information[Object.keys(coinInfo.information)[0]].usd : erc20Info.information.market_data.current_price.usd} USD</b></h3> 
+                  <h3 style={{marginTop: '5rem'}}>{erc20Info.information === null ? "Ethereum " : erc20Info.information.name} Price: <b>${erc20Info.information === null ? coinInfo.information[Object.keys(coinInfo.information)[0]].usd : erc20Info.information.market_data.current_price.usd} USD</b></h3> 
                   <h5 style={{marginBottom: '2rem', display: 'inline'}}>24-Hr % Chg:
                     { erc20Info.information === null ? (coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change < 0 ? 
                       <h5 style={{display: 'inline', color: 'red'}}>{" " + coinInfo.information[Object.keys(coinInfo.information)[0]].usd_24h_change.toFixed(2) + "%"}</h5> : 
@@ -248,7 +247,7 @@ const ERC720TokenPricesPage = () => {
                 </div>
               }
             </div>
-            <div style={{marginTop: '3rem', marginBottom: '3.0rem'}}>
+            <div style={{marginTop: '5rem', marginBottom: '3.0rem'}}>
               {
                 // Display data of the valid ERC20 token
                 erc20Info.information === null || formAlert === 'invalid' ? <div /> :

@@ -54,7 +54,6 @@ const ERC721SalesLookupInfoTable = (props) => {
     else {
         return (
             <>
-                <h5>ERC721 Token Sales</h5>
                 <div className='erc721-sales-lookups-info-table'>
                     <table style={{border: '1px solid black', fontSize: '9px'}}>
                         <thead style={{border: '1px solid black', fontSize: '9px'}}>

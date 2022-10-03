@@ -10,7 +10,6 @@ const ERC721RarityLookupsInfoTable = (props) => {
     else {
         return (
             <>
-                <h5>ERC721 Token Rarity Calculator</h5> 
                 <div style={{marginLeft: '24rem'}}>
                     <table style={{border: '1px solid black'}}>
                         <thead style={{border: '1px solid black'}}>
@@ -35,7 +34,6 @@ const ERC721RarityLookupsInfoTable = (props) => {
                         </tbody>
                     </table>
                 </div>
-                <hr style={{ marginTop: '3rem', marginBottom: '3rem' }} />
             </>  
         )
     }

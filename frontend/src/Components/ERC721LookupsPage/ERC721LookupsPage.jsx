@@ -163,25 +163,73 @@ const ERC721LookupsPage = () => {
                     <button style={{ marginTop: '2rem', marginLeft: '2rem' }} class='btn btn-warning' onClick={() => { 
                         updateAlert(false); 
                         updateTokenData((prevState) => { return { ...prevState, information: null }}); 
-                        updateTokenTransfers((prevState) => { return { ...prevState, information: null }}); 
+                        updateTokenTransfers((prevState) => { return { ...prevState, information: null }});
+                        updateTokenRarity((prevState) => { return { ...prevState, information: null }}); 
                     }}>Clear</button>
                 </div>
-                <div style={{ marginTop: '2rem'}}>
-                    { tokenData.information === null ? null : <div style={{ marginLeft: '2rem' }}><ERC721LookupsInfoTable isMatic={ networkID.split('-')[0] === 'polygon' ? true : false } data={ tokenData.information } /></div> }
-                </div>
-                <div>
-                    { tokenRarity.information === null ? null : <ERC721RarityLookupsInfoTable data={ tokenRarity.information } /> }
-                </div>
-                <div>
-                    { tokenTransfers.information === null ? null : <ERC721TransferLookupsInfoTable data={ tokenTransfers.information } /> }
-                </div>
-                <div>
-                    { tokenData.information === null ? null : <ERC721SalesLookupsInfoTable address={ tokenAddress } tokenId={ tokenId } networkId = { networkID } /> }
-                </div>
+            </main>
+            <main style={{marginTop: '-3rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                    <div>
+                        {
+                            tokenData.information === null ? null :
+                                <>
+                                    <main style={{marginTop: '5rem'}} role="main">
+                                        <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                            <h3 class="h3">ERC721 Token Lookup Information</h3>
+                                        </div>
+                                    </main>
+                                    <ERC721LookupsInfoTable isMatic={ networkID.split('-')[0] === 'polygon' ? true : false } data={ tokenData.information } />                                
+                                </>
+                        }
+                    </div>
+            </main>
+            <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                    <div>
+                        {
+                            tokenRarity.information === null ? null :
+                                <>
+                                    <main style={{marginTop: '5rem'}} role="main">
+                                        <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                            <h3 class="h3">ERC721 Token Rarity Calculator</h3>
+                                        </div>
+                                    </main>
+                                    <ERC721RarityLookupsInfoTable data={ tokenRarity.information } />
+                                </>
+                        }
+                    </div>
+            </main>
+            <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                    <div>
+                        {
+                            tokenTransfers.information === null ? null :
+                                <>
+                                    <main style={{marginTop: '5rem'}} role="main">
+                                        <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                            <h3 class="h3">ERC721 Token Transfers</h3>
+                                        </div>
+                                    </main>
+                                    <ERC721TransferLookupsInfoTable data={ tokenTransfers.information } />
+                                </>
+                        }
+                    </div>
+            </main>
+            <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                    <div>
+                        {
+                            tokenData.information === null ? null :
+                                <>
+                                    <main style={{marginTop: '5rem'}} role="main">
+                                        <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                            <h3 class="h3">ERC-721 Token Sales</h3>
+                                        </div>
+                                    </main>
+                                    <ERC721SalesLookupsInfoTable address={ tokenAddress } tokenId={ tokenId } networkId = { networkID } />                                
+                                </>
+                        }
+                    </div>
             </main>
         </div>
     )
-
 }
 
 export default ERC721LookupsPage;

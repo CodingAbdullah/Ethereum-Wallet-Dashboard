@@ -5,7 +5,6 @@ const ERC721LookupsInfoTable = (props) => {
 
     return (
         <>
-            <h5 style={{ marginTop: '2rem' }}>ERC721 Token Information</h5> 
             <div>
                 <table style={{border: '1px solid black', marginLeft: '4rem'}}>
                     <thead style={{border: '1px solid black'}}>
@@ -40,7 +39,6 @@ const ERC721LookupsInfoTable = (props) => {
                     </tbody>
                 </table>
             </div>
-            <hr style={{ marginTop: '3rem', marginBottom: '3rem', marginLeft: '-2rem' }} />
         </>  
     )
 }
