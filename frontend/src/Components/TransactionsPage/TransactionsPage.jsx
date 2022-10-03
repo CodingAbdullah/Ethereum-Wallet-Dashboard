@@ -157,27 +157,52 @@ const Transactions = () => {
     }
     else {
         return ( 
-            // Adding items here for now, later, all will be styled
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Transactions</h1>
-                </div>
-                <h3 style={{ marginTop: '1.5rem' }}>{ "Account: " + address }</h3>
-                <h5>{ "ETH Balance: " + (amount*(1/1000000000000000000)) + " ETH (@ $" + ethPrice.information.ethereum.usd.toFixed(2) + " USD/ETH)" }</h5>
-                <h6>{ "Amount in USD: $" + ((amount*(1/1000000000000000000))*(ethPrice.information.ethereum.usd)).toFixed(2) + " USD" }</h6>
-                <h6 style={{ marginTop: '3rem' }}>Top 1000 or maximum done by wallet</h6>
-                <div style={{ marginLeft: '75px' }}>
-                    { transactions.information === null ? null : <TransactionsInfoTable walletAddress={ address } networkFetch={false} data={ transactions.information.result } /> }
-                </div>
-                <h6 style={{ marginTop: '3rem' }}><b>Internal Transactions</b></h6>
-                <h6>Top 1000 or maximum done by wallet</h6>
-                { emptyInteralTransactionAlert ? <Alert type='warning-empty-internal' /> :
-                    <div style={{ marginLeft: '75px' }}>
-                        { internalTransactions.information === null ? null : <InternalTransactionsInfoTable walletAddress={ address } data={ internalTransactions.information.result } /> }
+            <>
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Transactions</h1>
                     </div>
-                }
-                <button style={{ marginTop: '1.5rem' }} class="btn btn-success" onClick={() => { navigate("/"); localStorage.removeItem('walletAddress'); }}>Go Back</button>
-            </main>
+                    <h3 style={{ marginTop: '1.5rem' }}>{ "Account: " + address }</h3>
+                    <h5>{ "ETH Balance: " + (amount*(1/1000000000000000000)) + " ETH (@ $" + ethPrice.information.ethereum.usd.toFixed(2) + " USD/ETH)" }</h5>
+                    <h6>{ "Amount in USD: $" + ((amount*(1/1000000000000000000))*(ethPrice.information.ethereum.usd)).toFixed(2) + " USD" }</h6>
+                </main>            
+                <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                        <div>
+                            {
+                                transactions.information === null ? null :
+                                    <>
+                                        <main style={{marginTop: '5rem'}} role="main">
+                                            <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                                <h3 class="h3">Latest 1000 Transactions or Maximum/Wallet</h3>
+                                            </div>
+                                        </main>
+                                        <TransactionsInfoTable walletAddress={ address } networkFetch={false} data={ transactions.information.result } />                                
+                                    </>
+                            }
+                        </div>
+                </main>
+                <main style={{marginTop: '1rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                        <div>
+                            {
+                                emptyInteralTransactionAlert ? <Alert type='warning-empty-internal' /> :
+                                (
+                                    internalTransactions.information === null ? null :
+                                        <>
+                                            <main style={{marginTop: '5rem'}} role="main">
+                                                <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                                    <h3 class="h3">Internal Transactions</h3>
+                                                </div>
+                                            </main>
+                                            <InternalTransactionsInfoTable walletAddress={ address } data={ internalTransactions.information.result } /> 
+                                        </>
+                                )
+                            }
+                        </div>
+                </main>
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                    <button style={{ marginTop: '1.5rem' }} class="btn btn-success" onClick={() => { navigate("/"); localStorage.removeItem('walletAddress'); }}>Go Back</button>
+                </main>
+            </>
         )
     }
 }
