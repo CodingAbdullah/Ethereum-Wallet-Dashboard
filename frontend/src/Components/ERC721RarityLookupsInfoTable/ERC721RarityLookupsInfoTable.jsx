@@ -10,7 +10,7 @@ const ERC721RarityLookupsInfoTable = (props) => {
     else {
         return (
             <>
-                <div style={{marginLeft: '24rem'}}>
+                <div>
                     <table style={{border: '1px solid black'}}>
                         <thead style={{border: '1px solid black'}}>
                         <tr style={{border: '1px solid black'}}>

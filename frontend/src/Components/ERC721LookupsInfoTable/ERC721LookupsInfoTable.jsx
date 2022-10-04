@@ -6,7 +6,7 @@ const ERC721LookupsInfoTable = (props) => {
     return (
         <>
             <div>
-                <table style={{border: '1px solid black', marginLeft: '4rem'}}>
+                <table style={{border: '1px solid black'}}>
                     <thead style={{border: '1px solid black'}}>
                     <tr style={{border: '1px solid black'}}>
                         <th style={{border: '1px solid black'}} scope="col">Name</th>
