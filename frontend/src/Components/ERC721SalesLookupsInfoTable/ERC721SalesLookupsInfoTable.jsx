@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Alert from '../Alert/Alert';
 
 const ERC721SalesLookupInfoTable = (props) => {
-    const { address, tokenId, networkId } = props;
+    const { address, tokenId } = props;
 
     // Back end calls to Node server
     const NODE_URL = 'http://localhost:5000/';
@@ -14,8 +13,7 @@ const ERC721SalesLookupInfoTable = (props) => {
     });
 
     useEffect(() => {
-        // Upon render, run API call to collect data using information passed down from parent component, provided it is the mainnet
-        if (networkId === 'eth') {
+            // Upon render, run API call to collect data using information passed down from parent component, provided it is the mainnet
             const options = {
                 method: 'POST',
                 mode: 'no-cors',
@@ -42,13 +40,9 @@ const ERC721SalesLookupInfoTable = (props) => {
                     }
                 })
             });
-        }
     }, []);
 
-    if (networkId !== 'eth'){
-        return <div><Alert type="warning-unavailable-testnet" /></div>
-    }
-    else if (ERC721SalesInfo.information === null){
+    if (ERC721SalesInfo.information === null){
         return <div>Loading...</div>
     }
     else {

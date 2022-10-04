@@ -1,13 +1,8 @@
 import React from 'react';
-import Alert from '../Alert/Alert';
 
 const ERC721RarityLookupsInfoTable = (props) => {
     const { data } = props;
 
-    if (data.data === null) {
-        return <Alert type='warning-unavailable-testnet' />
-    }
-    else {
         return (
             <>
                 <div>
@@ -36,7 +31,6 @@ const ERC721RarityLookupsInfoTable = (props) => {
                 </div>
             </>  
         )
-    }
 }
 
 export default ERC721RarityLookupsInfoTable;

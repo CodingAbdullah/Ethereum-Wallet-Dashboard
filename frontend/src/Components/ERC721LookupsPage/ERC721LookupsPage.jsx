@@ -13,6 +13,7 @@ const ERC721LookupsPage = () => {
     const [tokenAddress, updateTokenAddress] = useState(""); // Initialize ERC721 contract attributes
     const [tokenId, updateTokenId] = useState("");    
     const [setAlert, updateAlert] = useState(false);
+    const [emptyAlert, updateEmptyAlert] = useState(false);
 
     const [tokenData, updateTokenData] = useState({
         information: null
@@ -93,6 +94,10 @@ const ERC721LookupsPage = () => {
                     });
                 }
             })
+            .catch(() => {
+                clearHandler();
+                updateEmptyAlert(true);
+            })
 
             axios.post(NODE_SERVER_URL + TRANSFER_LOOKUP_ENDPOINT, options) // Get transfer data
             .then(response => {
@@ -123,6 +128,14 @@ const ERC721LookupsPage = () => {
                     }
                 }
             })
+            .catch(() => {
+                updateTokenTransfers((prevState) => {
+                    return {
+                        ...prevState,
+                        information: null
+                    }
+                })
+            });
 
             axios.post(NODE_SERVER_URL + RARITY_LOOKUP_ENDPOINT, options) // API endpoint for finding collection rarity
             .then(response => {
@@ -134,10 +147,18 @@ const ERC721LookupsPage = () => {
                     }
                 });
             })
-            .catch((e) => console.log(e));
+            .catch(() => {
+                updateTokenRarity((prevState) => {
+                    return {
+                        ...prevState,
+                        information: null
+                    }
+                });
+            });
         }
         else {
             updateAlert(true);
+            updateEmptyAlert(false);
             clearHandler();
         }
     }
@@ -165,10 +186,18 @@ const ERC721LookupsPage = () => {
                         updateTokenData((prevState) => { return { ...prevState, information: null }}); 
                         updateTokenTransfers((prevState) => { return { ...prevState, information: null }});
                         updateTokenRarity((prevState) => { return { ...prevState, information: null }}); 
+                        updateEmptyAlert(false);
                     }}>Clear</button>
                 </div>
             </main>
-            <main style={{marginTop: '-3rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+            { 
+                emptyAlert ? 
+                    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                        <Alert type="warning-unavailable-testnet" /> 
+                    </main>
+                : null 
+            }
+            <main style={{ marginTop: emptyAlert ? '' : '-3rem' }} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
                     <div>
                         {
                             tokenData.information === null ? null :
@@ -187,14 +216,17 @@ const ERC721LookupsPage = () => {
                     <div>
                         {
                             tokenRarity.information === null ? null :
-                                <>
-                                    <main style={{marginTop: '5rem'}} role="main">
-                                        <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                            <h3 class="h3">ERC721 Token Rarity Calculator</h3>
-                                        </div>
-                                    </main>
-                                    <ERC721RarityLookupsInfoTable data={ tokenRarity.information } />
-                                </>
+                                tokenRarity.information.data === null ? null : 
+                                (
+                                    <>
+                                        <main style={{marginTop: '5rem'}} role="main">
+                                            <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                                <h3 class="h3">ERC721 Token Rarity Calculator</h3>
+                                            </div>
+                                        </main>
+                                        <ERC721RarityLookupsInfoTable data={ tokenRarity.information } />
+                                    </>
+                                )
                         }
                     </div>
             </main>
@@ -217,14 +249,17 @@ const ERC721LookupsPage = () => {
                     <div>
                         {
                             tokenData.information === null ? null :
-                                <>
-                                    <main style={{marginTop: '5rem'}} role="main">
-                                        <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                            <h3 class="h3">ERC-721 Token Sales</h3>
-                                        </div>
-                                    </main>
-                                    <ERC721SalesLookupsInfoTable address={ tokenAddress } tokenId={ tokenId } networkId = { networkID } />                                
-                                </>
+                                networkID !== 'eth' ? null : 
+                                (
+                                    <>
+                                        <main style={{marginTop: '5rem'}} role="main">
+                                            <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                                <h3 class="h3">ERC-721 Token Sales</h3>
+                                            </div>
+                                        </main>
+                                        <ERC721SalesLookupsInfoTable address={ tokenAddress } tokenId={ tokenId } />                                
+                                    </>
+                                )
                         }
                     </div>
             </main>
