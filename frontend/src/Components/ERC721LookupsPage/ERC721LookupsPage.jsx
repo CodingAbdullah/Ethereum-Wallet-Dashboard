@@ -71,6 +71,7 @@ const ERC721LookupsPage = () => {
 
         const options = {
             method: 'POST',
+            mode: 'cors',
             body: JSON.stringify({ address: tokenAddress, id: tokenId, network: networkID }),
             headers: {
                 'content-type' : 'application/json', 

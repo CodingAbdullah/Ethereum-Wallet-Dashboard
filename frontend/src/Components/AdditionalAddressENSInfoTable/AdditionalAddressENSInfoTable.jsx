@@ -24,6 +24,7 @@ const AdditionalAddressToENSInfoTable = (props) => {
     useEffect(() => { 
         const options = {
             method: 'POST',
+            mode: 'cors',
             body: JSON.stringify({ ensName: data.name }),
             headers: {
                 'content-type': 'application/json'

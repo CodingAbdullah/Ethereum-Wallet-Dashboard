@@ -16,7 +16,7 @@ const ERC721SalesLookupInfoTable = (props) => {
             // Upon render, run API call to collect data using information passed down from parent component, provided it is the mainnet
             const options = {
                 method: 'POST',
-                mode: 'no-cors',
+                mode: 'cors',
                 body: JSON.stringify({ address : address, id: tokenId }),
                 headers: {
                     'content-type': 'application/json'

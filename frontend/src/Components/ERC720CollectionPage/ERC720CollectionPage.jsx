@@ -69,6 +69,7 @@ const ERC720CollectionPage = () => {
         // Set options for fetch and flight responses
         const options = {
             method: 'POST',
+            mode: 'cors',
             body: JSON.stringify({ address : tokenAddress }),
             headers: {
                 'content-type' : 'application/json', 

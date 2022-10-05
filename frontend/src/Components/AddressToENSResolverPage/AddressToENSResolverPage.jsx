@@ -40,7 +40,7 @@ const AddressToENSResolverPage = () => {
         if (addressToENS.length === 42 && addressToENS.substring(0, 2) === '0x'){
             const options = {   
                 method: 'GET', 
-                mode: 'no-cors', // no-cors, *cors, same-origin
+                mode: 'cors', // *cors, same-origin
                 headers: { 
                     'content-type' : 'application/json', 
                     'access-control-allow-origin': '*',

@@ -37,8 +37,8 @@ const ENSTransferByIdPage = () => {
         // ENS APIs go here.. ENS ---> Address Resolver
             const options = {   
                 method: 'POST', 
-                mode: 'no-cors', // no-cors, *cors, same-origin
-                body : JSON.stringify({id: tokenID}), // Pass in body to request
+                mode: 'cors', // *cors, same-origin
+                body : JSON.stringify({ id: tokenID }), // Pass in body to request
                 headers: { 
                     'content-type' : 'application/json', 
                 }

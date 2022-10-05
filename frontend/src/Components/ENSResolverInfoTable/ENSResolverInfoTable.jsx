@@ -24,6 +24,7 @@ const ENSResolverInfoTable = (props) => {
     useEffect(() => { 
         const options = {
             method: 'POST',
+            mode: 'cors',
             body: JSON.stringify({ walletAddress: address }),
             headers: {
                 'content-type': 'application/json'

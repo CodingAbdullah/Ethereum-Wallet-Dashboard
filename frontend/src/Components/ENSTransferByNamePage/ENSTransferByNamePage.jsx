@@ -38,7 +38,7 @@ const ENSTransferByNamePage = () => {
         if (ensAddress.substring(ensAddress.length - 4) === '.eth'){
             const options = {   
                 method: 'POST', 
-                mode: 'no-cors', // no-cors, *cors, same-origin
+                mode: 'cors', // *cors, same-origin
                 body : JSON.stringify({ensName: ensAddress}), // Pass in body to request
                 headers: { 
                     'content-type' : 'application/json', 

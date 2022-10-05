@@ -27,6 +27,7 @@ const GasTrackerPage = () => {
     useEffect(() => {
         const options = {
             method: 'GET',
+            mode: 'cors',
             headers: {
                 'content-type' : 'application/json', 
                 'accept': 'application/json'

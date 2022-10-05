@@ -53,6 +53,7 @@ const ERC721HoldingsPage = () => {
         // Set options for fetch and flight responses
         const options = {
             method: 'POST',
+            mode: 'cors',
             body: JSON.stringify({ address: walletAddress, network: networkID }),
             headers: {
                 'content-type' : 'application/json', 

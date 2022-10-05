@@ -3,10 +3,12 @@ import axios from 'axios';
 
 const SidebarMetricsSection = () => {
     const COINGECKO_URL = "https://api.coingecko.com/api/v3";
-    const BLOCKNATIVE_URL = 'https://api.blocknative.com/gasprices/blockprices';
 
     const QUERY_STRING_ETHEREUM = "?ids=ethereum&vs_currencies=usd&include_24hr_change=true";
     const API_ENDPOINT = "/simple/price";
+
+    const NODE_SERVER_URL = 'http://localhost:5000/';
+    const GAS_TRACKER_ENDPOINT = 'gas-track';
 
     const [price, updatePrice] = useState({
         information: null
@@ -32,8 +34,18 @@ const SidebarMetricsSection = () => {
         });
     }
 
-    useEffect(() => {
-        axios.get(COINGECKO_URL + API_ENDPOINT + QUERY_STRING_ETHEREUM) // Retrieve price information right after render
+    useEffect(() => {            
+        
+        // Upon render, run API call to collect data using information passed down from parent component, provided it is the mainnet
+        const coingeckoOptions = {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'content-type': 'application/json'
+            }
+        }
+        
+        axios.get(COINGECKO_URL + API_ENDPOINT + QUERY_STRING_ETHEREUM, coingeckoOptions) // Retrieve price information right after render
         .then(response => {
             if (response.status === 200){
                 updatePrice((prevState) => {
@@ -53,21 +65,20 @@ const SidebarMetricsSection = () => {
 
         const options = {
             method: 'GET',
-            mode: 'no-cors',
+            mode: 'cors',
             headers: {
                 'content-type' : 'application/json', 
                 'accept': 'application/json',
-                'Authorization' : process.env.REACT_APP_BLK_API_KEY // BlockNative API key hidden 
             }
         };
 
-        axios.get(BLOCKNATIVE_URL, options) 
+        axios.get(NODE_SERVER_URL + GAS_TRACKER_ENDPOINT, options) 
         .then(res => {
             if (res.status === 200){
                 updateGasInfo((prevState) => { // If successful, update information
                     return {
                         ...prevState,
-                        information: res.data
+                        information: res.data.information
                     }
                 });
             }
