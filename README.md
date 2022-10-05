@@ -5,6 +5,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### `Start Here`
 
+The frontend application is deployed to **AWS Amplify**
+
+Please note that more testing (frontend/backend), security is required. As well as the backend server needing to be deployed. This is just PARTIAL preview.
+
+**URL is here:** https://front-end-branch.db82n09wcg0iz.amplifyapp.com/
+
 All available scripts run under the front end folder of this repository. You must have Node installed on your  computer and have access to the npm package manager which will allow you to download external libraries and also run, build, and test your react app.
 
 For security reasons, many APIs that require Authorization, will be moved to the backend and be made available for frontend usage via node server with connected routes. It is from these routes that API calls will be made to fetch information and send as responses to the frontend.
