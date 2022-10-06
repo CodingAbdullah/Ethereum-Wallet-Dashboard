@@ -2,10 +2,10 @@
 A descriptive web app, detailing the history of all transactions including all different kinds of ERC transactions.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+
 ### `AWS Amplify Deployment`
 
-The frontend application is deployed to **AWS Amplify**
-The link to the frontend AWS deployment is here [AWS Amplify](https://aws.d3rwxneb2bnpjl.amplifyapp.com/).
+The frontend application is deployed to **AWS Amplify.** The link to the frontend AWS deployment is here [AWS Amplify](https://aws.d3rwxneb2bnpjl.amplifyapp.com/).
 
 Please note that more testing (frontend/backend), security is required. As well as the backend server needing to be deployed. This is just a PARTIAL preview.
 
