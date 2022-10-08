@@ -44,7 +44,7 @@ const PricesPage = () => {
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                 <h1 style={{ marginTop: '1.5rem', marginBottom: '1rem' }}>Prices Chart</h1>
                 <p>Here is the list of the latest prices on the top 15 coins by <b>popularity.</b></p>
-                <div style={{ marginLeft: '2.25rem' }} class="container col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <div style={{ marginLeft: '2rem' }} class="container col-md-9 ml-sm-auto col-lg-10 px-md-4">
                     <div style={{marginLeft: '1.5rem'}} class="row">
                         {
                            cards.map((coin, key) => {

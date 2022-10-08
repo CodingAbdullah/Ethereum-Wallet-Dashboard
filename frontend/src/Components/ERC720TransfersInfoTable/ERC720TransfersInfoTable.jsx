@@ -4,8 +4,10 @@ import Badge from '../Badge/Badge';
 const ERC720TransfersInfoTable = (props) => {
     const { data, address } = props;
 
+    let location = window.location.pathname; // Path name for the style of table display
+
     return (
-        <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+        <div class={ location === '/erc20-holdings' ? "col-md-9 ml-sm-auto col-lg-10 px-md-4" : "" }>
             <table style={{border: '1px solid black'}}>
                 <thead style={{border: '1px solid black'}}>
                 <tr style={{border: '1px solid black'}}>
