@@ -3,12 +3,15 @@ A descriptive web app, detailing the history of all transactions including all d
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 
-### `AWS Amplify Deployment`
+### `AWS Amplify Frontend Deployment`
 
 The frontend application is deployed to **AWS Amplify.** The link to the frontend AWS deployment is here [AWS Amplify](https://aws.d3rwxneb2bnpjl.amplifyapp.com/).
 
 Please note that more testing (frontend/backend), security is required. As well as the backend server needing to be deployed. This is just a PARTIAL preview.
 
+### `AWS Amplify Backend Deployment`
+
+The backend application is in the process of deployment using AWS. The full stack application will enable both components (front/back) to communicate with each other on the cloud. AWS has complete features on security and reliability.
 
 ### `Start Here`
 
