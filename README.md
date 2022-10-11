@@ -9,9 +9,13 @@ The frontend application is deployed to **AWS Amplify.** The link to the fronten
 
 Please note that more testing (frontend/backend), security is required. As well as the backend server needing to be deployed. This is just a PARTIAL preview.
 
+
+
 ### `AWS Amplify Backend Deployment`
 
 The backend application is in the process of deployment using AWS. The full stack application will enable both components (front/back) to communicate with each other on the cloud. AWS has complete features on security and reliability.
+
+
 
 ### `Start Here`
 
