@@ -1,28 +1,15 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-ethwdashboard-dev-234540-authRole",
-      "UnauthRoleArn": "arn:aws:iam::886452391640:role/amplify-ethwdashboard-dev-234540-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::886452391640:role/amplify-ethwdashboard-dev-234540-authRole",
+      "AuthRoleName": "amplify-ethwdashboard-dev-03058-authRole",
+      "UnauthRoleArn": "arn:aws:iam::886452391640:role/amplify-ethwdashboard-dev-03058-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::886452391640:role/amplify-ethwdashboard-dev-03058-authRole",
       "Region": "us-east-2",
-      "DeploymentBucketName": "amplify-ethwdashboard-dev-234540-deployment",
-      "UnauthRoleName": "amplify-ethwdashboard-dev-234540-unauthRole",
-      "StackName": "amplify-ethwdashboard-dev-234540",
-      "StackId": "arn:aws:cloudformation:us-east-2:886452391640:stack/amplify-ethwdashboard-dev-234540/5942b7c0-49e0-11ed-827b-06b895b5ab14",
-      "AmplifyAppId": "d2e5a845dco86a"
-    }
-  },
-  "ethwdsh": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-ethwdashboard-ethwdsh-234847-authRole",
-      "UnauthRoleArn": "arn:aws:iam::886452391640:role/amplify-ethwdashboard-ethwdsh-234847-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::886452391640:role/amplify-ethwdashboard-ethwdsh-234847-authRole",
-      "Region": "us-east-2",
-      "DeploymentBucketName": "amplify-ethwdashboard-ethwdsh-234847-deployment",
-      "UnauthRoleName": "amplify-ethwdashboard-ethwdsh-234847-unauthRole",
-      "StackName": "amplify-ethwdashboard-ethwdsh-234847",
-      "StackId": "arn:aws:cloudformation:us-east-2:886452391640:stack/amplify-ethwdashboard-ethwdsh-234847/c83ee360-49e0-11ed-bbdd-0a8725cb7904",
-      "AmplifyAppId": "d2e5a845dco86a"
+      "DeploymentBucketName": "amplify-ethwdashboard-dev-03058-deployment",
+      "UnauthRoleName": "amplify-ethwdashboard-dev-03058-unauthRole",
+      "StackName": "amplify-ethwdashboard-dev-03058",
+      "StackId": "arn:aws:cloudformation:us-east-2:886452391640:stack/amplify-ethwdashboard-dev-03058/acb8a080-49e6-11ed-bd8e-061ceb0e43c6",
+      "AmplifyAppId": "d1cknq94k2r7mj"
     }
   }
 }
