@@ -1,9 +1,14 @@
 service: ETHWDASHBOARD
 frameworkVersion: '3'
 
-provider:
+useDotenv: true # Set dotenv configuration to be true
+
+provider: # Specify what you want to have as a provider
   name: aws
   runtime: nodejs14.x
+	
+plugins:
+  - serverless-dotenv-plugin # Specify the plugin used to automatically load env variables into lambda functions
 
 functions:
   api:
