@@ -1,3 +1,4 @@
+require('dotenv').config({ path: '../.env' });
 const sdk = require('api')('@transpose/v0#3xj19sl7j8jtul'); // Unique identifier for Transpose APIs found in docs
 
 exports.additionalENSInformation = (req, res) => {
