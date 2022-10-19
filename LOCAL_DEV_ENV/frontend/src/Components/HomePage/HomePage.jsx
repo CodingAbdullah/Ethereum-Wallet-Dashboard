@@ -60,7 +60,12 @@ const Home = () => {
                 }
             }
             catch {
-
+                updateBtcPrice((prevState) => {
+                    return {
+                        ...prevState,
+                        information: null
+                    }
+                });
             }
 
             // Ethereum Price Action
@@ -83,7 +88,12 @@ const Home = () => {
                 }
             }
             catch {
-
+                updateEthPrice((prevState) => {
+                    return {
+                        ...prevState,
+                        information: null
+                    }
+                });
             }
 
             // Get trending information
@@ -103,7 +113,7 @@ const Home = () => {
                 }
             }
             catch {
-
+                updateTrendingCoins("");
             }
 
             try {
@@ -118,7 +128,12 @@ const Home = () => {
                 }
             }
             catch {
-
+                updateGlobalMarketData((prevState) => {
+                    return {
+                        ...prevState,
+                        information: null
+                    }
+                });
             }
         };
         fetchHomePageInfo();   
