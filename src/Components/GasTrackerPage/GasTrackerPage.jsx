@@ -25,32 +25,35 @@ const GasTrackerPage = () => {
     }
 
     useEffect(() => {
-        const options = {
-            method: 'GET',
-            mode: 'cors',
-            headers: {
-                'content-type' : 'application/json', 
-                'accept': 'application/json'
-            }
-        };
+        const gasInfo = async () => {
+            const options = {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'content-type' : 'application/json', 
+                    'accept': 'application/json'
+                }
+            };
 
-       axios.get(NODE_SERVER_URL + GAS_TRACK_ENDPOINT, options)
-       .then(res => {
-            if (res.status === 200){
-                updateGasInfo((prevState) => { // If successful, update information
-                    return {
-                        ...prevState,
-                        information: res.data.information
-                    }
-                });
+            try {                    
+                const response = await axios.get(NODE_SERVER_URL + GAS_TRACK_ENDPOINT, options)
+                if (response.status === 200){
+                    updateGasInfo((prevState) => { // If successful, update information
+                        return {
+                            ...prevState,
+                            information: response.data.information
+                        }
+                    });
+                }
+                else {
+                    clearHandler();
+                }
             }
-            else {
+            catch {
                 clearHandler();
             }
-       })
-       .catch(() => {
-            clearHandler();
-       });
+        }
+        gasInfo();
     }, [])
     
     if (gasInfo.information === null){

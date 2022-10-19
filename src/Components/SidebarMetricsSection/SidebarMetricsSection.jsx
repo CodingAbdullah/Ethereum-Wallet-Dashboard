@@ -34,62 +34,64 @@ const SidebarMetricsSection = () => {
         });
     }
 
-    useEffect(() => {            
-        
-        // Upon render, run API call to collect data using information passed down from parent component, provided it is the mainnet
-        const coingeckoOptions = {
-            method: 'GET',
-            mode: 'cors',
-            headers: {
-                'content-type': 'application/json'
+    useEffect(() => {       
+        const fetchInfo = async () => {
+            // Upon render, run API call to collect data using information passed down from parent component, provided it is the mainnet
+            const coingeckoOptions = {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'content-type': 'application/json'
+                }
+            }
+            
+            try {
+                const response = await axios.get(COINGECKO_URL + API_ENDPOINT + QUERY_STRING_ETHEREUM, coingeckoOptions); // Retrieve price information right after render
+                if (response.status === 200){
+                    updatePrice((prevState) => {
+                        return {
+                            ...prevState,
+                            information: response.data.ethereum
+                        }
+                    });
+                }
+                else {
+                    clearHandler();
+                }
+            }
+            catch {
+                clearHandler();
+            }
+
+            const options = {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'content-type' : 'application/json', 
+                    'accept': 'application/json',
+                }
+            };
+
+            try {
+                const response = await axios.get(NODE_SERVER_URL + GAS_TRACKER_ENDPOINT, options) 
+                if (response.status === 200){
+                    updateGasInfo((prevState) => { // If successful, update information
+                        return {
+                            ...prevState,
+                            information: response.data.information
+                        }
+                    });
+                }
+                else {
+                    clearHandler();
+                }  
+            }
+            catch {
+                clearHandler();
             }
         }
-        
-        axios.get(COINGECKO_URL + API_ENDPOINT + QUERY_STRING_ETHEREUM, coingeckoOptions) // Retrieve price information right after render
-        .then(response => {
-            if (response.status === 200){
-                updatePrice((prevState) => {
-                    return {
-                        ...prevState,
-                        information: response.data.ethereum
-                    }
-                });
-            }
-            else {
-                clearHandler();
-            }
-        })
-        .catch(() => {
-            clearHandler();
-        });
-
-        const options = {
-            method: 'GET',
-            mode: 'cors',
-            headers: {
-                'content-type' : 'application/json', 
-                'accept': 'application/json',
-            }
-        };
-
-        axios.get(NODE_SERVER_URL + GAS_TRACKER_ENDPOINT, options) 
-        .then(res => {
-            if (res.status === 200){
-                updateGasInfo((prevState) => { // If successful, update information
-                    return {
-                        ...prevState,
-                        information: res.data.information
-                    }
-                });
-            }
-            else {
-                clearHandler();
-            }
-        })
-        .catch(() => {
-            clearHandler();
-        });
-        }, [])
+        fetchInfo();
+    }, [])
 
     return (
         <>
