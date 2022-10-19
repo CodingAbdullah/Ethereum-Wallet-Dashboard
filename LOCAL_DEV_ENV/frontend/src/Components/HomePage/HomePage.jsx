@@ -36,78 +36,92 @@ const Home = () => {
 
 
     useEffect(() => {
-        // Clear local storage of wallet address
-        localStorage.removeItem("walletAddress");
+        const fetchHomePageInfo = async () => {
+            // Clear local storage of wallet address
+            localStorage.removeItem("walletAddress");
 
-        // Bitcoin Price Action
-        axios.get(URL + API_ENDPOINT + QUERY_STRING_BITCOIN)
-        .then(res => {
-            if (res.data.bitcoin !== undefined) {
-                updateBtcPrice((prevState) => {
-                    return {
-                        ...prevState,
-                        information: res.data
+            // Bitcoin Price Action
+            try {
+                const response = await axios.get(URL + API_ENDPOINT + QUERY_STRING_BITCOIN);
+                if (response.data.bitcoin !== undefined) {
+                    updateBtcPrice((prevState) => {
+                        return {
+                            ...prevState,
+                            information: response.data
+                        }
+                    });
+
+                    if (response.data.bitcoin.usd_24h_change < 0) {
+                        updateBtcColourChange("red");
                     }
-                });
-
-                if (res.data.bitcoin.usd_24h_change < 0) {
-                    updateBtcColourChange("red");
-                }
-                else {
-                    updateBtcColourChange("green");
-                }
-            }
-        })
-
-        // Ethereum Price Action
-        axios.get(URL + API_ENDPOINT + QUERY_STRING_ETHEREUM)
-        .then(res => {
-
-            if (res.data.ethereum !== undefined) {
-                updateEthPrice((prevState) => {
-                    return {
-                        ...prevState,
-                        information: res.data
+                    else {
+                        updateBtcColourChange("green");
                     }
-                });
-
-                if (res.data.ethereum.usd_24h_change < 0){
-                    updateEthColourChange("red");
-                }
-                else {
-                    updateEthColourChange("green");
                 }
             }
-        })
+            catch {
 
-        // Get trending information
-        axios.get(URL + TRENDINGCOINS_ENDPOINT)
-        .then(res => {
-            let finalDisplay = '';
-            if (res !== {}) { 
-                let information = '';
-                for (var i = 0; i < res.data.coins.length - 2; i++){ // Use 5 instead of the 7 this API fetches
-                    information += res.data.coins[i].item.name;
-                    information += ' - ';
-                    information += res.data.coins[i].item.symbol;
-                    finalDisplay += information;
-                    information = ' | ';
-                }
-                updateTrendingCoins(finalDisplay);
             }
-        })
 
-        axios.get(URL + GLOBALMARKETDATA_ENDPOINT) // Fetch global data
-        .then(res => {
-            if (res.data !== {}){
-                updateGlobalMarketData((prevState) => {
-                    return {
-                        ...prevState,
-                        information: res.data
+            // Ethereum Price Action
+            try {
+                const response = await axios.get(URL + API_ENDPOINT + QUERY_STRING_ETHEREUM);
+                if (response.data.ethereum !== undefined){
+                    updateEthPrice((prevState) => {
+                        return {
+                            ...prevState,
+                            information: response.data
+                        }
+                    });
+
+                    if (response.data.ethereum.usd_24h_change < 0){
+                        updateEthColourChange("red");
                     }
-                });
+                    else {
+                        updateEthColourChange("green");
+                    }
+                }
             }
-        })
+            catch {
+
+            }
+
+            // Get trending information
+            try {
+                const response = await axios.get(URL + TRENDINGCOINS_ENDPOINT);
+                let finalDisplay = '';
+                if (response !== {}) { 
+                    let information = '';
+                    for (var i = 0; i < response.data.coins.length - 2; i++){ // Use 5 instead of the 7 this API fetches
+                        information += response.data.coins[i].item.name;
+                        information += ' - ';
+                        information += response.data.coins[i].item.symbol;
+                        finalDisplay += information;
+                        information = ' | ';
+                    }
+                    updateTrendingCoins(finalDisplay);
+                }
+            }
+            catch {
+
+            }
+
+            try {
+                const response = await axios.get(URL + GLOBALMARKETDATA_ENDPOINT) // Fetch global data
+                if (response.data !== {}){
+                    updateGlobalMarketData((prevState) => {
+                        return {
+                            ...prevState,
+                            information: response.data
+                        }
+                    });
+                }
+            }
+            catch {
+
+            }
+        };
+        fetchHomePageInfo();   
     }, []);
 
     // Pass function to child component
