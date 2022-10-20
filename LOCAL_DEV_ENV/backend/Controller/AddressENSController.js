@@ -1,4 +1,33 @@
+require('dotenv').config({ path: '../.env' });
 const sdk = require('api')('@transpose/v0#3xj19sl7j8jtul'); // Unique identifier for Transpose APIs found in docs
+const axios = require('axios');
+const MORALIS_URL = require("../Utils/NetworkMapper").NETWORK_MAPPER.moralis_url;
+
+exports.addressToENSInformation = (req, res) => {
+    const { address } = JSON.parse(req.body.body);
+
+    const options = {   
+        method: 'GET', 
+        mode: 'cors', // *cors, same-origin
+        headers: { 
+            'content-type' : 'application/json', 
+            'access-control-allow-origin': '*',
+            'X-API-KEY' : process.env.MORALIS_API_KEY // Transpose API key hidden 
+        }
+    }
+
+    axios.get(MORALIS_URL + 'resolve/' + address + "/reverse", options)
+    .then(response => {
+        res.status(200).json({
+            information: response.data
+        })
+    })
+    .catch(err => {
+        res.status(400).json({
+            information: err
+        });
+    })
+}
 
 exports.additionalENSInformation = (req, res) => {
     const { ensName } = JSON.parse(req.body.body);

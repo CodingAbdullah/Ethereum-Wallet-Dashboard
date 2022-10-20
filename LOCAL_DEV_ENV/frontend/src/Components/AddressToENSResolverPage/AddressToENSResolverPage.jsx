@@ -19,7 +19,8 @@ const AddressToENSResolverPage = () => {
     const [setAlert, updateAlert] = useState(false);
     const [emptyAlert, updateEmptyAlert] = useState(false);
 
-    const ADDRESS_TO_ENS_MORALIS_ENDPOINT = "https://deep-index.moralis.io/api/v2/resolve/";
+    const NODE_SERVER_URL = "http://localhost:5000/";
+    const ADDRESS_TO_ENS_ENDPOINT = 'address-to-ens-information';
 
     const clearHandler = () => {
         updateAddressToEnsData((prevState) => {
@@ -33,34 +34,35 @@ const AddressToENSResolverPage = () => {
         updateEmptyAlert(false);
     }
 
-    const AddressToENSHandler = (e) => {
+    const AddressToENSHandler = async (e) => {
         e.preventDefault();
         
         // ENS APIs go here.. Address ---> ENS Resolver second
         if (addressToENS.length === 42 && addressToENS.substring(0, 2) === '0x'){
+            
             const options = {   
-                method: 'GET', 
-                mode: 'cors', // *cors, same-origin
+                method: 'POST', 
+                mode: 'cors',  // *cors, same-origin
+                body : JSON.stringify({ address: addressToENS }), // Pass in body to request
                 headers: { 
                     'content-type' : 'application/json', 
-                    'access-control-allow-origin': '*',
-                    'X-API-KEY' : process.env.REACT_APP_MORALIS_API_KEY // Transpose API key hidden 
                 }
             }
     
-            axios.get(ADDRESS_TO_ENS_MORALIS_ENDPOINT + addressToENS + "/reverse", options) // Using Axios library
-            .then(response => {
+            try {
+                const response = await axios.post(NODE_SERVER_URL + ADDRESS_TO_ENS_ENDPOINT, options); // Using Axios library
                 updateAddressToEnsData((prevState) => { // Update Address to Ens for the display of tabulated information
                     return {
                         ...prevState,
-                        information: response.data
+                        information: response
                     }
                 });
+
                 // Remove unnecessary alerts
                 updateAlert(false);
                 updateEmptyAlert(false); 
-             })
-            .catch(() => {
+            }        
+            catch {
                 updateEmptyAlert(true); // Update alerts
                 updateAlert(false);
                 updateAddressToEnsData((prevState) => { // Void previous search of address --> ens
@@ -69,7 +71,7 @@ const AddressToENSResolverPage = () => {
                         information: null
                     }
                 });  
-            });   
+            };   
         }
         else {
             updateAlert(true); // Invalid address, display alert
