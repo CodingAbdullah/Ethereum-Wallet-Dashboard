@@ -22,24 +22,6 @@ exports.getERC721CollectionData = (req, res) => {
 
 }
 
-exports.getLowestERC721CollectionSale = (req, res) => {
-    const { address } = JSON.parse(req.body.body);
-    const LOWESTPRICE_ENDPOINT = '/lowestprice';
-
-    const options = {
-        method: 'GET',
-        headers: {
-            'content-type' : 'application/json',
-            'x-api-key' : process.env.MORALIS_API_KEY 
-        }
-    };
-
-    // Run backend request
-    axios.get(MORALIS_URL + 'nft/' + address + LOWESTPRICE_ENDPOINT, options)
-    .then(response => res.status(200).json({ information: response.data }))
-    .catch(err => res.status(400).json({ information: err }));
-}
-
 exports.getERC721CollectionTransfers = (req, res) => {
     const { address } = JSON.parse(req.body.body);
     const TRANSFERS_ENDPOINT = '/transfers';

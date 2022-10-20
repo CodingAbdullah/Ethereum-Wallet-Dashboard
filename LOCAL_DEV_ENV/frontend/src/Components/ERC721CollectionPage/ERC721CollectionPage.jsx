@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 import Alert from '../Alert/Alert';
-import ERC721LowestCollectionPriceInfoTable from '../ERC721CollectionLowestPriceInfoTable/ERC721CollectionLowestPriceInfoTable';
 import ERC721CollectionDataInfoTable from '../ERC721CollectionDataInfoTable/ERC721CollectionDataInfoTable';
 import ERC721CollectionTransferInfoTable from '../ERC721CollectionTransferInfoTable/ERC721CollectionTransferInfoTable';
 import ERC721CollectionSalesInfoTable from '../ERC721CollectionSalesInfoTable/ERC721CollectionSalesInfoTable';
@@ -15,7 +14,6 @@ const ERC721CollectionPage = () => {
     const [setAlert, updateAlert] = useState(false);
 
     const NODE_SERVER_URL = 'http://localhost:5000'; // Node Server for API end points
-    const LOWESTPRICE_ENDPOINT = '/erc721-collection-lowest-sale';
     const TRANSFERS_ENDPOINT = '/erc721-collection-transfers';
     const TRADES_ENDPOINT = '/erc721-collection-sales';
     const FLOOR_PRICE_ENDPOINT = '/erc721-collection-floor-price';
@@ -98,11 +96,10 @@ const ERC721CollectionPage = () => {
         updateAlert(false);
     }
     
-    const formHandler = e => {
+    const formHandler = async (e) => {
         e.preventDefault();
 
         if (tokenAddress.length === 42 && tokenAddress.substring(0, 2) === '0x'){
-
             // Set options for fetch and flight responses
             const options = {
                 method: 'POST',
@@ -113,9 +110,10 @@ const ERC721CollectionPage = () => {
                 }
             }
 
-            // Collection Data
-            axios.post(NODE_SERVER_URL + "/erc721-collection-data", options) // NFT endpoint for retrieving information related to collection
-            .then(response => {
+            try {
+                // Collection Data
+                const response = await axios.post(NODE_SERVER_URL + "/erc721-collection-data", options); // NFT endpoint for retrieving information related to collection
+                
                 if (response.status !== 200){
                     updateAlert(true);
                     alertHandler();
@@ -134,48 +132,21 @@ const ERC721CollectionPage = () => {
                         });
                     }
                 }
-            })
-            .catch(() => {
+            }
+            catch {
                 alertHandler();
                 updateAlert(true);
-            });
+            };
 
-            // Lowest Price Data
-            axios.post(NODE_SERVER_URL + LOWESTPRICE_ENDPOINT, options) // NFT endpoint for retrieving information related to collection
-            .then(response => {
-                if (response.status !== 200){
+            try {
+                // Transfers Data
+                const transfersData = await axios.post(NODE_SERVER_URL + TRANSFERS_ENDPOINT, options); // NFT endpoint for retrieving information related to collection
+                if (transfersData.status !== 200){
                     updateAlert(true);
                     alertHandler();
                 }
                 else {
-                    if (response.status === 200 && Object.keys(response.information).length === 0){ // If empty, clear
-                        alertHandler();
-                    }
-                    else {
-                        updateAlert(false); // Remove alerts if any exist
-                        updateNFTLowestPrice((prevState) => {
-                            return {
-                                ...prevState,
-                                information: response.data.information
-                            }
-                        });
-                    }
-                }
-            })
-            .catch(() => {
-                alertHandler();
-                updateAlert(true);
-            });
-
-            // Transfers Data
-            axios.post(NODE_SERVER_URL + TRANSFERS_ENDPOINT, options) // NFT endpoint for retrieving information related to collection
-            .then(response => {
-                if (response.status !== 200){
-                    updateAlert(true);
-                    alertHandler();
-                }
-                else {
-                    if (response.status === 200 && response.data.information.total === 0){ // If empty, clear data
+                    if (transfersData.status === 200 && transfersData.data.information.total === 0){ // If empty, clear data
                         alertHandler();
                     }
                     else {
@@ -183,26 +154,26 @@ const ERC721CollectionPage = () => {
                         updateNFTTransfers((prevState) => {
                             return {
                                 ...prevState,
-                                information: response.data.information
+                                information: transfersData.data.information
                             }
                         });
                     }
                 }
-            })
-            .catch(() => {
+            }
+            catch {
                 alertHandler();
                 updateAlert(true);
-            });
+            };
 
-            // Trades Data
-            axios.post(NODE_SERVER_URL + TRADES_ENDPOINT, options) // NFT endpoint for retrieving information related to collection
-            .then(response => {
-                if (response.status !== 200){
+            try {
+                // Trades Data
+                const tradesData = await axios.post(NODE_SERVER_URL + TRADES_ENDPOINT, options); // NFT endpoint for retrieving information related to collection
+                if (tradesData.status !== 200){
                     updateAlert(true);
                     alertHandler();
                 }
                 else {
-                    if (response.status === 200 && response.data.information.total === 0){ // If empty, clear data
+                    if (tradesData.status === 200 && tradesData.data.information.total === 0){ // If empty, clear data
                         alertHandler();
                     }
                     else {
@@ -210,21 +181,21 @@ const ERC721CollectionPage = () => {
                         updateNFTTrades((prevState) => {
                             return {
                                 ...prevState,
-                                information: response.data.information
+                                information: tradesData.data.information
                             }
                         });
                     }
                 }
-            })
-            .catch(() => {
+            }
+            catch {
                 alertHandler();
                 updateAlert(true);
-            });    
+            };    
             
-            // Floor Price Data
-            axios.post(NODE_SERVER_URL + FLOOR_PRICE_ENDPOINT, options)
-            .then(response => {
-                if (response.status !== 200){
+            try {
+                // Floor Price Data
+                const floorData = await axios.post(NODE_SERVER_URL + FLOOR_PRICE_ENDPOINT, options);
+                if (floorData.status !== 200){
                     updateAlert(true);
                     alertHandler();
                 }
@@ -232,36 +203,36 @@ const ERC721CollectionPage = () => {
                     updateNFTFloorPrice((prevState) => {
                         return {
                             ...prevState,
-                            information: response.data
+                            information: floorData.data
                         }
                     });
                 }
-            })
-            .catch(() => {
+            }
+            catch {
                 alertHandler();
                 updateAlert(true);
-            });
+            };
 
-            // Attribute Data
-            axios.post(NODE_SERVER_URL + COLLECTION_ATTRIBUTES_ENDPOINT, options)
-            .then(response => {
-                if (response.status !== 200){
-                    updateAlert(true);
-                    alertHandler();
-                }
-                else {
-                    updateNFTAttributes((prevState) => {
-                        return {
-                            ...prevState,
-                            information: response.data
-                        }
-                    });
-                }
-            })
-            .catch(() => {
+            try {
+                // Attribute Data
+                const attributeData = await axios.post(NODE_SERVER_URL + COLLECTION_ATTRIBUTES_ENDPOINT, options)
+                    if (attributeData.status !== 200){
+                        updateAlert(true);
+                        alertHandler();
+                    }
+                    else {
+                        updateNFTAttributes((prevState) => {
+                            return {
+                                ...prevState,
+                                information: attributeData.data
+                            }
+                        });
+                    }
+            }
+            catch {
                 alertHandler();
                 updateAlert(true);
-            })
+            }
         }
         else {
             updateAlert(true); // Set Alert
@@ -298,17 +269,6 @@ const ERC721CollectionPage = () => {
                                 <h4>Total Items: <b>{ NFTData.information.total }</b></h4> 
                             </main>
                         </>  
-                }
-                {
-                    NFTLowestPrice.information === null ? null : 
-                        <>
-                            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                                <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                    <h3 class="h3">Lowest Price Sale</h3>
-                                </div>
-                            </main>
-                            <ERC721LowestCollectionPriceInfoTable data={ NFTLowestPrice.information } /> 
-                        </>
                 }
                 {
                     NFTData.information === null ? null :
