@@ -1,0 +1,5 @@
+# Hiding Environment Variables
+.env
+
+# Hiding node_modules installed
+node_modules

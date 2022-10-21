@@ -1,5 +1,0 @@
-node_modules
-.serverless
-
-# Hiding env variables for deployment purposes
-.env
