@@ -20,7 +20,7 @@ const ENSToAddressResolverPage = () => {
     const [emptyAlert, updateEmptyAlert] = useState(false);
 
     const NODE_SERVER_URL = "http://localhost:5000/";
-    const ENS_TO_ADDRESS_ENDPOINT = 'additional-address-to-ens-information'
+    const ENS_TO_ADDRESS_ENDPOINT = 'additional-address-to-ens-information';
 
     const clearHandler = () => {
         updateENSToAddressData((prevState) => {

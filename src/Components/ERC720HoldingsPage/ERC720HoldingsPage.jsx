@@ -52,56 +52,52 @@ const ERC720HoldingsPage = () => {
         e.preventDefault();
 
         if (walletAddress.length === 42 && walletAddress.substring(0, 2) === '0x'){
-             // Set options for fetch and flight responses
-            const options = {
-                method: 'POST',
-                mode: 'cors',
-                body: JSON.stringify({ address: walletAddress, network : networkID }),
-                headers: {
-                    'content-type' : 'application/json', 
-                }
+            if (networkID === 'kovan' || networkID === 'rinkeby' || networkID === 'ropsten') {
+                // Set alerts for networks not available
+                updateEmptyAlert(true);
             }
-
-            axios.post(NODE_SERVER_URL + ERC20TOKEN_ENDPOINT, options) // ERC20 endpoint for retrieving information related to holdings
-            .then(response => {
-                if (response.status !== 200){
-                    updateAlert(true);
-                    updateEmptyAlert(false);
-                    clearHandler();
+            else {
+                // Set options for fetch and flight responses
+                const options = {
+                    method: 'POST',
+                    mode: 'cors',
+                    body: JSON.stringify({ address: walletAddress, network : networkID }),
+                    headers: {
+                        'content-type' : 'application/json', 
+                    }
                 }
-                else {
-                    if (response.status === 200 && response.data.information.length === 0){ // If empty, display warning
-                        updateEmptyAlert(true);
-                        updateAlert(false);
+
+                axios.post(NODE_SERVER_URL + ERC20TOKEN_ENDPOINT, options) // ERC20 endpoint for retrieving information related to holdings
+                .then(response => {
+                    if (response.status !== 200){
+                        updateAlert(true);
+                        updateEmptyAlert(false);
                         clearHandler();
                     }
                     else {
-                        updateAlert(false); // Remove alerts if any exist
-                        updateEmptyAlert(false);
-
-                        updateERC20Holdings((prevState) => {
-                            return {
-                                ...prevState,
-                                information: response.data.information
-                            }
-                        });
-                    }
-                }
-            });
-
-            // Get ERC20Transfers of particular wallet
-            axios.post(NODE_SERVER_URL + ERC20TOKENTRANSFERS_ENDPOINT, options)
-            .then(response => {
-                if (response.status !== 200){
-                    updateERC20Transfers((prevState) => {
-                        return {
-                            ...prevState,
-                            information: null
+                        if (response.status === 200 && response.data.information.length === 0){ // If empty, display warning
+                            updateEmptyAlert(true);
+                            updateAlert(false);
+                            clearHandler();
                         }
-                    });
-                }
-                else {
-                    if (response.status === 200 && response.data.information.result.length === 0){ // If empty, keep state to null
+                        else {
+                            updateAlert(false); // Remove alerts if any exist
+                            updateEmptyAlert(false);
+
+                            updateERC20Holdings((prevState) => {
+                                return {
+                                    ...prevState,
+                                    information: response.data.information
+                                }
+                            });
+                        }
+                    }
+                });
+
+                // Get ERC20Transfers of particular wallet
+                axios.post(NODE_SERVER_URL + ERC20TOKENTRANSFERS_ENDPOINT, options)
+                .then(response => {
+                    if (response.status !== 200){
                         updateERC20Transfers((prevState) => {
                             return {
                                 ...prevState,
@@ -110,15 +106,25 @@ const ERC720HoldingsPage = () => {
                         });
                     }
                     else {
-                        updateERC20Transfers((prevState) => {
-                            return {
-                                ...prevState,
-                                information: response.data.information.result // If data exists, add it to state
-                            }
-                        });
+                        if (response.status === 200 && response.data.information.result.length === 0){ // If empty, keep state to null
+                            updateERC20Transfers((prevState) => {
+                                return {
+                                    ...prevState,
+                                    information: null
+                                }
+                            });
+                        }
+                        else {
+                            updateERC20Transfers((prevState) => {
+                                return {
+                                    ...prevState,
+                                    information: response.data.information.result // If data exists, add it to state
+                                }
+                            });
+                        }
                     }
-                }
-            });
+                });
+            }
         }
         else {
             updateAlert(true); // Set Alert

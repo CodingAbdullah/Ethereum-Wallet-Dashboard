@@ -114,135 +114,143 @@ const WalletStats = () => {
 
         // Gather wallet analytics using API resources and running checks to see if wallet address is valid
         if (walletAddress.length === 42 && walletAddress.substring(0, 2) === '0x'){
-            axios.post(NODE_SERVER_URL + ADDRESS_DETAILS_ENDPOINT, options)
-            .then(res => {
-                if (res.data.information.message === 'OK'){
-                    updateAmount(res.data.information.result);
-                    updateAlert(false);
-                }
-                else {
-                    // Valid length entered, but invalid address means invalid address, update alert, remove, data, remove other alerts
-                    updateAlert(true);
-                    updateERC20Alert(false);
-                    updateERC721Alert(false);
-                    updateTransactionAlert(false); 
-                    alertHandler();              
-                }
-            });
-
-                // Matic-Network Price calculator
-                axios.get(COIN_GECKO_URL + API_ENDPOINT + QUERY_STRING_MATIC_NETWORK)
+            if (networkID === 'kovan' || networkID === 'rinkeby' || networkID === 'ropsten') {
+                // Set alerts for networks not available
+                updateTransactionAlert(true);
+                updateERC20Alert(true);
+                updateERC721Alert(true);
+            }
+            else {
+                axios.post(NODE_SERVER_URL + ADDRESS_DETAILS_ENDPOINT, options)
                 .then(res => {
-                    if (res.data['matic-network'] !== undefined) {
-                        updateMaticPrice((prevState) => { // Update MATIC price information
-                            return {
-                                ...prevState,
-                                information: res.data
-                            }
-                        });
+                    if (res.data.information.message === 'OK'){
+                        updateAmount(res.data.information.result);
+                        updateAlert(false);
+                    }
+                    else {
+                        // Valid length entered, but invalid address means invalid address, update alert, remove, data, remove other alerts
+                        updateAlert(true);
+                        updateERC20Alert(false);
+                        updateERC721Alert(false);
+                        updateTransactionAlert(false); 
+                        alertHandler();              
                     }
                 });
 
-                // ETH Price calculator
-                axios.get(COIN_GECKO_URL + API_ENDPOINT + QUERY_STRING_ETHEREUM)
-                .then(res => {
-                    if (res.data.ethereum !== undefined) {
-                        updateEthPrice((prevState) => { // Update ETH price information
-                            return {
-                                ...prevState,
-                                information: res.data
-                            }
-                        });
-                    }
-                });
-
-            // Transactions of a particular account, if the address of the particular one entered is valid
-            axios.post(NODE_SERVER_URL + TRANSACTION_DETAIL_ENDPOINT , options)
-            .then(res => {
-                if (res.data.information.message === 'OK'){
-                    updateTransactions((prevState) => { // Get Transaction data 
-                        return {
-                            ...prevState,
-                            information: res.data.information
+                    // Matic-Network Price calculator
+                    axios.get(COIN_GECKO_URL + API_ENDPOINT + QUERY_STRING_MATIC_NETWORK)
+                    .then(res => {
+                        if (res.data['matic-network'] !== undefined) {
+                            updateMaticPrice((prevState) => { // Update MATIC price information
+                                return {
+                                    ...prevState,
+                                    information: res.data
+                                }
+                            });
                         }
                     });
-                }
-                else {
-                    alertHandler();
-                    updateTransactionAlert(false);
-                }
 
-                if (res.data.information.result.length === 0) {
-                    updateTransactionAlert(true);
-                }
-                else {
-                    updateTransactionAlert(false);
-                }
-            });
+                    // ETH Price calculator
+                    axios.get(COIN_GECKO_URL + API_ENDPOINT + QUERY_STRING_ETHEREUM)
+                    .then(res => {
+                        if (res.data.ethereum !== undefined) {
+                            updateEthPrice((prevState) => { // Update ETH price information
+                                return {
+                                    ...prevState,
+                                    information: res.data
+                                }
+                            });
+                        }
+                    });
 
-            // ERC20 endpoint for retrieving information related to holdings
-            axios.post(NODE_SERVER_URL + ADDRESS_ERC20HOLDINGS_ENDPOINT, options)
-            .then(response => {
-                if (response.status !== 200){
-                    updateAlert(true);
-                    updateERC20Alert(false);
-                    alertHandler();
-                }
-                else {
-                    if (response.status === 200 && response.data.information.length === 0){ // If empty, display warning
-                        updateERC20Alert(true);
-                        updateAlert(false);
-                        updateERC20Holdings((prevState) => {
+                // Transactions of a particular account, if the address of the particular one entered is valid
+                axios.post(NODE_SERVER_URL + TRANSACTION_DETAIL_ENDPOINT , options)
+                .then(res => {
+                    if (res.data.information.message === 'OK'){
+                        updateTransactions((prevState) => { // Get Transaction data 
                             return {
                                 ...prevState,
-                                information: null
+                                information: res.data.information
                             }
                         });
                     }
                     else {
-                        updateAlert(false); // Remove alerts if any exist
+                        alertHandler();
+                        updateTransactionAlert(false);
+                    }
+
+                    if (res.data.information.result.length === 0) {
+                        updateTransactionAlert(true);
+                    }
+                    else {
+                        updateTransactionAlert(false);
+                    }
+                });
+
+                // ERC20 endpoint for retrieving information related to holdings
+                axios.post(NODE_SERVER_URL + ADDRESS_ERC20HOLDINGS_ENDPOINT, options)
+                .then(response => {
+                    if (response.status !== 200){
+                        updateAlert(true);
                         updateERC20Alert(false);
-                        updateERC20Holdings((prevState) => {
-                            return {
-                                ...prevState,
-                                information: response.data.information
-                            }
-                        });
-                    }
-                }
-            });
-
-            // ERC721 endpoint for retrieving information related to holdings
-            axios.post(NODE_SERVER_URL + ADDRESS_ERC721HOLDINGS_ENDPOINT, options)
-            .then(response => {
-                if (response.status !== 200){
-                    updateAlert(true);
-                    updateERC721Alert(false);
-                    alertHandler();
-                }
-                else {
-                    if (response.status === 200 && response.data.information.result.length === 0){ // If empty, display warning
-                        updateERC721Alert(true);
-                        updateAlert(false);
-                        updateERC721Holdings((prevState) => {
-                            return {
-                                ...prevState,
-                                information: null
-                            }
-                        });
+                        alertHandler();
                     }
                     else {
-                        updateAlert(false); // Remove alerts if any exist
-                        updateERC721Alert(false);
-                        updateERC721Holdings((prevState) => {
-                            return {
-                                ...prevState,
-                                information: response.data.information
-                            }
-                        });
+                        if (response.status === 200 && response.data.information.length === 0){ // If empty, display warning
+                            updateERC20Alert(true);
+                            updateAlert(false);
+                            updateERC20Holdings((prevState) => {
+                                return {
+                                    ...prevState,
+                                    information: null
+                                }
+                            });
+                        }
+                        else {
+                            updateAlert(false); // Remove alerts if any exist
+                            updateERC20Alert(false);
+                            updateERC20Holdings((prevState) => {
+                                return {
+                                    ...prevState,
+                                    information: response.data.information
+                                }
+                            });
+                        }
                     }
-                }
-            });
+                });
+
+                // ERC721 endpoint for retrieving information related to holdings
+                axios.post(NODE_SERVER_URL + ADDRESS_ERC721HOLDINGS_ENDPOINT, options)
+                .then(response => {
+                    if (response.status !== 200){
+                        updateAlert(true);
+                        updateERC721Alert(false);
+                        alertHandler();
+                    }
+                    else {
+                        if (response.status === 200 && response.data.information.result.length === 0){ // If empty, display warning
+                            updateERC721Alert(true);
+                            updateAlert(false);
+                            updateERC721Holdings((prevState) => {
+                                return {
+                                    ...prevState,
+                                    information: null
+                                }
+                            });
+                        }
+                        else {
+                            updateAlert(false); // Remove alerts if any exist
+                            updateERC721Alert(false);
+                            updateERC721Holdings((prevState) => {
+                                return {
+                                    ...prevState,
+                                    information: response.data.information
+                                }
+                            });
+                        }
+                    }
+                });
+            }
         }
         else {
             // Invalid address means invalid alert display, remove other alerts, clear data
@@ -259,7 +267,6 @@ const WalletStats = () => {
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h2 class="h2">Wallet Analytics</h2>
-                    <label>{ networkID }</label>
                 </div>
                 { setAlert ? <Alert type='danger' /> : null }
                     <div class="jumbotron">
