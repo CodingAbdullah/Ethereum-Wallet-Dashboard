@@ -19,7 +19,7 @@ const AddressToENSResolverPage = () => {
     const [setAlert, updateAlert] = useState(false);
     const [emptyAlert, updateEmptyAlert] = useState(false);
 
-    const NODE_SERVER_URL = "http://localhost:5000/";
+    const NODE_SERVER_URL = "http://ec2-18-116-43-235.us-east-2.compute.amazonaws.com:5000/";
     const ADDRESS_TO_ENS_ENDPOINT = 'address-to-ens-information';
 
     const clearHandler = () => {

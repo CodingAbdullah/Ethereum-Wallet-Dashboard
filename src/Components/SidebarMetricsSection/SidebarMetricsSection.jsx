@@ -7,7 +7,7 @@ const SidebarMetricsSection = () => {
     const QUERY_STRING_ETHEREUM = "?ids=ethereum&vs_currencies=usd&include_24hr_change=true";
     const API_ENDPOINT = "/simple/price";
 
-    const NODE_SERVER_URL = 'http://localhost:5000/';
+    const NODE_SERVER_URL = "http://ec2-3-128-95-136.us-east-2.compute.amazonaws.com:5000/"; // AWS EC2 Node Server URL
     const GAS_TRACKER_ENDPOINT = 'gas-track';
 
     const [price, updatePrice] = useState({
@@ -75,6 +75,7 @@ const SidebarMetricsSection = () => {
             try {
                 const response = await axios.get(NODE_SERVER_URL + GAS_TRACKER_ENDPOINT, options) 
                 if (response.status === 200){
+                    console.log(gasInfo);
                     updateGasInfo((prevState) => { // If successful, update information
                         return {
                             ...prevState,

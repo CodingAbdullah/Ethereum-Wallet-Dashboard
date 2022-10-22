@@ -16,7 +16,7 @@ const ENSTransferByIdPage = () => {
     const [setAlert, updateAlert] = useState(false);
     const [emptyAlert, updateEmptyAlert] = useState(false);
 
-    const NODE_SERVER_URL = "http://localhost:5000/";
+    const NODE_SERVER_URL = "http://ec2-3-128-95-136.us-east-2.compute.amazonaws.com:5000/"; // AWS EC2 Node Server URL
     const ENS_TO_ADDRESS_ENDPOINT = 'ens-transfers-by-id';
 
     const clearHandler = () => {

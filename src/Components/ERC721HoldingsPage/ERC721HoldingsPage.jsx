@@ -22,7 +22,7 @@ const ERC721HoldingsPage = () => {
 
     const navigate = useNavigate();
 
-    const NODE_SERVER_URL = "http://localhost:5000"; // Modifying end points for the backend server
+    const NODE_SERVER_URL = "http://ec2-3-128-95-136.us-east-2.compute.amazonaws.com:5000/"; // AWS EC2 Node Server URL
     const NFT_ENDPOINT = '/address-erc721-holdings';
     const NFT_TRANSFERS_ENDPOINT = '/address-erc721-transfers';
 
