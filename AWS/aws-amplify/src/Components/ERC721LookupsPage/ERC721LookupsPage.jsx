@@ -31,7 +31,7 @@ const ERC721LookupsPage = () => {
 
     const navigate = useNavigate();
 
-    const NODE_SERVER_URL = 'http://localhost:5000'; // API endpoints for ERC721 lookups
+    const NODE_SERVER_URL = "http://ec2-3-128-95-136.us-east-2.compute.amazonaws.com:5000/"; // AWS EC2 Node Server URL
     const LOOKUP_ENDPOINT = '/erc721-lookup-by-id';
     const TRANSFER_LOOKUP_ENDPOINT = '/erc721-lookup-transfer-by-id';
     const RARITY_LOOKUP_ENDPOINT = '/erc721-lookup-rarity-by-id';
