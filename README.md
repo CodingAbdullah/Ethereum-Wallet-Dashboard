@@ -46,7 +46,7 @@ Here are links to the available API resources used in this project. NOTE: Opense
 ### Local
 If you want to run this app locally, the LOCAL_DEV_ENV folder is the repo for that. You'll need to assign two ports (3000 and 5000, by default) for front-end/back-end servers respectively. 
 
-You'll also need to install all the node modules and dependencies under the `package.json` file as the node_modules folder was not committed. You'll also need to add the `.env` file under the back-end folder as it contains all the API keys for your back-end server.
+You'll also need to install all the node modules and dependencies under the `package.json` file as the node_modules folder was not committed. This can be done with `npm install`. You'll also need to add the `.env` file under the back-end folder as it contains all the API keys for your back-end server.
 
 ### AWS
 If you want to run this app on the cloud, you'll need to configure quite a few things before getting started. This app makes use of AWS Amplify and AWS EC2 services which are offered for free and allow for hosting and deploying front-end and back-end applications. These can be accessed under the AWS folder of this app.
@@ -54,7 +54,7 @@ If you want to run this app on the cloud, you'll need to configure quite a few t
 #### AWS Amplify (Front-end)
 The two main folders in this project, each represent a standalone app that can be deployed to an independent server. When deploying the front-end application, you'll need to create a local branch and copy over the front-end code. 
 
-This can be done with the `git checkout <branch name>` command on your local terminal, followed by deletions of the back-end folder. Followed by the usual, `git add , git commit, git push` commands.
+This can be done with the `git checkout <branch name>` command on your local terminal, followed by deletions of the back-end folder. Followed by the usual, `git add, git commit, git push` commands.
 
 
 #### AWS EC2 (Back-end)
@@ -106,7 +106,7 @@ pm2 flush (Clear logs)
 # To make sure app starts when reboot
 pm2 startup ubuntu
 ```
-## You should now be able to access your app using your IP and port. Now we want to setup a firewall blocking that port and setup NGINX as a reverse proxy so we can access it directly using port 80 (http)
+You should now be able to access your app using your IP and port. Now we want to setup a firewall blocking that port and setup NGINX as a reverse proxy so we can access it directly using port 80 (http)
 
 ## 5. Setup ufw firewall
 ```
