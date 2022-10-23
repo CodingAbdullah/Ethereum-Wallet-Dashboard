@@ -58,13 +58,15 @@ This can be done with the `git checkout <branch name>` command on your local ter
 
 
 #### AWS EC2 (Back-end)
-When configuring the back-end server on the cloud, a lot needs to be done to successfully create an EC2 instance, configure security groups, route traffic and add an SSL certificate. But that is just to configure the server, you'll need to deploy your node-express app and have it run as a background process in real-time to receive and respond to incoming API requests.
+When configuring the back-end server on the cloud, a lot needs to be done to successfully create an EC2 instance, configure security groups, route traffic and add a SSL certificate. But that is just to configure the server, you'll need to deploy your node-express app and have it run as a background process in real-time to receive and respond to incoming API requests.
 
 A link to spin up a virtual server on AWS can be found here: [AWS EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/get-set-up-for-amazon-ec2.html).
 
-Instructions on how to install node on a virtual server, retrieve code from a github, and run the node server on EC2 are found below.
+Instructions on how to install node on a virtual server, retrieve code from a github repo, and run the node server on EC2 are found below.
 
 Note that AWS EC2 Ubuntu was used to configure the server (using the free-tier one provided by Amazon).
+
+<img src="/AWS/aws-amplify/src/assets/images/ubuntu.png" height='500px' width='500px' alt="Alt text" title="Ubuntu setup">
 
 ## 1. Install Node/NPM
 ```
@@ -83,7 +85,7 @@ git clone https://github.com/CodingAbdullah/Ethereum-Wallet-Dashboard.git
 
 ## 3. Install dependencies and test app
 ```
-cd yourproject
+cd AWS
 cd aws-ec2
 npm install
 npm start (or whatever your start command)
