@@ -66,7 +66,7 @@ Instructions on how to install node on a virtual server, retrieve code from a gi
 
 Note that AWS EC2 Ubuntu was used to configure the server (using the free-tier one provided by Amazon).
 
-<img src="/AWS/aws-amplify/src/assets/images/ubuntu.png" height='500px' width='500px' alt="Alt text" title="Ubuntu setup">
+<img src="/AWS/aws-amplify/src/assets/images/ubuntu.png" height='500px' width='1000px' alt="Alt text" title="Ubuntu setup">
 
 ## 1. Install Node/NPM
 ```
