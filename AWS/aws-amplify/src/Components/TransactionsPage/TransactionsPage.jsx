@@ -24,7 +24,7 @@ const Transactions = () => {
     });
     
     // Endpoints to be used
-    const NODE_SERVER_URL = "http://ec2-3-128-95-136.us-east-2.compute.amazonaws.com:5000"; // AWS EC2 Node Server URL
+    const NODE_SERVER_URL = "https://18.221.208.44.nip.io"; // AWS EC2 Node Server URL
     const TRANSACTION_BALANCE_ENDPOINT = '/address-transaction-amount';
     const TRANSACTION_HISTORY_ENDPOINT = '/address-transaction-history';
     const INTERNAL_TRANSACTION_HISTORY_ENDPOINT = '/address-internal-transaction-history';
