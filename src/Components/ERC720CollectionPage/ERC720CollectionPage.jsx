@@ -22,7 +22,7 @@ const ERC720CollectionPage = () => {
     const navigate = useNavigate();
 
     // Node Server endpoints
-    const NODE_SERVER_URL = "http://ec2-3-128-95-136.us-east-2.compute.amazonaws.com:5000/"; // AWS EC2 Node Server URL
+    const NODE_SERVER_URL = "https://18.221.208.44.nip.io"; // AWS EC2 Node Server URL
     const NODE_SERVER_TOKEN_PRICE_ENDPOINT = '/erc20-token-price';
     const NODE_SERVER_TOKEN_TRANSFER_ENDPOINT = '/erc20-transfer';
 

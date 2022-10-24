@@ -6,7 +6,7 @@ import GasBaseFeeCard from '../GasBaseFeeCard/GasBaseFeeCard';
 import GasBlockPriceCard from '../GasBlockPriceCard/GasBlockPriceCard';
 
 const GasTrackerPage = () => {
-    const NODE_SERVER_URL = "http://ec2-3-128-95-136.us-east-2.compute.amazonaws.com:5000"; // AWS EC2 Node Server URL
+    const NODE_SERVER_URL = "https://18.221.208.44.nip.io"; // AWS EC2 Node Server URL
     const GAS_TRACK_ENDPOINT = '/gas-track'
 
     const navigate = useNavigate();
