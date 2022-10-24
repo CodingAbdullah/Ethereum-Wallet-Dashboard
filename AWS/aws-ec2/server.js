@@ -14,7 +14,7 @@ const WalletStatsRouter = require('./Routes/WalletStatsRouter');
 
 const app = express(); // Spin up a node server
 
-app.listen(process.env.PORT || 8080, () => {
+app.listen(process.env.PORT || 8080, 'localhost', () => {
     console.log("Listening to PORT " + process.env.PORT || 8080); // Set listening port. If not available, default to 8080
 });
 
