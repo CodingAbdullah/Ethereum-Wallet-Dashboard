@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { useEffect } from 'react';
 import PriceCoinCard from '../PriceCoinCard/PriceCoinCard';
 
 const PricesPage = () => {
+    const [displayToggle, updateDisplayToggle] = useState(false);
+    const URL = "https://api.coingecko.com/api/v3";
+    const API_ENDPOINT = "/simple/price";
+
     // Display these for each of the cards
     const top15CoinCaps = { Bitcoin: 'BTC',  Ethereum: 'ETH' ,  litecoin: 'LTC' ,  binancecoin: 'BNB' ,  Ripple: 'XRP' , 
       algorand: 'ALGO' ,  Cardano: 'ADA' ,  Solana: 'SOL' ,  Polkadot: 'DOT' , Dogecoin: 'DOGE' ,  chainlink: 'LINK' , 
@@ -10,36 +13,40 @@ const PricesPage = () => {
 
     const [coinInfo, updateCoinInfo] = useState([]);
 
-    useEffect(() => {
-        const URL = "https://api.coingecko.com/api/v3";
-        const API_ENDPOINT = "/simple/price";
+    const CoinPriceDisplayHandler = async () => {
+        const delay = (ms = 75) => new Promise((r) => setTimeout(r, ms)); // Set timeout for coin price display
 
-        const fetchCoinData = async () => {
-            // Pick the coins by the list outlined above.. top 15 coins by market cap
-            for (var i = 0; i < Object.keys(top15CoinCaps).length; i++){
-                await fetch(URL + API_ENDPOINT + "?ids=" + Object.keys(top15CoinCaps)[i] + "&vs_currencies=usd&include_24hr_change=true")
-                .then(response => response.json())
-                .then(res => {            
-                    // Fetch from Object.keys() and pick the first key
-                    updateCoinInfo((prevState) => [...prevState, { res }]);        
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-            }
+        for (var i = 0; i < Object.keys(top15CoinCaps).length; i++){
+            await delay();
+            await fetch(URL + API_ENDPOINT + "?ids=" + Object.keys(top15CoinCaps)[i] + "&vs_currencies=usd&include_24hr_change=true")
+            .then(res => res.json())
+            .then(res => {            
+                // Fetch from Object.keys() and pick the first key
+                console.log(res);
+                updateCoinInfo((prevState) => [...prevState, { res }]);        
+            })
+            .catch(err => {
+                console.log(err);
+            })
         }
-        fetchCoinData();
-    }, []);
+    };
 
     // Props to be added later after more filtering and testing, the layout is complete for now
-    if (coinInfo.length !== 30){
-        return <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">Loading...</div>
+    if (!displayToggle){
+        return ( 
+            <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <button class='btn btn-success'  style={{ marginTop: '2rem' }} onClick={() => { updateDisplayToggle(true); CoinPriceDisplayHandler(); }}>Show Coin Prices</button>
+            </div>
+        )
+    }
+    else if (displayToggle && coinInfo.length !== 15) {
+        return ( 
+            <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                Loading...
+            </div>
+        )
     }
     else {
-        let cards = [];
-        for (var i = 0; i < coinInfo.length; i += 2){
-            cards.push(coinInfo[i]); // Remove duplicatess
-        }
         return (
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                 <h1 style={{ marginTop: '1.5rem', marginBottom: '1rem' }}>Prices Chart</h1>
@@ -47,7 +54,7 @@ const PricesPage = () => {
                 <div style={{ marginLeft: '2rem' }} class="container col-md-9 ml-sm-auto col-lg-10 px-md-4">
                     <div style={{marginLeft: '1.5rem'}} class="row">
                         {
-                           cards.map((coin, key) => {
+                           coinInfo.map((coin, key) => {
                                 return (
                                     <PriceCoinCard id={key} name={ Object.keys(coin.res)[0] } coinInfo={coin.res} /> // Display child components by passing properties to them
                                 );
@@ -55,6 +62,7 @@ const PricesPage = () => {
                         }
                     </div> 
                 </div>
+                <button class='btn btn-success' style={{ marginTop: '2rem' }} onClick={() => { updateDisplayToggle(false); updateCoinInfo([]); }}>Hide Coin Prices</button>
             </main>
         )
     }
