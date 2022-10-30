@@ -36,6 +36,8 @@ const SidebarMetricsSection = () => {
 
     useEffect(() => {       
         const fetchInfo = async () => {
+            const delay = (ms = 75) => new Promise((r) => setTimeout(r, ms)); // Set timeout for coin price display
+            await delay();
             // Upon render, run API call to collect data using information passed down from parent component, provided it is the mainnet
             const coingeckoOptions = {
                 method: 'GET',
