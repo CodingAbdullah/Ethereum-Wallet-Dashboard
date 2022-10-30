@@ -116,9 +116,11 @@ const WalletStats = () => {
         if (walletAddress.length === 42 && walletAddress.substring(0, 2) === '0x'){
             if (networkID === 'kovan' || networkID === 'rinkeby' || networkID === 'ropsten') {
                 // Set alerts for networks not available
+                alertHandler();
                 updateTransactionAlert(true);
                 updateERC20Alert(true);
                 updateERC721Alert(true);
+                updateAlert(false);
             }
             else {
                 axios.post(NODE_SERVER_URL + ADDRESS_DETAILS_ENDPOINT, options)
