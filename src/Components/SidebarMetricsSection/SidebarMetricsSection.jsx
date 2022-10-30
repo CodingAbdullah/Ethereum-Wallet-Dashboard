@@ -8,6 +8,7 @@ const SidebarMetricsSection = () => {
     const API_ENDPOINT = "/simple/price";
 
     const NODE_SERVER_URL = "https://18.221.208.44.nip.io/"; // AWS EC2 Node Server URL
+
     const GAS_TRACKER_ENDPOINT = 'gas-track';
 
     const [price, updatePrice] = useState({
@@ -36,6 +37,8 @@ const SidebarMetricsSection = () => {
 
     useEffect(() => {       
         const fetchInfo = async () => {
+            const delay = (ms = 75) => new Promise((r) => setTimeout(r, ms)); // Set timeout for coin price display
+            await delay();
             // Upon render, run API call to collect data using information passed down from parent component, provided it is the mainnet
             const coingeckoOptions = {
                 method: 'GET',
@@ -75,7 +78,6 @@ const SidebarMetricsSection = () => {
             try {
                 const response = await axios.get(NODE_SERVER_URL + GAS_TRACKER_ENDPOINT, options) 
                 if (response.status === 200){
-                    console.log(gasInfo);
                     updateGasInfo((prevState) => { // If successful, update information
                         return {
                             ...prevState,
