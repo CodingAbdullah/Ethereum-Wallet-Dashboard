@@ -43,7 +43,7 @@ const WalletStats = () => {
     });
 
     // Endpoints and URLs
-    const NODE_SERVER_URL = "https://18.221.208.44.nip.io/"; // AWS EC2 Node Server URL
+    const NODE_SERVER_URL = "https://18.221.208.44.nip.io"; // AWS EC2 Node Server URL
     const COIN_GECKO_URL = "https://api.coingecko.com/api/v3";
     const QUERY_STRING_ETHEREUM = "?ids=ethereum&vs_currencies=usd&include_24hr_change=true";
     const QUERY_STRING_MATIC_NETWORK = "?ids=matic-network&vs_currencies=usd&include_24hr_change=true";
