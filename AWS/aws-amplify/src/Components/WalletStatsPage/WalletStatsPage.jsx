@@ -218,10 +218,6 @@ const WalletStats = () => {
                 // ERC721 endpoint for retrieving information related to holdings
                 axios.post(NODE_SERVER_URL + ADDRESS_ERC721HOLDINGS_ENDPOINT, options)
                 .then(response => {
-                    console.log(setAlert);
-                    console.log(emptyTransactionAlert);
-                    console.log(emptyERC20Alert);
-                    console.log(emptyERC721Alert);
                         if (response.status === 200 && response.data.information.result.length === 0){ // If empty, display warning
                             updateERC721Alert(true);
                             updateAlert(false);
