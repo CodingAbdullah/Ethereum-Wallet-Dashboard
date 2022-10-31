@@ -27,8 +27,6 @@ const ERC721LookupsPage = () => {
         information: null
     });
 
-    // information: response.data.information/invalidNetwork
-
     const navigate = useNavigate();
 
     const NODE_SERVER_URL = "https://18.221.208.44.nip.io"; // AWS EC2 Node Server URL
@@ -65,7 +63,6 @@ const ERC721LookupsPage = () => {
         });
     }
 
-
     const tokenHandler = (e) => {
         e.preventDefault(); // Prevent Default Behaviour
 
@@ -83,10 +80,12 @@ const ERC721LookupsPage = () => {
             .then(response => {
                 if (response.status !== 200){
                     updateAlert(true);
+                    updateEmptyAlert(false);
                     clearHandler();
                 }
                 else {
                     updateAlert(false); // Remove alerts if any exist
+                    updateEmptyAlert(false);
                     updateTokenData((prevState) => {
                         return {
                              ...prevState,
@@ -98,6 +97,7 @@ const ERC721LookupsPage = () => {
             .catch(() => {
                 clearHandler();
                 updateEmptyAlert(true);
+                updateAlert(false);
             })
 
             axios.post(NODE_SERVER_URL + TRANSFER_LOOKUP_ENDPOINT, options) // Get transfer data
@@ -135,12 +135,11 @@ const ERC721LookupsPage = () => {
                         ...prevState,
                         information: null
                     }
-                })
+                });
             });
 
             axios.post(NODE_SERVER_URL + RARITY_LOOKUP_ENDPOINT, options) // API endpoint for finding collection rarity
             .then(response => {
-                console.log(response); 
                 updateTokenRarity((prevState) => {
                     return {
                         ...prevState,

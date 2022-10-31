@@ -14,6 +14,7 @@ const WalletStats = () => {
     const [emptyERC20Alert, updateERC20Alert] = useState(false);
     const [emptyERC721Alert, updateERC721Alert] = useState(false);
     const [networkID, updateNetworkID] = useState('eth');
+    const [checkComplete, updateCheckComplete] = useState(false);
 
     const [walletAddress, updateWalletAddress] = useState("");
     
@@ -116,9 +117,11 @@ const WalletStats = () => {
         if (walletAddress.length === 42 && walletAddress.substring(0, 2) === '0x'){
             if (networkID === 'kovan' || networkID === 'rinkeby' || networkID === 'ropsten') {
                 // Set alerts for networks not available
+                alertHandler();
                 updateTransactionAlert(true);
                 updateERC20Alert(true);
                 updateERC721Alert(true);
+                updateAlert(false);
             }
             else {
                 axios.post(NODE_SERVER_URL + ADDRESS_DETAILS_ENDPOINT, options)
@@ -166,7 +169,11 @@ const WalletStats = () => {
                 // Transactions of a particular account, if the address of the particular one entered is valid
                 axios.post(NODE_SERVER_URL + TRANSACTION_DETAIL_ENDPOINT , options)
                 .then(res => {
-                    if (res.data.information.message === 'OK'){
+                    if (res.data.information.result.length === 0) {
+                        updateTransactionAlert(true);
+                    }
+                    else {
+                        updateTransactionAlert(false);
                         updateTransactions((prevState) => { // Get Transaction data 
                             return {
                                 ...prevState,
@@ -174,28 +181,11 @@ const WalletStats = () => {
                             }
                         });
                     }
-                    else {
-                        alertHandler();
-                        updateTransactionAlert(false);
-                    }
-
-                    if (res.data.information.result.length === 0) {
-                        updateTransactionAlert(true);
-                    }
-                    else {
-                        updateTransactionAlert(false);
-                    }
                 });
 
                 // ERC20 endpoint for retrieving information related to holdings
                 axios.post(NODE_SERVER_URL + ADDRESS_ERC20HOLDINGS_ENDPOINT, options)
                 .then(response => {
-                    if (response.status !== 200){
-                        updateAlert(true);
-                        updateERC20Alert(false);
-                        alertHandler();
-                    }
-                    else {
                         if (response.status === 200 && response.data.information.length === 0){ // If empty, display warning
                             updateERC20Alert(true);
                             updateAlert(false);
@@ -216,18 +206,18 @@ const WalletStats = () => {
                                 }
                             });
                         }
-                    }
+                })
+                .catch(() => {
+                    alertHandler();
+                    updateERC20Alert(false);
+                    updateERC721Alert(false);
+                    updateTransactionAlert(false);
+                    updateAlert(true);
                 });
 
                 // ERC721 endpoint for retrieving information related to holdings
                 axios.post(NODE_SERVER_URL + ADDRESS_ERC721HOLDINGS_ENDPOINT, options)
                 .then(response => {
-                    if (response.status !== 200){
-                        updateAlert(true);
-                        updateERC721Alert(false);
-                        alertHandler();
-                    }
-                    else {
                         if (response.status === 200 && response.data.information.result.length === 0){ // If empty, display warning
                             updateERC721Alert(true);
                             updateAlert(false);
@@ -248,9 +238,16 @@ const WalletStats = () => {
                                 }
                             });
                         }
-                    }
-                });
+                })
+                .catch(() => {
+                    alertHandler();
+                    updateERC20Alert(false);
+                    updateERC721Alert(false);
+                    updateTransactionAlert(false);
+                    updateAlert(true);
+                })
             }
+            updateCheckComplete(true);
         }
         else {
             // Invalid address means invalid alert display, remove other alerts, clear data
@@ -259,6 +256,8 @@ const WalletStats = () => {
             updateERC721Alert(false);
             updateTransactionAlert(false);
             alertHandler();
+
+            updateCheckComplete(true);
         }
     }
 
@@ -288,56 +287,62 @@ const WalletStats = () => {
                             <h3 class="h3"> Balance Information</h3>
                         </div> 
                 }  
-                { ( ethPrice.information === null || maticPrice.information === null || amount < 0 ) ? null : <TransactionBalanceSection address={ walletAddress } amountValue = { amount } coinAction={ networkID.split("-")[0] === 'polygon' ? maticPrice : ethPrice } blockchainNetwork={ networkID } /> } 
+                {( ethPrice.information === null || maticPrice.information === null || amount < 0 ) ? null : <TransactionBalanceSection address={ walletAddress } amountValue = { amount } coinAction={ networkID.split("-")[0] === 'polygon' ? maticPrice : ethPrice } blockchainNetwork={ networkID } /> } 
             </main>
-            <main style={{marginTop: '2rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
-                <div>
-                    {
-                        transactions.information !== null || emptyTransactionAlert ?
-                            <>
-                                <div style={{marginTop: '3rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                    <h3 class="h3">Transactions (Up to 1000)</h3>
-                                </div>
-                            </>
-                            : null
-                    }
-                    { 
-                        emptyTransactionAlert && !setAlert ? <Alert type="warning" /> : ( transactions.information !== null ? <div><TransactionsInfoTable walletAddress={ walletAddress } isMatic={networkID.split("-")[0] === 'polygon' ? true : false } networkFetch = { transactions.information.isMoralis } data={ transactions.information.result } /></div> : null ) 
-                    }
-                </div>
-            </main>
-            <main style={{marginTop: '3rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
-                <div>
-                    {
-                        ERC20Holdings.information !== null || emptyERC20Alert ?
-                            <>
-                                <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                    <h3 class="h3">ERC-20 Holdings</h3>
-                                </div>
-                            </>
-                            : null
-                    }
-                    { 
-                        ERC20Holdings.information === null  && emptyERC20Alert ? <Alert type='warning' /> : ( ERC20Holdings.information !== null ? <div><ERC720HoldingsInfoTable data={ ERC20Holdings.information } /></div> : null )
-                    }
-                </div>
-            </main>
-            <main style={{marginTop: '3rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
-                <div>
-                    {
-                        ERC721Holdings.information !== null || emptyERC721Alert ?
-                            <>
-                                <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                    <h3 class="h3">ERC-721 Holdings</h3>
-                                </div>
-                            </>
-                            : null
-                    }
-                    { 
-                        ERC721Holdings.information === null  && emptyERC721Alert ? <Alert type='warning' /> : ( ERC721Holdings.information !== null ? <div><ERC721HoldingsInfoTable data={ ERC721Holdings.information } /></div> : null )
-                    }
-                </div>
-            </main>
+            { 
+                checkComplete ? 
+                    <>
+                        <main style={{marginTop: '2rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                            <div>
+                                {
+                                    transactions.information !== null || emptyTransactionAlert ?
+                                        <>
+                                            <div style={{marginTop: '3rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                                <h3 class="h3">Transactions (Up to 1000)</h3>
+                                            </div>
+                                        </>
+                                        : null
+                                }
+                                { 
+                                    emptyTransactionAlert && !setAlert ? <Alert type="warning" /> : ( transactions.information !== null ? <div><TransactionsInfoTable walletAddress={ walletAddress } isMatic={networkID.split("-")[0] === 'polygon' ? true : false } networkFetch = { transactions.information.isMoralis } data={ transactions.information.result } /></div> : null ) 
+                                }
+                            </div>
+                        </main>
+                        <main style={{marginTop: '3rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                            <div>
+                                {
+                                    ERC20Holdings.information !== null || emptyERC20Alert ?
+                                        <>
+                                            <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                                <h3 class="h3">ERC-20 Holdings</h3>
+                                            </div>
+                                        </>
+                                        : null
+                                }
+                                { 
+                                    ERC20Holdings.information === null  && emptyERC20Alert ? <Alert type='warning' /> : ( ERC20Holdings.information !== null ? <div><ERC720HoldingsInfoTable data={ ERC20Holdings.information } /></div> : null )
+                                }
+                            </div>
+                        </main>
+                        <main style={{marginTop: '3rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                            <div>
+                                {
+                                    ERC721Holdings.information !== null || emptyERC721Alert ?
+                                        <>
+                                            <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                                <h3 class="h3">ERC-721 Holdings</h3>
+                                            </div>
+                                        </>
+                                        : null
+                                }
+                                { 
+                                    ERC721Holdings.information === null  && emptyERC721Alert ? <Alert type='warning' /> : ( ERC721Holdings.information !== null ? <div><ERC721HoldingsInfoTable data={ ERC721Holdings.information } /></div> : null )
+                                }
+                            </div>
+                        </main>
+                    </>
+                    : "Loading..."
+            }
         </div>
     )
 }
