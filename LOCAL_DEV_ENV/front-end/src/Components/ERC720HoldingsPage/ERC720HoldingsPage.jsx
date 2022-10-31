@@ -22,7 +22,7 @@ const ERC720HoldingsPage = () => {
 
     const navigate = useNavigate();
 
-    const NODE_SERVER_URL = "http://localhost:5000"; // AWS EC2 Node Server URL
+    const NODE_SERVER_URL = "http://localhost:5000";
     const ERC20TOKEN_ENDPOINT = '/address-erc20-holdings';
 
     const ERC20TOKENTRANSFERS_ENDPOINT = '/address-erc20-transfers';
