@@ -70,7 +70,7 @@ exports.erc721TokenRarityLookup = (req, res) => {
         };
 
         // API endpoint for finding the rarity
-        axios.get(ALCHEMY_URL + '/' + process.env.ALCHEMY_API_KEY + "/computeRarity?contractAddress=" + address + "&tokenId=" + id, options)
+        axios.get(ALCHEMY_URL + '/' + process.env.ALCHEMY_API_KEY_1 + "/computeRarity?contractAddress=" + address + "&tokenId=" + id, options)
         .then(response => {
             res.status(200).json({
                 information: { data: response.data }

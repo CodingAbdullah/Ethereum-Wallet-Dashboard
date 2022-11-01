@@ -1,7 +1,7 @@
 require('dotenv').config({ path: '../.env'});
 const MORALIS_URL = require('../Utils/NetworkMapper').NETWORK_MAPPER.moralis_url;
 const ALCHEMY_URL = require('../Utils/NetworkMapper').NETWORK_MAPPER.alchemy_url;
-const sdk = require('api')('@alchemy-docs/v1.0#qy41utl8d89ars'); // SDK ID for Alchemy package found through docs
+const sdk = require('api')('@alchemy-docs/v1.0#3yq3i17l9sqr4d6'); // SDK ID for Alchemy package found through docs
 const axios = require('axios');
 
 exports.getERC721CollectionData = (req, res) => {
@@ -64,7 +64,7 @@ exports.getERC721CollectionFloorPrice = (req, res) => {
     // Run backend request
     sdk.server(ALCHEMY_URL);
 
-    sdk.getFloorPrice({ apiKey: process.ALCHEMY_API_KEY , contractAddress: address })
+    sdk.getFloorPrice({ apiKey: process.ALCHEMY_API_KEY_1 , contractAddress: address })
     .then(response => res.status(200).json({ information: response }))
     .catch(err => res.status(400).json({ information: err }));
 }
@@ -75,7 +75,7 @@ exports.getERC721CollectionAttributes = (req, res) => {
     // Run backend request
     sdk.server(ALCHEMY_URL);
     
-    sdk.summarizeNFTAttributes({ contractAddress: address, apiKey: process.env.ALCHEMY_API_KEY })
+    sdk.summarizeNFTAttributes({ contractAddress: address, apiKey: process.env.ALCHEMY_API_KEY_2 })
     .then(response => { res.status(200).json({ information: response })})
     .catch(err => res.status(400).json({ information: err }));
 }
