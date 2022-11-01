@@ -98,7 +98,6 @@ const ERC721CollectionPage = () => {
     
     const formHandler = async (e) => {
         e.preventDefault();
-        const delay = (ms = 5000) => new Promise((r) => setTimeout(r, ms)); // Set timeout for coin price display
 
         if (tokenAddress.length === 42 && tokenAddress.substring(0, 2) === '0x'){
             // Set options for fetch and flight responses
@@ -216,10 +215,8 @@ const ERC721CollectionPage = () => {
             };
             */
             
-            await delay(); // Delay API calls to Alchemy
             try {
                 // Attribute Data
-                await delay(); // Wait prior to making another Alchemy API call
                 const attributeData = await axios.post(NODE_SERVER_URL + COLLECTION_ATTRIBUTES_ENDPOINT, options)
                     if (attributeData.status !== 200){
                         updateAlert(true);
