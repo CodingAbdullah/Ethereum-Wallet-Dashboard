@@ -13,7 +13,7 @@ const ERC721CollectionPage = () => {
     const [tokenAddress, updateTokenAddress] = useState("");
     const [setAlert, updateAlert] = useState(false);
 
-    const NODE_SERVER_URL = "https://18.221.208.44.nip.io"; // AWS EC2 Node Server URL
+    const NODE_SERVER_URL = "https://18.221.208.44.nip.io/"; // AWS EC2 Node Server URL
     const TRANSFERS_ENDPOINT = '/erc721-collection-transfers';
     const TRADES_ENDPOINT = '/erc721-collection-sales';
     const FLOOR_PRICE_ENDPOINT = '/erc721-collection-floor-price';
@@ -98,6 +98,7 @@ const ERC721CollectionPage = () => {
     
     const formHandler = async (e) => {
         e.preventDefault();
+        const delay = (ms = 5000) => new Promise((r) => setTimeout(r, ms)); // Set timeout for coin price display
 
         if (tokenAddress.length === 42 && tokenAddress.substring(0, 2) === '0x'){
             // Set options for fetch and flight responses
@@ -192,6 +193,7 @@ const ERC721CollectionPage = () => {
                 updateAlert(true);
             };    
             
+            /*
             try {
                 // Floor Price Data
                 const floorData = await axios.post(NODE_SERVER_URL + FLOOR_PRICE_ENDPOINT, options);
@@ -212,9 +214,12 @@ const ERC721CollectionPage = () => {
                 alertHandler();
                 updateAlert(true);
             };
-
+            */
+            
+            await delay(); // Delay API calls to Alchemy
             try {
                 // Attribute Data
+                await delay(); // Wait prior to making another Alchemy API call
                 const attributeData = await axios.post(NODE_SERVER_URL + COLLECTION_ATTRIBUTES_ENDPOINT, options)
                     if (attributeData.status !== 200){
                         updateAlert(true);
