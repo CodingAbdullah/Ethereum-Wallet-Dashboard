@@ -7,17 +7,17 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 The front-end application is deployed to **AWS Amplify.** The link to the front-end AWS deployment is here [AWS Amplify](https://aws.d3rwxneb2bnpjl.amplifyapp.com/).
 
-Please note that more testing (front-end/back-end), security is required. As well as the back-end server needing to be deployed. This is just a PARTIAL preview.
+**The final website has been deployed.** However, from time to time, testing, security, and refinement will be done. The back-end server has been deployed and configured for security, SSL, and so on using an AWS EC2 instance.
 
 
 ### `AWS Amplify Back-end Deployment`
 
-The back-end application is in the process of deployment using AWS. The full stack application will enable both components (front/back) to communicate with each other on the cloud. AWS has complete features on security and reliability.
+The back-end application has been deployed to the cloud using AWS. The full stack application consists of a React front-end deployed to AWS Amplify and a Node back-end deployed to an AWS EC2 instance. Communication between the two applications is secure. AWS has complete features on security and reliability.
 
 
 ### `Start Here`
 
-All available scripts run under the front-end folder of this repository. You must have Node installed on your  computer and have access to the npm package manager which will allow you to download external libraries and also run, build, and test your react app.
+All available scripts run under the front-end folder of this repository. You must have Node installed on your computer and have access to the npm package manager which will allow you to download external libraries and also run, build, and test your react app.
 
 For security reasons, many APIs that require Authorization, will be moved to the back-end and be made available for front-end usage via node server with connected routes. It is from these routes that API calls will be made to fetch information and send as responses to the front-end.
 
@@ -49,7 +49,7 @@ If you want to run this app locally, the LOCAL_DEV_ENV folder is the repo for th
 You'll also need to install all the node modules and dependencies under the `package.json` file as the node_modules folder was not committed. This can be done with `npm install`. You'll also need to add the `.env` file under the back-end folder as it contains all the API keys for your back-end server.
 
 ### AWS
-If you want to run this app on the cloud, you'll need to configure quite a few things before getting started. This app makes use of AWS Amplify and AWS EC2 services which are offered for free and allow for hosting and deploying front-end and back-end applications. These can be accessed under the AWS folder of this app.
+If you want to run this app on the cloud, you'll need to configure quite a few things before getting started. This app makes use of AWS Amplify and AWS EC2, services which are offered for free and allow for hosting and deploying front-end and back-end applications. These can be accessed under the AWS folder of this app.
 
 #### AWS Amplify (Front-end)
 The two main folders in this project, each represent a standalone app that can be deployed to an independent server. When deploying the front-end application, you'll need to create a local branch and copy over the front-end code. 
