@@ -11,6 +11,7 @@ const ENSOwnershipInfoTable = (props) => {
 
     const NODE_SERVER_ADDRESS = 'http://localhost:5000/' // Our node server from the backend
     const ADDITIONAL_INFORMATION_ENDPOINT = 'ens-ownership-information'; // Personal Node server endpoint
+    const delay = (ms = 750) => new Promise((r) => setTimeout(r, ms)); // Set timeout for ENS information display
 
     const clearHandler = () => {
         updateENSOwnershipData((prevState) => {
@@ -21,29 +22,33 @@ const ENSOwnershipInfoTable = (props) => {
         });
     }
 
-    useEffect(() => { 
-        const options = {
-            method: 'POST',
-            mode: 'cors',
-            body: JSON.stringify({ walletAddress: address }),
-            headers: {
-                'content-type': 'application/json'
-            }
-        }       
-
-        axios.post(NODE_SERVER_ADDRESS + ADDITIONAL_INFORMATION_ENDPOINT, options) // Using Axios, make API call to node server
-        .then(response => {
-            updateENSOwnershipData((prevState) => { // Update Address to ENS for the display of tabulated information
-                return {
-                    ...prevState,
-                    information: response.data.information
+    useEffect(() => {
+        const fetchENSOwnershipInfo = async () => { 
+            await delay();
+            const options = {
+                method: 'POST',
+                mode: 'cors',
+                body: JSON.stringify({ walletAddress: address }),
+                headers: {
+                    'content-type': 'application/json'
                 }
+            }       
+
+            axios.post(NODE_SERVER_ADDRESS + ADDITIONAL_INFORMATION_ENDPOINT, options) // Using Axios, make API call to node server
+            .then(response => {
+                updateENSOwnershipData((prevState) => { // Update Address to ENS for the display of tabulated information
+                    return {
+                        ...prevState,
+                        information: response.data.information
+                    }
+                });
+            })
+            .catch((err) => {
+                clearHandler();
+                console.log(err);
             });
-        })
-        .catch((err) => {
-            clearHandler();
-            console.log(err);
-        });   
+        }   
+        fetchENSOwnershipInfo();
     }, []);
      
     if (ensOwnershipData.information === null){

@@ -7,7 +7,7 @@ const axios = require('axios');
 exports.erc721SalesById = (req, res) => {
     const { address, id } = JSON.parse(req.body.body); // Parse information for make API call
 
-    sdk.get('/sales-by-token-id?contract_address=' + address + '&token_id=' + id + '&order=desc', { 'x-api-key': process.env.TRANSPOSE_API_KEY })
+    sdk.get('/sales-by-token-id?contract_address=' + address + '&token_id=' + id + '&order=desc', { 'x-api-key': process.env.TRANSPOSE_API_KEY_1 })
     .then(response => res.status(200).json({ information: response }))
     .catch(err => res.status(400).json({ information: err }));
     

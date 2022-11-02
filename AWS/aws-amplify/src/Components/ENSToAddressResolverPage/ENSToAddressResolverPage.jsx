@@ -19,7 +19,7 @@ const ENSToAddressResolverPage = () => {
     const [setAlert, updateAlert] = useState(false);
     const [emptyAlert, updateEmptyAlert] = useState(false);
 
-    const NODE_SERVER_URL = "https://18.221.208.44.nip.io/"; // AWS EC2 Node Server URL
+    const NODE_SERVER_URL = "https://18.221.208.44.nip.io/";
     const ENS_TO_ADDRESS_ENDPOINT = 'additional-address-to-ens-information';
 
     const clearHandler = () => {
@@ -104,7 +104,7 @@ const ENSToAddressResolverPage = () => {
                         <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={clearHandler}>Clear</button>  
                     </div>
                 </div>
-                {
+                {  
                     ENSToAddressData.information === null ? null :
                         <>
                             <div style={{marginTop: '2rem'}}>

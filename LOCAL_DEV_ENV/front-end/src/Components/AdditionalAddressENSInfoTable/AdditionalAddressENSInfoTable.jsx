@@ -11,6 +11,7 @@ const AdditionalAddressToENSInfoTable = (props) => {
 
     const NODE_SERVER_ADDRESS = 'http://localhost:5000/' // Our node server from the backend
     const ADDITIONAL_INFORMATION_ENDPOINT = 'additional-address-to-ens-information'; // Personal Node server endpoint
+    const delay = (ms = 250) => new Promise((r) => setTimeout(r, ms)); // Set timeout for ENS information display
 
     const clearHandler = () => {
         updateAdditionalEnsData((prevState) => {
@@ -22,28 +23,32 @@ const AdditionalAddressToENSInfoTable = (props) => {
     }
 
     useEffect(() => { 
-        const options = {
-            method: 'POST',
-            mode: 'cors',
-            body: JSON.stringify({ ensName: data.name }),
-            headers: {
-                'content-type': 'application/json'
-            }
-        }       
-
-        axios.post(NODE_SERVER_ADDRESS + ADDITIONAL_INFORMATION_ENDPOINT, options) // Using Axios, make API call to node server
-        .then(response => {
-            updateAdditionalEnsData((prevState) => { // Update Address to ENS for the display of tabulated information
-                return {
-                    ...prevState,
-                    information: response.data.information
+        const fetchAdditionalENSInfo = async () => {
+            await delay();
+            const options = {
+                method: 'POST',
+                mode: 'cors',
+                body: JSON.stringify({ ensName: data.name }),
+                headers: {
+                    'content-type': 'application/json'
                 }
-            });
-        })
-        .catch((err) => {
-            clearHandler();
-            console.log(err);
-        });   
+            }       
+
+            axios.post(NODE_SERVER_ADDRESS + ADDITIONAL_INFORMATION_ENDPOINT, options) // Using Axios, make API call to node server
+            .then(response => {
+                updateAdditionalEnsData((prevState) => { // Update Address to ENS for the display of tabulated information
+                    return {
+                        ...prevState,
+                        information: response.data.information
+                    }
+                });
+            })
+            .catch((err) => {
+                clearHandler();
+                console.log(err);
+            }); 
+        } 
+        fetchAdditionalENSInfo(); 
     }, []);
 
     if (additionalEnsData.information === null){

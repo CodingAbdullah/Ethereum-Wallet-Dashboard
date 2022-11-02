@@ -32,7 +32,7 @@ exports.addressToENSInformation = (req, res) => {
 exports.additionalENSInformation = (req, res) => {
     const { ensName } = JSON.parse(req.body.body);
 
-    sdk.get('/ens-records-by-name?ens_names=' + ensName, { 'x-api-key': process.env.TRANSPOSE_API_KEY })
+    sdk.get('/ens-records-by-name?ens_names=' + ensName, { 'x-api-key': process.env.TRANSPOSE_API_KEY_1 })
     .then(response => {
         res.status(200).json({
             information: response // Send response with status 200 and information
@@ -48,7 +48,7 @@ exports.additionalENSInformation = (req, res) => {
 exports.ensOwnershipInformation = (req, res) => {
     const { walletAddress } = JSON.parse(req.body.body);
 
-    sdk.get('/ens-records-by-owner?owner_address=' + walletAddress, { 'x-api-key': process.env.TRANSPOSE_API_KEY })
+    sdk.get('/ens-records-by-owner?owner_address=' + walletAddress, { 'x-api-key': process.env.TRANSPOSE_API_KEY_2 })
     .then(response => {
         res.status(200).json({
             information: response // Send response with status 200 and information
@@ -65,7 +65,7 @@ exports.ensOwnershipInformation = (req, res) => {
 exports.ensResolverInformation = (req, res) => {
     const { walletAddress } = JSON.parse(req.body.body);
 
-    sdk.get('/ens-records-by-resolved-account?resolved_address=' + walletAddress, { 'x-api-key': process.env.TRANSPOSE_API_KEY })
+    sdk.get('/ens-records-by-resolved-account?resolved_address=' + walletAddress, { 'x-api-key': process.env.TRANSPOSE_API_KEY_1 })
     .then(response => {
         res.status(200).json({
             information: response // Send response with status 200 and information

@@ -104,7 +104,7 @@ const ENSToAddressResolverPage = () => {
                         <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={clearHandler}>Clear</button>  
                     </div>
                 </div>
-                {
+                {  
                     ENSToAddressData.information === null ? null :
                         <>
                             <div style={{marginTop: '2rem'}}>
