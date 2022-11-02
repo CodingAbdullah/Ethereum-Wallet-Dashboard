@@ -54,7 +54,7 @@ const AddressToENSResolverPage = () => {
                 updateAddressToEnsData((prevState) => { // Update Address to Ens for the display of tabulated information
                     return {
                         ...prevState,
-                        information: response
+                        information: response.data
                     }
                 });
 
@@ -114,7 +114,7 @@ const AddressToENSResolverPage = () => {
                                             <h3 class="h3">Resolver Information</h3>
                                         </div>
                                         <h6>ENS Resolver for Wallet Address: <b>{addressToENS}</b></h6>
-                                        <AddressToENSInfoTable data={ addressToEnsData.information } />
+                                        <AddressToENSInfoTable data={ addressToEnsData.information.information } />
                                     </>    
                             </div>
                             <div style={{marginTop: '2rem'}}>
@@ -122,7 +122,7 @@ const AddressToENSResolverPage = () => {
                                         <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                             <h3 class="h3">Additional Information</h3>
                                         </div>
-                                        <AdditionalAddressENSInfoTable data={ addressToEnsData.information } />
+                                        <AdditionalAddressENSInfoTable data={ addressToEnsData.information.information } />
                                     </>    
                             </div>
                             <div style={{marginTop: '2rem'}}>

@@ -65,7 +65,7 @@ exports.ensOwnershipInformation = (req, res) => {
 exports.ensResolverInformation = (req, res) => {
     const { walletAddress } = JSON.parse(req.body.body);
 
-    sdk.get('/ens-records-by-resolved-account?resolved_address=' + walletAddress, { 'x-api-key': process.env.TRANSPOSE_API_KEY_1 })
+    sdk.get('/ens-records-by-resolved-account?resolved_address=' + walletAddress, { 'x-api-key': process.env.TRANSPOSE_API_KEY_3 })
     .then(response => {
         res.status(200).json({
             information: response // Send response with status 200 and information

@@ -341,7 +341,7 @@ const WalletStats = () => {
                             </div>
                         </main>
                     </>
-                    : "Loading..."
+                    : null
             }
         </div>
     )
