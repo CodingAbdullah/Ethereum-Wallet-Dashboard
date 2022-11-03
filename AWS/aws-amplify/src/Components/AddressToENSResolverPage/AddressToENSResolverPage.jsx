@@ -20,7 +20,7 @@ const AddressToENSResolverPage = () => {
     const [setAlert, updateAlert] = useState(false);
     const [emptyAlert, updateEmptyAlert] = useState(false);
 
-    const NODE_SERVER_URL = "http://localhost:5000/";
+    const NODE_SERVER_URL = "https://18.221.208.44.nip.io/";
     const ADDRESS_TO_ENS_ENDPOINT = 'address-to-ens-information';
 
     const clearHandler = () => {

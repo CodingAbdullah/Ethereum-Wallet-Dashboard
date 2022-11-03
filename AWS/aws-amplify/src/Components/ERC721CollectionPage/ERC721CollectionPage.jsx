@@ -14,7 +14,7 @@ const ERC721CollectionPage = () => {
     const [setTokenAddress, updateSetTokenAddress] = useState('');
     const [setAlert, updateAlert] = useState(false);
 
-    const NODE_SERVER_URL = 'http://localhost:5000'; // Node Server for API end points
+    const NODE_SERVER_URL = "https://18.221.208.44.nip.io"; // Node Server for API end points
     const TRANSFERS_ENDPOINT = '/erc721-collection-transfers';
     const TRADES_ENDPOINT = '/erc721-collection-sales';
     const FLOOR_PRICE_ENDPOINT = '/erc721-collection-floor-price';
