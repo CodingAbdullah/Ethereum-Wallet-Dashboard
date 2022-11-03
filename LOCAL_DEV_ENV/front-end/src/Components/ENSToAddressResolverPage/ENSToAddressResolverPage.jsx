@@ -10,6 +10,7 @@ import axios from 'axios';
 const ENSToAddressResolverPage = () => {
     const navigate = useNavigate();
     const [ENSToAddress, updateENSToAddress] = useState('');
+    const [setENSToAddress, updateSetENSToAddress] = useState('');
 
     // State set up for retrieving information related to ENS resolvers, ENS names that resolve to the owner, ENS names that resolve to a given account
     const [ENSToAddressData, updateENSToAddressData] = useState({
@@ -37,6 +38,8 @@ const ENSToAddressResolverPage = () => {
     const ENSToAddressHandler = (e) => {
         e.preventDefault();
         
+        updateSetENSToAddress(ENSToAddress);
+
         // ENS APIs go here.. ENS ---> Address Resolver
         if (ENSToAddress.substring(ENSToAddress.length - 4) === '.eth'){
             const options = {   
@@ -50,7 +53,6 @@ const ENSToAddressResolverPage = () => {
     
             axios.post(NODE_SERVER_URL + ENS_TO_ADDRESS_ENDPOINT, options) // Using Axios library
             .then(response => {
-                console.log(response);
                 updateENSToAddressData((prevState) => { // Update ENS to Address for the display of tabulated information
                     return {
                         ...prevState,
@@ -94,7 +96,7 @@ const ENSToAddressResolverPage = () => {
                 { emptyAlert ? <Alert type='warning' /> : null }
                 <div class="jumbotron">
                     <div class="container">
-                        <form onSubmit={ENSToAddressHandler}>
+                        <form onSubmit={ ENSToAddressHandler }>
                             <label style={{marginRight: '2rem'}}>ENS<b>{" ---> "}</b> Address Resolver</label>
                             <input type="text" onChange={e => updateENSToAddress(e.target.value)} />
                             <br />
@@ -112,8 +114,8 @@ const ENSToAddressResolverPage = () => {
                                         <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                             <h3 class="h3">Resolver Information</h3>
                                         </div>
-                                        <h6>Address Resolver for ENS: <b>{ENSToAddress}</b></h6>
-                                        <ENSToAddressInfoTable data={ ENSToAddressData.information } address={ENSToAddress } />
+                                        <h6>Address Resolver for ENS: <b>{ setENSToAddress }</b></h6>
+                                        <ENSToAddressInfoTable data={ ENSToAddressData.information } address={ setENSToAddress } />
                                     </>
                                 
                             </div>

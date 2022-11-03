@@ -11,6 +11,7 @@ import ERC721CollectionAttributeSummaryInfoTable from '../ERC721CollectionAttrib
 const ERC721CollectionPage = () => {
 
     const [tokenAddress, updateTokenAddress] = useState("");
+    const [setTokenAddress, updateSetTokenAddress] = useState('');
     const [setAlert, updateAlert] = useState(false);
 
     const NODE_SERVER_URL = 'http://localhost:5000'; // Node Server for API end points
@@ -98,6 +99,8 @@ const ERC721CollectionPage = () => {
     
     const formHandler = async (e) => {
         e.preventDefault();
+
+        updateSetTokenAddress(tokenAddress);
 
         if (tokenAddress.length === 42 && tokenAddress.substring(0, 2) === '0x'){
             // Set options for fetch and flight responses
@@ -267,7 +270,7 @@ const ERC721CollectionPage = () => {
                         <>
                             <main style={{marginTop: '3rem'}} role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                                 <h4>NFT Collection Name: <b>{ NFTData.information.result[0].name }</b></h4>
-                                <h4>Contract Address: <b>{ tokenAddress }</b></h4> 
+                                <h4>Contract Address: <b>{ setTokenAddress }</b></h4> 
                                 <h4>Total Items: <b>{ NFTData.information.total }</b></h4> 
                             </main>
                         </>  

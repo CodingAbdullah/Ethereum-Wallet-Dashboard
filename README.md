@@ -25,8 +25,6 @@ Therefore, this is now a full stack project and it is required to have both the 
 
 Running this project locally will require you to acquire separate API keys for running API requests to resources. These include various different sites such as Etherscan, Moralis, and Alchemy. Dev's keys are hidden in this project under the .env file which was not committed to GitHub for security reasons. 
 
-Additional documentation on the app and the API resources used will be provided as the project completes.
-
 No API keys means failed requests to select API resources.
 
 ### `Links`
