@@ -14,9 +14,11 @@ const WalletStats = () => {
     const [emptyERC20Alert, updateERC20Alert] = useState(false);
     const [emptyERC721Alert, updateERC721Alert] = useState(false);
     const [networkID, updateNetworkID] = useState('eth');
+    const [setNetworkID, updateSetNetworkID] = useState('eth');
     const [checkComplete, updateCheckComplete] = useState(false);
 
     const [walletAddress, updateWalletAddress] = useState("");
+    const [setWalletAddress, updateSetWalletAddress] = useState("");
     
     const navigate = useNavigate();
 
@@ -43,7 +45,7 @@ const WalletStats = () => {
     });
 
     // Endpoints and URLs
-    const NODE_SERVER_URL = "https://18.221.208.44.nip.io"; // AWS EC2 Node Server URL
+    const NODE_SERVER_URL = "https://18.221.208.44.nip.io";
     const COIN_GECKO_URL = "https://api.coingecko.com/api/v3";
     const QUERY_STRING_ETHEREUM = "?ids=ethereum&vs_currencies=usd&include_24hr_change=true";
     const QUERY_STRING_MATIC_NETWORK = "?ids=matic-network&vs_currencies=usd&include_24hr_change=true";
@@ -103,6 +105,9 @@ const WalletStats = () => {
 
     const formHandler = (e) => {   
         e.preventDefault(); 
+
+        updateSetWalletAddress(walletAddress);
+        updateSetNetworkID(networkID);
 
         // Set options for fetch and flight responses
         const options = {
@@ -287,7 +292,7 @@ const WalletStats = () => {
                             <h3 class="h3"> Balance Information</h3>
                         </div> 
                 }  
-                {( ethPrice.information === null || maticPrice.information === null || amount < 0 ) ? null : <TransactionBalanceSection address={ walletAddress } amountValue = { amount } coinAction={ networkID.split("-")[0] === 'polygon' ? maticPrice : ethPrice } blockchainNetwork={ networkID } /> } 
+                {( ethPrice.information === null || maticPrice.information === null || amount < 0 ) ? null : <TransactionBalanceSection address={ setWalletAddress } amountValue = { amount } coinAction={ setNetworkID.split("-")[0] === 'polygon' ? maticPrice : ethPrice } blockchainNetwork={ setNetworkID } /> } 
             </main>
             { 
                 checkComplete ? 
@@ -304,7 +309,7 @@ const WalletStats = () => {
                                         : null
                                 }
                                 { 
-                                    emptyTransactionAlert && !setAlert ? <Alert type="warning" /> : ( transactions.information !== null ? <div><TransactionsInfoTable walletAddress={ walletAddress } isMatic={networkID.split("-")[0] === 'polygon' ? true : false } networkFetch = { transactions.information.isMoralis } data={ transactions.information.result } /></div> : null ) 
+                                    emptyTransactionAlert && !setAlert ? <Alert type="warning" /> : ( transactions.information !== null ? <div><TransactionsInfoTable walletAddress={ setWalletAddress } isMatic={setNetworkID.split("-")[0] === 'polygon' ? true : false } networkFetch = { transactions.information.isMoralis } data={ transactions.information.result } /></div> : null ) 
                                 }
                             </div>
                         </main>

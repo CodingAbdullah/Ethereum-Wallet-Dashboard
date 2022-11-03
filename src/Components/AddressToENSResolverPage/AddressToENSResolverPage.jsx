@@ -10,6 +10,7 @@ import axios from 'axios';
 const AddressToENSResolverPage = () => {
     const navigate = useNavigate();
     const [addressToENS, updateAddressToENS] = useState('');
+    const [setAddressToENS, updateSetAddressToEns] = useState('');
 
     // State set up for retrieving information related to ENS resolvers, ENS names that resolve to the owner, ENS names that resolve to a given account
     const [addressToEnsData, updateAddressToEnsData] = useState({
@@ -37,6 +38,8 @@ const AddressToENSResolverPage = () => {
     const AddressToENSHandler = async (e) => {
         e.preventDefault();
         
+        updateSetAddressToEns(addressToENS);
+
         // ENS APIs go here.. Address ---> ENS Resolver second
         if (addressToENS.length === 42 && addressToENS.substring(0, 2) === '0x'){
             
@@ -113,7 +116,7 @@ const AddressToENSResolverPage = () => {
                                         <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                             <h3 class="h3">Resolver Information</h3>
                                         </div>
-                                        <h6>ENS Resolver for Wallet Address: <b>{addressToENS}</b></h6>
+                                        <h6>ENS Resolver for Wallet Address: <b>{ setAddressToENS }</b></h6>
                                         <AddressToENSInfoTable data={ addressToEnsData.information.information } />
                                     </>    
                             </div>
