@@ -2,6 +2,8 @@
 A descriptive web app, detailing the history of all transactions including all different kinds of ERC transactions.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+### `AWS Route 53`
+Link to the final URL markup for frontend will be displayed once a domain is bought, stay tuned ;)
 
 ### `AWS Amplify Front-end Deployment`
 
