@@ -1,13 +1,16 @@
 # Ethereum-Wallet-Dashboard
 A descriptive web app, detailing the history of all transactions including all different kinds of ERC transactions.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ### `AWS Route 53`
-Link to the final URL markup for frontend will be displayed once a domain is bought, stay tuned ;)
+**Domain was purchased using Namecheap and propagated through AWS Route 53 name servers.***
+**Domain:** https://www.ethwdashboard.xyz/
+
 
 ### `AWS Amplify Front-end Deployment`
 
-The front-end application is deployed to **AWS Amplify.** The link to the front-end AWS deployment is here [AWS Amplify](https://aws.d3rwxneb2bnpjl.amplifyapp.com/).
+The front-end application is deployed to **AWS Amplify.** The link to the front-end AWS deployment is redirected to a custom domain using AWS Route 53 [AWS Amplify](https://www.ethwdashboard.xyz/).
 
 **The final website has been deployed.** However, from time to time, testing, security, and refinement will be done. The back-end server has been deployed and configured for security, SSL, and so on using an AWS EC2 instance.
 
