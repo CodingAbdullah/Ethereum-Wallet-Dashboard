@@ -4,13 +4,14 @@ A descriptive web app, detailing the history of all transactions including all d
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ### `AWS Route 53`
-**Domain was purchased using Namecheap and propagated through AWS Route 53 name servers.***
+**Domain was purchased using Namecheap and propagated through AWS Route 53 name servers.**
 **Domain:** https://www.ethwdashboard.xyz/
 
+**Backup Link Here:** https://aws.d3rwxneb2bnpjl.amplifyapp.com/
 
 ### `AWS Amplify Front-end Deployment`
 
-The front-end application is deployed to **AWS Amplify.** The link to the front-end AWS deployment is redirected to a custom domain using AWS Route 53 [AWS Amplify](https://www.ethwdashboard.xyz/).
+The front-end application is deployed to **AWS Amplify.** The link to the front-end AWS deployment is redirected to a custom domain using AWS Route 53 [AWS Amplify](https://aws.d3rwxneb2bnpjl.amplifyapp.com/).
 
 **The final website has been deployed.** However, from time to time, testing, security, and refinement will be done. The back-end server has been deployed and configured for security, SSL, and so on using an AWS EC2 instance.
 
