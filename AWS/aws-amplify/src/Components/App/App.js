@@ -12,6 +12,7 @@ import GasTrackerPage from '../GasTrackerPage/GasTrackerPage';
 import ENSPage from '../ENSPage/ENSPage';
 import ENSToAddressResolverPage from '../ENSToAddressResolverPage/ENSToAddressResolverPage';
 import AddressToENSResolverPage from '../AddressToENSResolverPage/AddressToENSResolverPage';
+import ENSERC721SelectionPage from '../ENSERC721SelectionPage/ENSERC721SelectionPage';
 import ENSTransferByIdPage from '../ENSTransferByIdPage/ENSTransferByIdPage';
 import ENSTransferByNamePage from '../ENSTransferByNamePage/ENSTransferByNamePage';
 import ERC720CollectionPage from '../ERC720CollectionPage/ERC720CollectionPage';
@@ -43,6 +44,7 @@ const App = () => {
             <Route exact path="/collections/erc721-collection" element={<ERC721CollectionPage />}></Route>
             <Route exact path="/chart" element={<GenericChartPage />}></Route>
             <Route exact path="/ens-lookup" element={<ENSPage />}></Route>
+            <Route exact path="/ens-erc721-selection" element={<ENSERC721SelectionPage />}></Route>
             <Route exact path="/ens-lookup/address-to-ens-lookup" element={<AddressToENSResolverPage />}></Route>
             <Route exact path="/ens-lookup/ens-to-address-lookup" element={<ENSToAddressResolverPage />}></Route>
             <Route exact path="/ens-lookup/ens-transfers-by-id" element={<ENSTransferByIdPage />}></Route>
