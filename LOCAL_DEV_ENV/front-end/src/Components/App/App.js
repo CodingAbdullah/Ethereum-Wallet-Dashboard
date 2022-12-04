@@ -4,6 +4,7 @@ import Sidebar from '../Sidebar/Sidebar';
 import HomePage from '../HomePage/HomePage';
 import TransactionsPage from '../TransactionsPage/TransactionsPage';
 import PageNotFoundPage from '../PageNotFoundPage/PageNotFoundPage';
+import AnalyticsSelectionPage from '../AnalyticsSelectionPage/AnalyticsSelectionPage';
 import Footer from '../Footer/Footer';
 import AboutPage from '../AboutPage/AboutPage';
 import PricesPage from '../PricesPage/PricesPage';
@@ -39,6 +40,7 @@ const App = () => {
           <Routes>
             <Route exact path="/" element={<HomePage />}></Route>
             <Route exact path="/about" element={<AboutPage />}></Route>
+            <Route exact path="/analytics-selection" element={<AnalyticsSelectionPage />}></Route>
             <Route exact path="/collections" element={<CollectionsPage />}></Route>
             <Route exact path="/collections/erc720-collection" element={<ERC720CollectionPage />}></Route>
             <Route exact path="/collections/erc721-collection" element={<ERC721CollectionPage />}></Route>

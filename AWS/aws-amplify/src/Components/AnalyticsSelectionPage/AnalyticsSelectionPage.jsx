@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 
-const ENSERC721SelectionPage = () => {
+const AnalyticsSelectionPage = () => {
     const navigate = useNavigate();
 
     return (
@@ -13,9 +13,9 @@ const ENSERC721SelectionPage = () => {
                 <div class="jumbotron">
                     <div class="container">
                         <div>
-                            <label>ENS Lookups</label><button onClick={() => navigate("/ens-lookup")} style={{marginLeft: '5.5rem'}} class='btn btn-success'>View</button>
+                            <label>Token Analytics</label><button onClick={() => navigate("/collections")} style={{marginLeft: '1rem'}} class='btn btn-success'>View</button>
                             <hr style={{marginTop: '2rem', marginBottom: '2rem'}} />
-                            <label>ERC-721 Token Lookups</label><button style={{marginLeft: '1rem'}} onClick={() => navigate("/erc721-lookups")} class='btn btn-success'>View</button>
+                            <label>Wallet Analytics</label><button style={{marginLeft: '1rem'}} onClick={() => navigate("/walletAnalytics")} class='btn btn-success'>View</button>
                         </div>
                     </div>
                 </div>
@@ -24,4 +24,4 @@ const ENSERC721SelectionPage = () => {
     )
 }
 
-export default ENSERC721SelectionPage;
+export default AnalyticsSelectionPage;
