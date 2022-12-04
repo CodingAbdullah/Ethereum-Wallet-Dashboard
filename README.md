@@ -3,6 +3,9 @@ A descriptive web app, detailing the history of all transactions including all d
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+### `Windows Disclaimer`
+**This site was built primarily on a linux system. WINDOWS COMPATIBILITY REQURIES FULL-SCREEN MODE (F11 Key) **
+
 ### `AWS Route 53`
 **Domain was purchased using Namecheap and propagated through AWS Route 53 name servers.**
 **Domain:** https://www.ethwdashboard.xyz/
