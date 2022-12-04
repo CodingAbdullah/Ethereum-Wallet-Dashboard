@@ -45,12 +45,8 @@ const Sidebar = () => {
                             <td><a style={{color: 'white'}} href="/gas-tracker">Gas Station</a></td>
                         </tr>
                         <tr>
-                            <td><img src={require("../../assets/images/collections.png")} width="35" height="30" alt="logo" /></td>
-                            <td><a style={{color: 'white'}} href="/collections">Token Analytics</a></td>
-                        </tr>
-                        <tr>
                             <td><img src={require("../../assets/images/analytics.png")} width="35" height="30" alt="logo" /></td>
-                            <td><a style={{color: 'white'}} href="/walletAnalytics">Wallet Analytics</a></td>
+                            <td><a style={{color: 'white'}} href="/analytics-selection">Wallet/Token Analytics</a></td>
                         </tr>
                     </tbody>
                 </table>
