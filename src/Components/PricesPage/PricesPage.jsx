@@ -35,7 +35,7 @@ const PricesPage = () => {
     if (!displayToggle){
         return ( 
             <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                <button class='btn btn-success'  style={{ marginTop: '2rem' }} onClick={() => { updateDisplayToggle(true); CoinPriceDisplayHandler(); }}>Show Coin Prices</button>
+                <button class='btn btn-success'  style={{ marginLeft: '-4rem', marginTop: '2rem' }} onClick={() => { updateDisplayToggle(true); CoinPriceDisplayHandler(); }}>Show Coin Prices</button>
             </div>
         )
     }
@@ -49,10 +49,10 @@ const PricesPage = () => {
     else {
         return (
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                <h1 style={{ marginTop: '1.5rem', marginBottom: '1rem' }}>Prices Chart</h1>
-                <p>Here is the list of the latest prices on the top 15 coins by <b>popularity.</b></p>
-                <div style={{ marginLeft: '2rem' }} class="container col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                    <div style={{marginLeft: '1.5rem'}} class="row">
+                <h1 style={{ marginLeft: '-4rem', marginTop: '1.5rem', marginBottom: '1rem' }}>Prices Chart</h1>
+                <p style={{ marginLeft: '-4rem'}}>Here is the list of the latest prices on the top 15 coins by <b>popularity.</b></p>
+                <div class="container col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                    <div class="row">
                         {
                            coinInfo.map((coin, key) => {
                                 return (
@@ -62,7 +62,7 @@ const PricesPage = () => {
                         }
                     </div> 
                 </div>
-                <button class='btn btn-success' style={{ marginTop: '2rem' }} onClick={() => { updateDisplayToggle(false); updateCoinInfo([]); }}>Hide Coin Prices</button>
+                <button class='btn btn-success' style={{ marginLeft: '-4rem', marginTop: '2rem' }} onClick={() => { updateDisplayToggle(false); updateCoinInfo([]); }}>Hide Coin Prices</button>
             </main>
         )
     }
