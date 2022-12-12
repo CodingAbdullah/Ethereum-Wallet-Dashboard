@@ -1,5 +1,5 @@
 require('dotenv').config({ path: '../.env' });
-const sdk = require('api')('@transpose/v0#klm8731l7j8jla0'); // Unique identifier for Transpose APIs found in docs
+// const sdk = require('api')('@transpose/v0#klm8731l7j8jla0'); // Unique identifier for Transpose APIs found in docs
 const MORALIS_URL = require('../Utils/NetworkMapper').NETWORK_MAPPER.moralis_url;
 const ALCHEMY_URL = require('../Utils/NetworkMapper').NETWORK_MAPPER.alchemy_url;
 const axios = require('axios');
@@ -7,10 +7,36 @@ const axios = require('axios');
 exports.erc721SalesById = (req, res) => {
     const { address, id } = JSON.parse(req.body.body); // Parse information for make API call
 
+    const params = {
+        "chain_id": "ethereum",
+        "contract_address": address,
+        "token_id": id,
+    }
+    
+    const options = {
+        headers: {
+            'content-type': 'application/json',
+            'accept' : 'application/json',
+            'X-API-KEY' : process.env.TRANSPOSE_API_KEY_1
+        } 
+    }
+
+    axios.get("https://api.transpose.io/nft/sales-by-token-id?" + new URLSearchParams(params), options)
+    .then(response => {
+        console.log(response);
+        res.status(200).json({
+            information: response.data
+        })
+    })
+    .catch(err => {
+        console.log(err);
+    });
+
+    /*
     sdk.get('/sales-by-token-id?contract_address=' + address + '&token_id=' + id + '&order=desc', { 'x-api-key': process.env.TRANSPOSE_API_KEY_1 })
     .then(response => res.status(200).json({ information: response }))
     .catch(err => res.status(400).json({ information: err }));
-    
+    */
 }
 
 exports.erc721TokenLookup = (req, res) => {
