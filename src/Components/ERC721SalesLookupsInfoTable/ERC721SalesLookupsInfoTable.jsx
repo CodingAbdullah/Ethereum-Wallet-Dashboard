@@ -5,7 +5,7 @@ const ERC721SalesLookupInfoTable = (props) => {
     const { address, tokenId } = props;
 
     // Back end calls to Node server
-    const NODE_URL = 'https://18.221.208.44.nip.io/';
+    const NODE_URL = "https://18.221.208.44.nip.io/";
     const ERC721_SALES_ENDPOINT = 'erc721-sales-by-id';
 
     const [ERC721SalesInfo, updateERC721SalesInfo] = useState({
@@ -40,7 +40,7 @@ const ERC721SalesLookupInfoTable = (props) => {
                     }
                 })
             });
-    }, []);
+    }, [address, tokenId]);
 
     if (ERC721SalesInfo.information === null){
         return <div>Loading...</div>

@@ -53,15 +53,23 @@ const ENSToAddressResolverPage = () => {
     
             axios.post(NODE_SERVER_URL + ENS_TO_ADDRESS_ENDPOINT, options) // Using Axios library
             .then(response => {
-                updateENSToAddressData((prevState) => { // Update ENS to Address for the display of tabulated information
-                    return {
-                        ...prevState,
-                        information: response.data
+                if (response.status === 200) {
+                    if (response.data.information.results.length === 0) {
+                        clearHandler();
+                        updateEmptyAlert(true);
                     }
-                });
-                // Remove unnecessary alerts
-                updateAlert(false);
-                updateEmptyAlert(false); 
+                    else {
+                        updateENSToAddressData((prevState) => { // Update ENS to Address for the display of tabulated information
+                            return {
+                                ...prevState,
+                                information: response.data
+                            }
+                        });
+                        // Remove unnecessary alerts
+                        updateAlert(false);
+                        updateEmptyAlert(false); 
+                    }
+                }
              })
             .catch(() => {
                 updateEmptyAlert(true); // Update alerts
@@ -124,7 +132,7 @@ const ENSToAddressResolverPage = () => {
                                         <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                             <h3 class="h3">Additional Information</h3>
                                         </div>
-                                        <AdditionalAddressENSInfoTable data={{ name: ENSToAddress }} />
+                                        <AdditionalAddressENSInfoTable address={ setENSToAddress } />
                                     </>    
                             </div>
                             <div style={{marginTop: '2rem'}}>
@@ -132,7 +140,7 @@ const ENSToAddressResolverPage = () => {
                                         <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                             <h3 class="h3">ENS Names Belonging To Owner</h3>
                                         </div>
-                                        <ENSOwnershipInfoTable address={ ENSToAddress } />
+                                        <ENSOwnershipInfoTable address={ setENSToAddress } />
                                     </>    
                             </div>
                             <div style={{marginTop: '2rem'}}>
@@ -140,7 +148,7 @@ const ENSToAddressResolverPage = () => {
                                         <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                             <h3 class="h3">ENS Names Resolving To Address</h3>
                                         </div>
-                                        <ENSResolverInfoTable address={ ENSToAddress } />
+                                        <ENSResolverInfoTable address={ setENSToAddress } />
                                     </>    
                             </div>
                         </>

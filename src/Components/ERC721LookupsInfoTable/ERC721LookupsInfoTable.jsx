@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const ERC721LookupsInfoTable = (props) => {
     const { data, isMatic } = props;
+
+    useEffect(() => {}, [data, isMatic]);
 
     return (
         <>
