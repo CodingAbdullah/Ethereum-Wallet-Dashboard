@@ -25,8 +25,8 @@ const Sidebar = () => {
                             <td><a style={{color: 'white'}} href="/">Dashboard</a></td>
                         </tr>
                         <tr>
-                            <td><img src={require("../../assets/images/ensTwo.png")} width="35" height="30" alt="logo" /></td>
-                            <td><a style={{color: 'white'}} href="/ens-lookup">ENS Lookups</a></td>
+                            <td><img src={require("../../assets/images/nft.png")} width="35" height="30" alt="logo" /></td>
+                            <td><a style={{color: 'white'}} href="/ens-erc721-selection">ENS/ERC721 Lookups</a></td>
                         </tr>
                         <tr>
                             <td><img src={require("../../assets/images/erc20Token.png")} width="35" height="30" alt="logo" /></td>
@@ -41,20 +41,12 @@ const Sidebar = () => {
                             <td><a style={{color: 'white'}} href="/erc721-holdings">ERC721 Token Holdings</a></td>
                         </tr>
                         <tr>
-                            <td><img src={require("../../assets/images/nft.png")} width="35" height="30" alt="logo" /></td>
-                            <td><a style={{color: 'white'}} href="/erc721-lookups">ERC721 Token Lookups</a></td>
-                        </tr>
-                        <tr>
                             <td><img src={require("../../assets/images/gas.png")} width="35" height="30" alt="logo" /></td>
                             <td><a style={{color: 'white'}} href="/gas-tracker">Gas Station</a></td>
                         </tr>
                         <tr>
-                            <td><img src={require("../../assets/images/collections.png")} width="35" height="30" alt="logo" /></td>
-                            <td><a style={{color: 'white'}} href="/collections">Token Analytics</a></td>
-                        </tr>
-                        <tr>
                             <td><img src={require("../../assets/images/analytics.png")} width="35" height="30" alt="logo" /></td>
-                            <td><a style={{color: 'white'}} href="/walletAnalytics">Wallet Analytics</a></td>
+                            <td><a style={{color: 'white'}} href="/analytics-selection">Wallet/Token Analytics</a></td>
                         </tr>
                     </tbody>
                 </table>
