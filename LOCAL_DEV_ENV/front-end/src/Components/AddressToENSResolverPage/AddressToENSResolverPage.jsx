@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import AddressToENSInfoTable from '../AddressToENSInfoTable/AddressToENSInfoTable';
-import AdditionalAddressENSInfoTable from '../AdditionalAddressENSInfoTable/AdditionalAddressENSInfoTable';
+// import AdditionalAddressENSInfoTable from '../AdditionalAddressENSInfoTable/AdditionalAddressENSInfoTable';
 import ENSOwnershipInfoTable from '../ENSOwnershipInfoTable/ENSOwnershipInfoTable';
 import ENSResolverInfoTable from '../ENSResolverInfoTable/ENSResolverInfoTable';
 import Alert from '../Alert/Alert';
@@ -120,20 +120,22 @@ const AddressToENSResolverPage = () => {
                                         <AddressToENSInfoTable data={ addressToEnsData.information.information } />
                                     </>    
                             </div>
+                            {/*
                             <div style={{marginTop: '2rem'}}>
                                     <>
                                         <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                             <h3 class="h3">Additional Information</h3>
                                         </div>
-                                        <AdditionalAddressENSInfoTable data={ addressToEnsData.information.information } />
+                                        <AdditionalAddressENSInfoTable name={ addressToEnsData.information.information } />
                                     </>    
                             </div>
+                            */}
                             <div style={{marginTop: '2rem'}}>
                                     <>
                                         <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                             <h3 class="h3">ENS Names Belonging To Owner</h3>
                                         </div>
-                                        <ENSOwnershipInfoTable address={ addressToENS } />
+                                        <ENSOwnershipInfoTable address={ setAddressToENS } />
                                     </>    
                             </div>
                             <div style={{marginTop: '2rem'}}>
@@ -141,7 +143,7 @@ const AddressToENSResolverPage = () => {
                                         <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                             <h3 class="h3">ENS Names Resolving To Address</h3>
                                         </div>
-                                        <ENSResolverInfoTable address={ addressToENS } />
+                                        <ENSResolverInfoTable address={ setAddressToENS } />
                                     </>    
                             </div>
                         </>

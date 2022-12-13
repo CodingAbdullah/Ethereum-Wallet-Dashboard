@@ -40,7 +40,7 @@ const ERC721SalesLookupInfoTable = (props) => {
                     }
                 })
             });
-    }, []);
+    }, [address, tokenId]);
 
     if (ERC721SalesInfo.information === null){
         return <div>Loading...</div>
