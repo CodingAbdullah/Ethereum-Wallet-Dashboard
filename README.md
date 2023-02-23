@@ -3,8 +3,12 @@ A descriptive web app, detailing the history of all transactions including all d
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+<br />
+
 ### `Windows Disclaimer`
 **This site was built primarily on a linux system. WINDOWS COMPATIBILITY REQURIES FULL-SCREEN MODE (F11 Key)**
+
+<br />
 
 ### `AWS Route 53`
 **Domain was purchased using Namecheap and propagated through AWS Route 53 name servers.**
@@ -12,12 +16,17 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 **Backup Link Here:** https://aws.d3rwxneb2bnpjl.amplifyapp.com/
 
+<br />
+
 ### `AWS Amplify Front-end Deployment`
 
 The front-end application is deployed to **AWS Amplify.** The link to the front-end AWS deployment is redirected to a custom domain using AWS Route 53 [AWS Amplify](https://aws.d3rwxneb2bnpjl.amplifyapp.com/).
 
 **The final website has been deployed.** However, from time to time, testing, security, and refinement will be done. The back-end server has been deployed and configured for security, SSL, and so on using an AWS EC2 instance.
 
+**Adding L2 features to the Ethereum-Wallet-Dashboard**
+
+<br />
 
 ### `AWS Amplify Back-end Deployment`
 
@@ -47,6 +56,7 @@ Here are links to the available API resources used in this project. NOTE: Opense
 [Blocknative](https://blocknative.com/)
 [CoinGecko](https://www.coingecko.com/en/api/documentation)
 
+<br />
 
 ## Local/AWS Configuration
 
@@ -54,6 +64,8 @@ Here are links to the available API resources used in this project. NOTE: Opense
 If you want to run this app locally, the LOCAL_DEV_ENV folder is the repo for that. You'll need to assign two ports (3000 and 5000, by default) for front-end/back-end servers respectively. 
 
 You'll also need to install all the node modules and dependencies under the `package.json` file as the node_modules folder was not committed. This can be done with `npm install`. You'll also need to add the `.env` file under the back-end folder as it contains all the API keys for your back-end server.
+
+<br />
 
 ### AWS
 If you want to run this app on the cloud, you'll need to configure quite a few things before getting started. This app makes use of AWS Amplify and AWS EC2, services which are offered for free and allow for hosting and deploying front-end and back-end applications. These can be accessed under the AWS folder of this app.
@@ -75,6 +87,8 @@ Note that AWS EC2 Ubuntu was used to configure the server (using the free-tier o
 
 <img src="/AWS/aws-amplify/src/assets/images/ubuntu.png" height='500px' width='1000px' alt="Alt text" title="Ubuntu setup">
 
+<br />
+
 ## 1. Install Node/NPM
 ```
 curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
@@ -84,11 +98,16 @@ sudo apt install nodejs
 node --version
 ```
 
+<br />
+
+
 ## 2. Clone your project from Github
 There are a few ways to get your files on to the server, I would suggest using Git
 ```
 git clone https://github.com/CodingAbdullah/Ethereum-Wallet-Dashboard.git
 ```
+
+<br />
 
 ## 3. Install dependencies and test app
 ```
@@ -99,6 +118,9 @@ npm start (or whatever your start command)
 # stop app
 ctrl+C
 ```
+
+<br />
+
 ## 4. Setup PM2 process manager to keep your app running
 ```
 sudo npm i pm2 -g
@@ -117,6 +139,8 @@ pm2 startup ubuntu
 ```
 You should now be able to access your app using your IP and port. Now we want to setup a firewall blocking that port and setup NGINX as a reverse proxy so we can access it directly using port 80 (http)
 
+<br />
+
 ## 5. Setup ufw firewall
 ```
 sudo ufw enable
@@ -125,6 +149,8 @@ sudo ufw allow ssh (Port 22)
 sudo ufw allow http (Port 80)
 sudo ufw allow https (Port 443)
 ```
+
+<br />
 
 ## 6. Install NGINX and configure
 ```
@@ -155,6 +181,8 @@ sudo service nginx restart
 
 ### You should now be able to visit your IP with no port (port 80) and see your app. Now let's add a domain
 
+<br />
+
 ## 7. Add SSL with LetsEncrypt
 ```
 sudo add-apt-repository ppa:certbot/certbot
@@ -167,6 +195,8 @@ certbot renew --dry-run
 ```
 
 Now visit https://yourdomain.com and you should see your Node app
+
+<br />
 
 ## Learn More
 

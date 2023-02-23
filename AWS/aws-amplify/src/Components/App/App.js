@@ -22,6 +22,7 @@ import ERC720PricesPage from '../ERC720PricesPage/ERC720PricesPage';
 import ERC721CollectionPage from '../ERC721CollectionPage/ERC721CollectionPage';
 import ERC721LookupsPage from '../ERC721LookupsPage/ERC721LookupsPage';
 import ERC721HoldingsPage from '../ERC721HoldingsPage/ERC721HoldingsPage';
+import ETHLayerTwoSelectionPage from '../ETHLayerTwoSelectionPage/ETHLayerTwoSelectionPage';
 import WalletStatsPage from '../WalletStatsPage/WalletStatsPage';
 import GenericChartPage from '../GenericChartPage/GenericChartPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -55,6 +56,7 @@ const App = () => {
             <Route exact path="/erc20-token-prices" element={<ERC720PricesPage />}></Route>
             <Route exact path="/erc721-holdings" element={<ERC721HoldingsPage />}></Route>
             <Route exact path="/erc721-lookups" element={<ERC721LookupsPage />}></Route>
+            <Route exact path="/ethereum-layer-two-chains" element={<ETHLayerTwoSelectionPage />}></Route>
             <Route exact path="/gas-tracker" element={<GasTrackerPage />}></Route>
             <Route exact path="/prices" element={<PricesPage />}></Route>
             <Route exact path="/transactions" element={<TransactionsPage />}></Route>
