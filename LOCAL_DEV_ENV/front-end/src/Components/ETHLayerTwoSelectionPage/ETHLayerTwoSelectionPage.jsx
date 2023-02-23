@@ -16,9 +16,9 @@ const ETHLayerTwoSelectionPage = () => {
                         <div>
                             <label>Arbitium</label><button onClick={ () => navigate( "/arbitium-w-dashboard" )} style={{ marginLeft: '5.5rem' }} class='btn btn-success'>View</button>
                             <hr style={{ marginTop: '2rem', marginBottom: '2rem' }} />    
-                            <label>Optimism</label><button onClick={ () => navigate( "/optimism-w-dashboard" )} style={{ marginLeft: '5.5rem' }} class='btn btn-success'>View</button>
+                            <label>Optimism</label><button onClick={ () => navigate( "/optimism-w-dashboard" )} style={{ marginLeft: '5.0rem' }} class='btn btn-success'>View</button>
                             <hr style={{ marginTop: '2rem', marginBottom: '2rem' }} />     
-                            <label>Immutable X</label><button onClick={ () => navigate( "/imx-w-dashboard" )} style={{ marginLeft: '5.5rem' }} class='btn btn-success'>View</button>
+                            <label>Immutable X</label><button onClick={ () => navigate( "/imx-w-dashboard" )} style={{ marginLeft: '3.75rem' }} class='btn btn-success'>View</button>
                             <hr style={{ marginTop: '2rem', marginBottom: '2rem' }} />
                             <label>Polygon</label><button onClick={ () => navigate( "/polygon-w-dashboard" )} style={{ marginLeft: '5.5rem' }} class='btn btn-success'>View</button>
                         </div>

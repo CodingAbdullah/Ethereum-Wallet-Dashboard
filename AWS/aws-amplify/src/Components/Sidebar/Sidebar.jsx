@@ -41,12 +41,12 @@ const Sidebar = () => {
                             <td><a style={{color: 'white'}} href="/erc721-holdings">ERC721 Token Holdings</a></td>
                         </tr>
                         <tr>
-                            <td><img src={require("../../assets/images/gas.png")} width="35" height="30" alt="logo" /></td>
-                            <td><a style={{color: 'white'}} href="/gas-tracker">Gas Station</a></td>
-                        </tr>
-                        <tr>
                             <td><img src={require("../../assets/images/l2.png")} width="35" height="30" alt="logo" /></td>
                             <td><a style={{color: 'white'}} href="/ethereum-layer-two-chains">Ethereum Layer 2s</a></td>
+                        </tr>
+                        <tr>
+                            <td><img src={require("../../assets/images/gas.png")} width="35" height="30" alt="logo" /></td>
+                            <td><a style={{color: 'white'}} href="/gas-tracker">Gas Station</a></td>
                         </tr>
                         <tr>
                             <td><img src={require("../../assets/images/analytics.png")} width="35" height="30" alt="logo" /></td>
