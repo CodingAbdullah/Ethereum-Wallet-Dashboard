@@ -42,12 +42,12 @@ const ERC721CollectionAttributeSummaryInfoTable = (props) => {
     });
 
     return (
-            <div class="container col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <div class="p-3">
                         {
                             tabulatedNestedAttributes.map((tabulatedValues, key) => {
                                 return (
-                                    <table id={key} class="container col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                                        <table class="container col-md-9 ml-sm-auto col-lg-10 px-md-4" style={{ marginBottom: '2rem', border: '1px solid black', fontSize: '10.5px', width: '100%' }}>
+                                    <table id={key} class="p-3">
+                                        <table style={{ marginBottom: '2rem', border: '1px solid black', fontSize: '10.5px', width: '100%' }}>
                                             <tr style={{ border: '1px solid black', fontSize: '10.5x' }}>
                                                 <th style={{ border: '1px solid black', fontSize: '10.5px' }}>Attributes</th>
                                                 <th style={{ border: '1px solid black', fontSize: '10.5px' }}>No. Within Collection</th>

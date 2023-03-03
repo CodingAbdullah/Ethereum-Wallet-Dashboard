@@ -25,6 +25,7 @@ import ERC721HoldingsPage from '../ERC721HoldingsPage/ERC721HoldingsPage';
 import ETHLayerTwoSelectionPage from '../ETHLayerTwoSelectionPage/ETHLayerTwoSelectionPage';
 import WalletStatsPage from '../WalletStatsPage/WalletStatsPage';
 import GenericChartPage from '../GenericChartPage/GenericChartPage';
+import MetricsNavbar from '../MetricsNavbar/MetricsNavbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 const App = () => {
@@ -35,7 +36,7 @@ const App = () => {
           <Navbar />
         </div>
         <div>
-          <Sidebar />
+          <MetricsNavbar />
         </div>
         <div> 
           <Routes>

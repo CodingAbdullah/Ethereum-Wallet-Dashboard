@@ -5,32 +5,32 @@ const AboutPage = () => {
     const navigate = useNavigate();
     return (
         <div className='about'>
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <main role="main">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h1>About</h1>
+                            <h1 className="p-3">About</h1>
                             <hr />
                     </div>
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap pt-3 pb-2 mb-3 border-bottom">
-                            <p>The Ethereum Wallet Dashboard provides users with a more visual description of everything related to crypto and their crypto-related assets. 
+                            <p className="p-3">The Ethereum Wallet Dashboard provides users with a more visual description of everything related to crypto and their crypto-related assets. 
                                 Centred around the concept of Etherscan, but more lightweight in nature. Offers the ability to quickly visualize and analyze information. 
                                 Whether you are looking up wallet activity, perform analytics or get a quick check up on prices, this is the place to do it! 
                             </p>
                     </div>
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h4>Features</h4>
+                            <h4 className="p-3">Features</h4>
                             <hr />
                     </div>
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <p>Daily/Weekly/Monthly coin charts, organized by market cap. In addition, ens lookups, wallet analytics, transactions (including internal, ERC20, ERC721, ERC1155, if applicable), 
+                            <p className="p-3">Daily/Weekly/Monthly coin charts, organized by market cap. In addition, ens lookups, wallet analytics, transactions (including internal, ERC20, ERC721, ERC1155, if applicable), 
                                 and historical information pertaining to a wallet, including historical Ether balance.
                             </p>
                     </div>
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h4>Credits</h4>
+                            <h4 className="p-3">Credits</h4>
                             <hr />
                     </div>
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <p>Much of the information that is obtained through this app is provided by external, trusted, open-source APIs. 
+                            <p className="p-3">Much of the information that is obtained through this app is provided by external, trusted, open-source APIs. 
                                 These are publicly verified and secure meaning that you do not have to worry about security. The APIs used in this project were free of charge, with some limited restrictions [calls/(second/minute/hour), etc.].
                                 A list of these can be found in the footer section of this app.
                             </p>
@@ -38,11 +38,11 @@ const AboutPage = () => {
                     </div>
 
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h4>Author/Developer Information</h4>
+                            <h4 className="p-3">Author/Developer Information</h4>
                             <hr />
                     </div>
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <p>If you are interested in learning more about the developer behind this project, you can visit their bio here:
+                            <p className="p-3">If you are interested in learning more about the developer behind this project, you can visit their bio here:
                                 <a style={{ color: 'black' }} href="https://kingabdul.eth.xyz/" target="_blank" rel="noreferrer"> <b>About The Developer</b></a>
                             </p>
                     </div>

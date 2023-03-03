@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const ERC721LookupsInfoTable = (props) => {
     const { data, isMatic } = props;
 
+    useEffect(() => {}, [data, isMatic]);
+
     return (
-        <>
             <div>
                 <table style={{border: '1px solid black'}}>
                     <thead style={{border: '1px solid black'}}>
@@ -39,7 +40,6 @@ const ERC721LookupsInfoTable = (props) => {
                     </tbody>
                 </table>
             </div>
-        </>  
     )
 }
 
