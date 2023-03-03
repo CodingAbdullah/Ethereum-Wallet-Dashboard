@@ -7,7 +7,7 @@ const MetricsNavbar = () => {
     const QUERY_STRING_ETHEREUM = "?ids=ethereum&vs_currencies=usd&include_24hr_change=true";
     const API_ENDPOINT = "/simple/price";
 
-    const NODE_SERVER_URL = 'http://localhost:5000/';
+    const NODE_SERVER_URL = 'https://18.221.208.44.nip.io/';
     const GAS_TRACKER_ENDPOINT = 'gas-track';
 
     const [price, updatePrice] = useState({
