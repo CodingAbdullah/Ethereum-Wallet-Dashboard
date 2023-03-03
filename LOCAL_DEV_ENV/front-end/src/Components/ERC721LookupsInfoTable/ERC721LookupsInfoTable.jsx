@@ -6,7 +6,6 @@ const ERC721LookupsInfoTable = (props) => {
     useEffect(() => {}, [data, isMatic]);
 
     return (
-        <>
             <div>
                 <table style={{border: '1px solid black'}}>
                     <thead style={{border: '1px solid black'}}>
@@ -41,7 +40,6 @@ const ERC721LookupsInfoTable = (props) => {
                     </tbody>
                 </table>
             </div>
-        </>  
     )
 }
 

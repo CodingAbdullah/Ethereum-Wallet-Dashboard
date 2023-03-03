@@ -57,13 +57,13 @@ const GasTrackerPage = () => {
     }, [])
     
     if (gasInfo.information === null){
-        return <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">Loading...</div>
+        return <div role="main" class="p-3">Loading...</div>
     }
     else { 
         // Using parent-child component hierarchy, pass down state information for display and leaner code
         return (
             <div className='gas-tracker-page'>
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <main role="main" class="p-3">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">Gas Information</h1>
                     </div>
@@ -99,7 +99,7 @@ const GasTrackerPage = () => {
                         })}
                     </div>
                     <div>
-                        <button style={{marginTop: '3rem', marginRight: '1rem'}} onClick={() => navigate("/")}class='btn btn-success'>Go To Dashboard</button>
+                        <button style={{ marginTop: '3rem'}} onClick={() => navigate("/")} class='btn btn-success'>Go To Dashboard</button>
                     </div>
                 </main>
             </div>

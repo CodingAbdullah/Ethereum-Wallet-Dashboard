@@ -9,7 +9,7 @@ const GasBaseFeeCard = (props) => {
     }
     else {
         return (
-            <div class="card" style={{ marginLeft: '0.25rem', width: '18rem' }}>
+            <div class="card p-2" style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%' }}>
                 <div class="card-body">
                     <h4 class="card-title">Estimated Base Fees</h4>
                     <p>Queue: <b>{Object.keys(information)[0]}</b></p> 

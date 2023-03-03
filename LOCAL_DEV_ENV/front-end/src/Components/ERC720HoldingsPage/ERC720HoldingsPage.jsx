@@ -137,7 +137,7 @@ const ERC720HoldingsPage = () => {
     if (isEmpty || setAlert) {
         return (
             <div className="erc-721-token-page">
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <main role="main">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h2>ERC20 Token Holdings</h2>
                     </div>
@@ -163,7 +163,7 @@ const ERC720HoldingsPage = () => {
     else {
         return (
                 <div className="erc-721-token-page">
-                    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                    <main role="main" className="p-3">
                         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <h2>ERC20 Token Holdings</h2>
                         </div>
@@ -195,7 +195,7 @@ const ERC720HoldingsPage = () => {
                     {
                         ERC20Transfers.information === null ? null :
                             <>
-                                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                                <main role="main" className="p-3">
                                     <div style={{marginTop: '5rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                         <h3 class="h3">ERC20 Recent Transfers</h3>
                                     </div>

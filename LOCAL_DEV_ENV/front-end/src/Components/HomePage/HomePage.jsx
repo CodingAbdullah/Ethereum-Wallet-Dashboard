@@ -166,7 +166,7 @@ const Home = () => {
     }
 
     if (btcPrice.information === null || ethPrice.information === null || trendingCoins === '' || globalMarketData.information === null) {
-        return <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">Loading...</div>
+        return <div role="main">Loading...</div>
     }
     else {
         // global market data information, destructuring data
@@ -177,14 +177,14 @@ const Home = () => {
 
         return (
             <div class="home">
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <main role="main">
                         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h1 class="h2">Dashboard</h1>
+                            <h1 class="h2 p-3">Dashboard</h1>
                         </div>
                         { formAlert === "invalid" ? <div><Alert type="danger"/></div> : <div/> }
                         <HomePageDescriptionSection form={formHandler} updatingAddress={updateAddress} />
                         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h1 class="h2">Market Data</h1>
+                            <h1 class="h2 p-3">Market Data</h1>
                         </div>
                         <div class="container">                   
                             <p style={{ marginBottom: '2rem' }} class='marquee-paragraph'><b>Top 5 Trending Coins: </b>{ trendingCoins }</p>
@@ -197,7 +197,7 @@ const Home = () => {
                                 </p>
                             </p>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-6 p-3">
                                     <img src={require("../../assets/images/bitcoin.svg").default} width="75" height="75" alt="logo" /><br /> 
                                     <h4>BTC</h4>
                                     <p>Price: <b>${ btcPrice.information.bitcoin.usd.toFixed(2) } USD</b></p> 
@@ -206,7 +206,7 @@ const Home = () => {
                                     <br />
                                     <button class="btn btn-outline-primary wallet-search-button" onClick={() => { navigate("/chart", { state : { coin : 'bitcoin' }}) }}>View Price Action &raquo;</button>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6 p-3">
                                     <img src={ require("../../assets/images/ethereum.svg").default } width="75" height="75" alt="logo" /><br />
                                     <h4>ETH</h4>
                                     <p>Price: <b>${ ethPrice.information.ethereum.usd.toFixed(2) } USD</b></p>

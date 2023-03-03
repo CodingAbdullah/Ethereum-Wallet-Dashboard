@@ -247,7 +247,7 @@ const ERC721CollectionPage = () => {
 
         return (
             <div className="erc721-collection-page">
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <main role="main" class="p-3">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">ERC-721 Collection Analytics</h1>
                     </div>
@@ -268,7 +268,7 @@ const ERC721CollectionPage = () => {
                 { 
                     NFTData.information === null ? null : 
                         <>
-                            <main style={{marginTop: '3rem'}} role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                            <main style={{marginTop: '3rem'}} role="main">
                                 <h4>NFT Collection Name: <b>{ NFTData.information.result[0].name }</b></h4>
                                 <h4>Contract Address: <b>{ setTokenAddress }</b></h4> 
                                 <h4>Total Items: <b>{ NFTData.information.total }</b></h4> 
@@ -278,7 +278,7 @@ const ERC721CollectionPage = () => {
                 {
                     NFTData.information === null ? null :
                         <>
-                            <main style={{marginTop: '5rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                            <main style={{marginTop: '3rem'}} className="p-3" role="main">
                                 <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                     <h3 class="h3">Sample Collection Data</h3>
                                 </div>
@@ -289,7 +289,7 @@ const ERC721CollectionPage = () => {
                 {
                     NFTFloorPrice.information === null ? null :
                         <>
-                            <main style={{marginTop: '5rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                            <main style={{marginTop: '3rem'}} className="p-3" role="main">
                                 <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                     <h3 class="h3">Collection Floor Price</h3>
                                 </div>                                
@@ -300,7 +300,7 @@ const ERC721CollectionPage = () => {
                 {
                     NFTAttributes.information === null ? null :
                         <>
-                            <main style={{marginTop: '5rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                            <main style={{marginTop: '3rem'}} className="p-3" role="main">
                                 <>
                                     <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                         <h3 class="h3">Collection Attributes</h3>
@@ -313,7 +313,7 @@ const ERC721CollectionPage = () => {
                 {
                     NFTTransfers.information === null ? null :
                         <>
-                            <main style={{marginTop: '5rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                            <main style={{marginTop: '3rem'}} className="p-3" role="main">
                                 <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                     <h3 class="h3">Sample Collection Transfer Data</h3>
                                 </div>
@@ -324,7 +324,7 @@ const ERC721CollectionPage = () => {
                 {
                     NFTTrades.information === null ? null :
                         <>
-                            <main style={{marginTop: '5rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                            <main style={{marginTop: '3rem'}} className="p-3" role="main">
                                 <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                     <h3 class="h3">Recent Collection Sales</h3>
                                 </div>

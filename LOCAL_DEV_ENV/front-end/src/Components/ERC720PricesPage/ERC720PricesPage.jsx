@@ -193,13 +193,13 @@ const ERC720TokenPricesPage = () => {
 
     // Display Title, 24 Hr. Price% Change, Price of Coin
     if (coinInfo.information === null || chartData === {}) {
-      return <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">Loading...</div>
+      return <div role="main">Loading...</div>
     }
     else {
       // Generic coin setup using Object keys from API responses to generate output, code added when user requests a display of a valid ERC 20 token
       return (
         <div>
-          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+          <main role="main" className="p-3">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
               <h2>ERC20 Token Market Data</h2>
             </div>
@@ -247,7 +247,7 @@ const ERC720TokenPricesPage = () => {
                 </div>
               }
             </div>
-            <div style={{marginTop: '5rem', marginLeft: '2.5rem', marginBottom: '3.0rem'}}>
+            <div style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%', marginTop: '3rem'}} >
               {
                 // Display data of the valid ERC20 token
                 erc20Info.information === null || formAlert === 'invalid' ? <div /> :

@@ -154,7 +154,7 @@ const ERC720CollectionPage = () => {
     }
         return (
             <div className="erc720-collection-page">
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <main role="main" class="p-3">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">ERC20 Token Analytics</h1>
                     </div>
@@ -172,7 +172,7 @@ const ERC720CollectionPage = () => {
                         </div>  
                     </div>
                 </main>
-                <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                <main class="p-3" role="main">
                     { setPrice === null ? null : <h3 style={{marginTop: '3rem', marginBottom: '1.5rem'}}>Price: $<b>{setPrice.toPrecision(4)}</b> USD/Token</h3> } 
                     <div>
                         {
@@ -188,7 +188,7 @@ const ERC720CollectionPage = () => {
                         }
                     </div>
                 </main>
-                <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                <main class="col-md-9 p-3" role="main">
                     <div>
                         {
                             ERC20Transfers.information === null ? null :

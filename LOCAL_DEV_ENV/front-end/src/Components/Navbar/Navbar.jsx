@@ -1,53 +1,65 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Alert from '../Alert/Alert';
+import React from 'react';
 import './Navbar.css';
 
 const Navbar = () => {
-    const navigate = useNavigate();
 
-    const [formAlert, updateAlert] = useState("");
-    const [walletAddress, updateWalletAddress] = useState("");
-
-    const formHandler = (e) => {
-        e.preventDefault();
-
-        if (walletAddress.length === 42 && walletAddress.substring(0, 2) === "0x") {
-            localStorage.setItem("walletAddress", walletAddress);
-            updateAlert("");
-            updateWalletAddress("");
-            e.target.reset();
-            navigate("/transactions");
-        }
-        else {
-            if (formAlert === "invalid"){
-                updateWalletAddress("");
-                e.target.reset();
-                localStorage.clear();                
-            }
-            else {
-                updateAlert("invalid");
-                updateWalletAddress("");
-                e.target.reset();
-                localStorage.clear();
-            }
+    // Styles for Navbar
+    const styles = {
+        navLinkColor: {
+            color: 'white'
+        },
+        navTitleLinkAttributes : {
+            color: 'white',
+            fontWeight: 'bold'
+        },
+        buttonAttributes : {
+            backgroundColor: 'white'
         }
     }
 
     return (
         <div>
-            <nav class="navbar navbar-dark bg-dark">
-                <h3 style={{color: "white"}}>Ethereum Wallet</h3>
-                { formAlert === "invalid" ? <Alert type="danger" /> : <div /> }
-                {
-                    ( window.location.pathname === '/transactions' ? 
-                        <div /> : 
-                        <form class="form-inline" onSubmit={formHandler}>
-                            <input class="form-control mr-sm-2" type="search" min="42" max="42" placeholder="Enter Wallet Address" onChange={(e) => updateWalletAddress(e.target.value)} aria-label="Search" required />
-                            <button class="btn btn-outline-success" type="submit">Search</button>
-                        </form>
-                    ) 
-                }
+            <nav className="navbar navbar-expand-lg navbar-light bg-dark">
+                <div className="container-fluid">
+                    <a style={ styles.navTitleLinkAttributes } className="p-2 navbar-brand" href="/">Ethereum Wallet Dashboard</a>
+                    <button style = { styles.buttonAttributes } className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li className="nav-item">
+                                <a style={ styles.navLinkColor } className="nav-link" aria-current="page" href="/about">About</a>
+                            </li>
+                            <li className="nav-item">
+                                <a style={ styles.navLinkColor } className="nav-link" href="/prices">Prices</a>
+                            </li>
+                            <li className="nav-item">
+                                <a style={ styles.navLinkColor } className="nav-link" href="/">Dashboard</a>
+                            </li>
+                            <li className="nav-item">
+                                <a style={ styles.navLinkColor } className="nav-link" href="/ens-erc721-selection">ENS/ERC721 Lookups</a>
+                            </li>
+                            <li className="nav-item">
+                                <a style={ styles.navLinkColor } className="nav-link" href="/erc20-holdings">ERC20 Token Holdings</a>
+                            </li>
+                            <li className="nav-item">
+                                <a style={ styles.navLinkColor } className="nav-link" href="/erc20-token-prices">ERC20 Token Prices</a>
+                            </li>
+                            <li className="nav-item">
+                                <a style={ styles.navLinkColor } className="nav-link" href="/erc721-holdings">ERC721 Token Holdings</a>
+                            </li>
+                            <li className="nav-item">
+                                <a style={ styles.navLinkColor } className="nav-link" href="/ethereum-layer-two-chains">Ethereum Layer 2s</a>
+                            </li>
+                            <li className="nav-item">
+                                <a style={ styles.navLinkColor } className="nav-link" href="/gas-tracker">Gas Station</a>
+                            </li>
+                            <li className="nav-item">
+                                <a style={ styles.navLinkColor } className="nav-link" href="/analytics-selection">Wallet/Token Analytics</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </nav>
         </div>
     );

@@ -34,24 +34,24 @@ const PricesPage = () => {
     // Props to be added later after more filtering and testing, the layout is complete for now
     if (!displayToggle){
         return ( 
-            <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                <button class='btn btn-success'  style={{ marginLeft: '-4rem', marginTop: '2rem' }} onClick={() => { updateDisplayToggle(true); CoinPriceDisplayHandler(); }}>Show Coin Prices</button>
+            <div role="main">
+                <button class='btn btn-success' style={{ marginTop: '2rem' }} onClick={() => { updateDisplayToggle(true); CoinPriceDisplayHandler(); }}>Show Coin Prices</button>
             </div>
         )
     }
     else if (displayToggle && coinInfo.length !== 15) {
         return ( 
-            <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <div role="main">
                 Loading...
             </div>
         )
     }
     else {
         return (
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                <h1 style={{ marginLeft: '-4rem', marginTop: '1.5rem', marginBottom: '1rem' }}>Prices Chart</h1>
-                <p style={{ marginLeft: '-4rem'}}>Here is the list of the latest prices on the top 15 coins by <b>popularity.</b></p>
-                <div class="container col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <main className="p-3" role="main">
+                <h1 style={{ marginTop: '2rem' }}>Prices Chart</h1>
+                <p>Here is the list of the latest prices on the top 15 coins by <b>popularity.</b></p>
+                <div>
                     <div class="row">
                         {
                            coinInfo.map((coin, key) => {
@@ -62,7 +62,7 @@ const PricesPage = () => {
                         }
                     </div> 
                 </div>
-                <button class='btn btn-success' style={{ marginLeft: '-4rem', marginTop: '2rem' }} onClick={() => { updateDisplayToggle(false); updateCoinInfo([]); }}>Hide Coin Prices</button>
+                <button class='btn btn-success' style={{ marginTop: '2rem' }} onClick={() => { updateDisplayToggle(false); updateCoinInfo([]); }}>Hide Coin Prices</button>
             </main>
         )
     }

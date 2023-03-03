@@ -38,7 +38,7 @@ const PriceCoinCard = (props) => {
     }
     else {
         return (
-            <div class="card" style={{width: '18rem'}}>
+            <div className="card col-lg-4 col-md-6 col-sm-12">
                 <div class="card-body">
                     { imagery }
                     <br />
@@ -58,6 +58,7 @@ const PriceCoinCard = (props) => {
                         relevantInfo.information[Object.keys(coinInfo)[0]].usd_24h_change.toFixed(2) + "%"
                     }
                     </p></b>
+                    <br />
                     <button class="btn btn-outline-primary wallet-search-button" onClick={() => { navigate("/chart", { state: { coin: name }}) }}>View Price Action &raquo;</button>
                 </div>
             </div>

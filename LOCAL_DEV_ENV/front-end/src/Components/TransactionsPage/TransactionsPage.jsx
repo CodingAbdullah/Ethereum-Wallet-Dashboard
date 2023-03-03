@@ -143,7 +143,7 @@ const Transactions = () => {
     // Conditionally render page based on alerts when wallet is either empty or invalid
     if ( emptyAlert ) {
         return (
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <main role="main" class="col-md-9 p-3">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Transactions</h1>
                 </div>
@@ -153,12 +153,12 @@ const Transactions = () => {
         )
     }
     else if ( address === '' || ethPrice === {} || transactions.information === null || transactions.information === null) {
-        return <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">Loading...</div>
+        return <div role="main" class="col-md-9 p-3">Loading...</div>
     }
     else {
         return ( 
             <>
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <main role="main" class="col-md-9 p-3">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">Transactions</h1>
                     </div>
@@ -166,13 +166,13 @@ const Transactions = () => {
                     <h5>{ "ETH Balance: " + (amount*(1/1000000000000000000)) + " ETH (@ $" + ethPrice.information.ethereum.usd.toFixed(2) + " USD/ETH)" }</h5>
                     <h6>{ "Amount in USD: $" + ((amount*(1/1000000000000000000))*(ethPrice.information.ethereum.usd)).toFixed(2) + " USD" }</h6>
                 </main>            
-                <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                <main class="col-md-9 p-3" role="main">
                         <div>
                             {
                                 transactions.information === null ? null :
                                     <>
-                                        <main style={{marginTop: '5rem'}} role="main">
-                                            <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                        <main style={{ marginTop: '5rem' }} role="main">
+                                            <div style={{ marginTop: '1rem' }} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                                 <h3 class="h3">Latest 1000 Transactions or Maximum/Wallet</h3>
                                             </div>
                                         </main>
@@ -181,15 +181,15 @@ const Transactions = () => {
                             }
                         </div>
                 </main>
-                <main style={{marginTop: '1rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                <main style={{ marginTop: '1rem' }} class="col-md-9 p-3" role="main">
                         <div>
                             {
                                 emptyInteralTransactionAlert ? <Alert type='warning-empty-internal' /> :
                                 (
                                     internalTransactions.information === null ? null :
                                         <>
-                                            <main style={{marginTop: '5rem'}} role="main">
-                                                <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                            <main style={{ marginTop: '5rem' }} role="main">
+                                                <div style={{ marginTop: '1rem' }} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                                     <h3 class="h3">Internal Transactions</h3>
                                                 </div>
                                             </main>
@@ -199,7 +199,7 @@ const Transactions = () => {
                             }
                         </div>
                 </main>
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <main role="main" class="p-3">
                     <button style={{ marginTop: '1.5rem' }} class="btn btn-success" onClick={() => { navigate("/"); localStorage.removeItem('walletAddress'); }}>Go Back</button>
                 </main>
             </>
