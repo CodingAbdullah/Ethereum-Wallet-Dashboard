@@ -163,7 +163,7 @@ const ERC720HoldingsPage = () => {
     else {
         return (
                 <div className="erc-721-token-page">
-                    <main role="main">
+                    <main role="main" className="p-3">
                         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <h2>ERC20 Token Holdings</h2>
                         </div>
