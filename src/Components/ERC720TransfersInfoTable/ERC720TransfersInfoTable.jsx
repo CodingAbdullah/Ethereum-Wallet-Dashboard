@@ -7,7 +7,7 @@ const ERC720TransfersInfoTable = (props) => {
     let location = window.location.pathname; // Path name for the style of table display
 
     return (
-        <div class={ location === '/erc20-holdings' ? "p-3" : "" }>
+        <div class={ location === '/erc20-holdings' ? "p-3" : "" } style={{ overflowX: 'scroll', paddingBottom: '2rem' }}>
             <table style={{border: '1px solid black'}}>
                 <thead style={{border: '1px solid black'}}>
                 <tr style={{border: '1px solid black'}}>

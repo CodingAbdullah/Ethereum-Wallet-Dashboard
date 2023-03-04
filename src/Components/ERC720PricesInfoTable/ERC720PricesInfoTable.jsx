@@ -7,7 +7,7 @@ const ERC20PricesInfoTable = (props) => {
 
     // Display data of the valid ERC20 token
     return (
-      <div class={ location === '/erc20-token-prices' ? "" : "" }>
+      <div class={ location === '/erc20-token-prices' ? "" : "" } style={{ overflowX: 'scroll', paddingBottom: '2rem' }}>
         <table style={{border: '1px solid black'}}>
             <thead style={{border: '1px solid black'}}>
               <tr style={{border: '1px solid black'}}>

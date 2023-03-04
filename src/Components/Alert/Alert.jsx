@@ -23,7 +23,7 @@ const Alert = (props) => {
     }
 
     return (
-        <div className="alert">
+        <div className="alert" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
             <div style={{ marginBottom: '-1rem' }} class={`alert alert-${alertType}`} role="alert">
                 { message }
             </div>

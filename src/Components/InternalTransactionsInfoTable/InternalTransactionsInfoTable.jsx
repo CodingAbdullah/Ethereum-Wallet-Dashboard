@@ -6,7 +6,7 @@ const InternalTransactionsInfoTable = (props) => {
 
     // Display internal transactions from etherscan data
     return (
-        <div className="internal-transactions-data-table">
+        <div className="internal-transactions-data-table" style={{ overflowX: 'scroll', paddingBottom: '2rem' }}>
             <table style={{border: '1px solid black'}}>
                     <thead style={{border: '1px solid black'}}>
                         <tr style={{border: '1px solid black'}}>

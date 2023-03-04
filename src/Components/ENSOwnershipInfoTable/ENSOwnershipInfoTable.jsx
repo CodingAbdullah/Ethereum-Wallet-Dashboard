@@ -56,7 +56,7 @@ const ENSOwnershipInfoTable = (props) => {
     }
     else {
         return (
-            <div>
+            <div style={{ overflowX: 'scroll', paddingBottom: '2rem' }}>
                 { 
                 ensOwnershipData.information !== null ? (
                     <table style={{border: '1px solid black', fontSize: '12.5px'}}>

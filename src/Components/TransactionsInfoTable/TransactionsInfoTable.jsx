@@ -5,7 +5,7 @@ const TransactionsInfoTable = (props) => {
     const { data, walletAddress, isMatic, networkFetch } = props; // Retrieving data from transactions page
 
     return (
-        <div className="transactions-data-table">
+        <div className="transactions-data-table" style={{ overflowX: 'scroll', paddingBottom: '2rem' }}>
             <table style={{border: '1px solid black'}}>
                     <thead style={{border: '1px solid black'}}>
                         <tr style={{border: '1px solid black'}}>
