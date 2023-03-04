@@ -7,9 +7,9 @@ const Footer = () => {
 
     // Simplifying footer option
         return (
-            <footer style={{ marginTop: '3rem'}}>
+            <footer style={{ marginTop: '3rem' }}>
                 <div class="container">
-                    <p style={{ marginLeft: '2.5rem', marginTop: '-0.08rem' }} className="copyright-paragraph">
+                    <p className="copyright-paragraph">
                         <a style={{ color:'black' }} href="https://docs.alchemy.com/reference/" target="_blank" rel="noreferrer"><img style={{ marginRight: '0.15rem' }} src={require("../../assets/images/alchemy.png")} width="25" height="25" alt="logo" />Alchemy</a><span style={{ marginLeft: '0.25rem', marginRight: '0.25rem' }}><b>|</b></span>
                         <a style={{ color:'black' }} href="https://blocknative.com/" target="_blank" rel="noreferrer"><img style={{ marginRight: '0.1rem'}} src={require("../../assets/images/blocknative.png")} width="25" height="25" alt="logo" />Blocknative</a><span style={{ marginLeft: '0.25rem', marginRight: '0.25rem' }}><b>|</b></span> 
                         <a style={{ color:'black' }} href="https://www.coingecko.com" target="_blank" rel="noreferrer"><img style={{ marginRight: '0.15rem' }} src={require("../../assets/images/coingecko.png")} width="25" height="25" alt="logo" />Coin Gecko</a><span style={{ marginLeft: '0.25rem', marginRight: '0.25rem' }}><b>|</b></span>
