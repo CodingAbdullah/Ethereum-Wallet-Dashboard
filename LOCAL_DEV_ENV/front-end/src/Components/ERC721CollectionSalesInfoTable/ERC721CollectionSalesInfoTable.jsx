@@ -5,7 +5,7 @@ const ERC721CollectionTradeInfoTable = (props) => {
 
     // Retrieve recent sales from a NFT collection
     return (
-        <div className="p-3">
+        <div className="p-3" style={{ overflowX: 'scroll', paddingBottom: '2rem' }}>
             <table style={{border: '1px solid black'}}>
                 <thead style={{border: '1px solid black'}}>
                 <tr style={{border: '1px solid black'}}>

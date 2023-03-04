@@ -117,9 +117,9 @@ const ENSToAddressResolverPage = () => {
                 {  
                     ENSToAddressData.information === null ? null :
                         <>
-                            <div style={{marginTop: '2rem'}}>
+                            <div>
                                     <>
-                                        <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                        <div style={{ marginTop: '2rem' }} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                             <h3 class="h3">Resolver Information</h3>
                                         </div>
                                         <h6>Address Resolver for ENS: <b>{ setENSToAddress }</b></h6>
@@ -127,7 +127,7 @@ const ENSToAddressResolverPage = () => {
                                     </>
                                 
                             </div>
-                            <div style={{marginTop: '2rem'}}>
+                            <div style={{ marginTop: '2rem' }}>
                                     <>
                                         <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                             <h3 class="h3">Additional Information</h3>
@@ -135,7 +135,7 @@ const ENSToAddressResolverPage = () => {
                                         <AdditionalAddressENSInfoTable address={ setENSToAddress } />
                                     </>    
                             </div>
-                            <div style={{marginTop: '2rem'}}>
+                            <div style={{ marginTop: '2rem' }}>
                                     <>
                                         <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                             <h3 class="h3">ENS Names Belonging To Owner</h3>
@@ -143,7 +143,7 @@ const ENSToAddressResolverPage = () => {
                                         <ENSOwnershipInfoTable address={ setENSToAddress } />
                                     </>    
                             </div>
-                            <div style={{marginTop: '2rem'}}>
+                            <div style={{ marginTop: '2rem' }}>
                                     <>
                                         <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                             <h3 class="h3">ENS Names Resolving To Address</h3>

@@ -5,7 +5,7 @@ const TransactionBalanceSection = (props) => {
 
     // Extract values for matic/ethereum networks. Convert from wei to eth if value is eth otherwise, keep it the same
     return (
-        <div style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%' }}>
+        <div style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%', overflowX: 'scroll', paddingBottom: '2rem' }}>
             <h4 style={{ marginTop: '1.5rem' }}>
                 <b>{"Account: " + address}</b>
             </h4>
