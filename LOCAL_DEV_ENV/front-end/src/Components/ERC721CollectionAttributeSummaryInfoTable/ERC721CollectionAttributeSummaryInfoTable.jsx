@@ -42,7 +42,7 @@ const ERC721CollectionAttributeSummaryInfoTable = (props) => {
     });
 
     return (
-            <div class="p-3">
+            <div class="p-3" style={{ overflowX: 'scroll', paddingBottom: '2rem' }}>
                         {
                             tabulatedNestedAttributes.map((tabulatedValues, key) => {
                                 return (

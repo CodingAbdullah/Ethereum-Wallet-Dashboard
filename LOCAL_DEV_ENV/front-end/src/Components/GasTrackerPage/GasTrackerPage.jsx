@@ -68,7 +68,7 @@ const GasTrackerPage = () => {
                         <h1 class="h2">Gas Information</h1>
                     </div>
                     <div class="jumbotron">
-                        <h4 style={{marginTop: '-2rem'}} class="display-5">General Metrics</h4>
+                        <h4 style={{marginTop: '-1rem'}} class="display-5">General Metrics</h4>
                         <div style={{marginTop: '3rem', marginBottom: '-2rem'}} class="container">
                             <p>System: <b>{gasInfo.information.system.substring(0, 1).toUpperCase() + gasInfo.information.system.substring(1)}</b></p>
                             <p>Network: <b>{gasInfo.information.network.substring(0, 1).toUpperCase() + gasInfo.information.network.substring(1)}</b></p>

@@ -268,7 +268,7 @@ const ERC721CollectionPage = () => {
                 { 
                     NFTData.information === null ? null : 
                         <>
-                            <main style={{marginTop: '3rem'}} role="main">
+                            <main style={{ marginTop: '3rem', overflowX: 'scroll', paddingBottom: '2rem' }} role="main">
                                 <h4>NFT Collection Name: <b>{ NFTData.information.result[0].name }</b></h4>
                                 <h4>Contract Address: <b>{ setTokenAddress }</b></h4> 
                                 <h4>Total Items: <b>{ NFTData.information.total }</b></h4> 
