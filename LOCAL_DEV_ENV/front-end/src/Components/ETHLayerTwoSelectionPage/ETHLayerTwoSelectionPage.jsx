@@ -14,7 +14,7 @@ const ETHLayerTwoSelectionPage = () => {
                 <div class="jumbotron">
                     <div class="container">
                         <div>
-                            <label>Arbitium</label><button onClick={ () => navigate( "/arbitium-w-dashboard" )} style={{ marginLeft: '5.5rem' }} class='btn btn-success'>View</button>
+                            <label>Arbitium</label><a href="https://arbitrum-aws.d1i5adqmyft713.amplifyapp.com/" target="_blank" rel="noreferrer"><button style={{ marginLeft: '5.5rem' }} class="btn btn-success">View</button></a>
                             <hr style={{ marginTop: '2rem', marginBottom: '2rem' }} />    
                             <label>Optimism</label><button onClick={ () => navigate( "/optimism-w-dashboard" )} style={{ marginLeft: '5.0rem' }} class='btn btn-success'>View</button>
                             <hr style={{ marginTop: '2rem', marginBottom: '2rem' }} />     

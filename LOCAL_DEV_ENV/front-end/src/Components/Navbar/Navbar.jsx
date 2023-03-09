@@ -49,7 +49,7 @@ const Navbar = () => {
                                 <a style={ styles.navLinkColor } className="nav-link" href="/erc721-holdings">ERC721 Token Holdings</a>
                             </li>
                             <li className="nav-item">
-                                <a style={ styles.navLinkColor } className="nav-link" href="/ethereum-layer-two-chains">Ethereum Layer 2s</a>
+                                <a style={ styles.navLinkColor } className="nav-link" href="/ethereum-layer-two-chains">ETH Layer 2/Sidechains</a>
                             </li>
                             <li className="nav-item">
                                 <a style={ styles.navLinkColor } className="nav-link" href="/gas-tracker">Gas Station</a>
