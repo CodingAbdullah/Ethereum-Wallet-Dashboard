@@ -1,6 +1,5 @@
 import './App.css';
 import Navbar from  '../Navbar/Navbar';
-import Sidebar from '../Sidebar/Sidebar';
 import HomePage from '../HomePage/HomePage';
 import TransactionsPage from '../TransactionsPage/TransactionsPage';
 import PageNotFoundPage from '../PageNotFoundPage/PageNotFoundPage';
@@ -27,6 +26,7 @@ import WalletStatsPage from '../WalletStatsPage/WalletStatsPage';
 import GenericChartPage from '../GenericChartPage/GenericChartPage';
 import MetricsNavbar from '../MetricsNavbar/MetricsNavbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import OptimismPricePage from '../OptimismPricePage/OptimismPricePage';
 
 const App = () => {
   return (
@@ -60,6 +60,7 @@ const App = () => {
             <Route exact path="/ethereum-layer-two-chains" element={<ETHLayerTwoSelectionPage />}></Route>
             <Route exact path="/gas-tracker" element={<GasTrackerPage />}></Route>
             <Route exact path="/prices" element={<PricesPage />}></Route>
+            <Route exact path="/prices/optimism" element={<OptimismPricePage />}></Route>
             <Route exact path="/transactions" element={<TransactionsPage />}></Route>
             <Route exact path="/walletAnalytics" element={<WalletStatsPage />}></Route>
             <Route exact path="*" element={<PageNotFoundPage />}></Route>
