@@ -227,13 +227,13 @@ const GenericChartPage = () => {
 
   // Display Title, 24 Hr. Price% Change, Price of Coin
   if (coinInfo.information === null || chartData === {}) {
-    return <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">Loading...</div>
+    return <div role="main">Loading...</div>
   }
   else {
     // Generic coin setup using Object keys from API responses to generate output
     return (
       <div>
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+        <main role="main">
           <h3 style={{marginTop: '2rem'}}>{astheticNaming + " "} Price: 
             <b style={{ marginLeft: '0.25rem' }}>
               ${coinInfo.information[Object.keys(coinInfo.information)[0]].usd >= 1 ? 
