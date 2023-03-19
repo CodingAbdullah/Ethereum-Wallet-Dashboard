@@ -26,6 +26,7 @@ import ETHLayerTwoSelectionPage from '../ETHLayerTwoSelectionPage/ETHLayerTwoSel
 import WalletStatsPage from '../WalletStatsPage/WalletStatsPage';
 import GenericChartPage from '../GenericChartPage/GenericChartPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import OptimismPricePage from '../../../../../LOCAL_DEV_ENV/front-end/src/Components/OptimismPricePage/OptimismPricePage';
 
 const App = () => {
   return (
@@ -59,6 +60,8 @@ const App = () => {
             <Route exact path="/ethereum-layer-two-chains" element={<ETHLayerTwoSelectionPage />}></Route>
             <Route exact path="/gas-tracker" element={<GasTrackerPage />}></Route>
             <Route exact path="/prices" element={<PricesPage />}></Route>
+            <Route exact path="/prices/matic" element={<MaticPricePage />}></Route>
+            <Route exact path="/prices/optimism" element={<OptimismPricePage />}></Route>
             <Route exact path="/transactions" element={<TransactionsPage />}></Route>
             <Route exact path="/walletAnalytics" element={<WalletStatsPage />}></Route>
             <Route exact path="*" element={<PageNotFoundPage />}></Route>
