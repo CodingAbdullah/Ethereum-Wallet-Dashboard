@@ -27,6 +27,7 @@ import GenericChartPage from '../GenericChartPage/GenericChartPage';
 import MetricsNavbar from '../MetricsNavbar/MetricsNavbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import OptimismPricePage from '../OptimismPricePage/OptimismPricePage';
+import MaticPricePage from '../MaticPricePage/MaticPricePage';
 
 const App = () => {
   return (
