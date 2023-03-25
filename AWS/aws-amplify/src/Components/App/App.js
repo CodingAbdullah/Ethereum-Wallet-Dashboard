@@ -4,6 +4,7 @@ import Sidebar from '../Sidebar/Sidebar';
 import HomePage from '../HomePage/HomePage';
 import TransactionsPage from '../TransactionsPage/TransactionsPage';
 import PageNotFoundPage from '../PageNotFoundPage/PageNotFoundPage';
+import ArbitrumPricePage from '../ArbitrumPricePage/ArbitrumPricePage';
 import AnalyticsSelectionPage from '../AnalyticsSelectionPage/AnalyticsSelectionPage';
 import Footer from '../Footer/Footer';
 import AboutPage from '../AboutPage/AboutPage';
@@ -60,6 +61,7 @@ const App = () => {
             <Route exact path="/ethereum-layer-two-chains" element={<ETHLayerTwoSelectionPage />}></Route>
             <Route exact path="/gas-tracker" element={<GasTrackerPage />}></Route>
             <Route exact path="/prices" element={<PricesPage />}></Route>
+            <Route exact path="/prices/arbitrum" element={<ArbitrumPricePage />}></Route>
             <Route exact path="/prices/matic" element={<MaticPricePage />}></Route>
             <Route exact path="/prices/optimism" element={<OptimismPricePage />}></Route>
             <Route exact path="/transactions" element={<TransactionsPage />}></Route>
