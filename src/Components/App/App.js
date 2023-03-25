@@ -28,6 +28,7 @@ import MetricsNavbar from '../MetricsNavbar/MetricsNavbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import OptimismPricePage from '../OptimismPricePage/OptimismPricePage';
 import MaticPricePage from '../MaticPricePage/MaticPricePage';
+import ArbitrumPricePage from '../ArbitrumPricePage/ArbitrumPricePage';
 
 const App = () => {
   return (
@@ -61,6 +62,7 @@ const App = () => {
             <Route exact path="/ethereum-layer-two-chains" element={<ETHLayerTwoSelectionPage />}></Route>
             <Route exact path="/gas-tracker" element={<GasTrackerPage />}></Route>
             <Route exact path="/prices" element={<PricesPage />}></Route>
+            <Route exact path="/prices/arbitrum" element={<ArbitrumPricePage />}></Route>
             <Route exact path="/prices/optimism" element={<OptimismPricePage />}></Route>
             <Route exact path="/prices/matic" element={<MaticPricePage />}></Route>
             <Route exact path="/transactions" element={<TransactionsPage />}></Route>
