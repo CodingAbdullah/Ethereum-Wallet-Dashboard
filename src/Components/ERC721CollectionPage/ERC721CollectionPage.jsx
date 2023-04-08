@@ -300,7 +300,7 @@ const ERC721CollectionPage = () => {
                 {
                     NFTAttributes.information === null ? null :
                         <>
-                            <main style={{marginTop: '3rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                            <main style={{marginTop: '3rem'}} className="p-3" role="main">
                                 <>
                                     <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                         <h3 class="h3">Collection Attributes</h3>
