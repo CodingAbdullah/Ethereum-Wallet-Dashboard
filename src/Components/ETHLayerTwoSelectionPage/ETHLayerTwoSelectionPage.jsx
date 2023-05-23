@@ -14,11 +14,10 @@ const ETHLayerTwoSelectionPage = () => {
                 <div class="jumbotron">
                     <div class="container">
                         <div>
-                            <label>Arbitrum</label><a href="https://arbitrum-aws.d1pqf6famiyi96.amplifyapp.com/" target="_blank" rel="noreferrer"><button style={{ marginLeft: '5.5rem' }} class="btn btn-success">View</button></a>
+                            <label>Arbitium</label><a href="https://arbitrum-aws.d1pqf6famiyi96.amplifyapp.com/" target="_blank" rel="noreferrer"><button style={{ marginLeft: '5.5rem' }} class="btn btn-success">View</button></a>
                             <hr style={{ marginTop: '2rem', marginBottom: '2rem' }} />    
-                            <label>Optimism</label><a href="https://optimism-aws.d22w7ozmz21la.amplifyapp.com/" target="_blank" rel="noreferrer"><button style={{ marginLeft: '5.0rem' }} class="btn btn-success">View</button></a>                            
+                            <label>Optimism</label><a href="https://optimism-aws.d22w7ozmz21la.amplifyapp.com/" target="_blank" rel="noreferrer"><button style={{ marginLeft: '5.0rem' }} class="btn btn-success">View</button></a>
                             <hr style={{ marginTop: '2rem', marginBottom: '2rem' }} />     
-                            <label>Immutable X</label><a href="https://www.immutable.com/developers" target="_blank" rel="noreferrer"><button style={{ marginLeft: '3.5rem' }} class="btn btn-success">View</button></a>                            <hr style={{ marginTop: '2rem', marginBottom: '2rem' }} />
                             <label>Polygon</label><button onClick={ () => navigate( "/polygon-w-dashboard" )} style={{ marginLeft: '5.5rem' }} class='btn btn-success'>View</button>
                         </div>
                     </div>
