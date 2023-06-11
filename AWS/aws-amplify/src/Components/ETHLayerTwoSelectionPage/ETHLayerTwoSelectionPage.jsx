@@ -1,9 +1,7 @@
 import React from 'react';
-import { useNavigate } from 'react-router';
 
 const ETHLayerTwoSelectionPage = () => {
-    const navigate = useNavigate();
-
+    
     // Adding a section for layer twos to general dashboard..
     return (
         <div className="eth-layer-two-selection-page">
@@ -17,10 +15,8 @@ const ETHLayerTwoSelectionPage = () => {
                             <label>Arbitium</label><a href="https://arbitrum-aws.d1i5adqmyft713.amplifyapp.com/" target="_blank" rel="noreferrer"><button style={{ marginLeft: '5.5rem' }} class="btn btn-success">View</button></a>
                             <hr style={{ marginTop: '2rem', marginBottom: '2rem' }} />    
                             <label>Optimism</label><a href="https://optimism-aws.d22w7ozmz21la.amplifyapp.com/" target="_blank" rel="noreferrer"><button style={{ marginLeft: '5.0rem' }} class="btn btn-success">View</button></a>
-                            <hr style={{ marginTop: '2rem', marginBottom: '2rem' }} />     
-                            <label>Immutable X</label><a href="https://www.immutable.com/developers" target="_blank" rel="noreferrer"><button style={{ marginLeft: '3.5rem' }} class="btn btn-success">View</button></a>
-                            <hr style={{ marginTop: '2rem', marginBottom: '2rem' }} />
-                            <label>Polygon</label><button onClick={ () => navigate( "/polygon-w-dashboard" )} style={{ marginLeft: '5.5rem' }} class='btn btn-success'>View</button>
+                            <hr style={{ marginTop: '2rem', marginBottom: '2rem' }} />    
+                            <label>Polygon</label><a href="https://aws.d2n4l9is533l0n.amplifyapp.com/" target="_blank" rel="noreferrer"><button style={{ marginLeft: '5.0rem' }} class="btn btn-success">View</button></a>
                         </div>
                     </div>
                 </div>
