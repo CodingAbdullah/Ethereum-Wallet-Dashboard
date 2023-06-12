@@ -45,6 +45,16 @@ Running this project locally will require you to acquire separate API keys for r
 
 No API keys means failed requests to select API resources.
 
+## `Dockerfile`
+Attached within the server folders are Dockerfiles needed to Dockerize the servers and run as standalone containers. This will essentially, allow users to containerize the applications by generating an image to represent the servers and run them as containers.
+ 
+<br />
+
+## `Scripts`
+For basic project setup, scripts for each operating system (MAC/WINDOWS) have been provided as bash, powershell scripts respectively.
+
+<br />
+
 ### `Links`
 
 Here are links to the available API resources used in this project. NOTE: Opensea API resources are NOT available at this time as they are not issuing API keys. Hence, an alternate platform, Alchemy will be used instead.
