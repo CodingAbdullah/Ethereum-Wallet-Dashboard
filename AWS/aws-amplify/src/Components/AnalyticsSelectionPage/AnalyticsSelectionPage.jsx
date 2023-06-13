@@ -6,7 +6,7 @@ const AnalyticsSelectionPage = () => {
 
     return (
         <div>
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <main role="main" class="p-3">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Analytics</h1>
                 </div>
@@ -15,7 +15,7 @@ const AnalyticsSelectionPage = () => {
                         <div>
                             <label>Token Analytics</label><button onClick={() => navigate("/collections")} style={{marginLeft: '1rem'}} class='btn btn-success'>View</button>
                             <hr style={{marginTop: '2rem', marginBottom: '2rem'}} />
-                            <label>Wallet Analytics</label><button style={{marginLeft: '1rem'}} onClick={() => navigate("/walletAnalytics")} class='btn btn-success'>View</button>
+                            <label>Wallet Analytics</label><button style={{marginLeft: '0.85rem'}} onClick={() => navigate("/walletAnalytics")} class='btn btn-success'>View</button>
                         </div>
                     </div>
                 </div>

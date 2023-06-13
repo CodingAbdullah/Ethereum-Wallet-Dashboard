@@ -13,7 +13,7 @@ const ENSERC721SelectionPage = () => {
                 <div class="jumbotron">
                     <div class="container">
                         <div>
-                            <label>ENS Lookups</label><button onClick={() => navigate("/ens-lookup")} style={{marginLeft: '5.5rem'}} class='btn btn-success'>View</button>
+                            <label>ENS Lookups</label><button onClick={() => navigate("/ens-lookup")} style={{marginLeft: '6rem'}} class='btn btn-success'>View</button>
                             <hr style={{marginTop: '2rem', marginBottom: '2rem'}} />
                             <label>ERC-721 Token Lookups</label><button style={{marginLeft: '1rem'}} onClick={() => navigate("/erc721-lookups")} class='btn btn-success'>View</button>
                         </div>

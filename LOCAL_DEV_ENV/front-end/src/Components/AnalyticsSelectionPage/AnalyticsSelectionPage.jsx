@@ -15,7 +15,7 @@ const AnalyticsSelectionPage = () => {
                         <div>
                             <label>Token Analytics</label><button onClick={() => navigate("/collections")} style={{marginLeft: '1rem'}} class='btn btn-success'>View</button>
                             <hr style={{marginTop: '2rem', marginBottom: '2rem'}} />
-                            <label>Wallet Analytics</label><button style={{marginLeft: '1rem'}} onClick={() => navigate("/walletAnalytics")} class='btn btn-success'>View</button>
+                            <label>Wallet Analytics</label><button style={{marginLeft: '0.85rem'}} onClick={() => navigate("/walletAnalytics")} class='btn btn-success'>View</button>
                         </div>
                     </div>
                 </div>
