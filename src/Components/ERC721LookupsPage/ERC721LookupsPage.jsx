@@ -197,7 +197,7 @@ const ERC721LookupsPage = () => {
                     </main>
                 : null 
             }
-            <main className="p-3" style={{ marginTop: emptyAlert ? '' : '-3rem' }} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+            <main className="p-3" style={{ marginTop: emptyAlert ? '' : '-3rem' }} role="main">
                     <div>
                         {
                             tokenData.information === null ? null :
