@@ -1,12 +1,65 @@
 # Ethereum-Wallet-Dashboard
-A descriptive web app, detailing the history of all transactions including all different kinds of ERC transactions.
+A descriptive web app, detailing the history of all transactions including all kinds of ERC transactions by incorporating various different APIs from select resources.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 <br />
 
-### `Windows Disclaimer`
-**This site was built primarily on a linux system. WINDOWS COMPATIBILITY REQURIES FULL-SCREEN MODE (F11 Key)**
+### `List of APIs Incorporated`
+<table>
+    <tr>
+        <th>API Name</th>
+        <th>API Link</th>
+    </tr>
+    <tr>
+        <td>
+            <b>Alchemy</b>
+        </td>
+        <td>
+            <a href="https://docs.alchemy.com/reference/api-overview">Alchemy Developer Docs</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Blocknative</b>
+        </td>
+        <td>
+            <a href="https://www.blocknative.com/gas-platform">Blocknative Ethereum Gas APIs</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>CoinGecko</b>
+        </td>
+        <td>
+            <a href="https://www.coingecko.com/en/api">CoinGecko APIs</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Etherscan</b>
+        </td>
+        <td>
+            <a href="https://etherscan.io/apis">Etherscan Developer Docs</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Moralis</b>
+        </td>
+        <td>
+            <a href="https://moralis.io/">Moralis Enterprise Grade Web3 APIs</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Transpose</b>
+        </td>
+        <td>
+            <a href="https://docs.transpose.io/">Transpose Data APIs</a>
+        </td>
+    </tr>
+</table>
 
 <br />
 
@@ -32,6 +85,7 @@ The front-end application is deployed to **AWS Amplify.** The link to the front-
 
 The back-end application has been deployed to the cloud using AWS. The full stack application consists of a React front-end deployed to AWS Amplify and a Node back-end deployed to an AWS EC2 instance. Communication between the two applications is secure. AWS has complete features on security and reliability.
 
+<br />
 
 ### `Start Here`
 
@@ -44,6 +98,8 @@ Therefore, this is now a full stack project and it is required to have both the 
 Running this project locally will require you to acquire separate API keys for running API requests to resources. These include various different sites such as Etherscan, Moralis, and Alchemy. Dev's keys are hidden in this project under the .env file which was not committed to GitHub for security reasons. 
 
 No API keys means failed requests to select API resources.
+
+<br />
 
 ## `Dockerfile`
 Attached within the server folders are Dockerfiles needed to Dockerize the servers and run as standalone containers. This will essentially, allow users to containerize the applications by generating an image to represent the servers and run them as containers.
