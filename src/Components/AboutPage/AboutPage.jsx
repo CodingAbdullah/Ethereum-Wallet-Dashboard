@@ -16,6 +16,18 @@ const AboutPage = () => {
                                 Whether you are looking up wallet activity, perform analytics or get a quick check up on prices, this is the place to do it! 
                             </p>
                     </div>
+                    <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h4 className="p-3">Open Source Code</h4>
+                            <hr />
+                    </div>
+                    <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <p className="p-3">
+                                All the code required to make this web application possible is open source and available for all. 
+                                This was done to ensure safety and allow anyone to verify the application for themselves prior to usage.
+                                Link to the code repository is <b><a style={{ color: 'black' }} href="https://github.com/CodingAbdullah/Ethereum-Wallet-Dashboard">here</a>.</b>
+                            </p>
+                            <hr />
+                    </div>
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <h4 className="p-3">Features</h4>
                             <hr />
