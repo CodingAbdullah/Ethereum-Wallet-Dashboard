@@ -1,68 +1,46 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { coinPrices } from '../../UtilFunctions/coinPrices';
 import PriceCoinCard from '../PriceCoinCard/PriceCoinCard';
 
 const PricesPage = () => {
-    const [displayToggle, updateDisplayToggle] = useState(false);
-    const URL = "https://api.coingecko.com/api/v3";
-    const API_ENDPOINT = "/simple/price";
-
-    // Display these for each of the cards
-    const top15CoinCaps = { Bitcoin: 'BTC',  Ethereum: 'ETH' ,  litecoin: 'LTC' ,  binancecoin: 'BNB' ,  Ripple: 'XRP' , 
-      algorand: 'ALGO' ,  Cardano: 'ADA' ,  Solana: 'SOL' ,  Polkadot: 'DOT' , Dogecoin: 'DOGE' ,  chainlink: 'LINK' , 
-     'matic-network': 'MATIC' ,  'avalanche-2': 'AVAX' , Uniswap: 'UNI' ,  optimism: 'OP' }; 
-
-    const [coinInfo, updateCoinInfo] = useState([]);
-
-    const CoinPriceDisplayHandler = async () => {
-        const delay = (ms = 75) => new Promise((r) => setTimeout(r, ms)); // Set timeout for coin price display
-
-        for (var i = 0; i < Object.keys(top15CoinCaps).length; i++){
-            await delay();
-            await fetch(URL + API_ENDPOINT + "?ids=" + Object.keys(top15CoinCaps)[i] + "&vs_currencies=usd&include_24hr_change=true")
-            .then(res => res.json())
-            .then(res => {            
-                // Fetch from Object.keys() and pick the first key
-                console.log(res);
-                updateCoinInfo((prevState) => [...prevState, { res }]);        
-            })
-            .catch(err => {
-                console.log(err);
-            })
-        }
-    };
+    // Incorporating React Query for faster and more efficient data fetch
+    const { data, isPending, isError, error } = useQuery({
+        queryKey: ['coin prices'],
+        queryFn: coinPrices
+     });
 
     // Props to be added later after more filtering and testing, the layout is complete for now
-    if (!displayToggle){
+    if (isPending){
         return ( 
-            <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                <button class='btn btn-success'  style={{ marginLeft: '-4rem', marginTop: '2rem' }} onClick={() => { updateDisplayToggle(true); CoinPriceDisplayHandler(); }}>Show Coin Prices</button>
+            <div role="main">
+                <div>Loading...</div>
             </div>
         )
     }
-    else if (displayToggle && coinInfo.length !== 15) {
+    else if (isError) {
         return ( 
-            <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                Loading...
+            <div role="main">
+                Err...
             </div>
         )
     }
-    else {
+    else if (data) {
         return (
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                <h1 style={{ marginLeft: '-4rem', marginTop: '1.5rem', marginBottom: '1rem' }}>Prices Chart</h1>
-                <p style={{ marginLeft: '-4rem'}}>Here is the list of the latest prices on the top 15 coins by <b>popularity.</b></p>
-                <div class="container col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <main className="p-3" role="main">
+                <h1 style={{ marginTop: '2rem' }}>Prices Chart</h1>
+                <p>Here is the list of the latest prices on the top 10 coins by <b>popularity.</b></p>
+                <div>
                     <div class="row">
-                        {
-                           coinInfo.map((coin, key) => {
+                    {
+                           data.map((coin, key) => {
                                 return (
-                                    <PriceCoinCard id={key} name={ Object.keys(coin.res)[0] } coinInfo={coin.res} /> // Display child components by passing properties to them
+                                    <PriceCoinCard id={key} name={ Object.keys(coin)[0] } coinInfo={coin[Object.keys(coin)[0]]} /> // Display child components by passing properties to them
                                 );
                             })
                         }
                     </div> 
                 </div>
-                <button class='btn btn-success' style={{ marginLeft: '-4rem', marginTop: '2rem' }} onClick={() => { updateDisplayToggle(false); updateCoinInfo([]); }}>Hide Coin Prices</button>
             </main>
         )
     }
