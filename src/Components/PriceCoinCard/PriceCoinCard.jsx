@@ -1,14 +1,8 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router';
 
 const PriceCoinCard = (props) => {
     const { name, coinInfo } = props; // Extract coin info for display purposes, passed down from the parent component price
-    const [colorChange, updateColour] = useState("");
-
-    const [relevantInfo, updateRelevantInfo] = useState({
-        information: null
-    });
 
     const navigate = useNavigate();
     
@@ -19,43 +13,27 @@ const PriceCoinCard = (props) => {
     // Modifying imagery
     const imagery = modifiedName === 'Ethereum' ? 
                     <img src={require("../../assets/images/" + modifiedName.toLowerCase() + ".png")} width="85" height="100" alt="logo" /> :
-                    <img src={require("../../assets/images/" + modifiedName.toLowerCase() + ".png")} width="90" height="100" alt="logo" />
-    
-    useEffect(() => {
-        updateRelevantInfo((prevState) => {
-            return {
-                ...prevState,
-                information: coinInfo
-            }
-        });
+                    <img src={require("../../assets/images/" + modifiedName.toLowerCase() + ".png")} width="90" height="100" alt="logo" />    
         
-        // Update colour accordingly
-        updateColour(coinInfo[Object.keys(coinInfo)[0]].usd_24h_change < 0 ? "red" : "green");
-    }, []);
-
-    if (relevantInfo.information === null){
-        return <div>Loading...</div>
-    }
-    else {
-        return (
+    return (
             <div className="card col-lg-4 col-md-6 col-sm-12">
                 <div class="card-body">
                     { imagery }
                     <br />
-                    <h4 class="card-title">{modifiedName}</h4>
+                    <h4 class="card-title">{ modifiedName }</h4>
                     <p>
-                        Price:  <b>${   relevantInfo.information[Object.keys(coinInfo)[0]].usd < 1 ? 
-                                        relevantInfo.information[Object.keys(coinInfo)[0]].usd : 
-                                      ( relevantInfo.information[Object.keys(coinInfo)[0]].usd ).toFixed(2) 
+                        Price:  <b>${   coinInfo.usd < 1 ? 
+                                        coinInfo.usd : 
+                                      ( coinInfo.usd ).toFixed(2) 
                                     } USD
                                 </b>
                     </p> 
                     <p style={{ display: 'inline' }}>24 Hr% Change: </p> 
-                    <b><p style={{ display: 'inline', color: colorChange }}>
+                    <b><p style={{ display: 'inline', color: coinInfo.usd < 0 ? "red" : "green" }}>
                     {   
-                        colorChange === "green" ? 
-                        "+" + relevantInfo.information[Object.keys(coinInfo)[0]].usd_24h_change.toFixed(2) + "%" : 
-                        relevantInfo.information[Object.keys(coinInfo)[0]].usd_24h_change.toFixed(2) + "%"
+                        coinInfo.usd >= 0 ? 
+                        "+" + coinInfo.usd_24h_change.toFixed(2) + "%" : 
+                        coinInfo.usd_24h_change.toFixed(2) + "%"
                     }
                     </p></b>
                     <br />
@@ -64,6 +42,5 @@ const PriceCoinCard = (props) => {
             </div>
         )
     }   
-}
 
 export default PriceCoinCard;
