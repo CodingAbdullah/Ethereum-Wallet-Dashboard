@@ -1,9 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { selectCoin } from '../../redux/reducer/coinSelectionReducer';
 
 const PriceCoinCard = (props) => {
     const { name, coinInfo } = props; // Extract coin info for display purposes, passed down from the parent component price
-
+    
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     
     // Modify the name from the parent component
@@ -15,6 +18,13 @@ const PriceCoinCard = (props) => {
                     <img src={require("../../assets/images/" + modifiedName.toLowerCase() + ".png")} width="85" height="100" alt="logo" /> :
                     <img src={require("../../assets/images/" + modifiedName.toLowerCase() + ".png")} width="90" height="100" alt="logo" />    
         
+    // Function for handling requesting coin price information
+    const priceButtonHandler = e => {
+        e.preventDefault();
+        dispatch(selectCoin(name));
+        navigate("/chart");
+    }
+
     return (
             <div className="card col-lg-4 col-md-6 col-sm-12">
                 <div class="card-body">
@@ -31,13 +41,13 @@ const PriceCoinCard = (props) => {
                     <p style={{ display: 'inline' }}>24 Hr% Change: </p> 
                     <b><p style={{ display: 'inline', color: coinInfo.usd < 0 ? "red" : "green" }}>
                     {   
-                        coinInfo.usd >= 0 ? 
+                        coinInfo.usd_24h_change >= 0 ? 
                         "+" + coinInfo.usd_24h_change.toFixed(2) + "%" : 
                         coinInfo.usd_24h_change.toFixed(2) + "%"
                     }
                     </p></b>
                     <br />
-                    <button class="btn btn-outline-primary wallet-search-button" onClick={() => { navigate("/chart", { state: { coin: name }}) }}>View Price Action &raquo;</button>
+                    <button class="btn btn-outline-primary wallet-search-button" onClick={ priceButtonHandler }>View Price Action &raquo;</button>
                 </div>
             </div>
         )
