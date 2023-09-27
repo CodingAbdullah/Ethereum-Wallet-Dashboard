@@ -39,7 +39,7 @@ const PriceCoinCard = (props) => {
                                 </b>
                     </p> 
                     <p style={{ display: 'inline' }}>24 Hr% Change: </p> 
-                    <b><p style={{ display: 'inline', color: coinInfo.usd < 0 ? "red" : "green" }}>
+                    <b><p style={{ display: 'inline', color: coinInfo.usd_24h_change < 0 ? "red" : "green" }}>
                     {   
                         coinInfo.usd_24h_change >= 0 ? 
                         "+" + coinInfo.usd_24h_change.toFixed(2) + "%" : 
