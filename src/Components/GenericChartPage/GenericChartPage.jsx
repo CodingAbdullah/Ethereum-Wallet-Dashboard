@@ -36,8 +36,8 @@ const GenericChartPage = () => {
 
     // 24 Hr % Change + Current Coin Price
    
-    // Set it to 14 days by default
-    const [interval, updateInterval] = useState(14);
+    // Set it to 7 days by default
+    const [interval, updateInterval] = useState(7);
 
     const coinPriceQuery = useQuery({
       queryKey: ['coin', coinSelector, interval],
@@ -57,6 +57,9 @@ const GenericChartPage = () => {
     // Buttons for displaying different chart date ranges, used to update the diplay chart date, which triggers a re-render
     const buttonHandler = (d) => {
       switch(d) {  
+        case "Last 7 days":
+          updateInterval(7);
+          break;
         case "Last 14 Days":
           updateInterval(14);
           break;
@@ -95,9 +98,13 @@ const GenericChartPage = () => {
      }
   }
 
-  let buttonDaysArray = ["Last 14 Days", "Last 30 Days"];
+  let buttonDaysArray = ["Last 7 Days", "Last 14 Days", "Last 30 Days"];
   let buttons = buttonDaysArray.map((day, key) =>  {
-    return <button id={ key } onClick={ e => { e.preventDefault(); buttonHandler(day); }} style={{ marginTop: '2rem', marginRight: '1rem', marginBottom: '5rem', paddingLeft: '0.5rem', paddingRight: '0.5rem' }} className="btn btn-secondary">{ day }</button>
+    return <button id={ key } 
+                   disabled={ day.includes(`${interval}`)} 
+                   onClick={ e => { e.preventDefault(); buttonHandler(day); }} 
+                   style={{ marginTop: '2rem', marginRight: '1rem', marginBottom: '5rem', paddingLeft: '0.5rem', paddingRight: '0.5rem' }} 
+                   className="btn btn-secondary">{ day }</button>
   });
 
   const selectHandler = (e) => {
