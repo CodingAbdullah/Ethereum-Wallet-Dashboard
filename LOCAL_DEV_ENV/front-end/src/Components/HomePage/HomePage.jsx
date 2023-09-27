@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { selectCoin } from '../../redux/reducer/coinSelectionReducer';
 import './HomePage.css';
 import HomePageDescriptionSection from '../HomePageDescriptionSection/HomePageDescriptionSection';
 import Alert from '../Alert/Alert';
 import axios from 'axios';
 
 const Home = () => {
+    const dispatch = useDispatch();
 
     const [formAlert, updateAlert] = useState("");
     const [walletAddress, updateWalletAddress] = useState("");
@@ -143,6 +146,20 @@ const Home = () => {
     const updateAddress = (e) => {
         updateWalletAddress(e.target.value);
     }
+    
+    // Bitcoin button function for setting bitcoin coin state and price lookup
+    const bitcoinButtonHandler = (e) => {
+        e.preventDefault();
+        dispatch(selectCoin("bitcoin"));
+        navigate("/chart");
+    }
+
+    // Ethereum button function for setting ethereum coin state and price lookup
+    const ethereumButtonHandler = (e) => {
+        e.preventDefault();
+        dispatch(selectCoin("ethereum"));
+        navigate("/chart");
+    }
 
     // Pass address to local storage for API call
     const formHandler = (e) => {
@@ -204,7 +221,7 @@ const Home = () => {
                                     <p style={{ display: 'inline' }}>24 Hour % Change: </p> 
                                     <b><p style={{ display: 'inline', color: btcColourChange }}>{btcColourChange === "red" ? btcPrice.information.bitcoin.usd_24h_change.toFixed(2) + "%": "+" + btcPrice.information.bitcoin.usd_24h_change.toFixed(2) + "%" }</p></b>
                                     <br />
-                                    <button class="btn btn-outline-primary wallet-search-button" onClick={() => { navigate("/chart", { state : { coin : 'bitcoin' }}) }}>View Price Action &raquo;</button>
+                                    <button class="btn btn-outline-primary wallet-search-button" onClick={ bitcoinButtonHandler }>View Price Action &raquo;</button>
                                 </div>
                                 <div class="col-md-6 p-3">
                                     <img src={ require("../../assets/images/ethereum.svg").default } width="75" height="75" alt="logo" /><br />
@@ -213,7 +230,7 @@ const Home = () => {
                                     <p style={{ display: 'inline' }}>24 Hour % Change: </p>
                                     <b><p style={{ display: 'inline', color: ethColourChange }}>{ ethColourChange === "red" ? ethPrice.information.ethereum.usd_24h_change.toFixed(2) + "%": "+" + ethPrice.information.ethereum.usd_24h_change.toFixed(2) + "%" }</p></b> 
                                     <br />
-                                    <button class="btn btn-outline-primary wallet-search-button" onClick={() => { navigate("/chart", { state: { coin: 'ethereum' }}) }}>View Price Action &raquo;</button>
+                                    <button class="btn btn-outline-primary wallet-search-button" onClick={ ethereumButtonHandler }>View Price Action &raquo;</button>
                                 </div>
                             </div>
                         </div>
