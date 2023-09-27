@@ -26,13 +26,13 @@ ChartJS.register(
   Legend
 );
 
-const GenericChartPage = () => {
+const ArbitrumPricePage = () => {
     const navigate = useNavigate();
 
     // 24 Hr % Change + Current Coin Price
    
-    // Set it to 14 days by default
-    const [interval, updateInterval] = useState(14);
+    // Set it to 7 days by default
+    const [interval, updateInterval] = useState(7);
 
     const coinPriceQuery = useQuery({
       queryKey: ['coin', 'arbitrum', interval],
@@ -47,6 +47,9 @@ const GenericChartPage = () => {
     // Buttons for displaying different chart date ranges, used to update the diplay chart date, which triggers a re-render
     const buttonHandler = (d) => {
       switch(d) {  
+        case "Last 7 Days":
+          updateInterval(7);
+          break;
         case "Last 14 Days":
           updateInterval(14);
           break;
@@ -85,9 +88,13 @@ const GenericChartPage = () => {
      }
   }
 
-  let buttonDaysArray = ["Last 14 Days", "Last 30 Days"];
+  let buttonDaysArray = ["Last 7 days", "Last 14 Days", "Last 30 Days"];
   let buttons = buttonDaysArray.map((day, key) =>  {
-    return <button id={ key } onClick={ e => { e.preventDefault(); buttonHandler(day); }} style={{ marginTop: '2rem', marginRight: '1rem', marginBottom: '5rem', paddingLeft: '0.5rem', paddingRight: '0.5rem' }} className="btn btn-secondary">{ day }</button>
+    return <button id={ key } 
+                   disabled={ day.includes(`${interval}`)} 
+                   onClick={ e => { e.preventDefault(); buttonHandler(day); }} 
+                   style={{ marginTop: '2rem', marginRight: '1rem', marginBottom: '5rem', paddingLeft: '0.5rem', paddingRight: '0.5rem' }} 
+                   className="btn btn-secondary">{ day }</button>
   });
 
   // Display Title, 24 Hr. Price% Change, Price of Coin
@@ -144,4 +151,4 @@ const GenericChartPage = () => {
   }
 }
 
-export default GenericChartPage;
+export default ArbitrumPricePage;
