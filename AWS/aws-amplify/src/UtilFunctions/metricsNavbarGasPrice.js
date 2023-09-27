@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const metricsNavbarGasPrice = async () => {
-    const NODE_SERVER_URL = 'http://localhost:5000/';
+    const NODE_SERVER_URL = 'https://18.221.208.44.nip.io/';
     const GAS_TRACKER_ENDPOINT = 'gas-track';
 
     let gasPriceData = [];

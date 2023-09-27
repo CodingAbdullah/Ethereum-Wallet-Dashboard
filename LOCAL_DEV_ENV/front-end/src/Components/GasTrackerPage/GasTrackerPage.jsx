@@ -1,66 +1,28 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { metricsNavbarGasPrice } from '../../UtilFunctions/metricsNavbarGasPrice';
 import { useNavigate } from 'react-router';
-import axios from 'axios';
 import GasBaseFeeCard from '../GasBaseFeeCard/GasBaseFeeCard';
 import GasBlockPriceCard from '../GasBlockPriceCard/GasBlockPriceCard';
 
 const GasTrackerPage = () => {
-    const NODE_SERVER_URL = 'http://localhost:5000';
-    const GAS_TRACK_ENDPOINT = '/gas-track'
-
-    const navigate = useNavigate();
-
-    const [gasInfo, updateGasInfo] = useState({
-        information: null
+    // Setting up query to fetch Ethereum gas price
+    const gasPriceQuery = useQuery({
+        queryKey: ['gas price'],
+        queryFn: metricsNavbarGasPrice
     });
 
-    const clearHandler = () => {
-        updateGasInfo((prevState) => { // Clear data when error found with API request
-            return {
-                ...prevState,
-                information: null
-            }
-        });
-    }
-
-    useEffect(() => {
-        const gasInfo = async () => {
-            const options = {
-                method: 'GET',
-                mode: 'cors',
-                headers: {
-                    'content-type' : 'application/json', 
-                    'accept': 'application/json'
-                }
-            };
-
-            try {                    
-                const response = await axios.get(NODE_SERVER_URL + GAS_TRACK_ENDPOINT, options)
-                if (response.status === 200){
-                    updateGasInfo((prevState) => { // If successful, update information
-                        return {
-                            ...prevState,
-                            information: response.data.information
-                        }
-                    });
-                }
-                else {
-                    clearHandler();
-                }
-            }
-            catch {
-                clearHandler();
-            }
-        }
-        gasInfo();
-    }, [])
+    const navigate = useNavigate();
     
-    if (gasInfo.information === null){
+    if (gasPriceQuery.isLoading){
         return <div role="main" class="p-3">Loading...</div>
     }
-    else { 
+    else if (gasPriceQuery.isError){
+        return <div role="main" class="p-3">Error fetching gas information</div>
+    }
+    else if (gasPriceQuery.isSuccess){ 
         // Using parent-child component hierarchy, pass down state information for display and leaner code
+        let gas = gasPriceQuery.data[0].information;
         return (
             <div className='gas-tracker-page'>
                 <main role="main" class="p-3">
@@ -68,38 +30,38 @@ const GasTrackerPage = () => {
                         <h1 class="h2">Gas Information</h1>
                     </div>
                     <div class="jumbotron">
-                        <h4 style={{marginTop: '-1rem'}} class="display-5">General Metrics</h4>
-                        <div style={{marginTop: '3rem', marginBottom: '-2rem'}} class="container">
-                            <p>System: <b>{gasInfo.information.system.substring(0, 1).toUpperCase() + gasInfo.information.system.substring(1)}</b></p>
-                            <p>Network: <b>{gasInfo.information.network.substring(0, 1).toUpperCase() + gasInfo.information.network.substring(1)}</b></p>
-                            <p>Unit: <b>{gasInfo.information.unit.substring(0 ,1).toUpperCase() + gasInfo.information.unit.substring(1)}</b></p>
-                            <p>Max Price: <b>{gasInfo.information.maxPrice}</b></p>
-                            <p>Current Block Number: <b>{gasInfo.information.currentBlockNumber}</b></p>
-                            <p>MsSinceLastBlock: <b>{gasInfo.information.msSinceLastBlock}</b></p>
+                        <h4 style={{ marginTop: '-1rem' }} class="display-5">General Metrics</h4>
+                        <div style={{ marginTop: '3rem', marginBottom: '-2rem' }} class="container">
+                            <p>System: <b>{ gas.system.substring(0, 1).toUpperCase() + gas.system.substring(1) }</b></p>
+                            <p>Network: <b>{ gas.network.substring(0, 1).toUpperCase() + gas.network.substring(1) }</b></p>
+                            <p>Unit: <b>{ gas.unit.substring(0 ,1).toUpperCase() + gas.unit.substring(1) }</b></p>
+                            <p>Max Price: <b>{ gas.maxPrice }</b></p>
+                            <p>Current Block Number: <b>{ gas.currentBlockNumber }</b></p>
+                            <p>MsSinceLastBlock: <b>{ gas.msSinceLastBlock }</b></p>
                         </div>
                     </div>
-                    <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <div style={{ marginTop: '2rem' }} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h3 class="h3">Block Prices</h3>
                     </div> 
-                    <div style={{marginTop: '2rem'}} class="row">
-                        { gasInfo.information.blockPrices[0].estimatedPrices.map((block, key) => {
+                    <div style={{ marginTop: '2rem' }} class="row">
+                        { gas.blockPrices[0].estimatedPrices.map((block, key) => {
                             return (
-                                <GasBlockPriceCard id={key} information={block}/>
+                                <GasBlockPriceCard id={ key } information={ block }/>
                             )
                         })}
                     </div>
-                    <div style={{marginTop: '4rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <div style={{ marginTop: '4rem' }} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h3 class="h3">Base Fees</h3>
                     </div>  
-                    <div style={{marginTop: '2rem'}} class="row">
-                        { gasInfo.information.estimatedBaseFees.map((base, key) => {
+                    <div style={{ marginTop: '2rem' }} class="row">
+                        { gas.estimatedBaseFees.map((base, key) => {
                             return (
-                                <GasBaseFeeCard id={key} information={base} />
+                                <GasBaseFeeCard id={ key } information={ base } />
                             )
                         })}
                     </div>
                     <div>
-                        <button style={{ marginTop: '3rem'}} onClick={() => navigate("/")} class='btn btn-success'>Go To Dashboard</button>
+                        <button style={{ marginTop: '3rem'}} onClick={ () => navigate("/") } class='btn btn-success'>Go To Dashboard</button>
                     </div>
                 </main>
             </div>
