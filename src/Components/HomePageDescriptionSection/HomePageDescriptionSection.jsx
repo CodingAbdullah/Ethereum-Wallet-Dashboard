@@ -18,8 +18,8 @@ const HomePageDescriptionSection = (props) => {
                     There, you can decide which network to view wallet information from (<b>mainnet</b> by default).
                 </p>
                 <p>Enter the <b>public</b> address below (42-digit hex code) of a wallet to track activity, cheers!</p>
-                <form style={{ marginTop: '3rem'}} onSubmit={props.form}>
-                    <input class="form-control mr-sm-2" type="search" placeholder="Enter Wallet Address (0xa2e3se4u5F...)" max="42" min="42" aria-label="Search" onChange={props.updatingAddress} required />
+                <form style={{ marginTop: '3rem'}} onSubmit={ props.form }>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Enter Wallet Address (0xa2e3se4u5F...)" max="42" min="42" aria-label="Search" onChange={ props.updatingAddress } required />
                     <button class="btn btn-outline-success wallet-search-button" type="submit">Search &raquo;</button>
                 </form>
             </div>
