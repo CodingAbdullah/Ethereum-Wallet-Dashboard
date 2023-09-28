@@ -54,23 +54,6 @@ const GenericChartPage = () => {
                           coinSelector.split("-")[0].substring(0, 1).toUpperCase() + coinSelector.split("-")[0].substring(1, coinSelector.split("-")[0].length) : 
                           coinSelector.substring(0, 1).toUpperCase() + coinSelector.substring(1, coinSelector.length); // Naming for chart 
 
-    // Buttons for displaying different chart date ranges, used to update the diplay chart date, which triggers a re-render
-    const buttonHandler = (d) => {
-      switch(d) {  
-        case "Last 7 days":
-          updateInterval(7);
-          break;
-        case "Last 14 Days":
-          updateInterval(14);
-          break;
-        case "Last 30 Days":
-          updateInterval(30);
-          break;
-        default:
-          break;
-      }
-    }
-
   // Set display configurations
   var coinData = {
     labels: coinPriceQuery.data?.time,
@@ -102,7 +85,7 @@ const GenericChartPage = () => {
   let buttons = buttonDaysArray.map((day, key) =>  {
     return <button id={ key } 
                    disabled={ day.includes(`${interval}`)} 
-                   onClick={ e => { e.preventDefault(); buttonHandler(day); }} 
+                   onClick={ e => { e.preventDefault(); updateInterval(Number(day.split(" ")[1])); }} // Split on space and fetch middle value which is a Number
                    style={{ marginTop: '2rem', marginRight: '1rem', marginBottom: '5rem', paddingLeft: '0.5rem', paddingRight: '0.5rem' }} 
                    className="btn btn-secondary">{ day }</button>
   });
