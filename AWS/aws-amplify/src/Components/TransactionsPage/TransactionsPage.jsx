@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
 import Alert from '../Alert/Alert';
 import TransactionsInfoTable from '../TransactionsInfoTable/TransactionsInfoTable';
 import InternalTransactionsInfoTable from '../InternalTransactionsInfoTable/InternalTransactionsInfoTable';
 import axios from 'axios';
 
 const Transactions = () => {
+    const walletAddress = useSelector(state => state.wallet.walletAddress);
     const [amount, updateAmount] = useState(0.00);
     const [emptyAlert, updateEmptyAlert] = useState(false);
     const [emptyInteralTransactionAlert, updateEmptyInternalTransactionAlert] = useState(false);
-    const [address, updateAddress] = useState("");
 
     const [ethPrice, updateETHPrice] = useState({ 
         information: null // ETH Price Tracker
@@ -24,7 +25,7 @@ const Transactions = () => {
     });
     
     // Endpoints to be used
-    const NODE_SERVER_URL = "https://18.221.208.44.nip.io"; // AWS EC2 Node Server URL
+    const NODE_SERVER_URL = "https://18.221.208.44.nip.io";
     const TRANSACTION_BALANCE_ENDPOINT = '/address-transaction-amount';
     const TRANSACTION_HISTORY_ENDPOINT = '/address-transaction-history';
     const INTERNAL_TRANSACTION_HISTORY_ENDPOINT = '/address-internal-transaction-history';
@@ -36,17 +37,14 @@ const Transactions = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const addr = localStorage.getItem('walletAddress');
-        updateAddress(addr);
-
         // Redirect if invalid wallet is asked to be entered again as it is removed from system
-        if ((addr === null) || (addr.length !== 42) || (addr.substring(0, 2) !== '0x')){
+        if ((walletAddress === null) || (walletAddress.length !== 42) || (walletAddress.substring(0, 2) !== '0x')){
             navigate('/');
         }
 
         const options = {
             method: 'POST',
-            body: JSON.stringify({ address : addr }),
+            body: JSON.stringify({ address : walletAddress }),
             headers: {
                 'content-type': 'application/json'
             }
@@ -143,7 +141,7 @@ const Transactions = () => {
     // Conditionally render page based on alerts when wallet is either empty or invalid
     if ( emptyAlert ) {
         return (
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <main role="main" class="col-md-9 p-3">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Transactions</h1>
                 </div>
@@ -152,54 +150,54 @@ const Transactions = () => {
             </main>
         )
     }
-    else if ( address === '' || ethPrice === {} || transactions.information === null || transactions.information === null) {
-        return <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">Loading...</div>
+    else if ( walletAddress === '' || ethPrice === {} || transactions.information === null || transactions.information === null) {
+        return <div role="main" class="col-md-9 p-3">Loading...</div>
     }
     else {
         return ( 
             <>
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <main role="main" class="col-md-9 p-3">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">Transactions</h1>
                     </div>
-                    <h3 style={{ marginTop: '1.5rem' }}>{ "Account: " + address }</h3>
+                    <h3 style={{ marginTop: '1.5rem' }}>{ "Account: " + walletAddress }</h3>
                     <h5>{ "ETH Balance: " + (amount*(1/1000000000000000000)) + " ETH (@ $" + ethPrice.information.ethereum.usd.toFixed(2) + " USD/ETH)" }</h5>
                     <h6>{ "Amount in USD: $" + ((amount*(1/1000000000000000000))*(ethPrice.information.ethereum.usd)).toFixed(2) + " USD" }</h6>
                 </main>            
-                <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                <main class="col-md-9 p-3" role="main">
                         <div>
                             {
                                 transactions.information === null ? null :
                                     <>
-                                        <main style={{marginTop: '5rem'}} role="main">
-                                            <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                        <main style={{ marginTop: '5rem' }} role="main">
+                                            <div style={{ marginTop: '1rem' }} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                                 <h3 class="h3">Latest 1000 Transactions or Maximum/Wallet</h3>
                                             </div>
                                         </main>
-                                        <TransactionsInfoTable walletAddress={ address } networkFetch={false} data={ transactions.information.result } />                                
+                                        <TransactionsInfoTable walletAddress={ walletAddress } networkFetch={false} data={ transactions.information.result } />                                
                                     </>
                             }
                         </div>
                 </main>
-                <main style={{marginTop: '1rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                <main style={{ marginTop: '1rem' }} class="col-md-9 p-3" role="main">
                         <div>
                             {
                                 emptyInteralTransactionAlert ? <Alert type='warning-empty-internal' /> :
                                 (
                                     internalTransactions.information === null ? null :
                                         <>
-                                            <main style={{marginTop: '5rem'}} role="main">
-                                                <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                            <main style={{ marginTop: '5rem' }} role="main">
+                                                <div style={{ marginTop: '1rem' }} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                                     <h3 class="h3">Internal Transactions</h3>
                                                 </div>
                                             </main>
-                                            <InternalTransactionsInfoTable walletAddress={ address } data={ internalTransactions.information.result } /> 
+                                            <InternalTransactionsInfoTable walletAddress={ walletAddress } data={ internalTransactions.information.result } /> 
                                         </>
                                 )
                             }
                         </div>
                 </main>
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <main role="main" class="p-3">
                     <button style={{ marginTop: '1.5rem' }} class="btn btn-success" onClick={() => { navigate("/"); localStorage.removeItem('walletAddress'); }}>Go Back</button>
                 </main>
             </>
