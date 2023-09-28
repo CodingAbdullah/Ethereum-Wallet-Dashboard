@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 // Persist storage or set to a default value
 let walletAddressState = localStorage.getItem('walletAddress') === null ? 
                             { walletAddress: '' } : 
-                            localStorage.getItem('walletAddress');
+                            { walletAddress: localStorage.getItem('walletAddress') };
 
 
 // Create slice of global data to represent wallet address

@@ -6,7 +6,7 @@ import walletAddressReducer from "../reducer/walletAddressReducer";
 const store = configureStore({
     reducer : {
         coinSelection: coinSelectionReducer,
-        walletAddress: walletAddressReducer
+        wallet: walletAddressReducer
     }
 });
 
