@@ -1,15 +1,21 @@
 import axios from 'axios';
 import moment from 'moment';
 
-export const ERC20CoinPriceDuration = async ({ querykey }) => {
+export const erc20CoinPriceDuration = async ({ queryKey }) => {
     // If empty, return nothing
-    if (querykey[1] === ''){
-        return;
+    if (queryKey === undefined){
+        return [];
+    }
+    else if (queryKey[1] === undefined){
+        return [];
+    }
+    else if (queryKey[1] === ''){
+        return [];
     }
     else {
         // Request ERC20 token prices
         const URL= "https://api.coingecko.com/api/v3";
-        const ERC20_PRICE_ENDPOINT = '/coins/ethereum/contract/' + querykey[1] + '/market_chart?vs_currency=usd&days=0.05';
+        const ERC20_PRICE_ENDPOINT = '/coins/ethereum/contract/' + queryKey[1] + '/market_chart?vs_currency=usd&days=0.05';
         let coinPricesByInterval = {};
 
         let response = await axios.get(URL + ERC20_PRICE_ENDPOINT); // Fetch ERC20 token prices by interval

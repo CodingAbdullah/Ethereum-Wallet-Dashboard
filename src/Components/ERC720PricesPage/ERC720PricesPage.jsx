@@ -4,8 +4,8 @@ import { Line } from 'react-chartjs-2';
 import { useNavigate } from 'react-router-dom';
 import { coinPricesByDay } from '../../UtilFunctions/coinPricesByDay';
 import { metricsNavbarEthPrice } from '../../UtilFunctions/metricsNavbarEthPrice';
-import { ERC20CoinInfo } from '../../UtilFunctions/ERC20CoinInfo';
-import { ERC20CoinPriceDuration } from '../../UtilFunctions/ERC20CoinPriceDuration';
+import { erc20CoinInfo } from '../../UtilFunctions/erc20CoinInfo';
+import { erc20CoinPriceDuration } from '../../UtilFunctions/erc20CoinPriceDuration';
 import Alert from '../Alert/Alert';
 import ERC720PricesInfoTable from '../ERC720PricesInfoTable/ERC720PricesInfoTable';
 
@@ -50,14 +50,14 @@ const ERC720TokenPricesPage = () => {
 
     // Setting up a reference for token address instead, calls will be made for each character
     // React-Query identifies each query with its unique key
-    const ERC20TokenPriceQuery = useQuery({
+    const erc20TokenPriceQuery = useQuery({
       queryKey: ['ERC20 token information', setTokenContractAddress],
-      queryFn: ERC20CoinInfo
+      queryFn: erc20CoinInfo
     });
 
-    const ERC20TokenPriceDurationQuery = useQuery({
+    const erc20TokenPriceDurationQuery = useQuery({
       queryKey: ['ERC20 token price duration', setTokenContractAddress],
-      queryFn: ERC20CoinPriceDuration
+      queryFn: erc20CoinPriceDuration
     });
    
     const clearHandler = () => {
@@ -88,12 +88,12 @@ const ERC720TokenPricesPage = () => {
 
     // Set display configurations
     var data = {
-      labels: chartToggle === 'ethereum' ? ethPriceDurationQuery.data?.time : ERC20TokenPriceDurationQuery.data?.time,
+      labels: chartToggle === 'ethereum' ? ethPriceDurationQuery.data?.time : erc20TokenPriceDurationQuery.data?.time,
       datasets: [{
         label: chartToggle === 'ethereum' ? 'Ethereum Price' : 'Last Ten Price Points',
         data: chartToggle === 'ethereum' ? 
               ethPriceDurationQuery.data?.coinData.prices.map(x => x[1].toFixed(2)) : 
-              ERC20TokenPriceDurationQuery.data?.coinData.prices.map(x => x[1].toFixed(2)),
+              erc20TokenPriceDurationQuery.data?.coinData.prices.map(x => x[1].toFixed(2)),
         backgroundColor: 'red',
         borderColor: 'red',
         borderWidth: 1
@@ -106,7 +106,7 @@ const ERC720TokenPricesPage = () => {
       plugins: {
         title: {
           display: true,
-          text: chartToggle === 'ethereum' ? 'Ethereum Chart' : ERC20TokenPriceQuery.data?.name + ' Chart'
+          text: chartToggle === 'ethereum' ? 'Ethereum Chart' : erc20TokenPriceQuery.data?.name + ' Chart'
         },
         legend: {
           display: true,
@@ -116,10 +116,10 @@ const ERC720TokenPricesPage = () => {
     }
 
     // Display Title, 24 Hr. Price% Change, Price of Coin
-    if (ethPriceDurationQuery.isLoading || ethPriceQuery.isLoading || ERC20TokenPriceDurationQuery.isLoading || ERC20TokenPriceQuery.isLoading) {
+    if (ethPriceDurationQuery.isLoading || ethPriceQuery.isLoading || erc20TokenPriceDurationQuery.isLoading || erc20TokenPriceQuery.isLoading) {
       return <div role="main" className="p-3">Loading...</div>
     }
-    else if (ethPriceDurationQuery.isError || ethPriceQuery.isError || ERC20TokenPriceDurationQuery.isError || ERC20TokenPriceQuery.isError) {
+    else if (ethPriceDurationQuery.isError || ethPriceQuery.isError || erc20TokenPriceDurationQuery.isError || erc20TokenPriceQuery.isError) {
       return <div role="main" className="p-3">Error fetching Data...</div>
     }
     else {
@@ -149,7 +149,7 @@ const ERC720TokenPricesPage = () => {
               formAlert === "invalid" ? null : 
                 <>
                   <h3 style={{ marginTop: '5rem' }}>
-                    { chartToggle === 'ethereum' ? "Ethereum " : ERC20TokenPriceQuery.data?.name } Price: <b>${ chartToggle === 'ethereum' ? ethPriceQuery.data[0].ethereum.usd : ERC20TokenPriceQuery.data?.market_data.current_price.usd } USD</b>
+                    { chartToggle === 'ethereum' ? "Ethereum " : erc20TokenPriceQuery.data.name } Price: <b>${ chartToggle === 'ethereum' ? ethPriceQuery.data[0].ethereum.usd : erc20TokenPriceQuery.data.market_data.current_price.usd }</b>
                   </h3> 
                   <h5 style={{ marginBottom: '2rem', display: 'inline' }}>24-Hr % Chg:
                     { chartToggle === 'ethereum' ? (ethPriceQuery.data[0].ethereum.usd_24h_change < 0 ? 
@@ -157,15 +157,17 @@ const ERC720TokenPricesPage = () => {
                       <h5 style={{ display: 'inline', color: 'green' }}>{ " +" + ethPriceQuery.data[0].ethereum.usd_24h_change.toFixed(2) + "%" }</h5>
                     )
                     :
-                    (ERC20TokenPriceQuery.data?.market_data.price_change_percentage_24h < 0 ?
-                    <h5 style={{ display: 'inline', color: 'red' }}>{ " " + ERC20TokenPriceQuery.data?.market_data.price_change_percentage_24h.toFixed(2) + "%" }</h5> : 
-                    <h5 style={{ display: 'inline', color: 'green' }}>{ " +" + ERC20TokenPriceQuery.data?.market_data.price_change_percentage_24h.toFixed(2) + "%" }</h5>
+                    (erc20TokenPriceQuery.data?.market_data.price_change_percentage_24h < 0 ?
+                    <h5 style={{ display: 'inline', color: 'red' }}>{ " " + erc20TokenPriceQuery.data?.market_data.price_change_percentage_24h.toFixed(2) + "%" }</h5> : 
+                    <h5 style={{ display: 'inline', color: 'green' }}>{ " +" + erc20TokenPriceQuery.data?.market_data.price_change_percentage_24h.toFixed(2) + "%" }</h5>
                     )
                     }
                   </h5>
                 </> 
             }
             <div>
+            { 
+              formAlert !== 'invalid' ?
                 <div style={{ marginTop: '2rem' }}>
                   <Line 
                     data={ data }
@@ -173,16 +175,16 @@ const ERC720TokenPricesPage = () => {
                     width={ 250 }
                     options={ options }
                   />
-                </div>
+                </div> : null }
             </div>
             <div style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%', marginTop: '3rem' }} >
               {
                 // Display data of the valid ERC20 token
                 chartToggle === 'ethereum' || formAlert === 'invalid' ? <div /> :
-                <ERC720PricesInfoTable data={ ERC20TokenPriceQuery.data } />
+                <ERC720PricesInfoTable data={{ information: erc20TokenPriceQuery.data }} />
               }
             </div>
-            { ERC20TokenPriceQuery.data && formAlert !== 'invalid' ? <hr style={{ marginTop: '2rem', marginBottom: '2rem' }} /> : null }
+            { erc20TokenPriceQuery.data && formAlert !== 'invalid' ? <hr style={{ marginTop: '2rem', marginBottom: '2rem' }} /> : null }
           </main>
         </div>
       )
