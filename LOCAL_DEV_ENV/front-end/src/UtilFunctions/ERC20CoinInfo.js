@@ -1,9 +1,15 @@
 import axios from 'axios';
 
-export const ERC20CoinInfo = async ({ queryKey }) => {
+export const erc20CoinInfo = async ({ queryKey }) => {
     // If empty, return nothing
-    if (queryKey[1] === ''){
-        return;
+    if (queryKey === undefined){
+        return [];
+    }
+    else if (queryKey[1] === undefined){
+        return [];
+    }
+    else if (queryKey[1] === ''){
+        return [];
     }
     else {
         // Request ERC20 token information

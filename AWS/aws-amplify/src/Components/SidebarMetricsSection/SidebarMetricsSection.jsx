@@ -20,7 +20,7 @@ const SidebarMetricsSection = () => {
         return <div>Loading...</div>
     }
     else if (ethPriceQuery.isError || gasPriceQuery.isError){
-        return <div>Error Fetcing data</div>
+        return <div>Error Fetching data</div>
     }
     else if (ethPriceQuery.isSuccess && gasPriceQuery.isSuccess){
 
