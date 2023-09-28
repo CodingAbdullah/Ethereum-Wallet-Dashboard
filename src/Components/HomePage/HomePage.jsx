@@ -41,7 +41,7 @@ const Home = () => {
     });
 
     // Pass function to child component
-    const updateAddress = (e) => {
+    const updateFormAddress = (e) => {
         updateWalletAddress(e.target.value);
     }
     
@@ -102,7 +102,7 @@ const Home = () => {
                             <h1 class="h2 p-3">Dashboard</h1>
                         </div>
                         { formAlert === "invalid" ? <div><Alert type="danger"/></div> : <div/> }
-                        <HomePageDescriptionSection form={ formHandler } updatingAddress={ updateAddress } />
+                        <HomePageDescriptionSection form={ formHandler } updatingAddress={ updateFormAddress } />
                         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <h1 class="h2 p-3">Market Data</h1>
                         </div>
