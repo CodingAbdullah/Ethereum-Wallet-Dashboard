@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import ChangeHighlight from 'react-change-highlight';
 import { metricsNavbarEthPrice } from '../../UtilFunctions/metricsNavbarEthPrice';
 import { metricsNavbarGasPrice } from '../../UtilFunctions/metricsNavbarGasPrice';
+import './MetricsNavbar.css';
 
 const MetricsNavbar = () => {
     // Setting up query to fetch Ethereum Price
@@ -9,6 +11,8 @@ const MetricsNavbar = () => {
         queryKey: ['eth price'],
         queryFn: metricsNavbarEthPrice
     });
+
+    const ethPriceRef = useRef();
 
     // Setting up query to fetch Ethereum gas price
     const gasPriceQuery = useQuery({
@@ -23,10 +27,13 @@ const MetricsNavbar = () => {
         return <div>Error Fetching data</div>
     }
     else if (ethPriceQuery.isSuccess && gasPriceQuery.isSuccess){
-
-        // Adding another Navbar containing ETH price and gas information
+        // Adding another Navbar containing ETH price, comparison to previous price, and gas information
         let price = ethPriceQuery.data[Object.keys(ethPriceQuery.data)[0]].ethereum;
+        let previousPrice = Number(ethPriceRef.current?.innerHTML.substring(1));
         let gas = gasPriceQuery.data[0].information;
+        
+        // Dynamically add CSS class based on price change
+        let cssColourPicker = ( ethPriceRef.current === undefined ? "" : ( price.usd >= previousPrice ? 'tickerUpHighlight' : 'tickerDownHighlight' ));
 
         return (
             <nav className="navbar navbar-expand-lg navbar-light bg-dark">
@@ -34,7 +41,11 @@ const MetricsNavbar = () => {
                     <div>
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item"> 
-                                <p style={{ paddingLeft: '1rem', display: 'inline', color: 'white', marginTop: '1rem'}}>ETH Price: <b>{ price == null ? "Loading" : "$" + price.usd.toFixed(2) }</b></p>
+                                <ChangeHighlight highlightClassName={ cssColourPicker } showAfter={ 100 } hideAfter={ 3000 }>
+                                    <p style={{ paddingLeft: '1rem', display: 'inline', color: 'white' }}> 
+                                        ETH Price: <b ref={ ethPriceRef }>{ price == null ? "Loading" : "$" + price.usd.toFixed(2) }</b>
+                                    </p>
+                                </ChangeHighlight>
                             </li>
                             <li className="nav-item">
                                 <p style={{ paddingLeft: '1rem', display: 'inline', color: 'white' }}>24-Hr % Chg:</p>
@@ -44,7 +55,7 @@ const MetricsNavbar = () => {
                             </li>
                             <li className="nav-item">
                                 <p style={{ paddingLeft: '1rem', display: 'inline', color: 'white' }}>Gas Price:</p>
-                                <p style={{ display: 'inline', color: 'white' }}><b>{ " " + gas.maxPrice + " " }Gwei</b></p>
+                                <p style={{ display: 'inline', color: 'white' }}><b>{ " " + gas.maxPrice + " " } Gwei</b></p>
                             </li>
                         </ul>
                     </div>
