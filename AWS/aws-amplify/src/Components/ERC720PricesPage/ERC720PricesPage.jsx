@@ -8,6 +8,8 @@ import { erc20CoinInfo } from '../../UtilFunctions/erc20CoinInfo';
 import { erc20CoinPriceDuration } from '../../UtilFunctions/erc20CoinPriceDuration';
 import Alert from '../Alert/Alert';
 import ERC720PricesInfoTable from '../ERC720PricesInfoTable/ERC720PricesInfoTable';
+import ChangeHighlight from 'react-change-highlight';
+import './ERC720PricesPage.css';
 
 import {
   Chart as ChartJS,
@@ -59,6 +61,8 @@ const ERC720TokenPricesPage = () => {
       queryKey: ['ERC20 token price duration', setTokenContractAddress],
       queryFn: erc20CoinPriceDuration
     });
+
+    const ethPriceRef = useRef(); // Track Ethereum price changes
    
     const clearHandler = () => {
       // Set toggle back to Ethereum
@@ -123,6 +127,11 @@ const ERC720TokenPricesPage = () => {
       return <div role="main" className="p-3">Error fetching Data...</div>
     }
     else {
+      let ethPriceCSSColourPicker = chartToggle === 'Ethereum' && ethPriceRef.current === undefined ? '' : 
+                                    ( ethPriceQuery.data[0].ethereum.usd >= Number(ethPriceRef.current?.innerHTML.substring(1)) ? 
+                                      'tickerUpHighlight' : 'tickerDownHighlight'
+                                    );
+
       // Generic coin setup using Object keys from API responses to generate output, code added when user requests a display of a valid ERC 20 token
       return (
         <div>
@@ -147,17 +156,28 @@ const ERC720TokenPricesPage = () => {
             </div>
             { 
               formAlert === "invalid" ? null : 
-                <>
-                  <h3 style={{ marginTop: '5rem' }}>
-                    { chartToggle === 'ethereum' ? "Ethereum " : erc20TokenPriceQuery.data.name } Price: <b>${ chartToggle === 'ethereum' ? ethPriceQuery.data[0].ethereum.usd : erc20TokenPriceQuery.data.market_data.current_price.usd }</b>
-                  </h3> 
+                <> 
+                  {
+                    chartToggle === 'ethereum' ?                   
+                      <ChangeHighlight highlightClassName={ ethPriceCSSColourPicker } showAfter={ 100 } hideAfter={ 3000 }>
+                        <h3 style={{ marginTop: '5rem' }}>
+                          { "Ethereum " } Price: 
+                          <b ref={ ethPriceRef }>{ "$" + ethPriceQuery.data[0].ethereum.usd }</b>
+                        </h3> 
+                      </ChangeHighlight>
+                    :
+                      <h3 style={{ marginTop: '5rem' }}>
+                        { erc20TokenPriceQuery.data.name } Price: 
+                        <b>${ erc20TokenPriceQuery.data.market_data.current_price.usd }</b>
+                      </h3> 
+                  }
                   <h5 style={{ marginBottom: '2rem', display: 'inline' }}>24-Hr % Chg:
-                    { chartToggle === 'ethereum' ? (ethPriceQuery.data[0].ethereum.usd_24h_change < 0 ? 
+                    { chartToggle === 'ethereum' ? ( ethPriceQuery.data[0].ethereum.usd_24h_change < 0 ? 
                       <h5 style={{ display: 'inline', color: 'red' }}>{ " " + ethPriceQuery.data[0].ethereum.usd_24h_change.toFixed(2) + "%" }</h5> : 
                       <h5 style={{ display: 'inline', color: 'green' }}>{ " +" + ethPriceQuery.data[0].ethereum.usd_24h_change.toFixed(2) + "%" }</h5>
                     )
                     :
-                    (erc20TokenPriceQuery.data?.market_data.price_change_percentage_24h < 0 ?
+                    ( erc20TokenPriceQuery.data?.market_data.price_change_percentage_24h < 0 ?
                     <h5 style={{ display: 'inline', color: 'red' }}>{ " " + erc20TokenPriceQuery.data?.market_data.price_change_percentage_24h.toFixed(2) + "%" }</h5> : 
                     <h5 style={{ display: 'inline', color: 'green' }}>{ " +" + erc20TokenPriceQuery.data?.market_data.price_change_percentage_24h.toFixed(2) + "%" }</h5>
                     )

@@ -31,3 +31,13 @@ div {
         animation: marquee 20s linear infinite;
     }
 }
+
+.tickerDownHighlight {
+    color: #FF0000;
+    background-color: #ffdada;
+}
+
+.tickerUpHighlight {
+	color: #2cb52c;
+	background-color:#c1fec1
+}

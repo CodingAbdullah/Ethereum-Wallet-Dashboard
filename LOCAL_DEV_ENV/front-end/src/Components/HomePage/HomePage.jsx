@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { homePageBitcoinPrice } from '../../UtilFunctions/homePageBitcoinPrice';
 import { homePageGlobalMarketData } from '../../UtilFunctions/homePageGlobalMarketData';
@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { selectCoin } from '../../redux/reducer/coinSelectionReducer';
 import { updateAddress, resetAddress } from '../../redux/reducer/walletAddressReducer';
 import HomePageDescriptionSection from '../HomePageDescriptionSection/HomePageDescriptionSection';
+import ChangeHighlight from 'react-change-highlight';
 import './HomePage.css';
 import Alert from '../Alert/Alert';
 
@@ -39,6 +40,10 @@ const Home = () => {
         queryKey: ['transaction data'],
         queryFn: homePageTrendingCoins
     });
+
+    // Track Bitcoin, Ethereum price changes
+    const btcPriceRef = useRef();
+    const ethPriceRef = useRef();
 
     // Pass function to child component
     const updateFormAddress = (e) => {
@@ -94,7 +99,15 @@ const Home = () => {
         const { usd } = globalMarketDataQuery.data[0].data.total_market_cap;
         const { btc, eth } = globalMarketDataQuery.data[0].data.market_cap_percentage;
         const { market_cap_change_percentage_24h_usd } = globalMarketDataQuery.data[0].data;
-        
+
+        // Get values of coin prices and use them to compare to newly updated price for highlighting
+        let previousBTCPrice = Number(btcPriceRef.current?.innerHTML.split(" ")[0].substring(1));
+        let previousETHPrice = Number(ethPriceRef.current?.innerHTML.split(" ")[0].substring(1));
+
+        // Update ticker CSS style based on price change
+        let btcPriceCSSColourPicker = ( btcPriceRef.current === undefined ? "" : ( bitcoinPriceQuery.data[0].bitcoin.usd >= previousBTCPrice ? "tickerUpHighlight" : "tickerDownHighlight" ));
+        let ethPriceCSSColourPicker = ( ethPriceRef.current === undefined ? "" : ( ethereumPriceQuery.data[0].ethereum.usd >= previousETHPrice ? "tickerUpHighlight" : "tickerDownHighlight" ));
+
         return (
             <div class="home">
                 <main role="main">
@@ -120,7 +133,9 @@ const Home = () => {
                                 <div class="col-md-6 p-3">
                                     <img src={ require("../../assets/images/bitcoin.svg").default } width="75" height="75" alt="logo" /><br /> 
                                     <h4>BTC</h4>
-                                    <p>Price: <b>${ bitcoinPriceQuery.data[0].bitcoin.usd.toFixed(2) } USD</b></p> 
+                                    <ChangeHighlight highlightClassName={ btcPriceCSSColourPicker } showAfter={ 100 } hideAfter={ 3000 }>
+                                        <p>Price: <b ref={ btcPriceRef }>{ "$" + bitcoinPriceQuery.data[0].bitcoin.usd.toFixed(2) + " USD" }</b></p> 
+                                    </ChangeHighlight>
                                     <p style={{ display: 'inline' }}>24 Hour % Change: </p> 
                                     <b><p style={{ display: 'inline', color: bitcoinPriceQuery.data[0].bitcoin.usd_24h_change < 0 ? 'red' : 'green' }}>
                                         { bitcoinPriceQuery.data[0].bitcoin.usd_24h_change < 0 ? bitcoinPriceQuery.data[0].bitcoin.usd_24h_change.toFixed(2) + "%": "+" + bitcoinPriceQuery.data[0].bitcoin.usd_24h_change.toFixed(2) + "%" }
@@ -131,7 +146,9 @@ const Home = () => {
                                 <div class="col-md-6 p-3">
                                     <img src={ require("../../assets/images/ethereum.svg").default } width="75" height="75" alt="logo" /><br />
                                     <h4>ETH</h4>
-                                    <p>Price: <b>${ ethereumPriceQuery.data[0].ethereum.usd.toFixed(2) } USD</b></p>
+                                    <ChangeHighlight highlightClassName={ ethPriceCSSColourPicker } showAfter={ 100 } hideAfter={ 3000 }>
+                                        <p>Price: <b ref={ ethPriceRef }>{ "$" + ethereumPriceQuery.data[0].ethereum.usd.toFixed(2) + " USD" }</b></p>
+                                    </ChangeHighlight>
                                     <p style={{ display: 'inline' }}>24 Hour % Change: </p>
                                     <b><p style={{ display: 'inline', color: ethereumPriceQuery.data[0].ethereum.usd_24h_change < 0 ? 'red' : 'green' }}>
                                         { ethereumPriceQuery.data[0].ethereum.usd_24h_change < 0 ? ethereumPriceQuery.data[0].ethereum.usd_24h_change.toFixed(2) + "%": "+" + ethereumPriceQuery.data[0].ethereum.usd_24h_change.toFixed(2) + "%" }
