@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -7,6 +7,8 @@ import { coinPricesByDay } from '../../UtilFunctions/coinPricesByDay';
 import { currentCoinPrice } from '../../UtilFunctions/currentCoinPrice';
 import { selectCoin } from '../../redux/reducer/coinSelectionReducer';
 import CoinSelector from '../CoinSelector/CoinSelector';
+import ChangeHighlight from 'react-change-highlight';
+import './GenericChartPage.css';
 
 import {
   Chart as ChartJS,
@@ -38,6 +40,9 @@ const GenericChartPage = () => {
    
     // Set it to 7 days by default
     const [interval, updateInterval] = useState(7);
+
+    // Reference old coin price for determining highlight
+    const coinPriceRef = useRef();
 
     const coinPriceQuery = useQuery({
       queryKey: ['coin', coinSelector, interval],
@@ -107,17 +112,25 @@ const GenericChartPage = () => {
     let currentCoinPrice = currentCoinPriceQuery.data[0];
     let objKey = Object.keys(currentCoinPriceQuery.data[0])[0];
 
+    // Extract the previous coin price from the DOM
+    let previousCoinPrice = Number(coinPriceRef.current?.innerHTML.split(" ")[0].substring(1));
+
+    // Compare newly updated coin price to previous coin price to dynamically add CSS class
+    let coinPriceCSSColourPicker = coinPriceRef.current === undefined ? "" : ( currentCoinPrice[objKey].usd >= previousCoinPrice ? "tickerUpHighlight" : "tickerDownHighlight" );
+    
     return (
       <div>
         <main role="main">
           <h3 style={{ marginTop: '2rem' }}>{ astheticNaming + " " } Price: 
-            <b style={{ marginLeft: '0.25rem' }}>
-              ${ 
-                currentCoinPrice[objKey].usd >= 1 ? 
-                currentCoinPrice[objKey].usd.toFixed(2) : 
-                currentCoinPrice[objKey].usd 
-              } USD
-            </b>
+            <ChangeHighlight highlightClassName={ coinPriceCSSColourPicker } showAfter={ 100 } hideAfter={ 3000 }>
+                <b ref={ coinPriceRef } style={{ marginLeft: '0.25rem' }}>
+                  { 
+                    currentCoinPrice[objKey].usd >= 1 ? 
+                    "$" + currentCoinPrice[objKey].usd.toFixed(2) + " USD" : 
+                    "$" + currentCoinPrice[objKey].usd + " USD"
+                  }
+                </b>
+            </ChangeHighlight>
           </h3> 
           <h5 style={{ marginBottom: '2rem', display: 'inline' }}>24-Hr % Chg:
             { 

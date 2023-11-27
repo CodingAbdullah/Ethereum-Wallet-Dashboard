@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { coinPricesByDay } from '../../UtilFunctions/coinPricesByDay';
 import { currentCoinPrice } from '../../UtilFunctions/currentCoinPrice';
+import ChangeHighlight from 'react-change-highlight';
+import './MaticPricePage.css';
 
 import {
   Chart as ChartJS,
@@ -29,8 +31,6 @@ ChartJS.register(
 const MaticPricePage = () => {
     const navigate = useNavigate();
 
-    // 24 Hr % Change + Current Coin Price
-   
     // Set it to 7 days by default
     const [interval, updateInterval] = useState(7);
 
@@ -43,6 +43,9 @@ const MaticPricePage = () => {
       queryKey: ['current coin price', 'matic-network'],
       queryFn: currentCoinPrice
     });
+
+    // Matic coin price reference
+    const maticPriceRef = useRef();
 
   // Set display configurations
   var coinData = {
@@ -92,18 +95,26 @@ const MaticPricePage = () => {
     let currentCoinPrice = currentCoinPriceQuery.data[0];
     let objKey = Object.keys(currentCoinPriceQuery.data[0])[0];
 
+    // Retrieve previous coin price for price highlighting
+    let previousMaticPrice = Number(maticPriceRef.current?.innerHTML.split(" ")[0].substring(1));
+
+    // Matic dynamic CSS class for price change
+    let maticPriceCSSColourPicker = maticPriceRef.current === undefined ? "" : ( currentCoinPrice[objKey].usd >= previousMaticPrice ? "tickerUpHighlight" : "tickerDownHighlight" );
+
     return (
       <div>
         <main role="main">
-          <h3 style={{ marginTop: '2rem' }}>{"Matic " } Price: 
-            <b style={{ marginLeft: '0.25rem' }}>
-              ${ 
-                currentCoinPrice[objKey].usd >= 1 ? 
-                currentCoinPrice[objKey].usd.toFixed(2) : 
-                currentCoinPrice[objKey].usd 
-              } USD
-            </b>
-          </h3> 
+          <ChangeHighlight highlightClassName={ maticPriceCSSColourPicker } showAfter={ 100 } hideAfter={ 3000 }>
+            <h3 style={{ marginTop: '2rem' }}>{"Matic " } Price: 
+              <b style={{ marginLeft: '0.25rem' }}>
+                { 
+                  currentCoinPrice[objKey].usd >= 1 ? 
+                  "$" + currentCoinPrice[objKey].usd.toFixed(2) + " USD" : 
+                  "$" + currentCoinPrice[objKey].usd + " USD" 
+                }
+              </b>
+            </h3>
+          </ChangeHighlight>
           <h5 style={{ marginBottom: '2rem', display: 'inline' }}>24-Hr % Chg:
             { 
               currentCoinPrice[objKey].usd_24h_change < 0 ? 

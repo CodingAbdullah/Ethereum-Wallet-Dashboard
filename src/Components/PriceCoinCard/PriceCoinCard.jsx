@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { selectCoin } from '../../redux/reducer/coinSelectionReducer';
+import ChangeHighlight from 'react-change-highlight';
+import './PriceCoinCard.css';
 
 const PriceCoinCard = (props) => {
     const { name, coinInfo } = props; // Extract coin info for display purposes, passed down from the parent component price
@@ -25,19 +27,32 @@ const PriceCoinCard = (props) => {
         navigate("/chart");
     }
 
+    // Price card reference
+    const priceCardRef = useRef();
+
+    // Retrieve previous card price for price highlighting
+    let previousCardPrice = Number(priceCardRef.current?.innerHTML.split(" ")[0].substring(1));
+    
+    // Price card CSS colour picker
+    let priceCardCSSColourPicker = priceCardRef.current === undefined ? "" : ( coinInfo.usd >= previousCardPrice ? "tickerUpHighlight" : "tickerDownHighlight" );
+    
     return (
             <div className="card col-lg-4 col-md-6 col-sm-12">
                 <div class="card-body">
                     { imagery }
                     <br />
                     <h4 class="card-title">{ modifiedName }</h4>
-                    <p>
-                        Price:  <b>${   coinInfo.usd < 1 ? 
-                                        coinInfo.usd : 
-                                      ( coinInfo.usd ).toFixed(2) 
-                                    } USD
-                                </b>
-                    </p> 
+                    <ChangeHighlight highlightClassName={ priceCardCSSColourPicker } showAfter={ 100 } hideAfter={ 3000 }>
+                        <p>
+                            Price:  <b ref={ priceCardRef } >
+                                        {   
+                                            coinInfo.usd < 1 ? 
+                                            "$" + coinInfo.usd + " USD" : 
+                                            "$" + ( coinInfo.usd ).toFixed(2) + " USD" 
+                                        }
+                                    </b>
+                        </p> 
+                    </ChangeHighlight>
                     <p style={{ display: 'inline' }}>24 Hr% Change: </p> 
                     <b><p style={{ display: 'inline', color: coinInfo.usd_24h_change < 0 ? "red" : "green" }}>
                     {   
