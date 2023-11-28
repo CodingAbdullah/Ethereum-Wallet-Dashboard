@@ -106,7 +106,7 @@ const MaticPricePage = () => {
         <main role="main">
           <ChangeHighlight highlightClassName={ maticPriceCSSColourPicker } showAfter={ 100 } hideAfter={ 3000 }>
             <h3 style={{ marginTop: '2rem' }}>{"Matic " } Price: 
-              <b style={{ marginLeft: '0.25rem' }}>
+              <b ref={ maticPriceRef } style={{ marginLeft: '0.25rem' }}>
                 { 
                   currentCoinPrice[objKey].usd >= 1 ? 
                   "$" + currentCoinPrice[objKey].usd.toFixed(2) + " USD" : 
