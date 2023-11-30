@@ -30,7 +30,7 @@ const PricesPage = () => {
         return (
             <main className="p-3" role="main">
                 <h1 style={{ marginTop: '2rem' }}>Prices Chart</h1>
-                <p>Here is the list of the latest prices on the top 10 coins by <b>popularity.</b></p>
+                <p>Here is the list of the latest prices on the top 15 coins by <b>popularity.</b></p>
                 <div>
                     <div class="row">
                     {
