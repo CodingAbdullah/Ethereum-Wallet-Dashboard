@@ -20,7 +20,7 @@ exports.coinPrices = async (req, res) => {
         headers : {
             'content-type' : 'application/json',
             'access-control-allow-origin': '*',
-            'x-cg-pro-api-key' : process.env.COINGECKO_API_KEY
+            'x-cg-pro-api-key' : process.env.COINGECKO_PRICES_API_KEY
         }
     }
 
@@ -56,7 +56,7 @@ exports.coinPricesByDay = async (req, res) => {
         headers : {
             'content-type' : 'application/json',
             'access-control-allow-origin': '*',
-            'x-cg-pro-api-key' : process.env.COINGECKO_API_KEY
+            'x-cg-pro-api-key' : process.env.COINGECKO_CHART_DATA_API_KEY
         }
     }
 
@@ -102,7 +102,7 @@ exports.currentCoinPrice = async (req, res) => {
         headers : {
             'content-type' : 'application/json',
             'access-control-allow-origin': '*',
-            'x-cg-pro-api-key' : process.env.COINGECKO_API_KEY // API-KEY for authenticated call
+            'x-cg-pro-api-key' : process.env.COINGECKO_GENERIC_API_KEY // API-KEY for authenticated call
         }
     }
 
@@ -138,7 +138,7 @@ exports.ERC20CoinInfo = async (req, res) => {
         headers : {
             'content-type' : 'application/json',
             'access-control-allow-origin': '*',
-            'x-cg-pro-api-key' : process.env.COINGECKO_API_KEY // API-KEY for authenticated call
+            'x-cg-pro-api-key' : process.env.COINGECKO_ERC20_PRICES_API_KEY // API-KEY for authenticated call
         }
     }
 
@@ -172,7 +172,7 @@ exports.ERC20CoinPriceDuration = async (req, res) => {
         headers : {
             'content-type' : 'application/json',
             'access-control-allow-origin': '*',
-            'x-cg-pro-api-key' : process.env.COINGECKO_API_KEY // API-KEY for authenticated call
+            'x-cg-pro-api-key' : process.env.COINGECKO_ERC20_PRICES_API_KEY // API-KEY for authenticated call
         }
     }
 
@@ -212,7 +212,7 @@ exports.homePageBitcoinPrice = async (req, res) => {
         headers : {
             'content-type' : 'application/json',
             'access-control-allow-origin': '*',
-            'x-cg-pro-api-key' : process.env.COINGECKO_API_KEY // API-KEY for authenticated call
+            'x-cg-pro-api-key' : process.env.COINGECKO_HOME_PAGE_API_KEY // API-KEY for authenticated call
         }
     }
 
@@ -245,7 +245,7 @@ exports.homePageGlobalMarketData = async (req, res) => {
         headers : {
             'content-type' : 'application/json',
             'access-control-allow-origin': '*',
-            'x-cg-pro-api-key' : process.env.COINGECKO_API_KEY // API-KEY for authenticated call
+            'x-cg-pro-api-key' : process.env.COINGECKO_HOME_PAGE_API_KEY // API-KEY for authenticated call
         }
     }
 
@@ -279,7 +279,7 @@ exports.homePageTrendingCoins = async (req, res) => {
         headers : {
             'content-type' : 'application/json',
             'access-control-allow-origin': '*',
-            'x-cg-pro-api-key' : process.env.COINGECKO_API_KEY // API-KEY for authenticated call
+            'x-cg-pro-api-key' : process.env.COINGECKO_HOME_PAGE_API_KEY // API-KEY for authenticated call
         }
     }
 
@@ -322,7 +322,7 @@ exports.navbarEthPrice = async (req, res) => {
         headers : {
             'content-type' : 'application/json',
             'access-control-allow-origin': '*',
-            'x-cg-pro-api-key' : process.env.COINGECKO_API_KEY // API-KEY for authenticated call
+            'x-cg-pro-api-key' : process.env.COINGECKO_NAVBAR_API_KEY // API-KEY for authenticated call
         }
     }
 
