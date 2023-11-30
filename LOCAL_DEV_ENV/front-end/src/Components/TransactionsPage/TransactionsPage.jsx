@@ -7,6 +7,7 @@ import TransactionsInfoTable from '../TransactionsInfoTable/TransactionsInfoTabl
 import InternalTransactionsInfoTable from '../InternalTransactionsInfoTable/InternalTransactionsInfoTable';
 import { resetAddress } from '../../redux/reducer/walletAddressReducer';
 import { currentCoinPrice } from '../../UtilFunctions/currentCoinPrice';
+import { currentCoinPricePro } from '../../UtilFunctions/currentCoinPricePRO';
 import { walletBalance } from '../../UtilFunctions/walletBalance';
 import { walletInternalTransactions } from '../../UtilFunctions/walletInternalTransactions';
 import { walletTransactions } from '../../UtilFunctions/walletTransactions';
@@ -18,7 +19,7 @@ const Transactions = () => {
     // Setting React Query for different calls such as pricing, balances, transactions, and internal transactions
     const ethPriceQuery = useQuery({
         queryKey: ['eth price', 'ethereum'],
-        queryFn: currentCoinPrice
+        queryFn: currentCoinPricePro
     });
 
     const walletBalancesQuery = useQuery({

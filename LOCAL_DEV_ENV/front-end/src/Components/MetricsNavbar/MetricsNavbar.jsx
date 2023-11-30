@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import ChangeHighlight from 'react-change-highlight';
 import { metricsNavbarEthPrice } from '../../UtilFunctions/metricsNavbarEthPrice';
+import { metricsNavbarEthPricePro } from '../../UtilFunctions/metricsNavbarEthPricePRO';
 import { metricsNavbarGasPrice } from '../../UtilFunctions/metricsNavbarGasPrice';
 import './MetricsNavbar.css';
 
@@ -9,7 +10,7 @@ const MetricsNavbar = () => {
     // Setting up query to fetch Ethereum Price
     const ethPriceQuery = useQuery({
         queryKey: ['eth price'],
-        queryFn: metricsNavbarEthPrice
+        queryFn: metricsNavbarEthPricePro
     });
 
     const ethPriceRef = useRef();

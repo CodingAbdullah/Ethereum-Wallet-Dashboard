@@ -5,6 +5,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useSelector, useDispatch } from 'react-redux';
 import { coinPricesByDay } from '../../UtilFunctions/coinPricesByDay';
 import { currentCoinPrice } from '../../UtilFunctions/currentCoinPrice';
+import { coinPricesByDayPro } from '../../UtilFunctions/coinPricesByDayPRO';
+import { currentCoinPricePro } from '../../UtilFunctions/currentCoinPricePRO';
 import { selectCoin } from '../../redux/reducer/coinSelectionReducer';
 import CoinSelector from '../CoinSelector/CoinSelector';
 import ChangeHighlight from 'react-change-highlight';
@@ -46,12 +48,12 @@ const GenericChartPage = () => {
 
     const coinPriceQuery = useQuery({
       queryKey: ['coin', coinSelector, interval],
-      queryFn: coinPricesByDay
+      queryFn: coinPricesByDayPro
     });
 
     const currentCoinPriceQuery = useQuery({
       queryKey: ['current coin price', coinSelector],
-      queryFn: currentCoinPrice
+      queryFn: currentCoinPricePro
     });
 
     // Update based on the toggle value afterwards, hence state will be used here
