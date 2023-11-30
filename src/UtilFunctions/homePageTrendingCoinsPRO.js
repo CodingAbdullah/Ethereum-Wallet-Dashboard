@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Fetch data related to the current trending coins in the market
 export const homePageTrendingCoinsPro = async () => {
-    const URL = "http://localhost:5000";
+    const URL = "https://18.221.208.44.nip.io";
     const TRENDINGCOINS_ENDPOINT = '/trending-coin-data'; // Trending coins in the market
 
     // Set options for API request

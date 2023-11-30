@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const coinPricesByDayPro = async ({ queryKey }) => {
-    const URL = 'http://localhost:5000';
+    const URL = 'https://18.221.208.44.nip.io';
     const API_ENDPOINT = '/coin-prices-by-day'
 
     let options = {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const coinPricesPro = async () => {
-    const URL = 'http://localhost:5000';
+    const URL = 'https://18.221.208.44.nip.io';
     const API_ENDPOINT = '/coin-prices';
 
     // const URL = "https://api.coingecko.com/api/v3";

@@ -13,7 +13,7 @@ export const erc20CoinPriceDurationPro = async ({ queryKey }) => {
     }
     else {
         // Request ERC20 token prices
-        const URL = "http://localhost:5000";
+        const URL = "https://18.221.208.44.nip.io";
         const ERC20_PRICE_DURATION_ENDPOINT = '/ERC20-coin-price-duration';
         // const ERC20_PRICE_ENDPOINT = '/coins/ethereum/contract/' + queryKey[1] + '/market_chart?vs_currency=usd&days=0.05';
 

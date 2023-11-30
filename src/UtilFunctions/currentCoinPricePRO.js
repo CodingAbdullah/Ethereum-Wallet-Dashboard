@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Check to see if the parameters exist and are valid, run to check prices, selection area for the different coins
 export const currentCoinPricePro = async ({ queryKey }) => {
-    const URL = "http://localhost:5000";
+    const URL = "https://18.221.208.44.nip.io";
     const CURRENCY_ENDPOINT = '/simple-price-data';
 
     let options = {

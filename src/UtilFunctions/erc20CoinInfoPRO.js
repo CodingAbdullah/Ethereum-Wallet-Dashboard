@@ -13,7 +13,7 @@ export const erc20CoinInfoPro = async ({ queryKey }) => {
     }
     else {
         // Request ERC20 token information
-        const URL = 'http://localhost:5000';
+        const URL = 'https://18.221.208.44.nip.io';
         const ERC20_INFO_ENDPOINT = '/ERC20-coin-information';
 
         let options = {

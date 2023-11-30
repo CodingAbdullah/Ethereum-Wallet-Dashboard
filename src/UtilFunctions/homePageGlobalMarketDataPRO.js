@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Global data lookup
 export const homePageGlobalMarketDataPro = async () => {
-    const URL = "http://localhost:5000";
+    const URL = "https://18.221.208.44.nip.io";
     const GLOBALMARKETDATA_ENDPOINT = '/global-market-data';
 
     let response = await axios.get(URL + GLOBALMARKETDATA_ENDPOINT); // Fetch data related to the global market
