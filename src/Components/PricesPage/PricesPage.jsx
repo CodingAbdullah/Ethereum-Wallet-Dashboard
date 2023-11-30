@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { coinPrices } from '../../UtilFunctions/coinPrices';
-import { coinPricesPro } from '../../UtilFunctions/coinPricesPro';
+import { coinPricesPro } from '../../UtilFunctions/coinPricesPRO';
 import PriceCoinCard from '../PriceCoinCard/PriceCoinCard';
 
 const PricesPage = () => {
