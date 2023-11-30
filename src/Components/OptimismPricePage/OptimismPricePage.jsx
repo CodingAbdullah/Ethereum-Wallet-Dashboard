@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { coinPricesByDay } from '../../UtilFunctions/coinPricesByDay';
 import { currentCoinPrice } from '../../UtilFunctions/currentCoinPrice';
+import { coinPricesByDayPro } from '../../UtilFunctions/coinPricesByDayPRO';
+import { currentCoinPricePro } from '../../UtilFunctions/currentCoinPricePRO';
 import ChangeHighlight from 'react-change-highlight';
 import './OptimismPricePage.css';
 
@@ -36,12 +38,12 @@ const OptimismPricePage = () => {
 
     const coinPriceQuery = useQuery({
       queryKey: ['coin', 'optimism', interval],
-      queryFn: coinPricesByDay
+      queryFn: coinPricesByDayPro
     });
 
     const currentCoinPriceQuery = useQuery({
       queryKey: ['current coin price', 'optimism'],
-      queryFn: currentCoinPrice
+      queryFn: currentCoinPricePro
     });
 
     // Optimism coin price reference

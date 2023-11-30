@@ -4,6 +4,10 @@ import { homePageBitcoinPrice } from '../../UtilFunctions/homePageBitcoinPrice';
 import { homePageGlobalMarketData } from '../../UtilFunctions/homePageGlobalMarketData';
 import { homePageTrendingCoins } from '../../UtilFunctions/homePageTrendingCoins';
 import { metricsNavbarEthPrice } from '../../UtilFunctions/metricsNavbarEthPrice';
+import { homePageBitcoinPricePro } from '../../UtilFunctions/homePageBitcoinPricePRO';
+import { homePageGlobalMarketDataPro } from '../../UtilFunctions/homePageGlobalMarketDataPRO';
+import { homePageTrendingCoinsPro } from '../../UtilFunctions/homePageTrendingCoinsPRO';
+import { metricsNavbarEthPricePro } from '../../UtilFunctions/metricsNavbarEthPricePRO';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { selectCoin } from '../../redux/reducer/coinSelectionReducer';
@@ -23,22 +27,22 @@ const Home = () => {
     // Set up queries and fetch data related to bitcoin, ethereum, the global market as well as trending coins
     const bitcoinPriceQuery = useQuery({
         queryKey: ['bitcoin price'],
-        queryFn: homePageBitcoinPrice
+        queryFn: homePageBitcoinPricePro
     });
 
     const ethereumPriceQuery = useQuery({
         queryKey: ['eth price'],
-        queryFn: metricsNavbarEthPrice
+        queryFn: metricsNavbarEthPricePro
     });
 
     const globalMarketDataQuery = useQuery({
         queryKey: ['market data'],
-        queryFn: homePageGlobalMarketData
+        queryFn: homePageGlobalMarketDataPro
     });
 
     const trendingCoinsQuery = useQuery({
         queryKey: ['transaction data'],
-        queryFn: homePageTrendingCoins
+        queryFn: homePageTrendingCoinsPro
     });
 
     // Track Bitcoin, Ethereum price changes
