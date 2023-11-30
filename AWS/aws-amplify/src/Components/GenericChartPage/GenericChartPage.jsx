@@ -123,8 +123,8 @@ const GenericChartPage = () => {
     return (
       <div>
         <main role="main">
-          <h3 style={{ marginTop: '2rem' }}>{ astheticNaming + " " } Price: 
             <ChangeHighlight highlightClassName={ coinPriceCSSColourPicker } showAfter={ 100 } hideAfter={ 3000 }>
+              <h3 style={{ marginTop: '2rem' }}>{ astheticNaming + " " } Price: 
                 <b ref={ coinPriceRef } style={{ marginLeft: '0.25rem' }}>
                   { 
                     currentCoinPrice[objKey].usd >= 1 ? 
@@ -132,8 +132,8 @@ const GenericChartPage = () => {
                     "$" + currentCoinPrice[objKey].usd + " USD"
                   }
                 </b>
+              </h3> 
             </ChangeHighlight>
-          </h3> 
           <h5 style={{ marginBottom: '2rem', display: 'inline' }}>24-Hr % Chg:
             { 
               currentCoinPrice[objKey].usd_24h_change < 0 ? 
