@@ -9,9 +9,9 @@ exports.coinPrices = async (req, res) => {
     let coinPrices = [];
 
     // Display these for each of the cards
-    const top15CoinCaps = { Bitcoin: 'BTC',  Ethereum: 'ETH' ,  litecoin: 'LTC' ,  binancecoin: 'BNB' ,  Ripple: 'XRP' , 
-      algorand: 'ALGO' ,  Cardano: 'ADA' ,  Solana: 'SOL' , Dogecoin: 'DOGE' , 
-     'matic-network': 'MATIC' }; 
+    const top15CoinCaps = { 'Avalanche-2': 'AVAL', Bitcoin: 'BTC',  Chainlink: 'LINK', Ethereum: 'ETH' ,  litecoin: 'LTC' ,  binancecoin: 'BNB' ,  Ripple: 'XRP' , 
+      algorand: 'ALGO' ,  Cardano: 'ADA' ,  Polkadot: 'DOT', Solana: 'SOL' , Stellar: 'XLM', Dogecoin: 'DOGE' , 
+     'matic-network': 'MATIC', Uniswap: 'UNI' }; 
 
     // Setting headers to pass in COINGECKO API KEY (x-cg-pro-api-key)
     let options = {
