@@ -1,7 +1,8 @@
-require("dotenv").config({ path: '.env'}); // Incorporate environment variables file
+require("dotenv").config({ path: '.env' }); // Incorporate environment variables file
 const express = require("express");
 const cors = require("cors"); // Allow Cross Origin Resource Sharing
 const addressENSRouter = require("./Routes/AddressENSRouter");
+const CoinPricesRouter = require("./Routes/CoinPriceRouter");
 const ENSTransferRouter = require("./Routes/ENSTransferRouter");
 const ERC720CollectionRouter = require("./Routes/ERC720CollectionRouter");
 const ERC720HoldingsRouter = require("./Routes/ERC720HoldingsRouter");
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(cors()); // Enable cors
 app.use("/", addressENSRouter); // Enable API resource to server
+app.use("/", CoinPricesRouter);
 app.use("/", ENSTransferRouter);
 app.use("/", ERC720CollectionRouter);
 app.use("/", ERC720HoldingsRouter);
