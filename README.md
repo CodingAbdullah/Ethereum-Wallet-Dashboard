@@ -51,6 +51,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
             <a href="https://moralis.io/">Moralis Enterprise Grade Web3 APIs</a>
         </td>
     </tr>
+        <tr>
+        <td>
+            <b>Opensea</b>
+        </td>
+        <td>
+            <a href="https://docs.opensea.io/reference/api-overview">Opensea Developer APIs</a>
+        </td>
+    </tr>
     <tr>
         <td>
             <b>Transpose</b>
@@ -102,7 +110,7 @@ No API keys means failed requests to select API resources.
 <br />
 
 ## `Dockerfile`
-Attached within the server folders are Dockerfiles needed to Dockerize the servers and run as standalone containers. This will essentially, allow users to containerize the applications by generating an image to represent the servers and run them as containers.
+Attached within the server folders are Dockerfiles needed to Dockerize the servers and run as standalone containers. This will essentially, allow users to containerize the application by generating an image to represent the servers and run them as containers.
  
 <br />
 
@@ -113,14 +121,15 @@ For basic project setup, scripts for each operating system (MAC/WINDOWS) have be
 
 ### `Links`
 
-Here are links to the available API resources used in this project. NOTE: Opensea API resources are NOT available at this time as they are not issuing API keys. Hence, an alternate platform, Alchemy will be used instead.
+Below, is a list of links to the appropriate API resources used in this project. <b>Opensea API is now available and will be incorporated into the project in the near future. Changes to the ERC721 Collection, Holdings, and Analytics sections in particular, will see an update. Alchemy may still be used depending on usage requirements. </b>
 
 [Alchemy](https://docs.alchemy.com/reference/)
-[Etherscan](https://etherscan.io/apis)
-[Moralis](https://docs.moralis.io/)
-[Transpose](https://transpose.io/)
 [Blocknative](https://blocknative.com/)
 [CoinGecko](https://www.coingecko.com/en/api/documentation)
+[Etherscan](https://etherscan.io/apis)
+[Moralis](https://docs.moralis.io/)
+[Opensea](https://docs.opensea.io/reference/api-overview)
+[Transpose](https://transpose.io/)
 
 <br />
 
@@ -146,6 +155,9 @@ This can be done with the `git checkout <branch name>` command on your local ter
 When configuring the back-end server on the cloud, a lot needs to be done to successfully create an EC2 instance, configure security groups, route traffic and add a SSL certificate. But that is just to configure the server, you'll need to deploy your node-express app and have it run as a background process in real-time to receive and respond to incoming API requests.
 
 A link to spin up a virtual server on AWS can be found here: [AWS EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/get-set-up-for-amazon-ec2.html).
+
+#### AWS Lambda (Future Integration)
+<b>The back-end to this project will be transitioning to AWS Lambda soon. EC2, while provides great versatility, for the size of this project, Lambda will be more cost-efficient. </b>
 
 <br />
 
