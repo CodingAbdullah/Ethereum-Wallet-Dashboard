@@ -53,6 +53,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
     </tr>
     <tr>
         <td>
+            <b>Opensea</b>
+        </td>
+        <td>
+            <a href="https://docs.opensea.io/reference/api-overview">Opensea Developer APIs</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <b>Transpose</b>
         </td>
         <td>
@@ -113,14 +121,15 @@ For basic project setup, scripts for each operating system (MAC/WINDOWS) have be
 
 ### `Links`
 
-Here are links to the available API resources used in this project. NOTE: Opensea API resources are NOT available at this time as they are not issuing API keys. Hence, an alternate platform, Alchemy will be used instead.
+Here are links to the available API resources used in this project. <b>Opensea API is now available and will be incorporated into the project in the near future. ERC721 Collections, Holdings, and Analytics sections in particular, will see an update. Alchemy may still be used depending on requirements.</b>
 
 [Alchemy](https://docs.alchemy.com/reference/)
-[Etherscan](https://etherscan.io/apis)
-[Moralis](https://docs.moralis.io/)
-[Transpose](https://transpose.io/)
 [Blocknative](https://blocknative.com/)
 [CoinGecko](https://www.coingecko.com/en/api/documentation)
+[Etherscan](https://etherscan.io/apis)
+[Moralis](https://docs.moralis.io/)
+[Opensea](https://docs.opensea.io/reference/api-overview)
+[Transpose](https://transpose.io/)
 
 <br />
 
@@ -147,120 +156,8 @@ When configuring the back-end server on the cloud, a lot needs to be done to suc
 
 A link to spin up a virtual server on AWS can be found here: [AWS EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/get-set-up-for-amazon-ec2.html).
 
-Instructions on how to install node on a virtual server, retrieve code from a github repo, and run the node server on EC2 are found below.
-
-Note that AWS EC2 Ubuntu was used to configure the server (using the free-tier one provided by Amazon).
-
-<img src="/AWS/aws-amplify/src/assets/images/ubuntu.png" height='500px' width='1000px' alt="Alt text" title="Ubuntu setup">
-
-<br />
-
-## 1. Install Node/NPM
-```
-curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-
-sudo apt install nodejs
-
-node --version
-```
-
-<br />
-
-
-## 2. Clone your project from Github
-There are a few ways to get your files on to the server, I would suggest using Git
-```
-git clone https://github.com/CodingAbdullah/Ethereum-Wallet-Dashboard.git
-```
-
-<br />
-
-## 3. Install dependencies and test app
-```
-cd AWS
-cd aws-ec2
-npm install
-npm start (or whatever your start command)
-# stop app
-ctrl+C
-```
-
-<br />
-
-## 4. Setup PM2 process manager to keep your app running
-```
-sudo npm i pm2 -g
-pm2 start app (or whatever your file name)
-
-# Other pm2 commands
-pm2 show app
-pm2 status
-pm2 restart app
-pm2 stop app
-pm2 logs (Show log stream)
-pm2 flush (Clear logs)
-
-# To make sure app starts when reboot
-pm2 startup ubuntu
-```
-You should now be able to access your app using your IP and port. Now we want to setup a firewall blocking that port and setup NGINX as a reverse proxy so we can access it directly using port 80 (http)
-
-<br />
-
-## 5. Setup ufw firewall
-```
-sudo ufw enable
-sudo ufw status
-sudo ufw allow ssh (Port 22)
-sudo ufw allow http (Port 80)
-sudo ufw allow https (Port 443)
-```
-
-<br />
-
-## 6. Install NGINX and configure
-```
-sudo apt install nginx
-
-sudo nano /etc/nginx/sites-available/default
-```
-Add the following to the location part of the server block
-```
-    server_name yourdomain.com www.yourdomain.com;
-
-    location / {
-        proxy_pass http://localhost:5000; #whatever port your app runs on
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-```
-```
-# Check NGINX config
-sudo nginx -t
-
-# Restart NGINX
-sudo service nginx restart
-```
-
-### You should now be able to visit your IP with no port (port 80) and see your app. Now let's add a domain
-
-<br />
-
-## 7. Add SSL with LetsEncrypt
-```
-sudo add-apt-repository ppa:certbot/certbot
-sudo apt-get update
-sudo apt-get install python-certbot-nginx
-sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
-
-# Only valid for 90 days, test the renewal process with
-certbot renew --dry-run
-```
-
-Now visit https://yourdomain.com and you should see your Node app
+#### AWS Lambda (Future Integration)
+<b>The back-end to this project will be transitioning to AWS Lambda soon. EC2, while provides great versatility, for the size of this project, Lambda will be more cost-efficient.</b>
 
 <br />
 
