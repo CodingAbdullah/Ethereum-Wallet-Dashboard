@@ -3,6 +3,7 @@ A descriptive web app, detailing the history of all transactions including all k
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+<b>Starting December 29, 2023, dashboard will revert to free version usage of the CoinGecko API. </b>
 <br />
 
 ### `List of APIs Incorporated`
