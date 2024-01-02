@@ -27,22 +27,22 @@ const Home = () => {
     // Set up queries and fetch data related to bitcoin, ethereum, the global market as well as trending coins
     const bitcoinPriceQuery = useQuery({
         queryKey: ['bitcoin price'],
-        queryFn: homePageBitcoinPricePro
+        queryFn: homePageBitcoinPrice
     });
 
     const ethereumPriceQuery = useQuery({
         queryKey: ['eth price'],
-        queryFn: metricsNavbarEthPricePro
+        queryFn: metricsNavbarEthPrice
     });
 
     const globalMarketDataQuery = useQuery({
         queryKey: ['market data'],
-        queryFn: homePageGlobalMarketDataPro
+        queryFn: homePageGlobalMarketData
     });
 
     const trendingCoinsQuery = useQuery({
         queryKey: ['transaction data'],
-        queryFn: homePageTrendingCoinsPro
+        queryFn: homePageTrendingCoins
     });
 
     // Track Bitcoin, Ethereum price changes

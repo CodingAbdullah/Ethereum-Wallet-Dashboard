@@ -8,7 +8,7 @@ const PricesPage = () => {
     // Incorporating React Query for faster and more efficient data fetch
     const { data, isPending, isError, error } = useQuery({
         queryKey: ['coin prices'],
-        queryFn: coinPricesPro
+        queryFn: coinPrices
      });
 
     // Props to be added later after more filtering and testing, the layout is complete for now

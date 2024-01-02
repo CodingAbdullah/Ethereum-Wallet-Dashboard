@@ -10,7 +10,7 @@ const MetricsNavbar = () => {
     // Setting up query to fetch Ethereum Price
     const ethPriceQuery = useQuery({
         queryKey: ['eth price'],
-        queryFn: metricsNavbarEthPricePro
+        queryFn: metricsNavbarEthPrice
     });
 
     const ethPriceRef = useRef();

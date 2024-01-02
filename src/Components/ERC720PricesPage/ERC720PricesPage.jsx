@@ -46,24 +46,24 @@ const ERC720TokenPricesPage = () => {
     // Setting up queries for fetching and caching data
     const ethPriceQuery = useQuery({
       queryKey: ['eth price'],
-      queryFn: metricsNavbarEthPricePro
+      queryFn: metricsNavbarEthPrice
     });
 
     const ethPriceDurationQuery = useQuery({
       queryKey: ['eth price duration', 'ethereum', 14],
-      queryFn: coinPricesByDayPro
+      queryFn: coinPricesByDay
     });
 
     // Setting up a reference for token address instead, calls will be made for each character
     // React-Query identifies each query with its unique key
     const erc20TokenPriceQuery = useQuery({
       queryKey: ['ERC20 token information', setTokenContractAddress],
-      queryFn: erc20CoinInfoPro
+      queryFn: erc20CoinInfo
     });
 
     const erc20TokenPriceDurationQuery = useQuery({
       queryKey: ['ERC20 token price duration', setTokenContractAddress],
-      queryFn: erc20CoinPriceDurationPro
+      queryFn: erc20CoinPriceDuration
     });
 
     const ethPriceRef = useRef(); // Track Ethereum price changes

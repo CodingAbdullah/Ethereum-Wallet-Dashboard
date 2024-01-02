@@ -38,12 +38,12 @@ const OptimismPricePage = () => {
 
     const coinPriceQuery = useQuery({
       queryKey: ['coin', 'optimism', interval],
-      queryFn: coinPricesByDayPro
+      queryFn: coinPricesByDay
     });
 
     const currentCoinPriceQuery = useQuery({
       queryKey: ['current coin price', 'optimism'],
-      queryFn: currentCoinPricePro
+      queryFn: currentCoinPrice
     });
 
     // Optimism coin price reference
