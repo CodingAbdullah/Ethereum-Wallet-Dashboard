@@ -3,13 +3,24 @@ import { useQuery } from '@tanstack/react-query';
 import { coinPrices } from '../../UtilFunctions/coinPrices';
 import { coinPricesPro } from '../../UtilFunctions/coinPricesPRO';
 import PriceCoinCard from '../PriceCoinCard/PriceCoinCard';
+import { useNavigate } from 'react-router';
 
 const PricesPage = () => {
     // Incorporating React Query for faster and more efficient data fetch
     const { data, isPending, isError, error } = useQuery({
         queryKey: ['coin prices'],
         queryFn: coinPrices
-     });
+    });
+
+    const navigate = useNavigate(); // Incorporating the useNavigate() hook
+    const isFreeVersion = true; // Check flag for making sure if what version of the CoinGecko API is in use
+ 
+    // Upon component mount, ensure the free version of the CoinGecko API is in use
+    useEffect(() => {
+        if (isFreeVersion) {
+            navigate("/");
+        }
+    }, []);
 
     // Props to be added later after more filtering and testing, the layout is complete for now
     if (isPending){

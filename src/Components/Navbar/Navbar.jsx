@@ -3,6 +3,8 @@ import './Navbar.css';
 
 const Navbar = () => {
 
+    const isFreeVersion = true; // Check flag to determine what version of the CoinGecko API is in use
+
     // Styles for Navbar
     const styles = {
         navLinkColor: {
@@ -30,9 +32,12 @@ const Navbar = () => {
                             <li className="nav-item">
                                 <a style={ styles.navLinkColor } className="nav-link" aria-current="page" href="/about">About</a>
                             </li>
-                            <li className="nav-item">
-                                <a style={ styles.navLinkColor } className="nav-link" href="/prices">Prices</a>
-                            </li>
+                            {
+                                isFreeVersion ? null :                            
+                                    <li className="nav-item">
+                                        <a style={ styles.navLinkColor } className="nav-link" href="/prices">Prices</a>
+                                    </li>
+                            }
                             <li className="nav-item">
                                 <a style={ styles.navLinkColor } className="nav-link" href="/">Dashboard</a>
                             </li>

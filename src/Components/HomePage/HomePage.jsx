@@ -21,6 +21,8 @@ const Home = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const isFreeVersion = true; // Check flag to see what version of the CoinGecko API is in use
+
     const [formAlert, updateAlert] = useState("");
     const [walletAddress, updateWalletAddress] = useState("");
 
@@ -145,8 +147,7 @@ const Home = () => {
                                         { bitcoinPriceQuery.data[0].bitcoin.usd_24h_change < 0 ? bitcoinPriceQuery.data[0].bitcoin.usd_24h_change.toFixed(2) + "%": "+" + bitcoinPriceQuery.data[0].bitcoin.usd_24h_change.toFixed(2) + "%" }
                                         </p></b>
                                     <br />
-                                    <button class="btn btn-outline-primary wallet-search-button" onClick={ bitcoinButtonHandler }>View Price Action &raquo;</button>
-                                </div>
+                                    { isFreeVersion ? null : <button class="btn btn-outline-primary wallet-search-button" onClick={ bitcoinButtonHandler }>View Price Action &raquo;</button> }                                </div>
                                 <div class="col-md-6 p-3">
                                     <img src={ require("../../assets/images/ethereum.svg").default } width="75" height="75" alt="logo" /><br />
                                     <h4>ETH</h4>
@@ -158,8 +159,7 @@ const Home = () => {
                                         { ethereumPriceQuery.data[0].ethereum.usd_24h_change < 0 ? ethereumPriceQuery.data[0].ethereum.usd_24h_change.toFixed(2) + "%": "+" + ethereumPriceQuery.data[0].ethereum.usd_24h_change.toFixed(2) + "%" }
                                         </p></b> 
                                     <br />
-                                    <button class="btn btn-outline-primary wallet-search-button" onClick={ ethereumButtonHandler }>View Price Action &raquo;</button>
-                                </div>
+                                    { isFreeVersion ? null : <button class="btn btn-outline-primary wallet-search-button" onClick={ ethereumButtonHandler }>View Price Action &raquo;</button> }                                </div>
                             </div>
                         </div>
                 </main>
