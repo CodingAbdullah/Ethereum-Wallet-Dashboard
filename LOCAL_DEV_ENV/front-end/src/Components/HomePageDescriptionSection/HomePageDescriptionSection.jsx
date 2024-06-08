@@ -7,13 +7,13 @@ const HomePageDescriptionSection = (props) => {
         <div class="jumbotron">
             <div class="container">
                 <h1 class="display-5" style={{ marginBottom: '2rem' }}>Welcome!</h1>
-                <p>Deep dive into collections, wallet information, price action, ENS and much more! Here is a link to all <b>EVM-compatible</b> chains and their respective IDs:
+                <p>Deep dive into collection information, price action, ENS, and much more! Here is a link to all <b>EVM-compatible</b> chains and their IDs:
                     <a style={{ color: 'black', fontStyle: 'italic' }} href="https://chainlist.org" target="_blank" rel="noreferrer"><b> ChainList</b></a>
                 </p> 
-                <p>Please note that all activity documented here is on the <b>mainnet</b> network. Some information might not be available on certain networks.</p> 
+                <p>Please note that most activity can be found on the <b>mainnet</b> network. Some information might not be available on certain networks.</p> 
                 <br />
-                <p>Enter the <b>public</b> address below (42-digit hex code) of a wallet to track activity, cheers!</p>
-                <form style={{ marginTop: '3rem'}} onSubmit={ props.form }>
+                <p>Enter your wallet address below to begin!</p>
+                <form style={{ marginTop: '2rem'}} onSubmit={ props.form }>
                     <input class="form-control mr-sm-2" type="search" placeholder="Enter Wallet Address (0xa2e3se4u5F...)" max="42" min="42" aria-label="Search" onChange={ props.updatingAddress } required />
                     <button class="btn btn-outline-success wallet-search-button" type="submit">Search &raquo;</button>
                 </form>
