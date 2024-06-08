@@ -17,11 +17,13 @@ const Navbar = () => {
         buttonAttributes : {
             backgroundColor: 'white'
         },
-        mediaQuery: {
-            '@media (min-width: 768px)': {
-                display: 'block'
+        mediaQuery: `
+            @media (min-width: 768px) {
+                .dropdown-menu.show {
+                    display: block;
+                }
             }
-        }
+        `
     }
 
     return (
