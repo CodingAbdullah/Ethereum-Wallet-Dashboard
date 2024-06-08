@@ -32,35 +32,64 @@ const Navbar = () => {
                             <li className="nav-item">
                                 <a style={ styles.navLinkColor } className="nav-link" aria-current="page" href="/about">About</a>
                             </li>
-                            {
-                                isFreeVersion ? null :                            
-                                    <li className="nav-item">
-                                        <a style={ styles.navLinkColor } className="nav-link" href="/prices">Prices</a>
-                                    </li>
-                            }
-                            <li className="nav-item">
-                                <a style={ styles.navLinkColor } className="nav-link" href="/">Dashboard</a>
+                            <li className="nav-item dropdown">
+                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                    Prices
+                                </a>
+                                <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    {
+                                        isFreeVersion ? null :                            
+                                            <li className="nav-item">
+                                                <a style={ styles.navLinkColor } className="nav-link" href="/prices">Prices</a>
+                                            </li>
+                                    }                                    
+                                    <li><a className="dropdown-item" href="/erc20-token-prices">ERC20 Token Prices</a></li>
+                                </ul>
                             </li>
-                            <li className="nav-item">
-                                <a style={ styles.navLinkColor } className="nav-link" href="/ens-erc721-selection">ENS/ERC721 Lookups</a>
+                            <li className="nav-item dropdown">
+                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                    Token Holdings
+                                </a>
+                                <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a className="dropdown-item" href="/erc20-holdings">ERC20 Holdings</a></li>
+                                    <li><a className="dropdown-item" href="/erc721-holdings">ERC721 Holdings</a></li>
+                                </ul>
                             </li>
-                            <li className="nav-item">
-                                <a style={ styles.navLinkColor } className="nav-link" href="/erc20-holdings">ERC20 Token Holdings</a>
+                            <li className="nav-item dropdown">
+                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                    Token Lookups
+                                </a>
+                                <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a className="dropdown-item" href="/ens-lookup">ENS</a></li>
+                                    <li><a className="dropdown-item" href="/erc721-lookups">ERC721 Token Lookups</a></li>
+                                </ul>
                             </li>
-                            <li className="nav-item">
-                                <a style={ styles.navLinkColor } className="nav-link" href="/erc20-token-prices">ERC20 Token Prices</a>
-                            </li>
-                            <li className="nav-item">
-                                <a style={ styles.navLinkColor } className="nav-link" href="/erc721-holdings">ERC721 Token Holdings</a>
-                            </li>
-                            <li className="nav-item">
-                                <a style={ styles.navLinkColor } className="nav-link" href="/ethereum-layer-two-chains">ETH Layer 2/Sidechains</a>
+                            <li className="nav-item dropdown">
+                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                    Layer 2 Dashboards
+                                </a>
+                                <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a className="dropdown-item" target="_blank" href="https://arbitrum-aws.d1pqf6famiyi96.amplifyapp.com/">Arbitrum</a></li>
+                                    <li><a className="dropdown-item" target="_blank" href="https://optimism-aws.d22w7ozmz21la.amplifyapp.com/">Optimism</a></li>                                    
+                                    <li><a className="dropdown-item" target="_blank" href="https://aws.d2n4l9is533l0n.amplifyapp.com/">Polygon</a></li>
+                                </ul>
                             </li>
                             <li className="nav-item">
                                 <a style={ styles.navLinkColor } className="nav-link" href="/gas-tracker">Gas Station</a>
                             </li>
-                            <li className="nav-item">
-                                <a style={ styles.navLinkColor } className="nav-link" href="/analytics-selection">Wallet/Token Analytics</a>
+                            <li className="nav-item dropdown">
+                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                    Analytics
+                                </a>
+                                <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a className="dropdown-item" href="/collections">Token Analytics</a></li>
+                                    <li><a className="dropdown-item" href="/walletAnalytics">Wallet Analytics</a></li>
+                                </ul>
                             </li>
                         </ul>
                     </div>
