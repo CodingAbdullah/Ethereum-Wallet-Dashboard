@@ -1,7 +1,9 @@
-h3 {
-    z-index: 2; /* Allow for the display of header */
-}
-
 .nav-link {
     color: white;
+}
+
+.dropdown-menu.show {
+    z-index: 789;
+    position:static !important; 
+
 }
