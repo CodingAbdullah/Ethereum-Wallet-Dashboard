@@ -16,6 +16,11 @@ const Navbar = () => {
         },
         buttonAttributes : {
             backgroundColor: 'white'
+        },
+        mediaQuery: {
+            '@media (min-width: 768px)': {
+                display: 'block'
+            }
         }
     }
 
@@ -32,7 +37,7 @@ const Navbar = () => {
                             <li className="nav-item">
                                 <a style={ styles.navLinkColor } className="nav-link" aria-current="page" href="/about">About</a>
                             </li>
-                            <li className="nav-item dropdown">
+                            <li className="nav-item dropdown" style={styles.mediaQuery}>
                                 <a style={ styles.navLinkColor } className="nav-link dropdown-toggle" href="#" id="prices" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                     Prices
@@ -47,7 +52,7 @@ const Navbar = () => {
                                     <li><a className="dropdown-item" href="/erc20-token-prices">ERC20 Token Prices</a></li>
                                 </ul>
                             </li>
-                            <li className="nav-item dropdown">
+                            <li className="nav-item dropdown" style={styles.mediaQuery}>
                                 <a style={ styles.navLinkColor } className="nav-link dropdown-toggle" href="#" id="holdings" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                     Token Holdings
@@ -57,7 +62,7 @@ const Navbar = () => {
                                     <li><a className="dropdown-item" href="/erc721-holdings">ERC721 Holdings</a></li>
                                 </ul>
                             </li>
-                            <li className="nav-item dropdown">
+                            <li className="nav-item dropdown" style={styles.mediaQuery}>
                                 <a style={ styles.navLinkColor } className="nav-link dropdown-toggle" href="#" id="lookups" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                     Token Lookups
@@ -67,7 +72,7 @@ const Navbar = () => {
                                     <li><a className="dropdown-item" href="/erc721-lookups">ERC721 Token Lookups</a></li>
                                 </ul>
                             </li>
-                            <li className="nav-item dropdown">
+                            <li className="nav-item dropdown" style={styles.mediaQuery}>
                                 <a style={ styles.navLinkColor } className="nav-link dropdown-toggle" href="#" id="dashboards" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                     Layer 2 Dashboards
@@ -81,7 +86,7 @@ const Navbar = () => {
                             <li className="nav-item">
                                 <a style={ styles.navLinkColor } className="nav-link" href="/gas-tracker">Gas Station</a>
                             </li>
-                            <li className="nav-item dropdown">
+                            <li className="nav-item dropdown" style={styles.mediaQuery}>
                                 <a style={ styles.navLinkColor } className="nav-link dropdown-toggle" href="#" id="analytics" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                     Analytics
