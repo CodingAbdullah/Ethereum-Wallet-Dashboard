@@ -12,8 +12,7 @@ const HomePageDescriptionSection = (props) => {
                 </p> 
                 <p>Please note that most activity can be found on the <b>mainnet</b> network. Some information might not be available on certain networks.</p> 
                 <br />
-                <p>Enter your wallet address below to begin!</p>
-                <form style={{ marginTop: '2rem'}} onSubmit={ props.form }>
+                <form style={{ marginTop: '1rem'}} onSubmit={ props.form }>
                     <input class="form-control mr-sm-2" type="search" placeholder="Enter Wallet Address (0xa2e3se4u5F...)" max="42" min="42" aria-label="Search" onChange={ props.updatingAddress } required />
                     <button class="btn btn-outline-success wallet-search-button" type="submit">Search &raquo;</button>
                 </form>
