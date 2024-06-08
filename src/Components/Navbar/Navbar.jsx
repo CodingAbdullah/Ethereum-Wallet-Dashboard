@@ -48,7 +48,7 @@ const Navbar = () => {
                                 </ul>
                             </li>
                             <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                <a style={ styles.navLinkColor } className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                     Token Holdings
                                 </a>
@@ -58,7 +58,7 @@ const Navbar = () => {
                                 </ul>
                             </li>
                             <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                <a style={ styles.navLinkColor } className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                     Token Lookups
                                 </a>
@@ -68,7 +68,7 @@ const Navbar = () => {
                                 </ul>
                             </li>
                             <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                <a style={ styles.navLinkColor } className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                     Layer 2 Dashboards
                                 </a>
@@ -82,7 +82,7 @@ const Navbar = () => {
                                 <a style={ styles.navLinkColor } className="nav-link" href="/gas-tracker">Gas Station</a>
                             </li>
                             <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                <a style={ styles.navLinkColor } className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                     Analytics
                                 </a>
