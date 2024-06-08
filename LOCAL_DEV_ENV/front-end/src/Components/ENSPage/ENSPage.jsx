@@ -1,28 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 const ENSPage = () => {
+    const [ENSURL, updateENSURL] = useState("address-to-ens-lookup");
     const navigate = useNavigate();
+
+    // State handler function to manage lookup option request
+    const selectHandler = e => {
+        updateENSURL(e.target.value);
+    }
 
     // Allow for navigation to different ENS lookups
     return (
         <div>
             <main role="main" className="p-3">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">ENS Lookups</h1>
+                <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 className="h2">ENS Lookups</h1>
                 </div>
-                <div class="jumbotron">
-                    <div class="container">
-                        <div>
-                            <label><b>Address { ' -----> ' } ENS</b></label><button onClick={() => navigate("/ens-lookup/address-to-ens-lookup")} style={{marginLeft: '4.8rem'}} class='btn btn-success'>View</button>
-                            <hr style={{marginTop: '2rem', marginBottom: '2rem'}} />
-                            <label><b>ENS { ' -----> ' } Address</b></label><button onClick={() => navigate("/ens-lookup/ens-to-address-lookup")} style={{marginLeft: '4.8rem'}} class='btn btn-success'>View</button>
-                            <hr style={{marginTop: '2rem', marginBottom: '2rem'}} />
-                            <label style={{marginRight: '0.1rem'}}><b>ENS Transfers By Name</b></label><button onClick={() => navigate("/ens-lookup/ens-transfers-by-name")} style={{marginLeft: '2.85rem'}} class='btn btn-success'>View</button>
-                            <hr style={{marginTop: '2rem', marginBottom: '2rem'}} />
-                            <label><b>ENS Transfers By Token Id</b></label><button onClick={() => navigate("/ens-lookup/ens-transfers-by-id")} style={{marginLeft: '1.65rem'}} class='btn btn-success'>View</button>
-                        </div>
+                <div className="jumbotron" style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%' }}>
+                    <div className="container">
+                        <p><i>Select ENS lookup options from the menu below!</i></p>
+                        <select value={ ENSURL } onChange={ selectHandler } className="form-select" aria-label="Default select example">
+                            <option selected value="address-to-ens-lookup">Address → ENS</option>
+                            <option value="ens-to-address-lookup">ENS → Address</option>
+                            <option value="ens-transfers-by-name">ENS Transfers By Name</option>
+                            <option value="ens-transfers-by-id">ENS Transfers By ID</option>
+                        </select>
                     </div>
+                    <button style={{ marginTop: '1rem'}} onClick={ () => navigate("/ens-lookup" + '/' + ENSURL) } className='btn btn-success'>View</button>
                 </div>
             </main> 
         </div> 
