@@ -165,7 +165,7 @@ const ERC721LookupsPage = () => {
 
     return (
         <div>
-             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+             <main role="main" class="p-3">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h2>ERC-721 Token Lookup</h2>
                 </div>
@@ -192,12 +192,12 @@ const ERC721LookupsPage = () => {
             </main>
             { 
                 emptyAlert ? 
-                    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                    <main role="main" class="p-3">
                         <Alert type="warning-unavailable-testnet" /> 
                     </main>
                 : null 
             }
-            <main style={{ marginTop: emptyAlert ? '' : '-3rem' }} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+            <main style={{ marginTop: emptyAlert ? '' : '-3rem' }} class="p-3" role="main">
                     <div>
                         {
                             tokenData.information === null ? null :
@@ -212,7 +212,7 @@ const ERC721LookupsPage = () => {
                         }
                     </div>
             </main>
-            <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+            <main class="p-3" role="main">
                     <div>
                         {
                             tokenRarity.information === null ? null :
@@ -230,7 +230,7 @@ const ERC721LookupsPage = () => {
                         }
                     </div>
             </main>
-            <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+            <main class="p-3" role="main">
                     <div>
                         {
                             tokenTransfers.information === null ? null :
@@ -245,7 +245,7 @@ const ERC721LookupsPage = () => {
                         }
                     </div>
             </main>
-            <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+            <main class="p-3" role="main">
                     <div>
                         {
                             tokenData.information === null ? null :

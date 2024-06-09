@@ -142,7 +142,7 @@ const ERC721HoldingsPage = () => {
     }   
     return (
         <div className="erc-721-token-page">
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <main role="main" class="p-3">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h2>ERC-721 Token Holdings</h2>
                 </div>
@@ -164,7 +164,7 @@ const ERC721HoldingsPage = () => {
             </main>
             { isEmpty ? null : 
                 <>
-                    <main style={{marginTop: '-3rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                    <main style={{marginTop: '-3rem'}} class="p-3" role="main">
                             <div>
                                 {
                                     nftData.information === null ? null :
@@ -179,7 +179,7 @@ const ERC721HoldingsPage = () => {
                                 }
                             </div>
                     </main>
-                    <main style={{marginTop: '2rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                    <main style={{marginTop: '2rem'}} class="p-3" role="main">
                         <div>
                             {
                                 ERC721Transfers.information === null ? null :

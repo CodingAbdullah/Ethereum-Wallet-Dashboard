@@ -268,7 +268,7 @@ const WalletStats = () => {
 
     return (
         <div className="wallet-stats">
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <main role="main" class="p-3">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h2 class="h2">Wallet Analytics</h2>
                 </div>
@@ -297,7 +297,7 @@ const WalletStats = () => {
             { 
                 checkComplete ? 
                     <>
-                        <main style={{marginTop: '2rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                        <main style={{marginTop: '2rem'}} class="p-3" role="main">
                             <div>
                                 {
                                     transactions.information !== null || emptyTransactionAlert ?
@@ -313,7 +313,7 @@ const WalletStats = () => {
                                 }
                             </div>
                         </main>
-                        <main style={{marginTop: '3rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                        <main style={{marginTop: '3rem'}} class="p-3" role="main">
                             <div>
                                 {
                                     ERC20Holdings.information !== null || emptyERC20Alert ?
@@ -329,7 +329,7 @@ const WalletStats = () => {
                                 }
                             </div>
                         </main>
-                        <main style={{marginTop: '3rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+                        <main style={{marginTop: '3rem'}} class="p-3" role="main">
                             <div>
                                 {
                                     ERC721Holdings.information !== null || emptyERC721Alert ?

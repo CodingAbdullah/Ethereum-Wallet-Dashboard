@@ -5,7 +5,7 @@ const AboutPage = () => {
     const navigate = useNavigate();
     return (
         <div className='about'>
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <main role="main" class="p-3">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <h1>About</h1>
                             <hr />
@@ -54,8 +54,8 @@ const AboutPage = () => {
                             <hr />
                     </div>
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <p>If you are interested in learning more about the developer behind this project, you can visit their bio here:
-                                <a style={{ color: 'black' }} href="https://kingabdullah.codes" target="_blank" rel="noreferrer"> <b>About The Developer</b></a>
+                            <p>If you are interested in learning more about the developer behind this project, you can visit their bio here: {" "}
+                                <a style={{ color: 'black' }} href="https://kingabdullah.codes" target="_blank" rel="noreferrer"><b>About The Developer</b></a>
                             </p>
                     </div>
                     <div>

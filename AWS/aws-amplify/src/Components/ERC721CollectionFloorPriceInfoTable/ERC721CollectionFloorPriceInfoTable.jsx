@@ -10,7 +10,7 @@ const ERC721CollectionFloorPriceInfoTable = (props) => {
         marketPlaceValues.push({ [market_places[i]]: data.information[market_places[i]] }); // Always be the same length as market_places
     }
     return (
-        <div style={{marginTop: '3rem'}} className='col-md-9 ml-sm-auto col-lg-10 px-md-4 erc721-collection-floor-price-table'>
+        <div style={{marginTop: '3rem'}} className='p-3 erc721-collection-floor-price-table'>
             <table style={{border: '1px solid black'}}>
                 <thead style={{border: '1px solid black'}}>
                 <tr style={{border: '1px solid black'}}>

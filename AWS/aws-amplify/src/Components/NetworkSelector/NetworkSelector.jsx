@@ -11,7 +11,6 @@ const NetworkSelector = (props) => {
         optionsValue = (
             <select onChange={ props.blockchainNetwork } className="form-select" aria-label="Default select example">
                 <option selected value="eth">Ethereum Mainnet</option>
-                <option value="polygon">Polygon Mainnet</option>
             </select>
         )   
     }
@@ -19,11 +18,8 @@ const NetworkSelector = (props) => {
         optionsValue = (
             <select onChange={ props.blockchainNetwork } className="form-select" aria-label="Default select example">
                 <option selected value="eth">Ethereum Mainnet</option>
-                <option value="kovan">Kovan Testnet</option>
-                <option value="goerli">Goerli Testnet</option>
-                <option value="rinkeby">Rinkeby Testnet</option>
-                <option value="ropsten">Ropsten Testnet</option>
                 <option value="sepolia">Sepolia Testnet</option>
+                <option value="holesky">Holesky Testnet</option>
             </select>
         )
     }

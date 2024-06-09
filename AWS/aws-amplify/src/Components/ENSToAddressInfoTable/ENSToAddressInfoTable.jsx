@@ -5,7 +5,7 @@ const ENSToAddressInfoTable = (props) => {
     const { data, address } = props;
 
     return (
-            <table style={{marginRight: '15rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <table style={{marginRight: '15rem'}} class="p-3">
                 <thead>
                 <tr>
                     <th scope="col">Address Resolver</th>
