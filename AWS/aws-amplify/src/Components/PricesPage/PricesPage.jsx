@@ -1,7 +1,6 @@
 import React, { useEffect} from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { coinPrices } from '../../UtilFunctions/coinPrices';
-import { coinPricesPro } from '../../UtilFunctions/coinPricesPro';
 import PriceCoinCard from '../PriceCoinCard/PriceCoinCard';
 import { useNavigate } from 'react-router';
 
@@ -9,7 +8,7 @@ const PricesPage = () => {
     // Incorporating React Query for faster and more efficient data fetch
     const { data, isPending, isError, error } = useQuery({
         queryKey: ['coin prices'],
-        queryFn: coinPricesPro
+        queryFn: coinPrices
     });
 
     const navigate = useNavigate(); // Incorporating the useNavigate() hook

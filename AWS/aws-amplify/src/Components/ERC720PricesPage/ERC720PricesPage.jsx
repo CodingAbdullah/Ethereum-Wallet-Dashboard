@@ -6,8 +6,6 @@ import { coinPricesByDay } from '../../UtilFunctions/coinPricesByDay';
 import { metricsNavbarEthPrice } from '../../UtilFunctions/metricsNavbarEthPrice';
 import { coinPricesByDayPro } from '../../UtilFunctions/coinPricesByDayPRO';
 import { metricsNavbarEthPricePro } from '../../UtilFunctions/metricsNavbarEthPricePRO';
-import { erc20CoinInfo } from '../../UtilFunctions/erc20CoinInfo';
-import { erc20CoinPriceDuration } from '../../UtilFunctions/erc20CoinPriceDuration';
 import { erc20CoinInfoPro } from '../../UtilFunctions/ERC20CoinInfoPRO';
 import { erc20CoinPriceDurationPro } from '../../UtilFunctions/ERC20CoinPriceDurationPRO';
 import Alert from '../Alert/Alert';

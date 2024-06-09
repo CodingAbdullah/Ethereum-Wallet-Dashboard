@@ -6,6 +6,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 <b>Starting December 29, 2023, dashboard will revert to free version usage of the CoinGecko API. </b>
 <b>Wil incorporate ethers/web3.js and XMTP for messaging soon. </b>
 <br />
+<br />
+
+### `Testnet Information`
+<p>Note that APIs related to the <b>Ropsten, Rinkeby, Goerli, and Kovan testnets are NO LONGER AVAILABLE. </b>Searches related to these networks will be removed.</b>
+<br />
+<p>Only the Sepolia and the new Holesky testnets will be supported</p>
+<br />
 
 ### `List of APIs Incorporated`
 <table>
@@ -123,24 +130,30 @@ For basic project setup, scripts for each operating system (MAC/WINDOWS) have be
 
 ### `Links`
 
-Below, is a list of links to the appropriate API resources used in this project. <b>Opensea API is now available and will be incorporated into the project in the near future. Changes to the ERC721 Collection, Holdings, and Analytics sections in particular, will see an update. Alchemy may still be used depending on usage requirements. </b>
+Below, is a list of links to the appropriate API resources used in this project. <b>Opensea API is now available and will be incorporated into the project in the near future. <br /> Changes to the ERC721 Collection, Holdings, and Analytics sections in particular, will see an update. Alchemy may still be used depending on usage requirements. </b>
 
-[Alchemy](https://docs.alchemy.com/reference/)
-[Blocknative](https://blocknative.com/)
-[CoinGecko](https://www.coingecko.com/en/api/documentation)
-[Etherscan](https://etherscan.io/apis)
-[Moralis](https://docs.moralis.io/)
-[Opensea](https://docs.opensea.io/reference/api-overview)
-[Transpose](https://transpose.io/)
+- [Alchemy](https://docs.alchemy.com/reference/)
+<br />
+- [Blocknative](https://blocknative.com/)
+<br />
+- [CoinGecko](https://www.coingecko.com/en/api/documentation)
+<br />
+- [Etherscan](https://etherscan.io/apis)
+<br />
+- [Moralis](https://docs.moralis.io/)
+<br />
+- [Opensea](https://docs.opensea.io/reference/api-overview)
+<br />
+- [Transpose](https://transpose.io/)
 
 <br />
 
 ## Local/AWS Configuration
 
 ### Local
-If you want to run this app locally, the LOCAL_DEV_ENV folder is the repo for that. You'll need to assign two ports (3000 and 5000, by default) for front-end/back-end servers respectively. 
+<p>Due to size and refactoring, the <b>LOCAL_DEV_ENV</b> directory has been removed.To run locally ensure that React components that make calls to the back-end server, point to localhost <code>http://localhost:5000</code>.</p> 
 
-You'll also need to install all the node modules and dependencies under the `package.json` file as the node_modules folder was not committed. This can be done with `npm install`. You'll also need to add the `.env` file under the back-end folder as it contains all the API keys for your back-end server.
+You'll also need to install all the node modules and dependencies under the <code>package.json</code> file as the node_modules folder was not committed. This can be done with <code>npm install</code>. You'll also need to add the <code>.env</code> file in the back-end directory as it contains all the API keys for your back-end server.
 
 <br />
 

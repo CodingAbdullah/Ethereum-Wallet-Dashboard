@@ -1,13 +1,13 @@
 version: "3.8"
 services:
   backend:
-    build: /LOCAL_DEV_ENV/back-end
+    build: /AWS/aws-ec2
     ports:
-      - 5001:5001
+      - 5000:5000
     env_file: 
-      - /LOCAL_DEV_ENV/back-end/.env
+      - /AWS/aws-ec2/.env
   frontend:
-    build: /LOCAL_DEV_ENV/front-end
+    build: /AWS/aws-amplify
     ports:
       - 3000:3000
     tty: true

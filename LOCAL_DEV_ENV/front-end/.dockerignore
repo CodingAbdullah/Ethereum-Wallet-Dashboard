@@ -1,4 +1,0 @@
-# Adding files/directories that will not be required for the creation of the frontend server
-.git
-Dockerfile
-node_modules
