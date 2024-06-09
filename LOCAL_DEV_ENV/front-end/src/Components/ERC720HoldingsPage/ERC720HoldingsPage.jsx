@@ -29,7 +29,7 @@ const ERC720HoldingsPage = () => {
 
     const [networkID, updateNetworkID] = useState('eth'); // Network selector set to default value
 
-    const updateNetworkHandler = (e) => {
+    const updateNetworkHandler = e => {
         updateNetworkID(e.target.value);
     }
 
@@ -48,7 +48,7 @@ const ERC720HoldingsPage = () => {
         });
     }
 
-    const walletHandler = (e) => {
+    const walletHandler = e => {
         e.preventDefault();
 
         if (walletAddress.length === 42 && walletAddress.substring(0, 2) === '0x') {
@@ -145,15 +145,15 @@ const ERC720HoldingsPage = () => {
                     { isEmpty ? <Alert type="warning" /> : null }
                     <div class="jumbotron">
                         <div class="container">
-                            <form onSubmit={walletHandler}>
-                                <label style={{marginRight: '0.5rem'}}>Enter Wallet Address (ERC20 token balances/transfers in this wallet will be displayed (100 Recent): </label>
-                                <input type="text" onChange={e => updateWalletAddress(e.target.value)} placeholder="Enter here" required />
+                            <form onSubmit={ walletHandler }>
+                                <label style={{ marginRight: '0.5rem' }}>Enter Wallet Address (Only 100 recent will be displayed): </label>
+                                <input type="text" onChange={ e => updateWalletAddress(e.target.value) } placeholder="Enter here" required />
                                 <br />
                                 <NetworkSelector blockchainNetwork={ updateNetworkHandler } />
-                                <button style={{marginTop: '2rem'}} type="submit" class="btn btn-success">Check Balances</button>
+                                <button style={{ marginTop: '2rem' }} type="submit" class="btn btn-success">Check Balances</button>
                             </form>
-                            <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
-                            <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={() => { updateAlert(false); updateEmptyAlert(false); updateERC20Holdings((prevState) => { return { ...prevState, information: null }}); updateERC20Transfers((prevState) => { return { ...prevState, information: null }} )}}>Clear</button>
+                            <button style={{ marginTop: '2rem', display: 'inline' }} class='btn btn-primary' onClick={ () => navigate("/") }>Go Home</button>
+                            <button style={{ marginTop: '2rem', marginLeft: '2rem' }} class='btn btn-warning' onClick={ () => { updateAlert(false); updateEmptyAlert(false); updateERC20Holdings((prevState) => { return { ...prevState, information: null }}); updateERC20Transfers((prevState) => { return { ...prevState, information: null }} )} }>Clear</button>
                         </div>
                     </div>
                 </main>
