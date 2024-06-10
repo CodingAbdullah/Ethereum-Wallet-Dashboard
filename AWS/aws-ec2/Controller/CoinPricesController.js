@@ -245,7 +245,7 @@ exports.homePageGlobalMarketData = async (req, res) => {
         headers : {
             'content-type' : 'application/json',
             'access-control-allow-origin': '*',
-            'x-cg-pro-api-key' : process.env.COINGECKO_HOME_PAGE_API_KEY // API-KEY for authenticated call
+            'x-cg-pro-api-key' : process.env.COINGECKO_HOME_PAGE_API_KEY_2 // API-KEY for authenticated call
         }
     }
 
@@ -279,7 +279,7 @@ exports.homePageTrendingCoins = async (req, res) => {
         headers : {
             'content-type' : 'application/json',
             'access-control-allow-origin': '*',
-            'x-cg-pro-api-key' : process.env.COINGECKO_HOME_PAGE_API_KEY // API-KEY for authenticated call
+            'x-cg-pro-api-key' : process.env.COINGECKO_HOME_PAGE_API_KEY_3 // API-KEY for authenticated call
         }
     }
 

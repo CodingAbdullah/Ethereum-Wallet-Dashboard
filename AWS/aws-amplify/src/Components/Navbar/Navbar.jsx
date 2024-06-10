@@ -38,12 +38,7 @@ const Navbar = () => {
                                     Prices
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="prices">
-                                    {
-                                        isFreeVersion ? null :                            
-                                            <li className="nav-item">
-                                                <a className="nav-link" href="/prices">Prices</a>
-                                            </li>
-                                    }                                    
+                                    <li><a className="dropdown-item" href="/prices">Coin Prices</a></li>
                                     <li><a className="dropdown-item" href="/erc20-token-prices">ERC20 Token Prices</a></li>
                                 </ul>
                             </li>
