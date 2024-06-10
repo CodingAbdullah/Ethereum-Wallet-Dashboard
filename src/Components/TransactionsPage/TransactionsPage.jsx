@@ -19,7 +19,7 @@ const Transactions = () => {
     // Setting React Query for different calls such as pricing, balances, transactions, and internal transactions
     const ethPriceQuery = useQuery({
         queryKey: ['eth price', 'ethereum'],
-        queryFn: currentCoinPrice
+        queryFn: currentCoinPricePro
     });
 
     const walletBalancesQuery = useQuery({

@@ -38,12 +38,12 @@ const MaticPricePage = () => {
 
     const coinPriceQuery = useQuery({
       queryKey: ['coin', 'matic-network', interval],
-      queryFn: coinPricesByDay
+      queryFn: coinPricesByDayPro
     });
 
     const currentCoinPriceQuery = useQuery({
       queryKey: ['current coin price', 'matic-network'],
-      queryFn: currentCoinPrice
+      queryFn: currentCoinPricePro
     });
 
     // Matic coin price reference

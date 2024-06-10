@@ -38,12 +38,12 @@ const ArbitrumPricePage = () => {
 
     const coinPriceQuery = useQuery({
       queryKey: ['coin', 'arbitrum', interval],
-      queryFn: coinPricesByDay
+      queryFn: coinPricesByDayPro
     });
 
     const currentCoinPriceQuery = useQuery({
       queryKey: ['current coin price', 'arbitrum'],
-      queryFn: currentCoinPrice
+      queryFn: currentCoinPricePro
     });
 
     // Arbitrum coin price reference

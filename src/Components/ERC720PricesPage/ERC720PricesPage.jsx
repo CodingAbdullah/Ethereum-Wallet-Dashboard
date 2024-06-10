@@ -6,10 +6,8 @@ import { coinPricesByDay } from '../../UtilFunctions/coinPricesByDay';
 import { metricsNavbarEthPrice } from '../../UtilFunctions/metricsNavbarEthPrice';
 import { coinPricesByDayPro } from '../../UtilFunctions/coinPricesByDayPRO';
 import { metricsNavbarEthPricePro } from '../../UtilFunctions/metricsNavbarEthPricePRO';
-import { erc20CoinInfo } from '../../UtilFunctions/erc20CoinInfo';
-import { erc20CoinPriceDuration } from '../../UtilFunctions/erc20CoinPriceDuration';
-import { erc20CoinInfoPro } from '../../UtilFunctions/erc20CoinInfoPRO';
-import { erc20CoinPriceDurationPro } from '../../UtilFunctions/erc20CoinPriceDurationPRO';
+import { erc20CoinInfoPro } from '../../UtilFunctions/ERC20CoinInfoPRO';
+import { erc20CoinPriceDurationPro } from '../../UtilFunctions/ERC20CoinPriceDurationPRO';
 import Alert from '../Alert/Alert';
 import ERC720PricesInfoTable from '../ERC720PricesInfoTable/ERC720PricesInfoTable';
 import ChangeHighlight from 'react-change-highlight';
@@ -46,24 +44,24 @@ const ERC720TokenPricesPage = () => {
     // Setting up queries for fetching and caching data
     const ethPriceQuery = useQuery({
       queryKey: ['eth price'],
-      queryFn: metricsNavbarEthPrice
+      queryFn: metricsNavbarEthPricePro
     });
 
     const ethPriceDurationQuery = useQuery({
       queryKey: ['eth price duration', 'ethereum', 14],
-      queryFn: coinPricesByDay
+      queryFn: coinPricesByDayPro
     });
 
     // Setting up a reference for token address instead, calls will be made for each character
     // React-Query identifies each query with its unique key
     const erc20TokenPriceQuery = useQuery({
       queryKey: ['ERC20 token information', setTokenContractAddress],
-      queryFn: erc20CoinInfo
+      queryFn: erc20CoinInfoPro
     });
 
     const erc20TokenPriceDurationQuery = useQuery({
       queryKey: ['ERC20 token price duration', setTokenContractAddress],
-      queryFn: erc20CoinPriceDuration
+      queryFn: erc20CoinPriceDurationPro
     });
 
     const ethPriceRef = useRef(); // Track Ethereum price changes
