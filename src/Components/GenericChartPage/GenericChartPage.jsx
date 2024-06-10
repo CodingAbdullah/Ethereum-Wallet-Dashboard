@@ -48,12 +48,12 @@ const GenericChartPage = () => {
 
     const coinPriceQuery = useQuery({
       queryKey: ['coin', coinSelector, interval],
-      queryFn: coinPricesByDay
+      queryFn: coinPricesByDayPro
     });
 
     const currentCoinPriceQuery = useQuery({
       queryKey: ['current coin price', coinSelector],
-      queryFn: currentCoinPrice
+      queryFn: currentCoinPricePro
     });
 
     // Update based on the toggle value afterwards, hence state will be used here
