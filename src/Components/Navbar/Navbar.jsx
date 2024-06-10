@@ -41,7 +41,7 @@ const Navbar = () => {
                                     {
                                         isFreeVersion ? null :                            
                                             <li className="nav-item">
-                                                <a style={ styles.navLinkColor } className="nav-link" href="/prices">Prices</a>
+                                                <a className="nav-link" href="/prices">Prices</a>
                                             </li>
                                     }                                    
                                     <li><a className="dropdown-item" href="/erc20-token-prices">ERC20 Token Prices</a></li>
