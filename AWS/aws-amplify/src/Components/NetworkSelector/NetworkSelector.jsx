@@ -7,14 +7,7 @@ const NetworkSelector = (props) => {
     let optionsValue = null;
     let location = window.location.pathname; // On select pathnames, modify the name of networks available to user
 
-    if (location ==='/erc20-token-prices' || location === '/collections/erc720-collection' || location === '/collections/erc721-collection') {
-        optionsValue = (
-            <select onChange={ props.blockchainNetwork } className="form-select" aria-label="Default select example">
-                <option selected value="eth">Ethereum Mainnet</option>
-            </select>
-        )   
-    }
-    else {
+    if (location !=='/erc20-token-prices' && location !== '/collections/erc720-collection' && location !== '/collections/erc721-collection') {
         optionsValue = (
             <select onChange={ props.blockchainNetwork } className="form-select" aria-label="Default select example">
                 <option selected value="eth">Ethereum Mainnet</option>

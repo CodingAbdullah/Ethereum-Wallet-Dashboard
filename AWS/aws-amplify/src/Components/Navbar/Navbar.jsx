@@ -3,7 +3,7 @@ import './Navbar.css';
 
 const Navbar = () => {
 
-    const isFreeVersion = true; // Check flag to determine what version of the CoinGecko API is in use
+    const isFreeVersion = false; // Check flag to determine what version of the CoinGecko API is in use
 
     // Styles for Navbar
     const styles = {
