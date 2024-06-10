@@ -21,7 +21,7 @@ const Home = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const isFreeVersion = true; // Check flag to see what version of the CoinGecko API is in use
+    const isFreeVersion = false; // Check flag to see what version of the CoinGecko API is in use
 
     const [formAlert, updateAlert] = useState("");
     const [walletAddress, updateWalletAddress] = useState("");
