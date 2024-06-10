@@ -21,7 +21,7 @@ const Home = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const isFreeVersion = true; // Check flag to see what version of the CoinGecko API is in use
+    const isFreeVersion = false; // Check flag to see what version of the CoinGecko API is in use
 
     const [formAlert, updateAlert] = useState("");
     const [walletAddress, updateWalletAddress] = useState("");
@@ -29,22 +29,22 @@ const Home = () => {
     // Set up queries and fetch data related to bitcoin, ethereum, the global market as well as trending coins
     const bitcoinPriceQuery = useQuery({
         queryKey: ['bitcoin price'],
-        queryFn: homePageBitcoinPrice
+        queryFn: homePageBitcoinPricePro
     });
 
     const ethereumPriceQuery = useQuery({
         queryKey: ['eth price'],
-        queryFn: metricsNavbarEthPrice
+        queryFn: metricsNavbarEthPricePro
     });
 
     const globalMarketDataQuery = useQuery({
         queryKey: ['market data'],
-        queryFn: homePageGlobalMarketData
+        queryFn: homePageGlobalMarketDataPro
     });
 
     const trendingCoinsQuery = useQuery({
         queryKey: ['transaction data'],
-        queryFn: homePageTrendingCoins
+        queryFn: homePageTrendingCoinsPro
     });
 
     // Track Bitcoin, Ethereum price changes
