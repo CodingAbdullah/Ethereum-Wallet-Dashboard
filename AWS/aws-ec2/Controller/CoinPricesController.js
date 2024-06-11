@@ -304,7 +304,7 @@ exports.homePageTrendingCoins = async (req, res) => {
 
         // Send back as response, trending coin data
         res.status(200).json({
-            trendingCoinData
+            trendingCoinData: response.data
         });
     }
 }
