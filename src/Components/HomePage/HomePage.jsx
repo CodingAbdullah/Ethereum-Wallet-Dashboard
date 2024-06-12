@@ -101,13 +101,13 @@ const Home = () => {
                             </p>
                             <div class="row">
                                 <div>
-                                    <h5 style={{ marginBottom: '1rem' }}>Trending Coins</h5>
+                                    <h5 style={{ marginBottom: '1rem', width: '50%', marginLeft: 'auto', marginRight: 'auto' }}>Trending Coins</h5>
                                     <HomePageTrendingCoinsTable coins={ trendingCoinsQuery.data.coins } />
                                 </div>
                             </div>
                             <div class="row">
                                 <div>
-                                    <h5 style={{ marginTop: '3rem' }}>Trending Collections</h5>
+                                    <h5 style={{ marginTop: '3rem', width: '50%', marginLeft: 'auto', marginRight: 'auto' }}>Trending Collections</h5>
                                     <HomePageTrendingCollectionsTable collections={ trendingCoinsQuery.data.nfts } />
                                 </div>
                             </div>

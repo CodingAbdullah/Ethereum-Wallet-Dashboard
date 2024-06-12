@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import numeral from 'numeral'; // Number formatting library
 import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
@@ -26,22 +26,58 @@ const HomePageTrendingCollectionsTable = (props) => {
     const [rowData, updateRowData] = useState(coinTableRowData);
 
     // Column Definitions: Defines the columns to be displayed.
-    const [colDefs, setColDefs] = useState([
-        { field: "name", headerName: 'Name' },
-        { field: "symbol", headerName: "Symbol" },
-        { field: "floorPrice", headerName: "Floor Price" },
-        { field: "percentChange", headerName: "Price Change" },
-        { field: "volume", headerName: "Volume" }    
-    ]);
-
-    // Passing in data to be rendered as a table using the AgGridReact component
-    return (
-        <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', marginBottom: '1rem', height: 280, width: 1020 }}>
-            <AgGridReact
-                rowData={rowData}
-                columnDefs={colDefs} />
+    const [columnDefs, setColumnDefs] = useState([]);
+    
+    // Function for handling column renders on window screen size
+    const updateColumnDefs = () => {
+        if (window.outerWidth < 550) {
+            setColumnDefs([
+                { field: "name", headerName: 'Name', flex: 1 },
+                { field: "percentChange", headerName: "Price Change", flex: 1 }
+            ]);
+        } 
+        else if (window.outerWidth < 1000) {
+            setColumnDefs([
+                { field: "name", headerName: 'Name', flex: 1 },
+                { field: "symbol", headerName: "Symbol", flex: 1 },
+                { field: "percentChange", headerName: "Price Change", flex: 1 }
+            ]);
+        }
+        else if (window.outerWidth < 1100) {
+            setColumnDefs([
+                { field: "name", headerName: 'Name', flex: 1 },
+                { field: "symbol", headerName: "Symbol", flex: 1 },
+                { field: "percentChange", headerName: "Price Change", flex: 1 },
+                { field: "floorPrice", headerName: "Floor Price", flex: 1 }
+            ]);
+        }
+        else {
+            setColumnDefs([
+                { field: "name", headerName: 'Name', flex: 1 },
+                { field: "symbol", headerName: "Symbol", flex: 1 },
+                { field: "floorPrice", headerName: "Floor Price", flex: 1 },
+                { field: "percentChange", headerName: "Price Change", flex: 1 },
+                { field: "volume", headerName: "Volume", flex: 1 } 
+            ]);
+        }
+      };
+    
+      // Dynamically adjust table size depending on screen size
+      useEffect(() => {
+        updateColumnDefs();
+        window.addEventListener('resize', updateColumnDefs);
+        return () => window.removeEventListener('resize', updateColumnDefs);
+      }, []);
+    
+      // Render AG Grid Table Component
+      return (
+        <div className="ag-theme-quartz" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', height: 280, width: '100%' }}>
+          <AgGridReact
+            columnDefs={columnDefs}
+            rowData= {rowData }
+          />
         </div>
-    )
+      )
 }
 
-export default HomePageTrendingCollectionsTable
+export default HomePageTrendingCollectionsTable;
