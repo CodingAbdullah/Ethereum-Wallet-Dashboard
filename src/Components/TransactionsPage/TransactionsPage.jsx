@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import Alert from '../Alert/Alert';
+import TransactionsAccountInfoTable from '../TransactionsAccountInfoTable/TransactionsAccountInfoTable';
 import TransactionsInfoTable from '../TransactionsInfoTable/TransactionsInfoTable';
 import InternalTransactionsInfoTable from '../InternalTransactionsInfoTable/InternalTransactionsInfoTable';
 import { resetAddress } from '../../redux/reducer/walletAddressReducer';
@@ -70,15 +71,13 @@ const Transactions = () => {
         
         return ( 
             <>
-                <main role="main" class="col-md-9 p-3">
+                <main role="main" class="p-3">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">Transactions</h1>
                     </div>
-                    <h3 style={{ marginTop: '1.5rem' }}>{ "Account: " + walletAddress }</h3>
-                    <h5>{ "ETH Balance: " + (walletBalancesQuery.data.result*(1/1000000000000000000)) + " ETH (@ $" + ethPriceQuery.data[0].ethereum.usd.toFixed(2) + " USD/ETH)" }</h5>
-                    <h6>{ "Amount in USD: $" + ((walletBalancesQuery.data.result*(1/1000000000000000000))*(ethPriceQuery.data[0].ethereum.usd)).toFixed(2) + " USD" }</h6>
+                    <TransactionsAccountInfoTable walletAddress={ walletAddress } walletBalance={ walletBalancesQuery.data } ethPrice={ ethPriceQuery.data[0] } />
                 </main>            
-                <main class="col-md-9 p-3" role="main">
+                <main class="p-3" role="main">
                         <div>
                             {
                                 transactionsAlert ? null :
