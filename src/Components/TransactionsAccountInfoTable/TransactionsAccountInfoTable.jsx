@@ -42,12 +42,11 @@ const TransactionsAccountInfoTable = (props) =>  {
         return () => window.removeEventListener('resize', updateColumnDefs);
     }, []);
 
-
     // Return AG Grid React Component containing account information
     return (
         <>
-            <h6>Account Address: { walletAddress }</h6>
-            <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%', height: '7rem', width: '100%' }}>
+            <p><b>Address: { walletAddress }</b></p>
+            <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%', height: '5.75rem', width: '100%' }}>
                 <AgGridReact
                     rowData={rowData}
                     columnDefs={columnDefs} />
