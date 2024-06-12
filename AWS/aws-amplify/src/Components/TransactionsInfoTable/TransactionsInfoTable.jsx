@@ -1,42 +1,92 @@
-import React from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Badge from '../Badge/Badge';
+import numeral from 'numeral'; // Number formatting library
+import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 
 const TransactionsInfoTable = (props) => {
     const { data, walletAddress, isMatic, networkFetch } = props; // Retrieving data from transactions page
+    
+    let coinTableRowData = [];
+    let item = {};
+
+    // Working through the data and formatting it to be displayed in the table
+    for (var i = 0; i < data.length; i++) {
+        item = {
+            blockNumber: networkFetch ? data[i].block_number : data[i].blockNumber,
+            timeStamp: networkFetch ? data[i].block_timestamp.split(".")[0] : new Date(data[i].timeStamp*1000).toString().split("GMT")[0].trim() +"-EST",
+            from: networkFetch ? data[i].from_address : data[i].from,
+            to: networkFetch ? data[i].to_address : data[i].to,
+            direction: networkFetch ? ( walletAddress.toLowerCase() === data[i].to_address ? <Badge type="IN" /> : <Badge type="OUT" /> ) : ( walletAddress.toLowerCase() === data[i].to ? <Badge type="IN" /> : <Badge type="OUT" /> ),
+            value: isMatic ? (data[i].value*(1/1000000000000000000)).toPrecision(4) + " MATIC" : (data[i].value*(1/1000000000000000000)).toPrecision(4) + " ETH",
+            gas: data[i].gas
+        }
+        coinTableRowData.push(item);
+        item = {};
+    }
+
+    const [rowData, updateRowData] = useState(coinTableRowData);
+
+    // Column Definitions: Defines the columns to be displayed.
+    const [columnDefs, setColumnDefs] = useState([]);
+
+    const gridRef = useRef(null);
+        
+    // Function for handling column renders on window screen size
+    const updateColumnDefs = () => {
+        if (window.outerWidth < 1000) {
+            setColumnDefs([
+                { field: "from", headerName: "From", flex: 1 },
+                { field: "to", headerName: "To", flex: 1 },  
+                { field: "value", headerName: "Value", flex: 1 } 
+            ]);
+        } 
+        else if (window.outerWidth < 1250) {
+            setColumnDefs([
+                { field: "timeStamp", headerName: 'Time Stamp', flex: 1 },
+                { field: "from", headerName: "From", flex: 1 },
+                { field: "to", headerName: "To", flex: 1 },  
+                { field: "value", headerName: "Value", flex: 1 }    
+            ]);
+        }
+        else {
+            setColumnDefs([
+                { field: "timeStamp", headerName: 'Time Stamp', flex: 1 },
+                { field: "blockNumber", headerName: "Block Number", flex: 1 },
+                { field: "from", headerName: "From", flex: 1 },
+                { field: "to", headerName: "To", flex: 1 },  
+                { field: "value", headerName: "Value", flex: 1 },
+                { field: "gas", headerName: "Gas", flex: 1 }
+            ]);
+        }
+      };
+    
+      // Dynamically adjust table size depending on screen size
+      useEffect(() => {
+        updateColumnDefs();
+        window.addEventListener('resize', updateColumnDefs);
+        return () => window.removeEventListener('resize', updateColumnDefs);
+      }, []);
+
+      // Fitting all columns on screen size
+      useEffect(() => {
+        if (gridRef.current && rowData.length > 0) {
+            const gridApi = gridRef.current.api;
+            gridApi.sizeColumnsToFit();
+        }
+    }, [rowData]);
 
     return (
-        <div className="transactions-data-table">
-            <table style={{border: '1px solid black'}}>
-                    <thead style={{border: '1px solid black'}}>
-                        <tr style={{border: '1px solid black'}}>
-                            <th style={{border: '1px solid black', fontSize: '11px'}} scope="col">Block Number</th>
-                            <th style={{border: '1px solid black', fontSize: '11px'}} scope="col">Time Stamp</th>
-                            <th style={{border: '1px solid black', fontSize: '11px'}} scope="col">From</th>
-                            <th style={{border: '1px solid black', fontSize: '11px'}} scope="col">To</th>
-                            <th style={{border: '1px solid black', fontSize: '11px'}} scope="col">Direction</th>
-                            <th style={{border: '1px solid black', fontSize: '11px'}} scope="col">Value</th>
-                            <th style={{border: '1px solid black', fontSize: '11px'}} scope="col">Gas</th>
-                        </tr>
-                    </thead>
-                    <tbody style={{border: '1px solid black'}}>
-                        {
-                            data.map((record, key) => {
-                                return (
-                                    <tr id={key} style={{border: '1px solid black'}}>
-                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{networkFetch ? record.block_number : record.blockNumber}</td>
-                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{networkFetch ?  record.block_timestamp.split(".")[0] : new Date(record.timeStamp*1000).toString().split("GMT")[0].trim() +"-EST"}</td>
-                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{networkFetch ? record.from_address : record.from}</td>
-                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{networkFetch ? record.to_address : record.to}</td>
-                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{networkFetch ? ( walletAddress.toLowerCase() === record.to_address ? <Badge type="IN" /> : <Badge type="OUT" /> ) : ( walletAddress.toLowerCase() === record.to ? <Badge type="IN" /> : <Badge type="OUT" /> )}</td>
-                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{isMatic ? (record.value*(1/1000000000000000000)).toPrecision(4) + " MATIC" : (record.value*(1/1000000000000000000)).toPrecision(4) + " ETH"}</td>
-                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{record.gas}</td>
-                                    </tr>
-                                )
-                            }) 
-                        }                             
-                    </tbody>
-            </table>
-        </div>
+        <>
+            <p><b>Activity</b><br /><i>1000 Most Recent Transactions</i></p>
+            <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', height: 400, width: '100%' }}>
+                <AgGridReact
+                    rowData={rowData}
+                    columnDefs={columnDefs}
+                    gridRef={gridRef} />
+            </div>
+        </>
     )
 }
 

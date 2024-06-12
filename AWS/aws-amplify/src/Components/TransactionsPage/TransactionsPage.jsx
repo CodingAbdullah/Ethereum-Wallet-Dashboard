@@ -76,23 +76,19 @@ const Transactions = () => {
                         <h1 class="h2">Transactions</h1>
                     </div>
                     <TransactionsAccountInfoTable walletAddress={ walletAddress } walletBalance={ walletBalancesQuery.data } ethPrice={ ethPriceQuery.data[0] } />
-                </main>            
+                </main>  
+                <hr style={{ marginTop: '2rem' }}/>          
                 <main class="p-3" role="main">
                         <div>
                             {
                                 transactionsAlert ? null :
                                     <>
-                                        <main style={{ marginTop: '5rem' }} role="main">
-                                            <div style={{ marginTop: '1rem' }} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                                <h3 class="h3">Latest 1000 Transactions or Maximum/Wallet</h3>
-                                            </div>
-                                        </main>
                                         <TransactionsInfoTable walletAddress={ walletAddress } networkFetch={false} data={ walletTransactionsQuery.data.result } />                                
                                     </>
                             }
                         </div>
                 </main>
-                <main style={{ marginTop: '1rem' }} class="col-md-9 p-3" role="main">
+                <main style={{ marginTop: '1rem' }} class="p-3" role="main">
                         <div>
                             {
                                 emptyInteralTransactionAlert ? <Alert type='warning-empty-internal' /> :
