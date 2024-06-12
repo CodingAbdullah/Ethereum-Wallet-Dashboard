@@ -19,8 +19,7 @@ const TransactionsInfoTable = (props) => {
             from: networkFetch ? data[i].from_address : data[i].from,
             to: networkFetch ? data[i].to_address : data[i].to,
             direction: networkFetch ? ( walletAddress.toLowerCase() === data[i].to_address ? <Badge type="IN" /> : <Badge type="OUT" /> ) : ( walletAddress.toLowerCase() === data[i].to ? <Badge type="IN" /> : <Badge type="OUT" /> ),
-            value: isMatic ? (data[i].value*(1/1000000000000000000)).toPrecision(4) + " MATIC" : (data[i].value*(1/1000000000000000000)).toPrecision(4) + " ETH",
-            gas: data[i].gas
+            value: isMatic ? (data[i].value*(1/1000000000000000000)).toPrecision(4) + " MATIC" : (data[i].value*(1/1000000000000000000)).toPrecision(4) + " ETH"
         }
         coinTableRowData.push(item);
         item = {};
@@ -56,8 +55,7 @@ const TransactionsInfoTable = (props) => {
                 { field: "blockNumber", headerName: "Block Number", flex: 1 },
                 { field: "from", headerName: "From", flex: 1 },
                 { field: "to", headerName: "To", flex: 1 },  
-                { field: "value", headerName: "Value", flex: 1 },
-                { field: "gas", headerName: "Gas", flex: 1 }
+                { field: "value", headerName: "Value", flex: 1 }
             ]);
         }
       };

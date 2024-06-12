@@ -88,6 +88,7 @@ const Transactions = () => {
                             }
                         </div>
                 </main>
+                <hr style={{ marginTop: '2rem' }}/>          
                 <main style={{ marginTop: '1rem' }} class="p-3" role="main">
                         <div>
                             {
@@ -95,11 +96,6 @@ const Transactions = () => {
                                 (
                                     walletTransactionsQuery.data === null ? null :
                                         <>
-                                            <main style={{ marginTop: '5rem' }} role="main">
-                                                <div style={{ marginTop: '1rem' }} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                                    <h3 class="h3">Internal Transactions</h3>
-                                                </div>
-                                            </main>
                                             <InternalTransactionsInfoTable walletAddress={ walletAddress } data={ walletInternalTransactionsQuery.data.result } /> 
                                         </>
                                 )
