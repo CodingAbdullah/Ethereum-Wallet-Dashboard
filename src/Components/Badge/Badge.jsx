@@ -19,8 +19,8 @@ const Badge = (props) => {
     return (
         <div className='custom-badge'>
             {
-                type === 'IN' ? <span class='badge badge-success'>{message}</span> :
-                <span class='badge badge-warning'>{message}</span>
+                type === 'IN' ? <span class='badge rounded-pill text-bg-success'>{message}</span> :
+                <span class='badge rounded-pill text-bg-warning'>{message}</span>
             }
         </div>
     )
