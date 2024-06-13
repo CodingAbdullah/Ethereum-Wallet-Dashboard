@@ -1,23 +1,27 @@
-import React from 'react';
+import { useEffect, useState } from "react";
+import numeral from 'numeral'; // Number formatting library
+import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 
 const AddressToENSInfoTable = (props) => {
-    const { data } = props;
+    const { data, walletAddress } = props;
 
+    // AG Grid React rendering wallet ENS information
     return (
-            <table style={{marginRight: '4rem'}} class="p-3">
-                <thead>
-                <tr>
-                    <th scope="col">ENS Resolver</th>
-                    <th scope="col">Personal Website</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{data.name}</td>
-                        <td><a href={"https://" + data.name + ".xyz/"} target="_blank" rel="noreferrer">{data.name} - Link</a></td>
-                    </tr>
-                </tbody>
-            </table>        
+        <>
+            <p><b>Address:</b><br /><i>{ walletAddress }</i></p>
+            <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%', height: 92, width: '100%' }}>
+                <AgGridReact
+                    rowData={[
+                        { ensResolver: data.name, personalWebsite: "https://" + data.name + ".xyz/" }
+                    ]}
+                    columnDefs={[
+                        { field: "ensResolver", headerName: 'ENS Resolver', flex: 1 },
+                        { field: "personalWebsite", headerName: "Personal website", flex: 1 } 
+                    ]} />
+            </div>
+        </>
     )
 }
 

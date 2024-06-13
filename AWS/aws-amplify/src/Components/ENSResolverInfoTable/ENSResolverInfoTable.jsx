@@ -1,102 +1,116 @@
-import axios from 'axios';
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from "react";
+import { ensResolverPro } from "../../UtilFunctions/ensResolverPRO";
+import { useQuery } from '@tanstack/react-query'; // React Query for data fetching
+import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 
-const ENSResolverInfoTable = (props) => {
+const ENSOwnershipInfoTable = (props) => {
     const { address } = props;
 
-    const [ensResolverData, updateEnsResolverData] = useState({
-        information: null
+    // React Query for fetching ENS information
+    const ensResolverQuery = useQuery({
+        queryKey: ['ens resolver', address],
+        queryFn: ensResolverPro
     });
 
-    const NODE_SERVER_ADDRESS = "https://18.221.208.44.nip.io/"; // Our node server from the backend
-    const ADDITIONAL_INFORMATION_ENDPOINT = 'ens-resolver-information'; // Personal Node server endpoint
-    const delay = (ms = 1250) => new Promise((r) => setTimeout(r, ms)); // Set timeout for ENS information display
+    const [columnDefs, setColumnDefs] = useState([]);
 
-    const clearHandler = () => {
-        updateEnsResolverData((prevState) => {
-            return {
-                ...prevState,
-                information: null
-            }
-        });
-    }
-
-    useEffect(() => { 
-        const ENSResolverInfo = async () => {
-            await delay();
-            const options = {
-                method: 'POST',
-                mode: 'cors',
-                body: JSON.stringify({ walletAddress: address }),
-                headers: {
-                    'content-type': 'application/json'
-                }
-            }       
-
-            axios.post(NODE_SERVER_ADDRESS + ADDITIONAL_INFORMATION_ENDPOINT, options) // Using Axios, make API call to node server
-            .then(response => {
-                updateEnsResolverData((prevState) => { // Update Address to ENS for the display of tabulated information
-                    return {
-                        ...prevState,
-                        information: response.data.information
-                    }
-                });
-            })
-            .catch((err) => {
-                clearHandler();
-                console.log(err);
-            });   
+    const updateColumnDefs = () => {    
+        // Set default columns if no columns are provided in the query data
+        if (window.outerWidth < 600){
+            setColumnDefs([
+                { field: "ensName", headerName: 'ENS Name', flex: 1 },
+                { field: "registrationDate", headerName: "Creation Date", flex: 1 },
+                { field: "expirationDate", headerName: "Expiration Date", flex: 1 },
+            ]);
         }
-        ENSResolverInfo();
-    }, [address]);
-     
-    if (ensResolverData.information === null){
-        return <div role="main" class="p-3">Loading...</div>
+        else if (window.outerWidth < 900) {
+            setColumnDefs([
+                { field: "ensName", headerName: 'ENS Name', flex: 1 },
+                { field: "registrationDate", headerName: "Creation Date", flex: 1 },
+                { field: "expirationDate", headerName: "Expiration Date", flex: 1 },
+                { field: "gracePeriodExpiration", headerName: "Grace Period", flex: 1 },
+                { field: "premiumPeriodExpiration", headerName: "Premium Period", flex: 1 },
+            ]);
+        }
+        else if (window.outerWidth < 1100) {            
+            setColumnDefs([
+                { field: "ensName", headerName: 'ENS Name', flex: 1 },
+                { field: "registrationDate", headerName: "Creation Date", flex: 1 },
+                { field: "expirationDate", headerName: "Expiration Date", flex: 1 },
+                { field: "gracePeriodExpiration", headerName: "Grace Period", flex: 1 },
+                { field: "premiumPeriodExpiration", headerName: "Premium Period", flex: 1 },
+                { field: "inGracePeriod", headerName: "In Grace", flex: 1 },
+                { field: "inPremiumPeriod", headerName: "In Premium", flex: 1 },
+            ]);
+        }
+        else {
+            setColumnDefs([
+                { field: "ensName", headerName: 'ENS Name', flex: 1 },
+                { field: "registrationDate", headerName: "Creation Date", flex: 1 },
+                { field: "expirationDate", headerName: "Expiration Date", flex: 1 },
+                { field: "gracePeriodExpiration", headerName: "Grace Period", flex: 1 },
+                { field: "premiumPeriodExpiration", headerName: "Premium Period", flex: 1 },
+                { field: "inGracePeriod", headerName: "In Grace", flex: 1 },
+                { field: "inPremiumPeriod", headerName: "In Premium", flex: 1 },
+                { field: "isExpired", headerName: "Expired", flex: 1 },
+                { field: "lastRefreshed", headerName: "Last Refreshed", flex: 1 },
+            ]);
+        }
     }
+    
+    // Dynamically adjust table size depending on screen size
+    useEffect(() => {
+        updateColumnDefs();
+        window.addEventListener('resize', updateColumnDefs);
+        return () => window.removeEventListener('resize', updateColumnDefs);
+    }, []);
+
+    // Conditionally rendering component based on query status
+    if (ensResolverQuery.isPending || ensResolverQuery.isLoading) {
+        return <div role="main" class="p-3">Loading...</div>;
+    } 
+    else if (ensResolverQuery.isError || ensResolverQuery.isFailure) {
+        return <div role="main" class="p-3">Error Loading ENS Ownership Data</div>;
+    } 
     else {
+        // Format table row information using data from the query
+        let rowDataInformation = [];
+        let item = {};
+
+        // Formatting query data in order to display as rows in Ag-Grid table
+        if (ensResolverQuery.data && ensResolverQuery.data.results) {
+            for (var i = 0; i < ensResolverQuery.data.results.length; i++) {
+                item = {
+                    ensName: ensResolverQuery.data.results[i].ens_name,
+                    registrationDate: ensResolverQuery.data.results[i].registration_timestamp.split("T")[0],
+                    expirationDate: ensResolverQuery.data.results[i].expiration_timestamp.split("T")[0],
+                    gracePeriodExpiration: ensResolverQuery.data.results[i].grace_period_ends.split("T")[0],
+                    premiumPeriodExpiration: ensResolverQuery.data.results[i].premium_period_ends.split("T")[0],
+                    inGracePeriod: ensResolverQuery.data.results[i].in_grace_period === false ? "No" : "Yes",
+                    inPremiumPeriod: ensResolverQuery.data.results[i].in_premium_period === false ? "No" : "Yes",
+                    isExpired: ensResolverQuery.data.results[i].is_expired === false ? "No" : "Yes",
+                    lastRefreshed: ensResolverQuery.data.results[i].last_refreshed.split("T")[0]
+                };
+
+                rowDataInformation.push(item);
+                item = {};
+            }
+        }
+
+        // Rendering the Ag-Grid React component using the modified column and row data
         return (
-            <div>
-                { 
-                ensResolverData.information !== null ? (
-                    <table style={{border: '1px solid black', fontSize: '12.5px'}}>
-                        <thead style={{border: '1px solid black', fontSize: '12.5px'}}>
-                            <tr style={{border: '1px solid black', fontSize: '12.5x'}}>
-                                <th style={{border: '1px solid black', fontSize: '12.5px'}} scope="col">ENS Name</th>
-                                <th style={{border: '1px solid black', fontSize: '12.5px'}} scope="col">Registration Date</th>
-                                <th style={{border: '1px solid black', fontSize: '12.5px'}} scope="col">Expiration Date</th>
-                                <th style={{border: '1px solid black', fontSize: '12.5px'}} scope="col">Grace Period Expiration</th>
-                                <th style={{border: '1px solid black', fontSize: '12.5px'}} scope="col">Premium Period Expiration</th>
-                                <th style={{border: '1px solid black', fontSize: '12.5px'}} scope="col">In Grace Period</th>
-                                <th style={{border: '1px solid black', fontSize: '12.5px'}} scope="col">In Premium Period</th>
-                                <th style={{border: '1px solid black', fontSize: '12.5px'}} scope="col">Is Expired</th>
-                                <th style={{border: '1px solid black', fontSize: '12.5px'}} scope="col">Last Refreshed</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                                {
-                                    ensResolverData.information.results.map((record, key) => {
-                                        return (
-                                            <tr id={key} style={{border: '1px solid black', fontSize: '12.5px'}}>
-                                                <td style={{border: '1px solid black', fontSize: '12.5px'}}>{record.ens_name}</td>
-                                                <td style={{border: '1px solid black', fontSize: '12.5px'}}>{record.registration_timestamp.split("Z")[0]}</td>
-                                                <td style={{border: '1px solid black', fontSize: '12.5px'}}>{record.expiration_timestamp.split("Z")[0]}</td>
-                                                <td style={{border: '1px solid black', fontSize: '12.5px'}}>{record.grace_period_ends.split("Z")[0]}</td>
-                                                <td style={{border: '1px solid black', fontSize: '12.5px'}}>{record.premium_period_ends.split("Z")[0]}</td>
-                                                <td style={{border: '1px solid black', fontSize: '12.5px'}}>{record.in_grace_period === false ? "No" :  "Yes"}</td>
-                                                <td style={{border: '1px solid black', fontSize: '12.5px'}}>{record.in_premium_period === false ? "No" : "Yes"}</td>
-                                                <td style={{border: '1px solid black', fontSize: '12.5px'}}>{record.is_expired === false ? "No" : "Yes"}</td>
-                                                <td style={{border: '1px solid black', fontSize: '12.5px'}}>{record.last_refreshed.split("Z")[0]}</td>
-                                            </tr>
-                                        )
-                                    })
-                                }
-                        </tbody>
-                    </table>
-                ) 
-                : null }
-            </div>
-        )
+            <>
+                <p><b>ENS Resolver</b><br /><i>ENS names that resolve to your address</i></p>
+                <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', height: 200, width: '100%' }}>
+                    <AgGridReact
+                        rowData={rowDataInformation}
+                        columnDefs={columnDefs} />
+                </div>
+            </>
+        );
     }
-}
-export default ENSResolverInfoTable;
+};
+
+export default ENSOwnershipInfoTable;

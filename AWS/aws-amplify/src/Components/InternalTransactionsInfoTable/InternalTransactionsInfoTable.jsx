@@ -78,7 +78,7 @@ const InternalTransactionsInfoTable = (props) => {
     return (
         <>
             <p><b>Internal Transactions</b><br /><i>Recent Internal Activity</i></p>
-            <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', height: 400, width: '100%' }}>
+            <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', height: 250, width: '100%' }}>
                 <AgGridReact
                     rowData={rowData}
                     columnDefs={columnDefs}

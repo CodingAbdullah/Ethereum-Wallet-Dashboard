@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import AddressToENSInfoTable from '../AddressToENSInfoTable/AddressToENSInfoTable';
-// import AdditionalAddressENSInfoTable from '../AdditionalAddressENSInfoTable/AdditionalAddressENSInfoTable';
 import ENSOwnershipInfoTable from '../ENSOwnershipInfoTable/ENSOwnershipInfoTable';
 import ENSResolverInfoTable from '../ENSResolverInfoTable/ENSResolverInfoTable';
 import Alert from '../Alert/Alert';
@@ -111,40 +110,23 @@ const AddressToENSResolverPage = () => {
                 { 
                     addressToEnsData.information === null ? null : 
                         <>
-                            <div style={{marginTop: '2rem'}}>
-                                    <>
-                                        <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                            <h3 class="h3">Resolver Information</h3>
-                                        </div>
-                                        <h6>ENS Resolver for Wallet Address: <b>{ setAddressToENS }</b></h6>
-                                        <AddressToENSInfoTable data={ addressToEnsData.information.information } />
-                                    </>    
+                            <hr style={{ marginTop: '3rem' }} />
+                            <div style={{ marginTop: '2rem' }}>
+                                <>
+                                    <AddressToENSInfoTable walletAddress={ setAddressToENS } data={ addressToEnsData.information.information } />
+                                </>    
                             </div>
-                            {/*
-                            <div style={{marginTop: '2rem'}}>
-                                    <>
-                                        <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                            <h3 class="h3">Additional Information</h3>
-                                        </div>
-                                        <AdditionalAddressENSInfoTable name={ addressToEnsData.information.information } />
-                                    </>    
+                            <hr style={{ marginTop: '3rem' }} />
+                            <div style={{ marginTop: '2rem' }}>
+                                <>
+                                    <ENSOwnershipInfoTable address={ setAddressToENS } />
+                                </>    
                             </div>
-                            */}
-                            <div style={{marginTop: '2rem'}}>
-                                    <>
-                                        <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                            <h3 class="h3">ENS Names Belonging To Owner</h3>
-                                        </div>
-                                        <ENSOwnershipInfoTable address={ setAddressToENS } />
-                                    </>    
-                            </div>
-                            <div style={{marginTop: '2rem'}}>
-                                    <>
-                                        <div style={{marginTop: '2rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                            <h3 class="h3">ENS Names Resolving To Address</h3>
-                                        </div>
-                                        <ENSResolverInfoTable address={ setAddressToENS } />
-                                    </>    
+                            <hr style={{ marginTop: '3rem' }} />
+                            <div style={{ marginTop: '2rem' }}>
+                                <>
+                                    <ENSResolverInfoTable address={ setAddressToENS } />
+                                </>    
                             </div>
                         </>
                 }
