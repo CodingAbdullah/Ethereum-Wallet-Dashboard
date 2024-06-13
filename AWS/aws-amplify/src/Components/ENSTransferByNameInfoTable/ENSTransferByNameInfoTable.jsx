@@ -1,40 +1,79 @@
-import React from 'react';
+import { useEffect, useState } from "react";
+import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 
 const ENSTransferByNameInfoTable = (props) => {
     const { data } = props;
+
+    let coinTableRowData = [];
+    let item = {};
+
+    // Transform row data and conform it to column name
+    for (var i = 0; i < data.information.results.length; i++) {
+        item = {
+            timeStamp: data.information.results[i].timestamp.split("T")[0],
+            transactionHash: data.information.results[i].transaction_hash,
+            category: data.information.results[i].category,
+            from: data.information.results[i].from === null ? "null" : data.information.results[i].from,
+            to: data.information.results[i].to === null ? "null" : data.information.results[i].to
+        }
+
+        coinTableRowData.push(item);
+        item = {};
+    }
     
-    // Display transfers from API call
-    return (            
-        <div>
-            { 
-                <table style={{border: '1px solid black', fontSize: '10.5px'}}>
-                    <thead style={{border: '1px solid black', fontSize: '10.5px'}}>
-                        <tr style={{border: '1px solid black', fontSize: '10.5x'}}>
-                            <th style={{border: '1px solid black', fontSize: '10.5px'}} scope="col">Time Stamp</th>
-                            <th style={{border: '1px solid black', fontSize: '10.5px'}} scope="col">Transaction Hash</th>
-                            <th style={{border: '1px solid black', fontSize: '10.5px'}} scope="col">Category</th>
-                            <th style={{border: '1px solid black', fontSize: '10.5px'}} scope="col">From</th>
-                            <th style={{border: '1px solid black', fontSize: '10.5px'}} scope="col">To</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                            {
-                                data.information.results.map((record, key) => {
-                                    return (
-                                        <tr id={key} style={{border: '1px solid black', fontSize: '10.5px'}}>
-                                            <td style={{border: '1px solid black', fontSize: '10.5px'}}>{record.timestamp.split("Z")[0]}</td>
-                                            <td style={{border: '1px solid black', fontSize: '10.5px'}}>{record.transaction_hash}</td>
-                                            <td style={{border: '1px solid black', fontSize: '10.5px'}}>{record.category}</td>
-                                            <td style={{border: '1px solid black', fontSize: '10.5px'}}>{record.from === null ? "null" : record.from}</td>
-                                            <td style={{border: '1px solid black', fontSize: '10.5px'}}>{record.to === null ? "null" : record.to}</td>
-                                        </tr>
-                                    )
-                                })
-                            }
-                    </tbody>
-                </table> 
-            }
-        </div>
+    // Populate rowData with filtered information
+    const [rowData, updateRowData] = useState(coinTableRowData);
+
+    // Column Definitions: Defines the columns to be displayed.
+    const [columnDefs, setColumnDefs] = useState([]);
+
+    // Function for handling column renders on window screen size
+    const updateColumnDefs = () => {
+        if (window.outerWidth < 550) {
+            setColumnDefs([
+                { field: "timeStamp", headerName: 'Time Stamp', flex: 0.75 },
+                { field: "from", headerName: "From", flex: 1 },
+                { field: "to", headerName: "To", flex: 1 }    
+            ]);
+        } 
+        else if (window.outerWidth < 1100) {
+            setColumnDefs([
+                { field: "timeStamp", headerName: 'Time Stamp', flex: 0.75 },
+                { field: "category", headerName: "Category", flex: 0.5 },
+                { field: "from", headerName: "From", flex: 1 },
+                { field: "to", headerName: "To", flex: 1 }     
+            ]);
+        }
+        else {
+            setColumnDefs([
+                { field: "timeStamp", headerName: 'Time Stamp', flex: 0.5 },
+                { field: "transactionHash", headerName: 'Transaction Hash', flex: 1 },
+                { field: "category", headerName: "Category", flex: 0.5 },
+                { field: "from", headerName: "From", flex: 1 },
+                { field: "to", headerName: "To", flex: 1 }     
+            ]);
+        }
+    };
+    
+    // Dynamically adjust table size depending on screen size
+    useEffect(() => {
+        updateColumnDefs();
+        window.addEventListener('resize', updateColumnDefs);
+        return () => window.removeEventListener('resize', updateColumnDefs);
+    }, []);
+
+    // Render Ag-Grid React component with row and column data
+    return (
+        <>
+            <p><b>ENS Transfer Information</b><br /><i>History of all domain transfers</i></p>
+            <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', height: 200, width: '100%' }}>
+                <AgGridReact
+                    rowData={rowData}
+                    columnDefs={columnDefs} />
+            </div>
+        </>
     )
 }
 
