@@ -1,24 +1,26 @@
 import React from 'react';
+import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 
 const ENSToAddressInfoTable = (props) => {
 
     const { data, address } = props;
 
+    // AG Grid React rendering wallet ENS information
     return (
-            <table style={{marginRight: '15rem'}} class="p-3">
-                <thead>
-                <tr>
-                    <th scope="col">Address Resolver</th>
-                    <th scope="col">Personal Website</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{data.information.results[0].owner}</td>
-                        <td><a href={"https://" + address + ".xyz/"} target="_blank" rel="noreferrer">{address} - Link</a></td>
-                    </tr>
-                </tbody>
-            </table>        
+        <>
+            <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', height: 92, width: '100%' }}>
+                <AgGridReact
+                    rowData={[
+                        { address: data.information.results[0].owner, personalWebsite: "https://" + address + ".xyz/" }
+                    ]}
+                    columnDefs={[
+                        { field: "address", headerName: 'Address', flex: 1 },
+                        { field: "personalWebsite", headerName: "Personal website", flex: 1 } 
+                    ]} />
+            </div>
+        </>
     )
 }
 
