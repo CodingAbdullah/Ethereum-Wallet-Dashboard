@@ -60,17 +60,23 @@ const ERC721HoldingsPage = () => {
             }
         }
 
-        if (walletAddress.length === 42 && walletAddress.substring(0, 2) === '0x'){
-            if (networkID === 'kovan' || networkID === 'rinkeby' || networkID === 'ropsten') {
-                // Set alerts for networks not available
-                updateEmptyAlert(true);
-            }
-            else {
-                axios.post(NODE_SERVER_URL + NFT_ENDPOINT, options) // NFT endpoint for retrieving information related to holdings
-                .then(response => {
-                    if (response.status !== 200){
-                        updateAlert(true);
-                        updateEmptyAlert(false);
+        if (walletAddress.length === 42 && walletAddress.substring(0, 2) === '0x'){                
+            axios.post(NODE_SERVER_URL + NFT_ENDPOINT, options) // NFT endpoint for retrieving information related to holdings
+            .then(response => {
+                if (response.status !== 200){
+                    updateAlert(true);
+                    updateEmptyAlert(false);
+                    updateNFTData((prevState) => {
+                        return {
+                            ...prevState,
+                            information: null
+                        }
+                    });
+                }
+                else {
+                    if (response.status === 200 && response.data.information.total === 0){ // If empty, display warning
+                        updateEmptyAlert(true);
+                        updateAlert(false);
                         updateNFTData((prevState) => {
                             return {
                                 ...prevState,
@@ -79,33 +85,31 @@ const ERC721HoldingsPage = () => {
                         });
                     }
                     else {
-                        if (response.status === 200 && response.data.information.total === 0){ // If empty, display warning
-                            updateEmptyAlert(true);
-                            updateAlert(false);
-                            updateNFTData((prevState) => {
-                                return {
-                                    ...prevState,
-                                    information: null
-                                }
-                            });
-                        }
-                        else {
-                            updateAlert(false); // Remove alerts if any exist
-                            updateEmptyAlert(false);
+                        updateAlert(false); // Remove alerts if any exist
+                        updateEmptyAlert(false);
 
-                            updateNFTData((prevState) => {
-                                return {
-                                    ...prevState,
-                                    information: response.data.information
-                                }
-                            });
-                        }
+                        updateNFTData((prevState) => {
+                            return {
+                                ...prevState,
+                                information: response.data.information
+                            }
+                        });
                     }
-                })
+                }
+            })
 
-                axios.post(NODE_SERVER_URL + NFT_TRANSFERS_ENDPOINT, options)
-                .then(response => {
-                    if (response.status !== 200){
+            axios.post(NODE_SERVER_URL + NFT_TRANSFERS_ENDPOINT, options)
+            .then(response => {
+                if (response.status !== 200){
+                    updateERC721Transfers((prevState) => {
+                        return {
+                            ...prevState,
+                            information: null
+                        }
+                    });
+                }
+                else {
+                    if (response.status === 200 && response.data.information.result.length === 0){ // If empty, keep state to null
                         updateERC721Transfers((prevState) => {
                             return {
                                 ...prevState,
@@ -114,25 +118,15 @@ const ERC721HoldingsPage = () => {
                         });
                     }
                     else {
-                        if (response.status === 200 && response.data.information.result.length === 0){ // If empty, keep state to null
-                            updateERC721Transfers((prevState) => {
-                                return {
-                                    ...prevState,
-                                    information: null
-                                }
-                            });
-                        }
-                        else {
-                            updateERC721Transfers((prevState) => {
-                                return {
-                                    ...prevState,
-                                    information: response.data.information.result // If data exists, add it to state
-                                }
-                            });
-                        }
+                        updateERC721Transfers((prevState) => {
+                            return {
+                                ...prevState,
+                                information: response.data.information.result // If data exists, add it to state
+                            }
+                        });
                     }
-                });
-            }
+                }
+            });
         }
         else {
             updateAlert(true); // Set Alert
@@ -165,30 +159,20 @@ const ERC721HoldingsPage = () => {
             { isEmpty ? null : 
                 <>
                     <main style={{marginTop: '-3rem'}} class="p-3" role="main">
-                            <div>
-                                {
-                                    nftData.information === null ? null :
-                                        <>
-                                            <main style={{marginTop: '5rem'}} role="main">
-                                                <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                                    <h3 class="h3">ERC-721 Token Holdings</h3>
-                                                </div>
-                                            </main>
-                                            <ERC721HoldingsInfoTable data={ nftData.information } />
-                                        </>
-                                }
-                            </div>
+                        <div>
+                            {
+                                nftData.information === null ? null :
+                                    <>
+                                        <ERC721HoldingsInfoTable address={ walletAddress } data={ nftData.information } />
+                                    </>
+                            }
+                        </div>
                     </main>
                     <main style={{marginTop: '2rem'}} class="p-3" role="main">
                         <div>
                             {
                                 ERC721Transfers.information === null ? null :
                                     <>
-                                        <main style={{marginTop: '5rem'}} role="main">
-                                            <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                                <h3 class="h3">Sample ERC-721 Transfers</h3>
-                                            </div>
-                                        </main>
                                         <ERC721TransfersInfoTable address={ walletAddress } data={ ERC721Transfers.information } />
                                     </>
                             }
