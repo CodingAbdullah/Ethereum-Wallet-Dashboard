@@ -1,53 +1,70 @@
-import React from 'react';
-import Badge from '../Badge/Badge';
+import React, { useEffect, useState } from 'react';
+import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 
 const ERC720TransfersInfoTable = (props) => {
     const { data, address } = props;
+        
+    // Populate rowData with filtered information
+    const [rowData, updateRowData] = useState([]);
 
-    let location = window.location.pathname; // Path name for the style of table display
+    // Column Definitions: Defines the columns to be displayed.
+    const [columnDefs, setColumnDefs] = useState([]);
+    
+    let coinTableRowData = [];
+    let item = {};
 
+    // Transform row data and conform it to column name
+    for (var i = 0; i < data.length; i++) {
+        item = {
+            date: data[i].block_timestamp.split("T")[0],
+            from: data[i].from_address,
+            to: data[i].to_address,
+            balance: address !== null ? data[i].value : (data[i].value*(1/1000000000000000000))
+        }
+
+        coinTableRowData.push(item);
+        item = {};
+    }
+
+    // Function for handling column renders on window screen size
+    const updateColumnDefs = () => {
+        if (window.outerWidth < 600) {
+            setColumnDefs([
+                { field: "from", headerName: 'From', flex: 1 },
+                { field: "to", headerName: "To", flex: 1 },
+                { field: "balance", headerName: "Balance", flex: 1 }
+            ]);
+        } 
+        else {
+            setColumnDefs([
+                { field: "date", headerName: 'Date', flex: 1 },
+                { field: "from", headerName: 'From', flex: 1 },
+                { field: "to", headerName: "To", flex: 1 },
+                { field: "balance", headerName: "Balance", flex: 1 }            
+            ]);
+        }
+    };
+    
+    // Dynamically adjust table size depending on screen size
+    useEffect(() => {
+        updateColumnDefs();
+        window.addEventListener('resize', updateColumnDefs);
+        return () => window.removeEventListener('resize', updateColumnDefs);
+    }, []);
+
+    // Render Ag-Grid React component with row and column data
     return (
-        <div class={ location === '/erc20-holdings' ? "p-3" : "" }>
-            <table style={{border: '1px solid black'}}>
-                <thead style={{border: '1px solid black'}}>
-                <tr style={{border: '1px solid black'}}>
-                    <th style={{border: '1px solid black'}} scope="col">Date</th>
-                    <th style={{border: '1px solid black'}} scope="col">From</th>
-                    <th style={{border: '1px solid black'}} scope="col">To</th>
-                    { address !== null ? <th style={{border: '1px solid black'}} scope="col">Direction</th> : null }                   
-                    <th style={{border: '1px solid black'}} scope="col">Value In WEI (ERC20Quantity)</th>
-                </tr>
-                </thead>
-                <tbody>
-                    { data.map((record, key) => {
-                        // Display information, format date display
-                            return (
-                                <tr id={key} style={{border: '1px solid black'}}>
-                                    <td style={{border: '1px solid black'}}>{record.block_timestamp.split("T")[0]}</td>
-                                    <td style={{border: '1px solid black'}}>{record.from_address}</td>
-                                    <td style={{border: '1px solid black'}}>{record.to_address}</td>
-                                    { address !== null ? 
-                                        <td style={{ border: '1px solid black', fontSize: '11px' }}>
-                                            { address.toLowerCase() === record.to_address ? 
-                                                <Badge type="IN" /> : 
-                                                <Badge type="OUT" />
-                                            }
-                                        </td> : 
-                                        null 
-                                    }
-                                    <td style={{border: '1px solid black'}}>
-                                        { address != null ?
-                                            record.value :
-                                            (record.value*(1/1000000000000000000))
-                                        }
-                                    </td>
-                                </tr>
-                            )
-                        }
-                    )}
-                </tbody>
-            </table>
-        </div>  
+        <>
+            <hr style={{ marginTop: '3rem' }} />
+            <p><b>ERC20 Transfers</b><br /><i>{ address }</i></p>
+            <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', height: 200, width: '100%' }}>
+                <AgGridReact
+                    rowData={coinTableRowData}
+                    columnDefs={columnDefs} />
+            </div>
+        </>
     )
 }
 
