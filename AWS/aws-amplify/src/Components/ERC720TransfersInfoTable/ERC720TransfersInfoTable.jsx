@@ -5,9 +5,6 @@ import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied
 
 const ERC720TransfersInfoTable = (props) => {
     const { data, address } = props;
-        
-    // Populate rowData with filtered information
-    const [rowData, updateRowData] = useState([]);
 
     // Column Definitions: Defines the columns to be displayed.
     const [columnDefs, setColumnDefs] = useState([]);
