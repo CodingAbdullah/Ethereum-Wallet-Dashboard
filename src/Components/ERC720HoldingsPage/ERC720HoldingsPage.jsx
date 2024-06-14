@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router';
 import axios from 'axios';
 
 const ERC720HoldingsPage = () => {
-
+    // Incorporating state management for wallet address, alerts, and ERC20 token holdings/transfers
     const [walletAddress, updateWalletAddress] = useState("");
     const [setAlert, updateAlert] = useState(false);
 
