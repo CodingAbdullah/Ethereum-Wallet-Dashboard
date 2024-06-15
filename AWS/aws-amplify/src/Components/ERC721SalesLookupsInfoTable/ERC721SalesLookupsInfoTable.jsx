@@ -36,10 +36,10 @@ const ERC721SalesLookupInfoTable = (props) => {
         }
         else {            
             setColumnDefs([
-                { field: "date", headerName: 'Date', flex: 0.5 },
-                { field: "exchangeName", headerName: "Exchange Name", flex: 0.25 },
-                { field: "ethValue", headerName: "ETH Value", flex: 0.35 },
-                { field: "usdValue", headerName: "USD Value", flex: 0.35 },
+                { field: "date", headerName: 'Date', flex: 0.3 },
+                { field: "exchangeName", headerName: "Exchange Name", flex: 0.5 },
+                { field: "ethValue", headerName: "ETH Value", flex: 0.25 },
+                { field: "usdValue", headerName: "USD Value", flex: 0.25 },
                 { field: "buyer", headerName: "Buyer", flex: 1 },
                 { field: "seller", headerName: "Seller", flex: 1 },
             ]);
@@ -85,6 +85,7 @@ const ERC721SalesLookupInfoTable = (props) => {
         // Rendering the Ag-Grid React component using the modified column and row data
         return (
             <>
+                <hr style={{ marginTop: '3rem' }} />
                 <p><b>ERC721 Sales Information</b><br /><i>Sales history of this token</i></p>
                 <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', height: 200, width: '100%' }}>
                     <AgGridReact
