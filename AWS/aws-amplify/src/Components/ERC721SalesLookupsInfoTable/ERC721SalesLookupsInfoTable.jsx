@@ -1,85 +1,98 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
+import { useQuery } from '@tanstack/react-query';
+import { erc721SalesPro } from '../../UtilFunctions/erc721SalesPRO';
 
 const ERC721SalesLookupInfoTable = (props) => {
     const { address, tokenId } = props;
 
-    // Back end calls to Node server
-    const NODE_URL = "https://18.221.208.44.nip.io/";
-    const ERC721_SALES_ENDPOINT = 'erc721-sales-by-id';
-
-    const [ERC721SalesInfo, updateERC721SalesInfo] = useState({
-        information: null
+    // Incorporating React Query for efficient data fetching and query caching
+    const erc721SalesQuery = useQuery({
+        queryKey: ['erc721SalesInformation', address, tokenId],
+        queryFn: erc721SalesPro
     });
+        
+    // Column Definitions: Defines the columns to be displayed.
+    const [columnDefs, setColumnDefs] = useState([]);
 
+    const updateColumnDefs = () => {    
+        // Set default columns if no columns are provided in the query data
+        if (window.outerWidth < 700){
+            setColumnDefs([
+                { field: "date", headerName: 'Date', flex: 1 },
+                { field: "exchangeName", headerName: "Exchange Name", flex: 1 },
+                { field: "ethValue", headerName: "ETH Value", flex: 1 },
+            ]);
+        }
+        else if (window.outerWidth < 1100) {
+            setColumnDefs([
+                { field: "date", headerName: 'Date', flex: 1 },
+                { field: "exchangeName", headerName: "Exchange Name", flex: 1 },
+                { field: "ethValue", headerName: "ETH Value", flex: 1 },
+                { field: "usdValue", headerName: "USD Value", flex: 1 },
+            ]);
+        }
+        else {            
+            setColumnDefs([
+                { field: "date", headerName: 'Date', flex: 0.5 },
+                { field: "exchangeName", headerName: "Exchange Name", flex: 0.25 },
+                { field: "ethValue", headerName: "ETH Value", flex: 0.35 },
+                { field: "usdValue", headerName: "USD Value", flex: 0.35 },
+                { field: "buyer", headerName: "Buyer", flex: 1 },
+                { field: "seller", headerName: "Seller", flex: 1 },
+            ]);
+        }
+    }
+
+    // Dynamically adjust table size depending on screen size
     useEffect(() => {
-            // Upon render, run API call to collect data using information passed down from parent component, provided it is the mainnet
-            const options = {
-                method: 'POST',
-                mode: 'cors',
-                body: JSON.stringify({ address : address, id: tokenId }),
-                headers: {
-                    'content-type': 'application/json'
-                }
-            }
+        updateColumnDefs();
+        window.addEventListener('resize', updateColumnDefs);
+        return () => window.removeEventListener('resize', updateColumnDefs);
+    }, []);
 
-            axios.post(NODE_URL + ERC721_SALES_ENDPOINT, options)
-            .then(response => {
-                updateERC721SalesInfo((prevState) => {
-                    return {
-                        ...prevState,
-                        information: response.data.information
-                    }
-                });
-            })
-            .catch(() => {
-                updateERC721SalesInfo((prevState) => {
-                    return {
-                        ...prevState,
-                        information: null
-                    }
-                })
-            });
-    }, [address, tokenId]);
-
-    if (ERC721SalesInfo.information === null){
+    if (erc721SalesQuery.isLoading || erc721SalesQuery.isFetching){
         return <div>Loading...</div>
     }
+    else if (erc721SalesQuery.isError){
+        return <div>Error Fetching ERC721 Token Sales Information</div>
+    }
     else {
+        // Format table row information using data from the query
+        let rowDataInformation = [];
+        let item = {};
+
+        // Formatting query data in order to display as rows in Ag-Grid table
+        if (erc721SalesQuery.data && erc721SalesQuery.data.results) {
+            let data = erc721SalesQuery.data.results;
+            for (var i = 0; i < erc721SalesQuery.data.results.length; i++) {
+                item = {
+                    date: data[i].timestamp.split("T")[0],
+                    exchangeName: data[i].exchange_name + '-' + data[i].contract_version,
+                    ethValue: data[i].eth_price,
+                    usdValue: "$" + data[i].usd_price.toFixed(2),
+                    buyer: data[i].buyer,
+                    seller: data[i].seller
+                };
+
+                rowDataInformation.push(item);
+                item = {};
+            }
+        }
+        
+        // Rendering the Ag-Grid React component using the modified column and row data
         return (
             <>
-                <div className='erc721-sales-lookups-info-table'>
-                    <table style={{border: '1px solid black', fontSize: '9px'}}>
-                        <thead style={{border: '1px solid black', fontSize: '9px'}}>
-                            <tr style={{border: '1px solid black', fontSize: '9px'}}>
-                                <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">Transaction Hash</th>
-                                <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">Time Stamp</th>
-                                <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">Exchange Name-Version</th>
-                                <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">ETH Price</th>
-                                <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">USD Price</th>
-                                <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">Buyer</th>
-                                <th style={{border: '1px solid black', fontSize: '9px'}} scope="col">Seller</th>
-                            </tr>
-                        </thead>
-                        <tbody style={{border: '1px solid black', fontSize: '10px'}}>
-                            { ERC721SalesInfo.information.results.map((record, key) => {
-                                return (
-                                        <tr id={key} style={{border: '1px solid black', fontSize: '10px'}}>
-                                            <td style={{border: '1px solid black', fontSize: '10px'}}>{record.transaction_hash}</td>
-                                            <td style={{border: '1px solid black', fontSize: '10px'}}>{record.timestamp.split("Z")[0]}</td>
-                                            <td style={{border: '1px solid black', fontSize: '10px'}}>{record.exchange_name + '-' + record.contract_version}</td>
-                                            <td style={{border: '1px solid black', fontSize: '10px'}}>{record.eth_price}</td>
-                                            <td style={{border: '1px solid black', fontSize: '10px'}}>{"$" + record.usd_price.toFixed(2)}</td>
-                                            <td style={{border: '1px solid black', fontSize: '10px'}}>{record.buyer}</td>
-                                            <td style={{border: '1px solid black', fontSize: '10px'}}>{record.seller}</td>
-                                        </tr>
-                                )
-                            })}
-                        </tbody>
-                    </table>    
+                <p><b>ERC721 Sales Information</b><br /><i>Sales history of this token</i></p>
+                <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', height: 200, width: '100%' }}>
+                    <AgGridReact
+                        rowData={rowDataInformation}
+                        columnDefs={columnDefs} />
                 </div>
             </>
-        )
+        );
     }
 }
 

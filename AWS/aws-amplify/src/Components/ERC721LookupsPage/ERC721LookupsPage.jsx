@@ -202,12 +202,7 @@ const ERC721LookupsPage = () => {
                         {
                             tokenData.information === null ? null :
                                 <>
-                                    <main style={{marginTop: '5rem'}} role="main">
-                                        <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                            <h3 class="h3">ERC721 Token Lookup Information</h3>
-                                        </div>
-                                    </main>
-                                    <ERC721LookupsInfoTable isMatic={ networkID.split('-')[0] === 'polygon' ? true : false } data={ tokenData.information } />                                
+                                    <ERC721LookupsInfoTable  address={ tokenAddress } data={ tokenData.information } />                                
                                 </>
                         }
                     </div>
@@ -219,12 +214,7 @@ const ERC721LookupsPage = () => {
                                 tokenRarity.information.data === null ? null : 
                                 (
                                     <>
-                                        <main style={{marginTop: '5rem'}} role="main">
-                                            <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                                <h3 class="h3">ERC721 Token Rarity Calculator</h3>
-                                            </div>
-                                        </main>
-                                        <ERC721RarityLookupsInfoTable data={ tokenRarity.information } />
+                                        <ERC721RarityLookupsInfoTable address={ tokenAddress } data={ tokenRarity.information } />
                                     </>
                                 )
                         }
@@ -235,12 +225,7 @@ const ERC721LookupsPage = () => {
                         {
                             tokenTransfers.information === null ? null :
                                 <>
-                                    <main style={{marginTop: '5rem'}} role="main">
-                                        <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                            <h3 class="h3">ERC721 Token Transfers</h3>
-                                        </div>
-                                    </main>
-                                    <ERC721TransferLookupsInfoTable data={ tokenTransfers.information } />
+                                    <ERC721TransferLookupsInfoTable address={ tokenAddress } data={ tokenTransfers.information } />
                                 </>
                         }
                     </div>
@@ -252,11 +237,6 @@ const ERC721LookupsPage = () => {
                                 networkID !== 'eth' ? null : 
                                 (
                                     <>
-                                        <main style={{marginTop: '5rem'}} role="main">
-                                            <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                                <h3 class="h3">ERC-721 Token Sales</h3>
-                                            </div>
-                                        </main>
                                         <ERC721SalesLookupsInfoTable address={ tokenAddress } tokenId={ tokenId } />                                
                                     </>
                                 )
