@@ -1,36 +1,57 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 
 const ERC721RarityLookupsInfoTable = (props) => {
-    const { data } = props;
+    const { data, address } = props; 
+    
+    // Column Definitions: Defines the columns to be displayed.
+    const [columnDefs, setColumnDefs] = useState([]);
+    
+     let coinTableRowData = [];
+     let item = {};
+ 
+     // Transform row data and conform it to column name
+     for (var i = 0; i < data.data.length; i++) {
+         item = {
+             attribute: data.data[i].trait_type,
+             value: data.data[i].value,
+             prevalence: ((data.data[i].prevalence)*100).toFixed(2) + "%",
+         }
+ 
+         coinTableRowData.push(item);
+         item = {};
+     }
+   
+    // Function for handling column renders on window screen size
+    const updateColumnDefs = () => {
+            setColumnDefs([
+                { field: "attribute", headerName: 'Attribute', flex: 1 },
+                { field: "value", headerName: "Value", flex: 1 },
+                { field: "prevalence", headerName: "Prevalence", flex: 1 }
+            ]);
+    } 
+    
+    // Dynamically adjust table size depending on screen size
+    useEffect(() => {
+        updateColumnDefs();
+        window.addEventListener('resize', updateColumnDefs);
+        return () => window.removeEventListener('resize', updateColumnDefs);
+    }, []);
 
-        return (
-            <>
-                <div>
-                    <table style={{border: '1px solid black'}}>
-                        <thead style={{border: '1px solid black'}}>
-                        <tr style={{border: '1px solid black'}}>
-                            <th style={{border: '1px solid black'}} scope="col">Attribute</th>
-                            <th style={{border: '1px solid black'}} scope="col">Value</th>
-                            <th style={{border: '1px solid black'}} scope="col">Prevalence In Collection %</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            { // Formatting the table rows to show data
-                                data.data.map((record, key) => {
-                                    return (
-                                        <tr id={key}>                                
-                                            <td style={{border: '1px solid black', fontSize: '11px'}}>{record.trait_type}</td>
-                                            <td style={{border: '1px solid black', fontSize: '11px'}}>{record.value}</td>
-                                            <td style={{border: '1px solid black', fontSize: '11px'}}>{((record.prevalence)*100).toFixed(2) + "%"}</td>
-                                        </tr>
-                                    )
-                                })
-                            }   
-                        </tbody>
-                    </table>
-                </div>
-            </>  
-        )
+    // Render Ag-Grid React component with row and column data
+    return (
+        <>
+            <hr style={{ marginTop: '3rem' }} />
+            <p><b>ERC721 Rarity Information</b><br /><i>{ address }</i></p>
+            <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', height: 200, width: '100%' }}>
+                <AgGridReact
+                    rowData={coinTableRowData}
+                    columnDefs={columnDefs} />
+            </div>
+        </>
+    )
 }
 
 export default ERC721RarityLookupsInfoTable;

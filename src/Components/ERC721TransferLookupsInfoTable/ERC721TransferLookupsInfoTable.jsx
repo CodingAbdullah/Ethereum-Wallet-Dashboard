@@ -1,37 +1,54 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 
 const ERC721TransferLookupsInfoTable = (props) => {
-    const { data } = props;
+    const { data, address } = props;
 
+    // Column Definitions: Defines the columns to be displayed.
+    const [columnDefs, setColumnDefs] = useState([]);
+    
+    let coinTableRowData = [];
+    let item = {};
+
+    // Transform row data and conform it to column name
+    for (var i = 0; i < data.length; i++) {
+        item = {
+            date: data[i].block_timestamp.split("T")[0],
+            from: data[i].from_address,
+            to: data[i].to_address
+        }
+
+        coinTableRowData.push(item);
+        item = {};
+    }
+
+    // Function for handling column renders on window screen size
+    const updateColumnDefs = () => {
+        setColumnDefs([
+            { field: "date", headerName: 'Date', flex: 1 },
+            { field: "from", headerName: "From", flex: 1 },
+            { field: "to", headerName: "To", flex: 1 }
+        ]);
+    }
+    
+    // Dynamically adjust table size depending on screen size
+    useEffect(() => {
+        updateColumnDefs();
+        window.addEventListener('resize', updateColumnDefs);
+        return () => window.removeEventListener('resize', updateColumnDefs);
+    }, []);
+
+    // Render Ag-Grid React component with row and column data
     return (
         <>
-            <div className='erc721-transfer-lookup-table'>
-                <table style={{border: '1px solid black'}}>
-                    <thead style={{border: '1px solid black'}}>
-                    <tr style={{border: '1px solid black'}}>
-                        <th style={{border: '1px solid black'}} scope="col">Date</th>
-                        <th style={{border: '1px solid black'}} scope="col">Transaction Hash</th>
-                        <th style={{border: '1px solid black'}} scope="col">From</th>
-                        <th style={{border: '1px solid black'}} scope="col">To</th>
-                        <th style={{border: '1px solid black'}} scope="col">Amount</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            data.map((record, key) => {
-                                return (
-                                    <tr id={key}>
-                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{record.block_timestamp.split("T")[0]}</td>
-                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{record.transaction_hash}</td>
-                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{record.from_address}</td>
-                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{record.to_address}</td>
-                                        <td style={{border: '1px solid black', fontSize: '11px'}}>{record.amount}</td>
-                                    </tr>
-                                )
-                            })
-                        }
-                    </tbody>
-                </table>
+            <hr style={{ marginTop: '3rem' }} />
+            <p><b>ERC721 Token Transfers Information</b><br /><i>{ address }</i></p>
+            <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', height: 200, width: '100%' }}>
+                <AgGridReact
+                    rowData={coinTableRowData}
+                    columnDefs={columnDefs} />
             </div>
         </>
     )
