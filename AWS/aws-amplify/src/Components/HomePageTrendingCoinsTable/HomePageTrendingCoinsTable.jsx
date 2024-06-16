@@ -79,7 +79,7 @@ const HomePageTrendingCoinsTable = (props) => {
       }, []);
 
     return (
-        <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%', height: 280, width: '100%' }}>
+        <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%', height: 260, width: '100%' }}>
             <AgGridReact
                 rowData={rowData}
                 columnDefs={columnDefs} />

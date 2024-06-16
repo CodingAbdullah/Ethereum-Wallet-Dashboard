@@ -71,7 +71,7 @@ const HomePageTrendingCollectionsTable = (props) => {
     
       // Render AG Grid Table Component
       return (
-        <div className="ag-theme-quartz" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', height: 280, width: '100%' }}>
+        <div className="ag-theme-quartz" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', height: 260, width: '100%' }}>
           <AgGridReact
             columnDefs={columnDefs}
             rowData= {rowData }

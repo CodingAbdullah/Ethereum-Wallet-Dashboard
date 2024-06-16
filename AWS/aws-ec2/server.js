@@ -10,6 +10,7 @@ const ERC721CollectionRouter = require('./Routes/ERC721CollectionRouter');
 const ERC721LookupRouter = require("./Routes/ERC721LookupRouter");
 const ERC721HoldingsRouter = require('./Routes/ERC721HoldingsRouter');
 const GasTrackerRouter = require('./Routes/GasTrackerRouter');
+const GlobalDefiDataRouter = require("./Routes/GlobalDefiDataRouter");
 const TransactionsRouter = require('./Routes/TransactionsRouter');
 const WalletStatsRouter = require('./Routes/WalletStatsRouter');
 
@@ -33,5 +34,6 @@ app.use("/", ERC721CollectionRouter);
 app.use("/", ERC721LookupRouter);
 app.use("/", ERC721HoldingsRouter);
 app.use("/", GasTrackerRouter);
+app.use("/", GlobalDefiDataRouter);
 app.use("/", TransactionsRouter);
 app.use("/", WalletStatsRouter);
