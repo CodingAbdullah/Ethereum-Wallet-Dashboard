@@ -174,7 +174,7 @@ const ERC721LookupsPage = () => {
                 <form onSubmit={ tokenHandler }>
                     <p>Enter ERC721 contract address & token ID for information</p>
                     <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} type="text" onChange={e => updateTokenAddress(e.target.value)} placeholder="Enter contract address" required />
-                    <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} type="number" onChange={e => updateTokenId(e.target.value)} placeholder="Enter Token ID" required />
+                    <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} type="number" onChange={e => updateTokenId(e.target.value)} placeholder="Enter token ID" required />
                     <NetworkSelector blockchainNetwork={ updateNetworkHandler } />
                     <button style={{marginTop: '2rem' }} type="submit" class="btn btn-success">Lookup</button>
                 </form>

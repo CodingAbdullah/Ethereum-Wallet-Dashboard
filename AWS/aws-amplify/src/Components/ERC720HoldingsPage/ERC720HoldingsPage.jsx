@@ -162,8 +162,8 @@ const ERC720HoldingsPage = () => {
                         <div class="jumbotron">
                             <div class="container">
                                 <form onSubmit={walletHandler}>
-                                    <label style={{marginRight: '0.5rem'}}>Enter wallet address to check ERC20 holdings:</label>
-                                    <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} type="text" onChange={e => updateWalletAddress(e.target.value)} placeholder="Enter here" required />
+                                    <label>Enter wallet address to check ERC20 holdings</label>
+                                    <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} type="text" onChange={e => updateWalletAddress(e.target.value)} placeholder="Enter wallet address" required />
                                     <NetworkSelector blockchainNetwork={ updateNetworkHandler } />
                                     <button style={{marginTop: '2rem'}} type="submit" class="btn btn-success">Check Balances</button>
                                 </form>
