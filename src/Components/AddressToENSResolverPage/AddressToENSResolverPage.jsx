@@ -98,9 +98,8 @@ const AddressToENSResolverPage = () => {
                 <div class="jumbotron">
                     <div class="container">
                         <form onSubmit={AddressToENSHandler}>
-                            <label style={{marginRight: '2rem'}}>Address<b>{" → "}</b> ENS Resolver</label>
-                            <input type="text" onChange={e => updateAddressToENS(e.target.value)} />
-                            <br />
+                            <label>Address<b>{" → "}</b> ENS Resolver</label>
+                            <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} placeholder="Enter wallet address" type="text" onChange={e => updateAddressToENS(e.target.value)} />
                             <button style={{marginTop: '2rem'}} class="btn btn-success" type='submit'>Lookup Reversal</button>
                         </form>
                         <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>

@@ -100,8 +100,7 @@ const ERC720CollectionPage = () => {
                     }
                 }
             })
-            .catch((err) => {
-                console.log(err);
+            .catch(() => {
                 alertHandler();
             });
 
@@ -120,13 +119,11 @@ const ERC720CollectionPage = () => {
                     }
                 })
                 .catch((err) => {
-                    console.log(err);
                     alertHandler();
                 });
             
             axios.get(COINGECKO_URL + ERC20_INFO_ENDPOINT) // Retrieve price of ERC20 coin from coingecko
             .then(response => {
-                console.log(response);
                 if (response.status !== 200){
                     alertHandler();
                 }
@@ -161,10 +158,9 @@ const ERC720CollectionPage = () => {
                     { setAlert ? <Alert type='danger' /> : null }
                     <div class="jumbotron">
                         <div class="container">
-                            <p>Enter Contract Address of an <b>ERC20</b> token for analytics</p>
+                            <p>Enter contract address of an <b>ERC20</b> token for a quick analysis</p>
                             <form onSubmit={formHandler}>
-                                <input onChange={e => updateTokenAddress(e.target.value)} type='text' placeholder='Enter Address Here'></input>
-                                <br />
+                                <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} onChange={e => updateTokenAddress(e.target.value)} type='text' placeholder='Enter token address'></input>
                                 <button style={{marginTop: '2rem'}} type='submit' class='btn btn-success'>Submit</button>
                             </form> 
                             <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
@@ -172,7 +168,7 @@ const ERC720CollectionPage = () => {
                         </div>  
                     </div>
                 </main>
-                <main role="main" class="p-3">
+                <main class="p-3" role="main">
                     { setPrice === null ? null : <h3 style={{marginTop: '3rem', marginBottom: '1.5rem'}}>Price: $<b>{setPrice.toPrecision(4)}</b> USD/Token</h3> } 
                     <div>
                         {
@@ -188,7 +184,7 @@ const ERC720CollectionPage = () => {
                         }
                     </div>
                 </main>
-                <main role="main" class="p-3">
+                <main class="p-3" role="main">
                     <div>
                         {
                             ERC20Transfers.information === null ? null :

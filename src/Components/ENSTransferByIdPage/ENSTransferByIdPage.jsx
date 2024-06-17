@@ -80,9 +80,8 @@ const ENSTransferByIdPage = () => {
                 <div class="jumbotron">
                     <div class="container">
                         <form onSubmit={ENSTransferHandler}>
-                            <label style={{marginRight: '2rem'}}>Token Id for ENS Transfers</label>
-                            <input type="number" placeholder="Enter Token ID" onChange={e => updateTokenID(e.target.value)} />
-                            <br />
+                            <label>ENS transfers by token ID</label>
+                            <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} type="number" placeholder="Enter token ID for transfer data" onChange={e => updateTokenID(e.target.value)} />
                             <button style={{marginTop: '2rem'}} class="btn btn-success" type='submit'>Lookup Transfers</button>
                         </form>
                         <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>

@@ -249,15 +249,14 @@ const ERC721CollectionPage = () => {
             <div className="erc721-collection-page">
                 <main role="main" class="p-3">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">ERC-721 Collection Analytics</h1>
+                        <h1 class="h2">ERC721 Collection Analytics</h1>
                     </div>
                     { setAlert ? <Alert type='danger' /> : null }
                     <div class="jumbotron">
                         <div class="container">
-                            <p>Enter Contract Address of an <b>ERC721</b> token for analytics (limited to 100)</p>
+                            <p>Enter contract address of an <b>ERC721</b> collection for a quick analysis</p>
                             <form onSubmit={formHandler}>
-                                <input style={{marginLeft: '0.5rem'}} onChange={e => updateTokenAddress(e.target.value)} type='text' placeholder='Enter Address Here'></input>
-                                <br />
+                                <input class="form-control" style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%' }} onChange={e => updateTokenAddress(e.target.value)} type='text' placeholder='Enter contract address'></input>
                                 <button style={{marginTop: '2rem'}} type='submit' class='btn btn-success'>Submit</button>
                             </form>
                             <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
@@ -268,7 +267,7 @@ const ERC721CollectionPage = () => {
                 { 
                     NFTData.information === null ? null : 
                         <>
-                            <main style={{ marginTop: '3rem', overflowX: 'scroll', paddingBottom: '2rem' }} role="main">
+                            <main style={{marginTop: '3rem'}} role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                                 <h4>NFT Collection Name: <b>{ NFTData.information.result[0].name }</b></h4>
                                 <h4>Contract Address: <b>{ setTokenAddress }</b></h4> 
                                 <h4>Total Items: <b>{ NFTData.information.total }</b></h4> 
@@ -278,7 +277,7 @@ const ERC721CollectionPage = () => {
                 {
                     NFTData.information === null ? null :
                         <>
-                            <main style={{marginTop: '3rem'}} className="p-3" role="main">
+                            <main style={{marginTop: '5rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
                                 <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                     <h3 class="h3">Sample Collection Data</h3>
                                 </div>
@@ -289,7 +288,7 @@ const ERC721CollectionPage = () => {
                 {
                     NFTFloorPrice.information === null ? null :
                         <>
-                            <main style={{marginTop: '3rem'}} className="p-3" role="main">
+                            <main style={{marginTop: '5rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
                                 <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                     <h3 class="h3">Collection Floor Price</h3>
                                 </div>                                
@@ -300,7 +299,7 @@ const ERC721CollectionPage = () => {
                 {
                     NFTAttributes.information === null ? null :
                         <>
-                            <main style={{marginTop: '3rem'}} className="p-3" role="main">
+                            <main style={{marginTop: '5rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
                                 <>
                                     <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                         <h3 class="h3">Collection Attributes</h3>
@@ -313,7 +312,7 @@ const ERC721CollectionPage = () => {
                 {
                     NFTTransfers.information === null ? null :
                         <>
-                            <main style={{marginTop: '3rem'}} class="p-3" role="main">
+                            <main style={{marginTop: '5rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
                                 <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                     <h3 class="h3">Sample Collection Transfer Data</h3>
                                 </div>
@@ -324,7 +323,7 @@ const ERC721CollectionPage = () => {
                 {
                     NFTTrades.information === null ? null :
                         <>
-                            <main style={{marginTop: '3rem'}} className="p-3" role="main">
+                            <main style={{marginTop: '5rem'}} class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
                                 <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                     <h3 class="h3">Recent Collection Sales</h3>
                                 </div>

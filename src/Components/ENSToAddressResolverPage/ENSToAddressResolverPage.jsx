@@ -105,9 +105,8 @@ const ENSToAddressResolverPage = () => {
                 <div class="jumbotron">
                     <div class="container">
                         <form onSubmit={ ENSToAddressHandler }>
-                            <label style={{marginRight: '2rem'}}>ENS<b>{" → "}</b> Address Resolver</label>
-                            <input type="text" onChange={e => updateENSToAddress(e.target.value)} />
-                            <br />
+                            <label>ENS<b>{" → "}</b> Address Resolver</label>
+                            <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} placeholder="Enter ENS" type="text" onChange={e => updateENSToAddress(e.target.value)} />
                             <button style={{marginTop: '2rem'}} class="btn btn-success" type='submit'>Lookup Reversal</button>
                         </form>
                         <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>

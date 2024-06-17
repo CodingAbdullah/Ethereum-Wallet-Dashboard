@@ -145,9 +145,8 @@ const ERC720TokenPricesPage = () => {
             <div class="jumbotron">
               <div class="container">
                 <form onSubmit={ formHandler } style={{ marginTop: '1.5rem' }}>
-                  <label style={{ marginRight: '0.5rem' }}>ERC20 Contract Address (Defaults to ETH): </label>
-                  <input type="text" ref={ tokenContractAddress } placeholder="Enter here" required />
-                  <br />
+                  <label>Enter ERC20 contract address (ETH only) </label>
+                  <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} type="text" ref={ tokenContractAddress } placeholder="Enter contract address" required />
                   <button style={{ marginTop: '2rem' }} type="submit" class="btn btn-success">Check Data</button>
                 </form>
                 <div>
