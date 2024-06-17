@@ -123,7 +123,7 @@ const Home = () => {
                             <div class="row">
                                 <div>
                                     <hr style={{ marginTop: '3rem' }} />
-                                    <h5 style={{ marginTop: '3rem', width: '50%', marginLeft: 'auto', marginRight: 'auto' }}><b>Trending Collections</b></h5>
+                                    <h5 style={{ marginBottom: '1rem', width: '50%', marginLeft: 'auto', marginRight: 'auto' }}><b>Trending Collections</b></h5>
                                     <HomePageTrendingCollectionsTable collections={ trendingCoinsQuery.data.nfts } />
                                 </div>
                             </div>

@@ -275,10 +275,9 @@ const WalletStats = () => {
                 { setAlert ? <Alert type='danger' /> : null }
                     <div class="jumbotron">
                         <div class="container">
-                            <p>Enter <b>wallet address</b> of your choice for analytics</p>
+                            <p>Enter <b>wallet address</b> for a quick analysis</p>
                             <form onSubmit={formHandler}>
-                                <input onChange={e => updateWalletAddress(e.target.value)} type='text' placeholder='Enter Address Here'></input>
-                                <br />
+                                <input class="form-control" style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%' }} onChange={e => updateWalletAddress(e.target.value)} type='text' placeholder='Enter wallet address'></input>
                                 <NetworkSelector blockchainNetwork={ updateNetworkHandler } />
                                 <button style={{ marginTop: '2rem' }} type='submit' class='btn btn-success'>Submit</button>
                             </form>

@@ -90,9 +90,8 @@ const ENSTransferByNamePage = () => {
                 <div class="jumbotron">
                     <div class="container">
                         <form onSubmit={ENSTransferHandler}>
-                            <label style={{marginRight: '2rem'}}>ENS Name for Transfers</label>
-                            <input type="text" placeholder="Enter Domain Name" onChange={e => updateENSAddress(e.target.value)} />
-                            <br />
+                            <label>ENS transfers by name</label>
+                            <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} type="text" placeholder="Enter ENS name for transfer data" onChange={e => updateENSAddress(e.target.value)} />
                             <button style={{marginTop: '2rem'}} class="btn btn-success" type='submit'>Lookup Transfers</button>
                         </form>
                         <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>

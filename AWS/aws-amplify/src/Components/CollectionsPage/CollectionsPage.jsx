@@ -18,7 +18,7 @@ const CollectionsPage = () => {
                 </div>
                 <div className="jumbotron">
                     <div className="container">
-                        <p><i>Select collection type below for a quick analysis!</i></p>
+                        <p>Select collection type below for a quick analysis!</p>
                         <select style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%' }} onChange={ collectionHandler } className="form-select" aria-label="Default select example">
                             <option selected value="erc720-collection">ERC20 Collection Analytics</option>
                             <option value="erc721-collection">ERC721 Collection Analytics</option>

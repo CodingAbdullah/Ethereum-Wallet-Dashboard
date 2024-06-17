@@ -19,7 +19,7 @@ const ENSPage = () => {
                 </div>
                 <div className="jumbotron" style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%' }}>
                     <div className="container">
-                        <p><i>Select ENS lookup options from the menu below!</i></p>
+                        <p>Select ENS lookup options from the menu below!</p>
                         <select value={ ENSURL } onChange={ selectHandler } className="form-select" aria-label="Default select example">
                             <option selected value="address-to-ens-lookup">Address → ENS</option>
                             <option value="ens-to-address-lookup">ENS → Address</option>

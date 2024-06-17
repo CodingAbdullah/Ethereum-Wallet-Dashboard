@@ -167,16 +167,14 @@ const ERC721LookupsPage = () => {
         <div>
              <main role="main" class="p-3">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h2>ERC-721 Token Lookup</h2>
+                    <h2>ERC721 Token Lookup</h2>
                 </div>
                 { setAlert ? <Alert type="danger" /> : null }
                 <div class="jumbotron">                    
                 <form onSubmit={ tokenHandler }>
-                    <p style={{ marginRight: '0.5rem' }}>Enter ERC721 Contract Address & Token ID for Lookup </p>
-                    <input style={{ marginTop: '1rem' }} type="text" onChange={e => updateTokenAddress(e.target.value)} placeholder="Enter ERC721 Contract Address" required />
-                    <br />
-                    <input style={{marginTop: '1rem' }} type="number" onChange={e => updateTokenId(e.target.value)} placeholder="Enter Token ID" required />
-                    <br />
+                    <p>Enter ERC721 contract address & token ID for information</p>
+                    <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} type="text" onChange={e => updateTokenAddress(e.target.value)} placeholder="Enter contract address" required />
+                    <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} type="number" onChange={e => updateTokenId(e.target.value)} placeholder="Enter Token ID" required />
                     <NetworkSelector blockchainNetwork={ updateNetworkHandler } />
                     <button style={{marginTop: '2rem' }} type="submit" class="btn btn-success">Lookup</button>
                 </form>

@@ -249,15 +249,14 @@ const ERC721CollectionPage = () => {
             <div className="erc721-collection-page">
                 <main role="main" class="p-3">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">ERC-721 Collection Analytics</h1>
+                        <h1 class="h2">ERC721 Collection Analytics</h1>
                     </div>
                     { setAlert ? <Alert type='danger' /> : null }
                     <div class="jumbotron">
                         <div class="container">
-                            <p>Enter Contract Address of an <b>ERC721</b> token for analytics (limited to 100)</p>
+                            <p>Enter contract address of an <b>ERC721</b> collection for a quick analysis</p>
                             <form onSubmit={formHandler}>
-                                <input style={{marginLeft: '0.5rem'}} onChange={e => updateTokenAddress(e.target.value)} type='text' placeholder='Enter Address Here'></input>
-                                <br />
+                                <input class="form-control" style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%' }} onChange={e => updateTokenAddress(e.target.value)} type='text' placeholder='Enter contract address'></input>
                                 <button style={{marginTop: '2rem'}} type='submit' class='btn btn-success'>Submit</button>
                             </form>
                             <button style={{marginTop: '2rem', display: 'inline'}} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
