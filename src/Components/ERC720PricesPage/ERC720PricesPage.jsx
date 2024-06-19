@@ -45,7 +45,7 @@ const ERC720TokenPricesPage = () => {
 
     // Fetch data based on interval change
     useEffect(() => {
-      const URL = 'https://18.221.208.44.nip.io/';
+      const URL = 'https://18.221.208.44.nip.io';
       const ERC20_PRICE_ENDPOINT = '/ERC20-coin-price-duration';
 
       let options = {
@@ -107,7 +107,7 @@ const ERC720TokenPricesPage = () => {
         updateSetTokenContractAddress(tokenContractAddress.current.value);
         updateAlert('');
 
-        const URL = 'https://18.221.208.44.nip.io/';
+        const URL = 'https://18.221.208.44.nip.io';
         const ERC20_INFO_ENDPOINT = '/ERC20-coin-information';
         const ERC20_PRICE_ENDPOINT = '/ERC20-coin-price-duration';
         const CURRENT_ERC20_PRICE_ENDPOINT = '/current-ERC20-price';
