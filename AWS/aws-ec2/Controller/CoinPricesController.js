@@ -1,6 +1,7 @@
 require("dotenv").config({ path: '../.env' });
 const axios = require("axios");
 const moment = require("moment");
+const dayjs = require("dayjs");
 
 const PRO_COINGECKO_URL = "https://pro-api.coingecko.com/api/v3"; // Pro CoinGecko API Endpoint
 
@@ -125,6 +126,39 @@ exports.currentCoinPrice = async (req, res) => {
     }
 }
 
+exports.currentERC20CoinPrice = async (req, res) => {
+    const { contract } = JSON.parse(req.body.body);
+    
+    // Endpoint for fetching ERC20 token price
+    const ERC20_PRICE_ENDPOINT = '/simple/token_price/ethereum?contract_addresses=' + contract + '&vs_currencies=usd';
+
+    // Setting options for authenticated API call
+    let options = {
+        method: "GET",
+        mode: 'cors', // *cors, same-origin
+        headers : {
+            'content-type' : 'application/json',
+            'access-control-allow-origin': '*',
+            'x-cg-pro-api-key' : process.env.COINGECKO_ERC20_PRICES_API_KEY // API-KEY for authenticated call
+        }
+    }
+
+    let response = await axios.get(PRO_COINGECKO_URL + ERC20_PRICE_ENDPOINT, options); // Fetch ERC20 token prices by interval
+
+    // If error is found, throw it
+    if (response.status !== 200) {
+        res.status(400).json({
+            message: "Could not fetch ERC20 coin data"
+        });
+    }
+    else {
+        // Return successful ERC20 token information
+        res.status(200).json({
+            price: response.data[contract].usd
+        });
+    }
+}
+
 exports.ERC20CoinInfo = async (req, res) => {
     const { contract } = JSON.parse(req.body.body);
 
@@ -159,11 +193,23 @@ exports.ERC20CoinInfo = async (req, res) => {
 }
 
 exports.ERC20CoinPriceDuration = async (req, res) => {
-    const { contract } = JSON.parse(req.body.body);
+    const { contract, interval } = JSON.parse(req.body.body);
 
     // Request ERC20 token prices
-    const ERC20_PRICE_ENDPOINT = '/coins/ethereum/contract/' + contract + '/market_chart?vs_currency=usd&days=0.05';
-    let coinPricesByInterval = {};
+    let ERC20_PRICE_ENDPOINT = '/coins/ethereum/contract/' + contract;
+
+    if (interval === '24') {
+        ERC20_PRICE_ENDPOINT += '/market_chart?vs_currency=usd&days=2';
+    }
+    else if (interval === '7') {
+        ERC20_PRICE_ENDPOINT += '/market_chart?vs_currency=usd&days=7&interval=daily';
+    }
+    else if (interval === '14') {
+        ERC20_PRICE_ENDPOINT += '/market_chart?vs_currency=usd&days=14&interval=daily';
+    }
+    else {
+        ERC20_PRICE_ENDPOINT += '/market_chart?vs_currency=usd&days=30&interval=daily';
+    }
 
     // Setting options for authenticated API call
     let options = {
@@ -184,19 +230,25 @@ exports.ERC20CoinPriceDuration = async (req, res) => {
         });
     }
     else {
-        let days = [];
-        for (var i = 1; i < 16; i++){
-            // Fetch the x number to determine interval. If 24, it is set to hourly and if 14 or 30, it is daily
-            days.push(moment().subtract(i, 'days').calendar());
+        // Conditionally send the response and format it conforming to the interval
+        // Incorporate the dayjs library for easy date formatting
+        let prices = response.data.prices;
+        if (interval === '24'){
+            res.status(200).json({
+                coinPrices: prices.map(price => ({ 
+                    time: dayjs(price[0]).format('YYYY-MM-DD HH:mm:ss').split(" ")[1], 
+                    price: Number(Number(price[1])) 
+                })).splice(24) 
+            });
         }
-
-        // Set the coin prices by interval object
-        coinPricesByInterval.time = days.reverse();
-        coinPricesByInterval.coinData = response.data;
-
-        res.status(200).json({
-            ERC20PriceDurationData: coinPricesByInterval
-        });  
+        else {
+            res.status(200).json({
+                coinPrices: prices.map(price => ({ 
+                    time: dayjs(price[0]).format('YYYY-MM-DD'), 
+                    price: Number(Number(price[1])) 
+                }))
+            });
+        }
     }  
 }
 

@@ -1,6 +1,7 @@
-import { useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import axios from 'axios';
+import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
 import { useQuery } from '@tanstack/react-query';
-import { Line } from 'react-chartjs-2';
 import { useNavigate } from 'react-router-dom';
 import { coinPricesByDay } from '../../UtilFunctions/coinPricesByDay';
 import { metricsNavbarEthPrice } from '../../UtilFunctions/metricsNavbarEthPrice';
@@ -10,77 +11,156 @@ import { erc20CoinInfoPro } from '../../UtilFunctions/erc20CoinInfoPRO';
 import { erc20CoinPriceDurationPro } from '../../UtilFunctions/erc20CoinPriceDurationPRO';
 import Alert from '../Alert/Alert';
 import ERC720PricesInfoTable from '../ERC720PricesInfoTable/ERC720PricesInfoTable';
+import ERC720PricesChart from '../ERC720PricesChart/ERC720PricesChart';
+import DurationSelector from '../DurationSelector/DurationSelector';
 import ChangeHighlight from 'react-change-highlight';
+import { AgChartsReact } from 'ag-charts-react';
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 import './ERC720PricesPage.css';
-
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-} from 'chart.js';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
 
 const ERC720TokenPricesPage = () => {
     const navigate = useNavigate();
-    const [chartToggle, updateChartToggle] = useState("ethereum"); // Chart to display will be Ethereum by default
     const tokenContractAddress = useRef(); // useRef for keeping track of form input
     const [setTokenContractAddress, updateSetTokenContractAddress] = useState('');
+    const [interval, updateInterval] = useState('24');
     const [formAlert, updateAlert] = useState("");
 
-    // Setting up queries for fetching and caching data
-    const ethPriceQuery = useQuery({
-      queryKey: ['eth price'],
-      queryFn: metricsNavbarEthPricePro
+    // State for tracking ERC20 token information, prices, and current ERC20 price
+    const [erc20Information, updateErc20Information] = useState({
+      coinData: null
     });
 
-    const ethPriceDurationQuery = useQuery({
-      queryKey: ['eth price duration', 'ethereum', 14],
-      queryFn: coinPricesByDayPro
+    const [erc20Prices, updateErc20Prices] = useState({ 
+      coinPrice: null
     });
 
-    // Setting up a reference for token address instead, calls will be made for each character
-    // React-Query identifies each query with its unique key
-    const erc20TokenPriceQuery = useQuery({
-      queryKey: ['ERC20 token information', setTokenContractAddress],
-      queryFn: erc20CoinInfoPro
+    const [currentERC20Price, updateCurrentERC20Price] = useState({
+      currentValue: null
     });
 
-    const erc20TokenPriceDurationQuery = useQuery({
-      queryKey: ['ERC20 token price duration', setTokenContractAddress],
-      queryFn: erc20CoinPriceDurationPro
-    });
+    const intervalHandler = e => {
+      updateInterval(e.target.value);
+    }
 
-    const ethPriceRef = useRef(); // Track Ethereum price changes
-   
+    // Fetch data based on interval change
+    useEffect(() => {
+      const URL = 'http://localhost:5000';
+      const ERC20_PRICE_ENDPOINT = '/ERC20-coin-price-duration';
+
+      let options = {
+          method: "POST",
+          body: JSON.stringify({ contract: tokenContractAddress.current.value, interval }),
+          headers: {
+              'content-type' : 'application/json'
+          }
+      }
+      
+      // Request ERC20 token price information
+      axios.post(URL + ERC20_PRICE_ENDPOINT, options)
+      .then(response => {
+        updateErc20Prices(prevState => {
+          return {
+            ...prevState,
+            coinPrice: response.data.coinPrices
+          }
+        });
+      })
+      .catch(() => {
+        updateAlert("invalid");
+      });
+    }, 
+    [interval, updateInterval]);
+
+    // Clear all data when requested
+    // Set toggle back to default
     const clearHandler = () => {
-      // Set toggle back to Ethereum
-      updateChartToggle('ethereum');
       updateAlert("");
+      updateErc20Information(prevState => {
+        return {
+          ...prevState,
+          coinData: null
+        }
+      });
+
+      // Clearing all data
+      updateErc20Prices(prevState => {
+        return {
+          ...prevState,
+          coinPrice: null
+        }
+      });
+
+      updateCurrentERC20Price(prevState => {
+        return {
+          ...prevState,
+          currentValue: null
+        }
+      });
     }
 
     const formHandler = async (e) => {
       e.preventDefault();
 
+      // Update and set token address to what was entered and update chart toggle
       if (tokenContractAddress.current.value.length === 42 && tokenContractAddress.current.value.substring(0, 2) === "0x"){
-        
-        // Update and set token address to what was entered and update chart toggle
         updateSetTokenContractAddress(tokenContractAddress.current.value);
-        updateChartToggle('erc20');
         updateAlert('');
+
+        const URL = 'http://localhost:5000';
+        const ERC20_INFO_ENDPOINT = '/ERC20-coin-information';
+        const ERC20_PRICE_ENDPOINT = '/ERC20-coin-price-duration';
+        const CURRENT_ERC20_PRICE_ENDPOINT = '/current-ERC20-price';
+
+        let options = {
+            method: "POST",
+            body: JSON.stringify({ contract: tokenContractAddress.current.value, interval }),
+            headers: {
+                'content-type' : 'application/json'
+            }
+        }
+        
+        // Request ERC20 token price information
+        axios.post(URL + ERC20_PRICE_ENDPOINT, options)
+        .then(response => {
+          updateErc20Prices(prevState => {
+            return {
+              ...prevState,
+              coinPrice: response.data.coinPrices
+            }
+          });
+        })
+        .catch(() => {
+          updateAlert("invalid");
+        });
+
+        // Request ERC20 token information
+        axios.post(URL + ERC20_INFO_ENDPOINT, options)
+        .then(response => {
+          updateErc20Information(prevState => {
+            return {
+              ...prevState,
+              coinData: response.data.ERC20CoinData
+            }
+          });
+        })
+        .catch(() => {
+          updateAlert("invalid");
+        });
+
+        // Request ERC20 current price
+        axios.post(URL + CURRENT_ERC20_PRICE_ENDPOINT, options)
+        .then(response => {
+          updateCurrentERC20Price(prevState => {
+            return {
+              ...prevState,
+              currentValue: response.data.price
+            }
+          });
+        })
+        .catch(() => {
+          updateAlert("invalid");
+        });
       }
       else {
           if (formAlert === "invalid"){ // If the format is not of length 42 and start with 0x (hex), throw error
@@ -92,124 +172,49 @@ const ERC720TokenPricesPage = () => {
       }
     }
 
-    // Set display configurations
-    var data = {
-      labels: chartToggle === 'ethereum' ? ethPriceDurationQuery.data?.time : erc20TokenPriceDurationQuery.data?.time,
-      datasets: [{
-        label: chartToggle === 'ethereum' ? 'Ethereum Price' : 'Last Ten Price Points',
-        data: chartToggle === 'ethereum' ? 
-              ethPriceDurationQuery.data?.coinData.prices.map(x => x[1].toFixed(2)) : 
-              erc20TokenPriceDurationQuery.data?.coinData.prices.map(x => x[1].toFixed(2)),
-        backgroundColor: 'red',
-        borderColor: 'red',
-        borderWidth: 1
-      }]
-    };
-
-    // Adding options to enhance charts
-    var options = {
-      maintainAspectRatio: false,
-      plugins: {
-        title: {
-          display: true,
-          text: chartToggle === 'ethereum' ? 'Ethereum Chart' : erc20TokenPriceQuery.data?.name + ' Chart'
-        },
-        legend: {
-          display: true,
-          position: "bottom"
-        }
-      }
-    }
-
-    // Display Title, 24 Hr. Price% Change, Price of Coin
-    if (ethPriceDurationQuery.isLoading || ethPriceQuery.isLoading || erc20TokenPriceDurationQuery.isLoading || erc20TokenPriceQuery.isLoading) {
-      return <div role="main" className="p-3">Loading...</div>
-    }
-    else if (ethPriceDurationQuery.isError || ethPriceQuery.isError || erc20TokenPriceDurationQuery.isError || erc20TokenPriceQuery.isError) {
-      return <div role="main" className="p-3">Error fetching Data...</div>
-    }
-    else {
-      let ethPriceCSSColourPicker = chartToggle === 'Ethereum' && ethPriceRef.current === undefined ? '' : 
-                                    ( ethPriceQuery.data[0].ethereum.usd >= Number(ethPriceRef.current?.innerHTML.substring(1)) ? 
-                                      'tickerUpHighlight' : 'tickerDownHighlight'
-                                    );
-
-      // Generic coin setup using Object keys from API responses to generate output, code added when user requests a display of a valid ERC 20 token
-      return (
-        <div>
-          <main role="main" className="p-3">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-              <h2>ERC20 Token Market Data</h2>
-            </div>
-            { formAlert === "invalid" ? <div><Alert type="danger"/></div> : <div/> }
-            <div class="jumbotron">
-              <div class="container">
-                <form onSubmit={ formHandler } style={{ marginTop: '1.5rem' }}>
-                  <label>Enter ERC20 contract address (ETH only) </label>
-                  <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} type="text" ref={ tokenContractAddress } placeholder="Enter contract address" required />
-                  <button style={{ marginTop: '2rem' }} type="submit" class="btn btn-success">Check Data</button>
-                </form>
-                <div>
-                  <button style={{ marginTop: '2rem', display: 'inline' }} class='btn btn-primary' onClick={ () => navigate("/") }>Go Home</button>
-                  <button style={{ marginTop: '2rem', marginLeft: '2rem' }} class='btn btn-warning' onClick={ clearHandler }>Clear</button>              
-                </div>
+    // Display Title, 24 Hour, Price % Change, Price of ERC20 Coin
+    return (
+      <div>
+        <main role="main" className="p-3">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h2>ERC20 Token Market Data</h2>
+          </div>
+          { formAlert === "invalid" ? <div><Alert type="danger"/></div> : <div/> }
+          <div class="jumbotron">
+            <div class="container">
+              <form onSubmit={ formHandler } style={{ marginTop: '1.5rem' }}>
+                <label>Enter ERC20 contract address (<b>ETH mainnet</b> only)</label>
+                <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} type="text" ref={ tokenContractAddress } placeholder="Enter contract address" required />
+                <button style={{ marginTop: '2rem' }} type="submit" class="btn btn-success">Check Data</button>
+              </form>
+              <div>
+                <button style={{ marginTop: '2rem', display: 'inline' }} class='btn btn-primary' onClick={ () => navigate("/") }>Go Home</button>
+                <button style={{ marginTop: '2rem', marginLeft: '2rem' }} class='btn btn-warning' onClick={ clearHandler }>Clear</button>              
               </div>
             </div>
-            { 
-              formAlert === "invalid" ? null : 
-                <> 
-                  {
-                    chartToggle === 'ethereum' ?                   
-                      <ChangeHighlight highlightClassName={ ethPriceCSSColourPicker } showAfter={ 100 } hideAfter={ 3000 }>
-                        <h3 style={{ marginTop: '5rem' }}>
-                          { "Ethereum " } Price: 
-                          <b ref={ ethPriceRef }>{ "$" + ethPriceQuery.data[0].ethereum.usd }</b>
-                        </h3> 
-                      </ChangeHighlight>
-                    :
-                      <h3 style={{ marginTop: '5rem' }}>
-                        { erc20TokenPriceQuery.data.name } Price: 
-                        <b>${ erc20TokenPriceQuery.data.market_data.current_price.usd }</b>
-                      </h3> 
-                  }
-                  <h5 style={{ marginBottom: '2rem', display: 'inline' }}>24-Hr % Chg:
-                    { chartToggle === 'ethereum' ? ( ethPriceQuery.data[0].ethereum.usd_24h_change < 0 ? 
-                      <h5 style={{ display: 'inline', color: 'red' }}>{ " " + ethPriceQuery.data[0].ethereum.usd_24h_change.toFixed(2) + "%" }</h5> : 
-                      <h5 style={{ display: 'inline', color: 'green' }}>{ " +" + ethPriceQuery.data[0].ethereum.usd_24h_change.toFixed(2) + "%" }</h5>
-                    )
-                    :
-                    ( erc20TokenPriceQuery.data?.market_data.price_change_percentage_24h < 0 ?
-                    <h5 style={{ display: 'inline', color: 'red' }}>{ " " + erc20TokenPriceQuery.data?.market_data.price_change_percentage_24h.toFixed(2) + "%" }</h5> : 
-                    <h5 style={{ display: 'inline', color: 'green' }}>{ " +" + erc20TokenPriceQuery.data?.market_data.price_change_percentage_24h.toFixed(2) + "%" }</h5>
-                    )
-                    }
-                  </h5>
-                </> 
-            }
-            <div>
-            { 
-              formAlert !== 'invalid' ?
-                <div style={{ marginTop: '2rem' }}>
-                  <Line 
-                    data={ data }
-                    height={ 250 }
-                    width={ 250 }
-                    options={ options }
-                  />
-                </div> : null }
-            </div>
-            <div style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%', marginTop: '3rem' }} >
+          </div>
+          {
+            erc20Information.coinData !== null && currentERC20Price.currentValue !== null && formAlert === '' && erc20Prices.coinPrice !== null ? 
+            <>
+              <hr style={{ marginTop: '3rem' }} />
+              <h2>{erc20Information.coinData.name}</h2>
+              <i>{ erc20Information.coinData.contract_address }</i>
+              <br />
+              <img style={{ marginTop: '1rem', marginBottom: '1rem' }} src={erc20Information.coinData.image.small} />
               {
-                // Display data of the valid ERC20 token
-                chartToggle === 'ethereum' || formAlert === 'invalid' ? <div /> :
-                <ERC720PricesInfoTable data={{ information: erc20TokenPriceQuery.data }} />
+                Object.keys(erc20Information.coinData.description).length !== 0 ?
+                    <p style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%' }}><i>{ erc20Information.coinData.description.en }</i></p>
+                : null
               }
-            </div>
-            { erc20TokenPriceQuery.data && formAlert !== 'invalid' ? <hr style={{ marginTop: '2rem', marginBottom: '2rem' }} /> : null }
-          </main>
-        </div>
-      )
-    }
-}    
+              <ERC720PricesChart tokenPrice={ currentERC20Price.currentValue } coinInformation={ erc20Information.coinData } priceData={ erc20Prices.coinPrice } />
+              <DurationSelector priceDurationHandler={ intervalHandler } />
+              <ERC720PricesInfoTable coinInformation={ erc20Information.coinData } />
+            </>
+            : null
+          }
+        </main>
+      </div>
+    )
+}   
 
 export default ERC720TokenPricesPage;
