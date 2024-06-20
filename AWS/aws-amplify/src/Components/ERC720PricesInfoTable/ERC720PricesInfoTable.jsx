@@ -21,7 +21,7 @@ const ERC20PricesInfoTable = (props) => {
       { tokenInformation: "Total Supply", data: coinInformation.market_data.total_supply },
       { tokenInformation: "Max Supply", data: coinInformation.market_data.max_supply },
       { tokenInformation: "Circulating Supply", data: coinInformation.market_data.circulating_supply },
-      { tokenInformation: "24-Hr % Change", data: coinInformation.market_data.price_change_percentage_24h > 0 ? "+" : "" + coinInformation.market_data.price_change_percentage_24h.toFixed(2) + "%" },
+      { tokenInformation: "24-Hr % Change", data: coinInformation.market_data.price_change_percentage_24h >= 0 ? "+" + coinInformation.market_data.price_change_percentage_24h.toFixed(2) + "%" : coinInformation.market_data.price_change_percentage_24h.toFixed(2) + "%" },
       { tokenInformation: "Highest 24-Hr Price", data: coinInformation.market_data.high_24h.usd },
       { tokenInformation: "Lowest 24-Hr Price", data: coinInformation.market_data.low_24h.usd },
       { tokenInformation: "Total Volume", data: coinInformation.market_data.total_volume.usd },
