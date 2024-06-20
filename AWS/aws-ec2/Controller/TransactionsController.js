@@ -1,5 +1,6 @@
 require('dotenv').config({ path: '../.env' });
 const ETHERSCAN_ETH_URL = require('../Utils/NetworkMapper').NETWORK_MAPPER.eth;
+const OPENSEA_URL = require('../Utils/NetworkMapper').NETWORK_MAPPER.opensea_url;
 const axios = require('axios');
 
 const mod = "account";
@@ -36,5 +37,25 @@ exports.getAddressInternalTransactionHistory = (req, res) => {
     axios.get(ETHERSCAN_ETH_URL + '?module=' + mod + '&action=txlistinternal&address=' + address + '&startblock=' + startBlock
     + '&endblock=' + endBlock + '&page=' + page + '&offset=' + 1000 + '&sort=' + sort + '&apikey=' + API_KEY) 
     .then(response => { res.status(200).json({ information: response.data })})
+    .catch(err => res.status(400).json({ information: err }));
+}
+
+exports.openseaAccountInformation = (req, res) => {
+    const { address } = JSON.parse(req.body.body);
+
+    // Set options for making authenticated API calls
+    let options = {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'content-type': 'application/json',
+            'accept': 'application/json',
+            'X-API-KEY': process.env.OPENSEA_API_KEY
+        }
+    }
+    
+    // Gather data about Opensea account
+    axios.get(OPENSEA_URL + 'accounts/' + address, options)
+    .then(response => res.status(200).json({ information: response.data }))
     .catch(err => res.status(400).json({ information: err }));
 }

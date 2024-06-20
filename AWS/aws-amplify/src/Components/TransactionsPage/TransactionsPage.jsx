@@ -9,9 +9,11 @@ import InternalTransactionsInfoTable from '../InternalTransactionsInfoTable/Inte
 import { resetAddress } from '../../redux/reducer/walletAddressReducer';
 import { currentCoinPrice } from '../../UtilFunctions/currentCoinPrice';
 import { currentCoinPricePro } from '../../UtilFunctions/currentCoinPricePRO';
+import { openseaAccountInformation } from '../../UtilFunctions/openseaAccountInfo';
 import { walletBalance } from '../../UtilFunctions/walletBalance';
 import { walletInternalTransactions } from '../../UtilFunctions/walletInternalTransactions';
 import { walletTransactions } from '../../UtilFunctions/walletTransactions';
+import OpenseaAccountInfoTable from '../OpenseaAccountInfoTable/OpenseaAccountInfoTable';
 
 const Transactions = () => {
     const walletAddress = useSelector(state => state.wallet.walletAddress);
@@ -21,6 +23,11 @@ const Transactions = () => {
     const ethPriceQuery = useQuery({
         queryKey: ['eth price', 'ethereum'],
         queryFn: currentCoinPricePro
+    });
+
+    const openseaAccountQuery = useQuery({
+        queryKey: ['opensea account', walletAddress],
+        queryFn: openseaAccountInformation
     });
 
     const walletBalancesQuery = useQuery({
@@ -49,9 +56,9 @@ const Transactions = () => {
     }, []);
     
     // Conditionally render page based on alerts when wallet is either empty or invalid
-    if ( ethPriceQuery.isError || walletBalancesQuery.isError || walletInternalTransactionsQuery.isError || walletTransactionsQuery.isError) {
+    if ( ethPriceQuery.isError || openseaAccountQuery.isError || walletBalancesQuery.isError || walletInternalTransactionsQuery.isError || walletTransactionsQuery.isError) {
         return (
-            <main role="main" class="col-md-9 p-3">
+            <main role="main" class="p-3">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Transactions</h1>
                 </div>
@@ -60,10 +67,10 @@ const Transactions = () => {
             </main>
         )
     }
-    else if ( ethPriceQuery.isLoading || walletBalancesQuery.isLoading || walletTransactionsQuery.isLoading || walletInternalTransactionsQuery.isLoading) {
+    else if ( ethPriceQuery.isLoading || openseaAccountQuery.isLoading || walletBalancesQuery.isLoading || walletTransactionsQuery.isLoading || walletInternalTransactionsQuery.isLoading) {
         return <div role="main" class="p-3">Loading...</div>
     }
-    else if (ethPriceQuery.isSuccess && walletBalancesQuery.isSuccess && walletTransactionsQuery.isSuccess && walletInternalTransactionsQuery.isSuccess) {
+    else if (ethPriceQuery.isSuccess && walletBalancesQuery.isSuccess && walletTransactionsQuery.isSuccess && walletInternalTransactionsQuery.isSuccess && openseaAccountQuery.isSuccess) {
         
         // Set alerts for displaying if certain types of transactions are empty
         let emptyInteralTransactionAlert = walletInternalTransactionsQuery.data.result.length === 0 ? true: false;
@@ -77,6 +84,17 @@ const Transactions = () => {
                     </div>
                     <TransactionsAccountInfoTable walletAddress={ walletAddress } walletBalance={ walletBalancesQuery.data } ethPrice={ ethPriceQuery.data[0] } />
                 </main>  
+                <hr style={{ marginTop: '2rem' }}/>          
+                <main class="p-3" role="main">
+                        <div>
+                            {
+                                transactionsAlert ? null :
+                                    <>
+                                        <OpenseaAccountInfoTable data={ openseaAccountQuery.data } />                                
+                                    </>
+                            }
+                        </div>
+                </main>
                 <hr style={{ marginTop: '2rem' }}/>          
                 <main class="p-3" role="main">
                         <div>
@@ -103,7 +121,7 @@ const Transactions = () => {
                         </div>
                 </main>
                 <main role="main" class="p-3">
-                    <button style={{ marginTop: '1.5rem' }} class="btn btn-success" onClick={() => { dispatch(resetAddress()); navigate("/"); }}>Go Back</button>
+                    <button style={{ marginTop: '1rem' }} class="btn btn-success" onClick={() => { dispatch(resetAddress()); navigate("/"); }}>Go Back</button>
                 </main>
             </>
         )

@@ -6,5 +6,6 @@ const TransactionsController = require('../Controller/TransactionsController');
 router.post("/address-transaction-amount", TransactionsController.getAddressTransactionBalance);
 router.post("/address-transaction-history", TransactionsController.getAddressTransactionHistory);
 router.post("/address-internal-transaction-history", TransactionsController.getAddressInternalTransactionHistory);
+router.post("/opensea-account-information", TransactionsController.openseaAccountInformation);
 
 module.exports = router;

@@ -15,5 +15,6 @@ exports.NETWORK_MAPPER = {
     'polygon-mumbai' : 'https://api-testnet.polygonscan.com/api',
     'alchemy_url' : 'https://eth-mainnet.g.alchemy.com/nft/v2',    
     'blocknative_url' : 'https://api.blocknative.com/gasprices/blockprices',
-    'moralis_url' : 'https://deep-index.moralis.io/api/v2/'
+    'moralis_url' : 'https://deep-index.moralis.io/api/v2/',
+    'opensea_url' : 'https://api.opensea.io/api/v2/'
 }
