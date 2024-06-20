@@ -21,7 +21,7 @@ const ERC720PricesChart = (props) => {
                     text:  `${coinInformation.name} Price: $${tokenPrice} USD`
                 },
                 subtitle: {
-                    text: `24 Hour % Change: ${coinInformation.market_data.price_change_percentage_24h > 0 ? "+" : "" + coinInformation.market_data.price_change_percentage_24h.toFixed(2) + "%"}`
+                    text: `24 Hour % Change: ${coinInformation.market_data.price_change_percentage_24h >= 0 ? "+" + coinInformation.market_data.price_change_percentage_24h.toFixed(2) + "%" : coinInformation.market_data.price_change_percentage_24h.toFixed(2) + "%"}`
                 },
                 legend: {
                     enabled: true

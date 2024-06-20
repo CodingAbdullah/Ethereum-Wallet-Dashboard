@@ -21,8 +21,7 @@ import './ERC720PricesPage.css';
 
 const ERC720TokenPricesPage = () => {
     const navigate = useNavigate();
-    const tokenContractAddress = useRef(); // useRef for keeping track of form input
-    const [setTokenContractAddress, updateSetTokenContractAddress] = useState('');
+    const tokenContractAddressRef = useRef();
     const [interval, updateInterval] = useState('24');
     const [formAlert, updateAlert] = useState("");
 
@@ -48,27 +47,30 @@ const ERC720TokenPricesPage = () => {
       const URL = 'http://localhost:5000';
       const ERC20_PRICE_ENDPOINT = '/ERC20-coin-price-duration';
 
-      let options = {
-          method: "POST",
-          body: JSON.stringify({ contract: tokenContractAddress.current.value, interval }),
-          headers: {
-              'content-type' : 'application/json'
-          }
-      }
+      // Checking if token value is defined before proceeding with API call
+      if (tokenContractAddressRef.current.value && tokenContractAddressRef.current.value.length === 42 && tokenContractAddressRef.current.value.substring(0, 2) === "0x"){
+        let options = {
+            method: "POST",
+            body: JSON.stringify({ contract: tokenContractAddressRef.current.value, interval }),
+            headers: {
+                'content-type' : 'application/json'
+            }
+        }
       
-      // Request ERC20 token price information
-      axios.post(URL + ERC20_PRICE_ENDPOINT, options)
-      .then(response => {
-        updateErc20Prices(prevState => {
-          return {
-            ...prevState,
-            coinPrice: response.data.coinPrices
-          }
+        // Request ERC20 token price information
+        axios.post(URL + ERC20_PRICE_ENDPOINT, options)
+        .then(response => {
+          updateErc20Prices(prevState => {
+            return {
+              ...prevState,
+              coinPrice: response.data.coinPrices
+            }
+          });
+        })
+        .catch(() => {
+          updateAlert("invalid");
         });
-      })
-      .catch(() => {
-        updateAlert("invalid");
-      });
+      }
     }, 
     [interval, updateInterval]);
 
@@ -103,9 +105,8 @@ const ERC720TokenPricesPage = () => {
       e.preventDefault();
 
       // Update and set token address to what was entered and update chart toggle
-      if (tokenContractAddress.current.value.length === 42 && tokenContractAddress.current.value.substring(0, 2) === "0x"){
-        updateSetTokenContractAddress(tokenContractAddress.current.value);
-        updateAlert('');
+      if (tokenContractAddressRef.current.value && tokenContractAddressRef.current.value.length === 42 && tokenContractAddressRef.current.value.substring(0, 2) === "0x"){
+        clearHandler();
 
         const URL = 'http://localhost:5000';
         const ERC20_INFO_ENDPOINT = '/ERC20-coin-information';
@@ -114,7 +115,7 @@ const ERC720TokenPricesPage = () => {
 
         let options = {
             method: "POST",
-            body: JSON.stringify({ contract: tokenContractAddress.current.value, interval }),
+            body: JSON.stringify({ contract: tokenContractAddressRef.current.value, interval }),
             headers: {
                 'content-type' : 'application/json'
             }
@@ -184,7 +185,7 @@ const ERC720TokenPricesPage = () => {
             <div class="container">
               <form onSubmit={ formHandler } style={{ marginTop: '1.5rem' }}>
                 <label>Enter ERC20 contract address (<b>ETH mainnet</b> only)</label>
-                <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} type="text" ref={ tokenContractAddress } placeholder="Enter contract address" required />
+                <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} type="text" ref={ tokenContractAddressRef } placeholder="Enter contract address" required />
                 <button style={{ marginTop: '2rem' }} type="submit" class="btn btn-success">Check Data</button>
               </form>
               <div>

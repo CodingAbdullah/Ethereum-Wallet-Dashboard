@@ -143,18 +143,26 @@ exports.currentERC20CoinPrice = async (req, res) => {
         }
     }
 
-    let response = await axios.get(PRO_COINGECKO_URL + ERC20_PRICE_ENDPOINT, options); // Fetch ERC20 token prices by interval
-
-    // If error is found, throw it
-    if (response.status !== 200) {
-        res.status(400).json({
-            message: "Could not fetch ERC20 coin data"
-        });
+    // Safely fetching data using axios, escaping with try-catch block
+    try {
+        let response = await axios.get(PRO_COINGECKO_URL + ERC20_PRICE_ENDPOINT, options); // Fetch ERC20 token prices by interval
+        
+        // If error is found, throw it
+        if (response.status !== 200) {
+            res.status(400).json({
+                message: "Could not fetch ERC20 coin data"
+            });
+        }
+        else {
+            // Return successful ERC20 token information
+            res.status(200).json({
+                price: response.data[Object.keys(response.data)[0]].usd
+            });
+        }
     }
-    else {
-        // Return successful ERC20 token information
-        res.status(200).json({
-            price: response.data[contract].usd
+    catch (error) {
+        res.status(400).json({
+            message: "Could not fetch ERC20 coin price"
         });
     }
 }
@@ -176,18 +184,26 @@ exports.ERC20CoinInfo = async (req, res) => {
         }
     }
 
-    let response = await axios.get(PRO_COINGECKO_URL + ERC20_INFO_ENDPOINT, options); // Fetch ERC20 token prices by interval
+    // Safely fetching data using axios, escaping with try-catch block
+    try {
+        let response = await axios.get(PRO_COINGECKO_URL + ERC20_INFO_ENDPOINT, options); // Fetch ERC20 token prices by interval
 
-    // If error is found, throw it
-    if (response.status !== 200) {
+        // If error is found, throw it
+        if (response.status !== 200) {
+            res.status(400).json({
+                message: "Could not fetch ERC20 coin data"
+            });
+        }
+        else {
+            // Return successful ERC20 token information
+            res.status(200).json({
+                ERC20CoinData: response.data
+            });
+        }
+    }
+    catch (error) {
         res.status(400).json({
             message: "Could not fetch ERC20 coin data"
-        });
-    }
-    else {
-        // Return successful ERC20 token information
-        res.status(200).json({
-            ERC20CoinData: response.data
         });
     }
 }
@@ -222,34 +238,42 @@ exports.ERC20CoinPriceDuration = async (req, res) => {
         }
     }
 
-    let response = await axios.get(PRO_COINGECKO_URL + ERC20_PRICE_ENDPOINT, options); // Fetch ERC20 token prices by interval
+    // Safely fetching data using axios, escaping with try-catch block
+    try {
+        let response = await axios.get(PRO_COINGECKO_URL + ERC20_PRICE_ENDPOINT, options); // Fetch ERC20 token prices by interval
 
-    if (response.status !== 200) {
-        res.status(400).json({
-            message: "Could not fetch ERC20 price duration data"
-        });
-    }
-    else {
-        // Conditionally send the response and format it conforming to the interval
-        // Incorporate the dayjs library for easy date formatting
-        let prices = response.data.prices;
-        if (interval === '24'){
-            res.status(200).json({
-                coinPrices: prices.map(price => ({ 
-                    time: dayjs(price[0]).format('YYYY-MM-DD HH:mm:ss').split(" ")[1], 
-                    price: Number(Number(price[1])) 
-                })).splice(24) 
+        if (response.status !== 200) {
+            res.status(400).json({
+                message: "Could not fetch ERC20 price duration data"
             });
         }
         else {
-            res.status(200).json({
-                coinPrices: prices.map(price => ({ 
-                    time: dayjs(price[0]).format('YYYY-MM-DD'), 
-                    price: Number(Number(price[1])) 
-                }))
-            });
-        }
-    }  
+            // Conditionally send the response and format it conforming to the interval
+            // Incorporate the dayjs library for easy date formatting
+            let prices = response.data.prices;
+            if (interval === '24'){
+                res.status(200).json({
+                    coinPrices: prices.map(price => ({ 
+                        time: dayjs(price[0]).format('YYYY-MM-DD HH:mm:ss').split(" ")[1], 
+                        price: Number(Number(price[1])) 
+                    })).splice(24) 
+                });
+            }
+            else {
+                res.status(200).json({
+                    coinPrices: prices.map(price => ({ 
+                        time: dayjs(price[0]).format('YYYY-MM-DD'), 
+                        price: Number(Number(price[1])) 
+                    }))
+                });
+            }
+        }  
+    }
+    catch (error) {
+        res.status(400).json({
+            message: "Could not fetch ERC20 coin price duration data"
+        });
+    }
 }
 
 exports.homePageBitcoinPrice = async (req, res) => {
