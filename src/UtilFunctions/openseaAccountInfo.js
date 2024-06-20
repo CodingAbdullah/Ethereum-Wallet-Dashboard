@@ -14,7 +14,7 @@ export const openseaAccountInformation = async ({ queryKey }) => {
     }
     else {
         // Request Opensea account information
-        const NODE_URL = "http://localhost:5000/";
+        const NODE_URL = "https://18.221.208.44.nip.io/";
         const OPENSEA_ACCOUNT_URL = 'opensea-account-information';
     
         // Setting options for API request
