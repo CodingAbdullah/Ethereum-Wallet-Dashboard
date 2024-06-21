@@ -13,13 +13,13 @@ const ERC721LookupsInfoTable = (props) => {
     const updateColumnDefs = () => {
         if (window.outerWidth < 900) {
             setColumnDefs([
-                { field: "name", headerName: 'Name', flex: 1 },
+                { field: "name", headerName: 'Collection Name', flex: 1 },
                 { field: "link", headerName: "Link", flex: 1 }
             ]);
         } 
         else {
             setColumnDefs([
-                { field: "name", headerName: 'Name', flex: 1 },
+                { field: "name", headerName: 'Collection Name', flex: 1 },
                 { field: "tokenId", headerName: "Token ID", flex: 1 },
                 { field: "link", headerName: "Link", flex: 1 }                        
             ]);
@@ -37,7 +37,7 @@ const ERC721LookupsInfoTable = (props) => {
     return (
         <>
             <hr style={{ marginTop: '3rem' }} />
-            <p><b>ERC721 Lookup Information</b><br /><i>{ address }</i></p>
+            <p><b>ERC721 Lookup Information</b><br /><i>Brief Summary of ERC721 token</i></p>
             <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', height: 92.5, width: '100%' }}>
                 <AgGridReact
                     rowData={[
