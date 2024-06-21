@@ -5,6 +5,7 @@ import ERC721LookupsInfoTable from '../ERC721LookupsInfoTable/ERC721LookupsInfoT
 import ERC721TransferLookupsInfoTable from '../ERC721TransferLookupsInfoTable/ERC721TransferLookupsInfoTable';
 import ERC721SalesLookupsInfoTable from '../ERC721SalesLookupsInfoTable/ERC721SalesLookupsInfoTable';
 import ERC721RarityLookupsInfoTable from '../ERC721RarityLookupsInfoTable/ERC721RarityLookupsInfoTable';
+import ERC721LookupsOpenseaProfile from '../ERC721LookupsOpenseaProfile/ERC721LookupsOpenseaProfile';
 import NetworkSelector from '../NetworkSelector/NetworkSelector';
 import axios from 'axios';
 
@@ -19,6 +20,10 @@ const ERC721LookupsPage = () => {
         information: null
     });
 
+    const [openseaTokenData, updateOpenseaTokenData] = useState({
+        information: null 
+    });
+
     const [tokenTransfers, updateTokenTransfers] = useState({
         information: null
     });
@@ -29,11 +34,12 @@ const ERC721LookupsPage = () => {
 
     const navigate = useNavigate();
 
-    const NODE_SERVER_URL = "https://18.221.208.44.nip.io"; // AWS EC2 Node Server URL
+    const NODE_SERVER_URL = "http://localhost:5000"; // AWS EC2 Node Server URL
     const LOOKUP_ENDPOINT = '/erc721-lookup-by-id';
+    const OPENSEA_TOKEN_LOOKUP_ENDPOINT = '/erc721-lookup-opensea-information';
     const TRANSFER_LOOKUP_ENDPOINT = '/erc721-lookup-transfer-by-id';
     const RARITY_LOOKUP_ENDPOINT = '/erc721-lookup-rarity-by-id';
-
+    
     const [networkID, updateNetworkID] = useState('eth'); // Network selector set to default value
 
     const updateNetworkHandler = (e) => {
@@ -56,6 +62,13 @@ const ERC721LookupsPage = () => {
         });
 
         updateTokenRarity((prevState) => {
+            return {
+                ...prevState,
+                information: null
+            }
+        });
+
+        updateOpenseaTokenData((prevState) => {
             return {
                 ...prevState,
                 information: null
@@ -98,7 +111,7 @@ const ERC721LookupsPage = () => {
                 clearHandler();
                 updateEmptyAlert(true);
                 updateAlert(false);
-            })
+            });
 
             axios.post(NODE_SERVER_URL + TRANSFER_LOOKUP_ENDPOINT, options) // Get transfer data
             .then(response => {
@@ -155,6 +168,31 @@ const ERC721LookupsPage = () => {
                     }
                 });
             });
+
+            // Request ERC721 token information from the OpenSea API
+            axios.post(NODE_SERVER_URL + OPENSEA_TOKEN_LOOKUP_ENDPOINT , options)
+            .then(response => {
+                if (response.status !== 200){
+                    updateAlert(true);
+                    updateEmptyAlert(false);
+                    clearHandler();
+                }
+                else {
+                    updateAlert(false); // Remove alerts if any exist
+                    updateEmptyAlert(false);
+                    updateOpenseaTokenData((prevState) => {
+                        return {
+                             ...prevState,
+                            information: response.data.information
+                        }
+                    });
+                }
+            })
+            .catch(() => {
+                clearHandler();
+                updateEmptyAlert(true);
+                updateAlert(false);
+            });
         }
         else {
             updateAlert(true);
@@ -181,6 +219,7 @@ const ERC721LookupsPage = () => {
                     <button style={{ marginTop: '2rem', display: 'inline' }} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
                     <button style={{ marginTop: '2rem', marginLeft: '2rem' }} class='btn btn-warning' onClick={() => { 
                         updateAlert(false); 
+                        updateOpenseaTokenData((prevState) => { return { ...prevState, information: null }}); 
                         updateTokenData((prevState) => { return { ...prevState, information: null }}); 
                         updateTokenTransfers((prevState) => { return { ...prevState, information: null }});
                         updateTokenRarity((prevState) => { return { ...prevState, information: null }}); 
@@ -200,8 +239,21 @@ const ERC721LookupsPage = () => {
                         {
                             tokenData.information === null ? null :
                                 <>
-                                    <ERC721LookupsInfoTable  address={ tokenAddress } data={ tokenData.information } />                                
+                                    <ERC721LookupsInfoTable address={ tokenAddress } data={ tokenData.information } />                                
                                 </>
+                        }
+                    </div>
+            </main>
+            <main class="p-3" role="main">
+                    <div>
+                        {
+                            openseaTokenData.information === null ? null :
+                                openseaTokenData.information.length === 0 ? null : 
+                                (
+                                    <>
+                                        <ERC721LookupsOpenseaProfile openseaTokenData={ openseaTokenData.information[0] } />
+                                    </>
+                                )
                         }
                     </div>
             </main>
