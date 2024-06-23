@@ -16,7 +16,7 @@ const HomePageTrendingCollectionsTable = (props) => {
             symbol: collections[i].symbol,
             name: collections[i].name,
             floorPrice: collections[i].data.floor_price,
-            percentChange: numeral(collections[i].data.floor_price_in_usd_24h_percentage_change).format('0.00') + '%',
+            percentChange: collections[i].data.floor_price_in_usd_24h_percentage_change >= 0 ? "+" + numeral(collections[i].data.floor_price_in_usd_24h_percentage_change).format('0.00') + '%' : numeral(collections[i].data.floor_price_in_usd_24h_percentage_change).format('0.00') + '%',
             volume: collections[i].data.h24_volume
         }
         coinTableRowData.push(item);

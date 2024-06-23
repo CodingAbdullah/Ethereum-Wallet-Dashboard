@@ -96,36 +96,34 @@ const Home = () => {
                         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <h1 class="h2 p-3">Market Data</h1>
                         </div>
-                        <div class="container">
-                            <h5 style={{ marginBottom: '1rem', width: '50%', marginLeft: 'auto', marginRight: 'auto' }}><b>Global Markets</b></h5>
-                            <p style={{ marginRight: '0.5rem' }}><b>Active Currencies: </b> { active_cryptocurrencies }</p>      
-                            <p style={{ marginRight: '0.5rem' }}><b>Total Market Cap: </b> ${ (usd).toFixed(2) }</p>
-                            <p style={{ marginRight: '0.5rem' }}><b>Market Dominance: </b> BTC { (btc).toFixed(2) + "%" } <b>|</b> ETH { (eth).toFixed(2) + "%" }</p>
-                            <p style={{ marginBottom: '4rem', marginRight: '0.5rem' }}><b>24 Hour Market Cap % Change: </b>
-                                <p style={{ display: 'inline', color: market_cap_change_percentage_24h_usd < 0 ? 'red' : 'green', fontWeight: 'bold'} }>
-                                    { market_cap_change_percentage_24h_usd < 0 ? "" : "+" }{ (market_cap_change_percentage_24h_usd).toFixed(2) + "%" }
-                                </p>
+                        <h5 style={{ marginBottom: '1rem', width: '50%', marginLeft: 'auto', marginRight: 'auto' }}><b>Global Markets</b></h5>
+                        <p style={{ marginRight: '0.5rem' }}><b>Active Currencies: </b> { active_cryptocurrencies }</p>      
+                        <p style={{ marginRight: '0.5rem' }}><b>Total Market Cap: </b> ${ (usd).toFixed(2) }</p>
+                        <p style={{ marginRight: '0.5rem' }}><b>Market Dominance: </b> BTC { (btc).toFixed(2) + "%" } <b>|</b> ETH { (eth).toFixed(2) + "%" }</p>
+                        <p style={{ marginBottom: '4rem', marginRight: '0.5rem' }}><b>24 Hour Market Cap % Change: </b>
+                            <p style={{ display: 'inline', color: market_cap_change_percentage_24h_usd < 0 ? 'red' : 'green', fontWeight: 'bold'} }>
+                                { market_cap_change_percentage_24h_usd < 0 ? "" : "+" }{ (market_cap_change_percentage_24h_usd).toFixed(2) + "%" }
                             </p>
-                            <hr />
-                            <h5 style={{ marginBottom: '1rem', width: '50%', marginLeft: 'auto', marginRight: 'auto' }}><b>DeFi Markets</b></h5>
-                            <p style={{ marginRight: '0.5rem' }}><b>DeFi Market Cap: </b> { "$" + Number(globalDefiDataQuery.data[0].defi_market_cap).toFixed(2) }</p>      
-                            <p style={{ marginRight: '0.5rem' }}><b>ETH Market Cap: </b> { "$" + Number(globalDefiDataQuery.data[0].eth_market_cap).toFixed(2) }</p>
-                            <p style={{ marginRight: '0.5rem' }}><b>Trading Volume: </b> { "$" + Number(globalDefiDataQuery.data[0].trading_volume_24h).toFixed(2) }</p>
-                            <p style={{ marginRight: '0.5rem' }}><b>Top Coin Name: </b> { globalDefiDataQuery.data[0].top_coin_name }</p>
-                            <p style={{ marginRight: '0.5rem' }}><b>Top Coin DeFi Dominance: </b> { Number(globalDefiDataQuery.data[0].top_coin_defi_dominance).toFixed(2) + "%" }</p>
-                            <div class="row">
-                                <div>
-                                    <hr style={{ marginTop: '3rem' }} />
-                                    <h5 style={{ marginBottom: '1rem', width: '50%', marginLeft: 'auto', marginRight: 'auto' }}><b>Trending Coins</b></h5>
-                                    <HomePageTrendingCoinsTable coins={ trendingCoinsQuery.data.coins } />
-                                </div>
+                        </p>
+                        <hr />
+                        <h5 style={{ marginBottom: '1rem', width: '50%', marginLeft: 'auto', marginRight: 'auto' }}><b>DeFi Markets</b></h5>
+                        <p style={{ marginRight: '0.5rem' }}><b>DeFi Market Cap: </b> { "$" + Number(globalDefiDataQuery.data[0].defi_market_cap).toFixed(2) }</p>      
+                        <p style={{ marginRight: '0.5rem' }}><b>ETH Market Cap: </b> { "$" + Number(globalDefiDataQuery.data[0].eth_market_cap).toFixed(2) }</p>
+                        <p style={{ marginRight: '0.5rem' }}><b>Trading Volume: </b> { "$" + Number(globalDefiDataQuery.data[0].trading_volume_24h).toFixed(2) }</p>
+                        <p style={{ marginRight: '0.5rem' }}><b>Top Coin Name: </b> { globalDefiDataQuery.data[0].top_coin_name }</p>
+                        <p style={{ marginRight: '0.5rem' }}><b>Top Coin DeFi Dominance: </b> { Number(globalDefiDataQuery.data[0].top_coin_defi_dominance).toFixed(2) + "%" }</p>
+                        <div class="row">
+                            <div>
+                                <hr style={{ marginTop: '3rem' }} />
+                                <h5 style={{ marginBottom: '1rem', width: '50%', marginLeft: 'auto', marginRight: 'auto' }}><b>Trending Coins</b></h5>
+                                <HomePageTrendingCoinsTable coins={ trendingCoinsQuery.data.coins } />
                             </div>
-                            <div class="row">
-                                <div>
-                                    <hr style={{ marginTop: '3rem' }} />
-                                    <h5 style={{ marginBottom: '1rem', width: '50%', marginLeft: 'auto', marginRight: 'auto' }}><b>Trending Collections</b></h5>
-                                    <HomePageTrendingCollectionsTable collections={ trendingCoinsQuery.data.nfts } />
-                                </div>
+                        </div>
+                        <div class="row">
+                            <div>
+                                <hr style={{ marginTop: '3rem' }} />
+                                <h5 style={{ marginBottom: '1rem', width: '50%', marginLeft: 'auto', marginRight: 'auto' }}><b>Trending Collections</b></h5>
+                                <HomePageTrendingCollectionsTable collections={ trendingCoinsQuery.data.nfts } />
                             </div>
                         </div>
                 </main>
