@@ -1,60 +1,34 @@
-import React, { useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { coinPricesPro } from '../../UtilFunctions/coinPricesPRO';
-import PriceCoinCard from '../PriceCoinCard/PriceCoinCard';
-import { useNavigate } from 'react-router';
+import PricesInfoTable from '../PricesInfoTable/PricesInfoTable';
 
+// PricesPage component consisting of cryptocurrency price lookups
 const PricesPage = () => {
-    // Incorporating React Query for faster and more efficient data fetch
-    const { data, isPending, isError, error } = useQuery({
-        queryKey: ['coin prices'],
+    const coinPricesQuery = useQuery({
+        queryKey: ['coinPrices'],
         queryFn: coinPricesPro
     });
 
-    const navigate = useNavigate(); // Incorporating the useNavigate() hook
-    const isFreeVersion = false; // Check flag for making sure if what version of the CoinGecko API is in use
- 
-    // Upon component mount, ensure the free version of the CoinGecko API is in use
-    useEffect(() => {
-        if (isFreeVersion) {
-            navigate("/");
-        }
-     }, []);
-
-    // Props to be added later after more filtering and testing, the layout is complete for now
-    if (isPending){
-        return ( 
-            <div role="main">
-                <div>Loading...</div>
-            </div>
-        )
+    // Conditionally rendering component based on query status
+    if (coinPricesQuery.isLoading || coinPricesQuery.isFetching) {
+        return <div>Loading...</div>
     }
-    else if (isError) {
-        return ( 
-            <div role="main">
-                Err...
-            </div>
-        )
+    else if (coinPricesQuery.isError || coinPricesQuery.error) {
+        return <div>Error: {coinPricesQuery.error.message}</div>
     }
-    else if (data) {
+    else {
         return (
-            <main className="p-3" role="main">
-                <h1 style={{ marginTop: '2rem' }}>Prices Chart</h1>
-                <p>Here is the list of the latest prices on the top 15 coins by <b>popularity.</b></p>
-                <div>
-                    <div class="row">
-                    {
-                           data.map((coin, key) => {
-                                return (
-                                    <PriceCoinCard id={key} name={ Object.keys(coin)[0] } coinInfo={coin[Object.keys(coin)[0]]} /> // Display child components by passing properties to them
-                                );
-                            })
-                        }
-                    </div> 
-                </div>
-            </main>
-        )
+            <div>
+                <main role="main" className="p-3">
+                    <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 className="h2">Cryptocurrency Price Lookups</h1>
+                    </div>
+                </main>
+                <PricesInfoTable coinData={ coinPricesQuery.data } />
+            </div>
+        );
     }
-}
+};
 
 export default PricesPage;
