@@ -25,7 +25,7 @@ const HomePageTrendingCoinsTable = (props) => {
             symbol: coins[i].item.symbol,
             marketCap: coins[i].item.data.market_cap,
             price: coins[i].item.data.price < 0.01 ? "$" + coins[i].item.data.price : formatCurrency(coins[i].item.data.price),
-            priceChange: numeral(coins[i].item.data.price_change_percentage_24h.usd).format('0.00') + '%'
+            priceChange: coins[i].item.data.price_change_percentage_24h.usd >= 0 ? "+" + numeral(coins[i].item.data.price_change_percentage_24h.usd).format('0.00') + '%' : numeral(coins[i].item.data.price_change_percentage_24h.usd).format('0.00') + '%'
         }
         coinTableRowData.push(item);
         item = {};
