@@ -4,6 +4,7 @@ const coinPriceController = require("../Controller/CoinPricesController");
 
 // Add coin price routes and pass them to the node backend server
 router.get("/coin-prices", coinPriceController.coinPrices);
+router.get("/top-bottom-coin-prices", coinPriceController.topBottomCoins);
 router.post("/coin-prices-by-day", coinPriceController.coinPricesByDay);
 router.post('/current-ERC20-price', coinPriceController.currentERC20CoinPrice);
 router.post("/simple-price-data", coinPriceController.currentCoinPrice);

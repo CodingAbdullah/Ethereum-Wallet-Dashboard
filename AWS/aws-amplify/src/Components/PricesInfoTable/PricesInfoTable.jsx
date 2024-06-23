@@ -6,9 +6,11 @@ import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied
 const PricesInfoTable = (props) => {
     const { coinData } = props;
 
+    const [filterText, updateFilterText] = useState(''); // Filter text state
+    
     // Column Definitions: Defines the columns to be displayed.
     const [columnDefs, setColumnDefs] = useState([
-        { field: "name", headerName: 'Opensea Account Information', flex: 0.5 },
+        { field: "name", headerName: 'Name', flex: 0.5 },
         { field: "symbol", headerName: "Symbol", flex: 0.25 },
         { field: "currentPrice", headerName: "Price", flex: 1 },
         { field: "highPrice", headerName: "High Last 24 Hrs", flex: 1 },
@@ -19,16 +21,15 @@ const PricesInfoTable = (props) => {
     ]);
 
     let coinTableRowData = [];
-    let item = {};
 
     // Loop through the coinData object to construct row data to be inserted into the prices table
     for (var i = 0; i < coinData.length; i++) {
         let item = { 
             name: coinData[i].name,
             symbol: String(coinData[i].symbol).toUpperCase(),
-            currentPrice: "$" + String(Number(coinData[i].current_price).toFixed(2)) + " USD",
-            highPrice: "$" + String(Number(coinData[i].high_24h).toFixed(2)) + " USD",
-            lowPrice: "$" + String(Number(coinData[i].low_24h).toFixed(2)) + " USD",
+            currentPrice: "$" + String(Number(coinData[i].current_price)) + " USD",
+            highPrice: "$" + String(Number(coinData[i].high_24h)) + " USD",
+            lowPrice: "$" + String(Number(coinData[i].low_24h)) + " USD",
             percentageChange24Hours: coinData[i].price_change_percentage_24h >= 0 ? "+" + String(Number(coinData[i].price_change_percentage_24h).toFixed(2)) + "%" : String(Number(coinData[i].price_change_percentage_24h).toFixed(2)) + "%",
             marketCap: "$" + String(Number(coinData[i].market_cap).toFixed(2)) + " USD",
             totalVolume: "$" + String(Number(coinData[i].total_volume).toFixed(2)) + " USD"
@@ -37,6 +38,14 @@ const PricesInfoTable = (props) => {
         coinTableRowData.push(item);
         item = {};
     }
+
+    // Adding a filter to the table to allow users to search for specific coins
+    // Filtering based on name and symbol of a particular coin
+    const filteredRowData = coinTableRowData.filter(
+        (row) =>
+          row.name.toLowerCase().includes(filterText) ||
+          row.symbol.toLowerCase().includes(filterText)
+    );
 
     // Function for handling column renders on window screen size
     const updateColumnDefs = () => {
@@ -90,10 +99,12 @@ const PricesInfoTable = (props) => {
     // Display coin price data
     return (
         <>
-            <p><i>View data of the <b>top 100</b> cryptocurrencies by market cap</i></p>
+            <hr style={{ marginTop: '3rem' }} />
+            <p style={{ marginTop: '2rem' }}><i>Data of the <b>top 100</b> cryptocurrencies by market cap</i></p>
+            <input className='form-control' onChange={e => updateFilterText(e.target.value.toLowerCase()) }placeholder="Quick coin filter" style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%' }} />
             <div className="ag-theme-quartz" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', height: 400, width: '100%' }}>
                 <AgGridReact
-                    rowData={coinTableRowData}
+                    rowData={filteredRowData}
                     columnDefs={columnDefs} />
             </div>
         </>

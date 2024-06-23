@@ -30,32 +30,36 @@ exports.coinPrices = (req, res) => {
         res.status(400).json({
             information: err
         });
+    });   
+}
+
+// Fetch top coins by gains and losses for the day
+exports.topBottomCoins = (req, res) => {
+    const TOP_BOTTOM_COINS_ENDPOINT = "/coins/top_gainers_losers?vs_currency=usd";
+    
+    // Setting options for authenticated API call
+    let options = {
+        method: "GET",
+        mode: 'cors', // *cors, same-origin
+        headers : {
+            'content-type' : 'application/json',
+            'access-control-allow-origin': '*',
+            'x-cg-pro-api-key' : process.env.COINGECKO_CHART_DATA_API_KEY
+        }
+    }
+
+    // Make an API call to fetch top and bottom coins
+    axios.get(PRO_COINGECKO_URL + TOP_BOTTOM_COINS_ENDPOINT, options)
+    .then(response => {
+        res.status(200).json({
+            topBottomCoins: response.data
+        });
+    })
+    .catch(err => {
+        res.status(400).json({
+            information: err
+        });
     });
-
-    // // Display these for each of the cards
-    // const top15CoinCaps = { 'Avalanche-2': 'AVAL', Bitcoin: 'BTC',  Chainlink: 'LINK', Ethereum: 'ETH' ,  litecoin: 'LTC' ,  binancecoin: 'BNB' ,  Ripple: 'XRP' , 
-    //   algorand: 'ALGO' ,  Cardano: 'ADA' ,  Polkadot: 'DOT', Solana: 'SOL' , Stellar: 'XLM', Dogecoin: 'DOGE' , 
-    //  'matic-network': 'MATIC', Uniswap: 'UNI' }; 
-
-    // // Fetch data related to each of the coins and push to coin price tracker array
-    // for (let i = 0; i < Object.keys(top15CoinCaps).length; i++) {
-
-    //     let response = await axios.get(PRO_COINGECKO_URL + API_ENDPOINT +  "?ids=" + Object.keys(top15CoinCaps)[i] + "&vs_currencies=usd&include_24hr_change=true", options);
-
-    //     if (response.status !== 200) {
-    //         // Cannot fetch coin data
-    //         res.status(400).json({
-    //             message: "Cannot fetch data"
-    //         });
-    //     }
-    //     else {
-    //         coinPrices.push(response.data);
-    //     }
-    // }
-    // // If looped through all the coin data requests, proceed to deliver data back to client
-    // res.status(200).json({
-    //     coinData: coinPrices
-    // });    
 }
 
 exports.coinPricesByDay = async (req, res) => {
