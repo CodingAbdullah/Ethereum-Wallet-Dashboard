@@ -4,11 +4,9 @@ const moment = require("moment");
 const dayjs = require("dayjs");
 
 const PRO_COINGECKO_URL = "https://pro-api.coingecko.com/api/v3"; // Pro CoinGecko API Endpoint
-// https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin%2Cavax-has-no-chill
 
-exports.coinPrices = async (req, res) => {
-    const COIN_LIST_ENDPOINT = "/coins/list?include_platform=false&status=active";
-    let COIN_PRICES_ENDPOINT = '/coins/markets?vs_currency=usd&ids=';
+exports.coinPrices = (req, res) => {
+    const COIN_PRICES_ENDPOINT = "/coins/markets?vs_currency=usd&order=market_cap_desc";
 
     // Setting headers to pass in COINGECKO API KEY (x-cg-pro-api-key)
     let options = {
@@ -22,38 +20,11 @@ exports.coinPrices = async (req, res) => {
     }
 
     // Make an API call to fetch all the coins supported by CoinGecko
-    axios.get(PRO_COINGECKO_URL + COIN_LIST_ENDPOINT, options)
+    axios.get(PRO_COINGECKO_URL + COIN_PRICES_ENDPOINT, options)
     .then(response => {
-        let coinIDs = [];
-
-        // Capture all IDs of all the coins supported
-        for (var i = 0; i < response.data.length; i++) {
-            coinIDs.push(response.data[i].id);
-        }
-
-        // Append all IDs to COIN_PRICES_ENDPOINT
-        // Include special characters for ID spacing
-        for (var j = 0; j < coinIDs.length; j++) {
-            COIN_PRICES_ENDPOINT += coinIDs[j];
-            if (j !== coinIDs.length - 1) {
-                COIN_PRICES_ENDPOINT += '%2C';
-            }
-        }
-
-        // Make second API call to fetch coin prices by coin IDs
-        // Finally, send response containing all coin price data
-        axios.get(PRO_COINGECKO_URL + COIN_PRICES_ENDPOINT, options)
-        .then(response => {
-            res.status(200).json({
-                coinData: response.data
-            });
-        
-        })
-        .catch(err => {
-            res.status(400).json({
-                information: err
-            });
-        })
+        res.status(200).json({
+            coinData: response.data
+        });
     })
     .catch(err => {
         res.status(400).json({
