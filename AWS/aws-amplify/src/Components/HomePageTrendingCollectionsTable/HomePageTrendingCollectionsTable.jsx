@@ -34,7 +34,13 @@ const HomePageTrendingCollectionsTable = (props) => {
         if (window.outerWidth < 550) {
             setColumnDefs([
                 { field: "name", headerName: 'Name', flex: 1 },
-                { field: "percentChange", headerName: "Price Change", flex: 1 }
+                { field: "percentChange", headerName: "Price Change", flex: 1,
+                    cellRenderer: (params) => {
+                        return (
+                            <p style={{ color: String(params.value).charAt(0) === '+' ? 'green' : 'red' }}><b>{params.value}</b></p>
+                        )
+                    }
+                 }
             ]);
         } 
         else if (window.outerWidth < 1000) {
@@ -47,7 +53,13 @@ const HomePageTrendingCollectionsTable = (props) => {
                         )
                     }
                  },
-                { field: "percentChange", headerName: "Price Change", flex: 1 }
+                { field: "percentChange", headerName: "Price Change", flex: 1,
+                    cellRenderer: (params) => {
+                        return (
+                            <p style={{ color: String(params.value).charAt(0) === '+' ? 'green' : 'red' }}><b>{params.value}</b></p>
+                        )
+                    }
+                 }
             ]);
         }
         else if (window.outerWidth < 1100) {
@@ -60,7 +72,13 @@ const HomePageTrendingCollectionsTable = (props) => {
                         )
                     }
                  },
-                { field: "percentChange", headerName: "Price Change", flex: 1 },
+                { field: "percentChange", headerName: "Price Change", flex: 1,
+                    cellRenderer: (params) => {
+                        return (
+                            <p style={{ color: String(params.value).charAt(0) === '+' ? 'green' : 'red' }}><b>{params.value}</b></p>
+                        )
+                    }
+                 },
                 { field: "floorPrice", headerName: "Floor Price", flex: 1 }
             ]);
         }
@@ -75,7 +93,13 @@ const HomePageTrendingCollectionsTable = (props) => {
                     }
                  },
                 { field: "floorPrice", headerName: "Floor Price", flex: 1 },
-                { field: "percentChange", headerName: "Price Change", flex: 1 },
+                { field: "percentChange", headerName: "Price Change", flex: 1,
+                    cellRenderer: (params) => {
+                        return (
+                            <p style={{ color: String(params.value).charAt(0) === '+' ? 'green' : 'red' }}><b>{params.value}</b></p>
+                        )
+                    }
+                 },
                 { field: "volume", headerName: "Volume", flex: 1 } 
             ]);
         }
