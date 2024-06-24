@@ -12,7 +12,13 @@ const TopCoinsInfoTable = (props) => {
     // Column Definitions: Defines the columns to be displayed.
     const [columnDefs, setColumnDefs] = useState([
         { field: "name", headerName: 'Name', flex: 1 },
-        { field: "symbol", headerName: "Symbol", flex: 1 },
+        { field: "symbol", headerName: "Symbol", flex: 1, 
+            cellRenderer: (params) => {
+                return (
+                    <p><img src={ params.value.split(" - ")[1] } alt="Thumbnail" style={{ width: '20px', height: '20px' }} />{" "}{ params.value.split(" - ")[0] }</p>
+                )
+            }
+        },
         { field: "currentPrice", headerName: "Price", flex: 1 },
         { field: "percentageChange24Hours", headerName: "24 Hr % Change", flex: 1 },
     ]);
@@ -21,7 +27,7 @@ const TopCoinsInfoTable = (props) => {
     for (var i = 0; i < 5; i++) {
         item = {
             name: topCoins[i].name,
-            symbol: String(topCoins[i].symbol).toUpperCase(),
+            symbol: String(topCoins[i].symbol).toUpperCase() + " - " + topCoins[i].image,
             currentPrice: "$" + topCoins[i].usd + " USD",
             percentageChange24Hours: topCoins[i].usd_24h_change >= 0 ? "+" + topCoins[i].usd_24h_change.toFixed(2) + "%" : topCoins[i].usd_24h_change.toFixed(2) + "%"
         }
@@ -34,7 +40,7 @@ const TopCoinsInfoTable = (props) => {
     // Display coin price data
     return (
         <>
-            <p><i><b>Top winning</b> coins</i></p>
+            <p><i><b>Top 5 Winning</b> Cryptocurrencies</i></p>
             <div className="ag-theme-quartz" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', height: 260, width: '100%' }}>
                 <AgGridReact
                     rowData={coinTableRowData}

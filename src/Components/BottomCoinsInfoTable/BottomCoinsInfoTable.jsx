@@ -12,7 +12,13 @@ const BottomCoinsInfoTable = (props) => {
     // Column Definitions: Defines the columns to be displayed.
     const [columnDefs, setColumnDefs] = useState([
         { field: "name", headerName: 'Name', flex: 1 },
-        { field: "symbol", headerName: "Symbol", flex: 1 },
+        { field: "symbol", headerName: "Symbol", flex: 1,
+            cellRenderer: (params) => {
+                return (
+                    <p><img src={ params.value.split(" - ")[1] } alt="Thumbnail" style={{ width: '20px', height: '20px' }} />{" "}{ params.value.split(" - ")[0] }</p>
+                )
+            }
+        },
         { field: "currentPrice", headerName: "Price", flex: 1 },
         { field: "percentageChange24Hours", headerName: "24 Hr % Change", flex: 1 },
     ]);
@@ -21,7 +27,7 @@ const BottomCoinsInfoTable = (props) => {
     for (var i = 0; i < 5; i++) {
         item = {
             name: bottomCoins[i].name,
-            symbol: String(bottomCoins[i].symbol).toUpperCase(),
+            symbol: String(bottomCoins[i].symbol).toUpperCase() + " - " + bottomCoins[i].image,
             currentPrice: "$" + bottomCoins[i].usd + " USD",
             percentageChange24Hours: bottomCoins[i].usd_24h_change >= 0 ? "+" + bottomCoins[i].usd_24h_change.toFixed(2) + "%" : bottomCoins[i].usd_24h_change.toFixed(2) + "%"
         }
@@ -35,7 +41,7 @@ const BottomCoinsInfoTable = (props) => {
     return (
         <>
             <hr style={{ marginTop: '3rem' }} />
-            <p style={{ marginTop: '2rem' }}><i><b>Top losing</b> coins</i></p>
+            <p style={{ marginTop: '2rem' }}><i><b>Top 5 Losing</b> Cryptocurrencies</i></p>
             <div className="ag-theme-quartz" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', height: 260, width: '100%' }}>
                 <AgGridReact
                     rowData={coinTableRowData}
