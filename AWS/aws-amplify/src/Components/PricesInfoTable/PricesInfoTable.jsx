@@ -11,7 +11,13 @@ const PricesInfoTable = (props) => {
     // Column Definitions: Defines the columns to be displayed.
     const [columnDefs, setColumnDefs] = useState([
         { field: "name", headerName: 'Name', flex: 0.5 },
-        { field: "symbol", headerName: "Symbol", flex: 0.25 },
+        { field: "symbol", headerName: "Symbol", flex: 0.25,
+            cellRenderer: (params) => {
+                return (
+                    <p><img src={ params.value.split(" - ")[1] } alt="Thumbnail" style={{ width: '20px', height: '20px' }} />{" "}{ params.value.split(" - ")[0] }</p>
+                )
+            }
+        },
         { field: "currentPrice", headerName: "Price", flex: 1 },
         { field: "highPrice", headerName: "High Last 24 Hrs", flex: 1 },
         { field: "lowPrice", headerName: "Low Last 24 Hrs", flex: 1 },
@@ -26,7 +32,7 @@ const PricesInfoTable = (props) => {
     for (var i = 0; i < coinData.length; i++) {
         let item = { 
             name: coinData[i].name,
-            symbol: String(coinData[i].symbol).toUpperCase(),
+            symbol: String(coinData[i].symbol).toUpperCase() + " - " + coinData[i].image,
             currentPrice: "$" + String(Number(coinData[i].current_price)) + " USD",
             highPrice: "$" + String(Number(coinData[i].high_24h)) + " USD",
             lowPrice: "$" + String(Number(coinData[i].low_24h)) + " USD",
@@ -67,7 +73,13 @@ const PricesInfoTable = (props) => {
         else if (window.outerWidth < 1200){
             setColumnDefs([
                 { field: "name", headerName: 'Name', flex: 0.75 },
-                { field: "symbol", headerName: 'Symbol', flex: 0.5 },
+                { field: "symbol", headerName: 'Symbol', flex: 0.5,
+                    cellRenderer: (params) => {
+                        return (
+                            <p><img src={ params.value.split(" - ")[1] } alt="Thumbnail" style={{ width: '20px', height: '20px' }} />{" "}{ params.value.split(" - ")[0] }</p>
+                        )
+                    }
+                 },
                 { field: "currentPrice", headerName: "Price", flex: 0.65 },
                 { field: "percentageChange24Hours", headerName: "24 Hr % Change", flex: 0.65 },
                 { field: "marketCap", headerName: "Market Cap", flex: 0.85 },
@@ -77,7 +89,13 @@ const PricesInfoTable = (props) => {
         else {
             setColumnDefs([
                 { field: "name", headerName: 'Name', flex: 0.75 },
-                { field: "symbol", headerName: 'Symbol', flex: 0.5 },
+                { field: "symbol", headerName: 'Symbol', flex: 0.5,
+                    cellRenderer: (params) => {
+                        return (
+                            <p><img src={ params.value.split(" - ")[1] } alt="Thumbnail" style={{ width: '20px', height: '20px' }} />{" "}{ params.value.split(" - ")[0] }</p>
+                        )
+                    }
+                 },
                 { field: "currentPrice", headerName: "Price", flex: 0.65 },
                 { field: "highPrice", headerName: "High Last 24 Hrs", flex: 0.65 },
                 { field: "lowPrice", headerName: "Low Last 24 Hrs", flex: 0.65 },
@@ -100,7 +118,7 @@ const PricesInfoTable = (props) => {
     return (
         <>
             <hr style={{ marginTop: '3rem' }} />
-            <p style={{ marginTop: '2rem' }}><i>Data of the <b>top 100</b> cryptocurrencies by market cap</i></p>
+            <p style={{ marginTop: '2rem' }}><i>Data of the <b>Top 100</b> Cryptocurrencies by Market Cap</i></p>
             <input className='form-control' onChange={e => updateFilterText(e.target.value.toLowerCase()) }placeholder="Quick coin filter" style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%' }} />
             <div className="ag-theme-quartz" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', height: 400, width: '100%' }}>
                 <AgGridReact
