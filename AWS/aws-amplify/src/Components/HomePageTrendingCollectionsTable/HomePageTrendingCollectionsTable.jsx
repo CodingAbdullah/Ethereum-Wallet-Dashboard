@@ -13,12 +13,13 @@ const HomePageTrendingCollectionsTable = (props) => {
     // Looping through collections structure and formatting data for display
     for (var i = 0; i < 5; i++) {
         item = {
-            symbol: collections[i].symbol,
+            symbol: collections[i].symbol + " - " + collections[i].thumb,
             name: collections[i].name,
             floorPrice: collections[i].data.floor_price,
             percentChange: collections[i].data.floor_price_in_usd_24h_percentage_change >= 0 ? "+" + numeral(collections[i].data.floor_price_in_usd_24h_percentage_change).format('0.00') + '%' : numeral(collections[i].data.floor_price_in_usd_24h_percentage_change).format('0.00') + '%',
             volume: collections[i].data.h24_volume
         }
+        
         coinTableRowData.push(item);
         item = {};
     }
@@ -39,14 +40,26 @@ const HomePageTrendingCollectionsTable = (props) => {
         else if (window.outerWidth < 1000) {
             setColumnDefs([
                 { field: "name", headerName: 'Name', flex: 1 },
-                { field: "symbol", headerName: "Symbol", flex: 1 },
+                { field: "symbol", headerName: "Symbol", flex: 1,
+                    cellRenderer: (params) => {
+                        return (
+                            <p><img src={ params.value.split(" - ")[1] } alt="Thumbnail" style={{ width: '20px', height: '20px' }} />{" "}{ params.value.split(" - ")[0] }</p>
+                        )
+                    }
+                 },
                 { field: "percentChange", headerName: "Price Change", flex: 1 }
             ]);
         }
         else if (window.outerWidth < 1100) {
             setColumnDefs([
                 { field: "name", headerName: 'Name', flex: 1 },
-                { field: "symbol", headerName: "Symbol", flex: 1 },
+                { field: "symbol", headerName: "Symbol", flex: 1,
+                    cellRenderer: (params) => {
+                        return (
+                            <p><img src={ params.value.split(" - ")[1] } alt="Thumbnail" style={{ width: '20px', height: '20px' }} />{" "}{ params.value.split(" - ")[0] }</p>
+                        )
+                    }
+                 },
                 { field: "percentChange", headerName: "Price Change", flex: 1 },
                 { field: "floorPrice", headerName: "Floor Price", flex: 1 }
             ]);
@@ -54,7 +67,13 @@ const HomePageTrendingCollectionsTable = (props) => {
         else {
             setColumnDefs([
                 { field: "name", headerName: 'Name', flex: 1 },
-                { field: "symbol", headerName: "Symbol", flex: 1 },
+                { field: "symbol", headerName: "Symbol", flex: 1,
+                    cellRenderer: (params) => {
+                        return (
+                            <p><img src={ params.value.split(" - ")[1] } alt="Thumbnail" style={{ width: '20px', height: '20px' }} />{" "}{ params.value.split(" - ")[0] }</p>
+                        )
+                    }
+                 },
                 { field: "floorPrice", headerName: "Floor Price", flex: 1 },
                 { field: "percentChange", headerName: "Price Change", flex: 1 },
                 { field: "volume", headerName: "Volume", flex: 1 } 
@@ -74,7 +93,7 @@ const HomePageTrendingCollectionsTable = (props) => {
         <div className="ag-theme-quartz" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', height: 260, width: '100%' }}>
           <AgGridReact
             columnDefs={columnDefs}
-            rowData= {rowData }
+            rowData= {rowData}
           />
         </div>
       )
