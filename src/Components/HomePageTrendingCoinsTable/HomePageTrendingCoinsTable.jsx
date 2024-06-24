@@ -22,11 +22,12 @@ const HomePageTrendingCoinsTable = (props) => {
         item = {
             rank: coins[i].item.market_cap_rank,
             name: coins[i].item.name,
-            symbol: coins[i].item.symbol,
+            symbol: coins[i].item.symbol + " - " + coins[i].item.small,
             marketCap: coins[i].item.data.market_cap,
             price: coins[i].item.data.price < 0.01 ? "$" + coins[i].item.data.price : formatCurrency(coins[i].item.data.price),
             priceChange: coins[i].item.data.price_change_percentage_24h.usd >= 0 ? "+" + numeral(coins[i].item.data.price_change_percentage_24h.usd).format('0.00') + '%' : numeral(coins[i].item.data.price_change_percentage_24h.usd).format('0.00') + '%'
         }
+
         coinTableRowData.push(item);
         item = {};
     }
@@ -47,14 +48,26 @@ const HomePageTrendingCoinsTable = (props) => {
         else if (window.outerWidth < 1000) {
             setColumnDefs([
                 { field: "name", headerName: 'Name', flex: 1 },
-                { field: "symbol", headerName: "Symbol", flex: 1 },
+                { field: "symbol", headerName: "Symbol", flex: 1,
+                    cellRenderer: (params) => {
+                        return (
+                            <p><img src={ params.value.split(" - ")[1] } alt="Thumbnail" style={{ width: '20px', height: '20px' }} />{" "}{ params.value.split(" - ")[0] }</p>
+                        )
+                    }
+                },
                 { field: "price", headerName: "Price", flex: 1 }    
             ]);
         }
         else if (window.outerWidth < 1100) {
             setColumnDefs([
                 { field: "name", headerName: 'Name', flex: 1 },
-                { field: "symbol", headerName: "Symbol", flex: 1 },
+                { field: "symbol", headerName: "Symbol", flex: 1,
+                    cellRenderer: (params) => {
+                        return (
+                            <p><img src={ params.value.split(" - ")[1] } alt="Thumbnail" style={{ width: '20px', height: '20px' }} />{" "}{ params.value.split(" - ")[0] }</p>
+                        )
+                    }
+                 },
                 { field: "price", headerName: "Price", flex: 1 } ,   
                 { field: "priceChange", headerName: "Price Change", flex: 1 }
             ]);
@@ -62,7 +75,13 @@ const HomePageTrendingCoinsTable = (props) => {
         else {
             setColumnDefs([
                 { field: "name", headerName: 'Name', flex: 1 },
-                { field: "symbol", headerName: "Symbol", flex: 1 },
+                { field: "symbol", headerName: "Symbol", flex: 1,
+                    cellRenderer: (params) => {
+                        return (
+                            <p><img src={ params.value.split(" - ")[1] } alt="Thumbnail" style={{ width: '20px', height: '20px' }} />{" "}{ params.value.split(" - ")[0] }</p>
+                        )
+                    }
+                 },
                 { field: "price", headerName: "Price", flex: 1 } ,   
                 { field: "priceChange", headerName: "Price Change", flex: 1 },
                 { field: "rank", headerName: "Market Cap Rank", flex: 1 },    
