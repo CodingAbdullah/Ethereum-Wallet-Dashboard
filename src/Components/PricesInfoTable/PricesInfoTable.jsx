@@ -21,7 +21,13 @@ const PricesInfoTable = (props) => {
         { field: "currentPrice", headerName: "Price", flex: 1 },
         { field: "highPrice", headerName: "High Last 24 Hrs", flex: 1 },
         { field: "lowPrice", headerName: "Low Last 24 Hrs", flex: 1 },
-        { field: "percentageChange24Hours", headerName: "24 Hr % Change", flex: 1 },
+        { field: "percentageChange24Hours", headerName: "24 Hr % Change", flex: 1,
+            cellRenderer: (params) => {
+                return (
+                    <p style={{ color: String(params.value).charAt(0) === '+' ? 'green' : 'red' }}><b>{params.value}</b></p>
+                )
+            }
+         },
         { field: "marketCap", headerName: "Market Cap", flex: 1 },
         { field: "totalVolume", headerName: "Total Volume", flex: 1 }
     ]);
@@ -66,7 +72,13 @@ const PricesInfoTable = (props) => {
             setColumnDefs([
                 { field: "name", headerName: 'Name', flex: 0.5 },
                 { field: "currentPrice", headerName: "Price", flex: 0.75 },
-                { field: "percentageChange24Hours", headerName: "24 Hr % Change", flex: 1 },
+                { field: "percentageChange24Hours", headerName: "24 Hr % Change", flex: 1,
+                    cellRenderer: (params) => {
+                        return (
+                            <p style={{ color: String(params.value).charAt(0) === '+' ? 'green' : 'red' }}><b>{params.value}</b></p>
+                        )
+                    }
+                 },
                 { field: "marketCap", headerName: "Market Cap", flex: 1 }
             ]);
         } 
@@ -81,7 +93,13 @@ const PricesInfoTable = (props) => {
                     }
                  },
                 { field: "currentPrice", headerName: "Price", flex: 0.65 },
-                { field: "percentageChange24Hours", headerName: "24 Hr % Change", flex: 0.65 },
+                { field: "percentageChange24Hours", headerName: "24 Hr % Change", flex: 0.65,
+                    cellRenderer: (params) => {
+                        return (
+                            <p style={{ color: String(params.value).charAt(0) === '+' ? 'green' : 'red' }}><b>{params.value}</b></p>
+                        )
+                    }
+                 },
                 { field: "marketCap", headerName: "Market Cap", flex: 0.85 },
                 { field: "totalVolume", headerName: "Total Volume", flex: 0.85 }
             ]);
@@ -99,7 +117,13 @@ const PricesInfoTable = (props) => {
                 { field: "currentPrice", headerName: "Price", flex: 0.65 },
                 { field: "highPrice", headerName: "High Last 24 Hrs", flex: 0.65 },
                 { field: "lowPrice", headerName: "Low Last 24 Hrs", flex: 0.65 },
-                { field: "percentageChange24Hours", headerName: "24 Hr % Change", flex: 0.65 },
+                { field: "percentageChange24Hours", headerName: "24 Hr % Change", flex: 0.65,
+                    cellRenderer: (params) => {
+                        return (
+                            <p style={{ color: String(params.value).charAt(0) === '+' ? 'green' : 'red' }}><b>{params.value}</b></p>
+                        )
+                    }
+                 },
                 { field: "marketCap", headerName: "Market Cap", flex: 0.85 },
                 { field: "totalVolume", headerName: "Total Volume", flex: 0.85 }
             ]);

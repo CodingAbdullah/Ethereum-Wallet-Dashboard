@@ -20,7 +20,13 @@ const TopCoinsInfoTable = (props) => {
             }
         },
         { field: "currentPrice", headerName: "Price", flex: 1 },
-        { field: "percentageChange24Hours", headerName: "24 Hr % Change", flex: 1 },
+        { field: "percentageChange24Hours", headerName: "24 Hr % Change", flex: 1,
+            cellRenderer: (params) => {
+                return (
+                    <p style={{ color: 'green' }}><b>{params.value}</b></p>
+                )
+            }
+         },
     ]);
 
     // Fetch the top five gaining coins

@@ -69,7 +69,13 @@ const HomePageTrendingCoinsTable = (props) => {
                     }
                  },
                 { field: "price", headerName: "Price", flex: 1 } ,   
-                { field: "priceChange", headerName: "Price Change", flex: 1 }
+                { field: "priceChange", headerName: "Price Change", flex: 1,
+                    cellRenderer: (params) => {
+                        return (
+                            <p style={{ color: String(params.value).charAt(0) === '+' ? 'green' : 'red' }}><b>{params.value}</b></p>
+                        )
+                    }
+                 }
             ]);
         }
         else {
@@ -83,7 +89,13 @@ const HomePageTrendingCoinsTable = (props) => {
                     }
                  },
                 { field: "price", headerName: "Price", flex: 1 } ,   
-                { field: "priceChange", headerName: "Price Change", flex: 1 },
+                { field: "priceChange", headerName: "Price Change", flex: 1,
+                    cellRenderer: (params) => {
+                        return (
+                            <p style={{ color: String(params.value).charAt(0) === '+' ? 'green' : 'red' }}><b>{params.value}</b></p>
+                        )
+                    }
+                 },
                 { field: "rank", headerName: "Market Cap Rank", flex: 1 },    
                 { field: "marketCap", headerName: "Market Cap", flex: 1 }
             ]);
