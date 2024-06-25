@@ -1,6 +1,5 @@
 require("dotenv").config({ path: '../.env' });
 const axios = require("axios");
-const moment = require("moment");
 const dayjs = require("dayjs");
 
 const PRO_COINGECKO_URL = "https://pro-api.coingecko.com/api/v3"; // Pro CoinGecko API Endpoint
@@ -62,8 +61,25 @@ exports.topBottomCoins = (req, res) => {
     });
 }
 
-exports.coinPricesByDay = async (req, res) => {
-    const { days, coin } = JSON.parse(req.body.body);
+// Coin price duration by interval selection
+exports.coinPriceDuration = async (req, res) => {
+    const { coin, interval } = JSON.parse(req.body.body);
+
+    // Request coin prices
+    let COIN_PRICE_ENDPOINT = '/coins/' + coin;
+
+    if (interval === '24') {
+        COIN_PRICE_ENDPOINT += '/market_chart?vs_currency=usd&days=2';
+    }
+    else if (interval === '7') {
+        COIN_PRICE_ENDPOINT += '/market_chart?vs_currency=usd&days=7&interval=daily';
+    }
+    else if (interval === '14') {
+        COIN_PRICE_ENDPOINT += '/market_chart?vs_currency=usd&days=14&interval=daily';
+    }
+    else {
+        COIN_PRICE_ENDPOINT += '/market_chart?vs_currency=usd&days=30&interval=daily';
+    }
 
     // Setting options for authenticated API call
     let options = {
@@ -72,34 +88,44 @@ exports.coinPricesByDay = async (req, res) => {
         headers : {
             'content-type' : 'application/json',
             'access-control-allow-origin': '*',
-            'x-cg-pro-api-key' : process.env.COINGECKO_CHART_DATA_API_KEY
+            'x-cg-pro-api-key' : process.env.COINGECKO_GENERIC_API_KEY // API-KEY for authenticated call
         }
     }
 
-    let QUERY_STRING_PRICES = `?vs_currency=usd&days=${days}`; // Default selection for now.
-    let PRICE_ENDPOINT = "/coins/" + coin + "/market_chart" + QUERY_STRING_PRICES + "&interval=daily";
-    let coinPricesByInterval = {};
+    // Safely fetching data using axios, escaping with try-catch block
+    try {
+        let response = await axios.get(PRO_COINGECKO_URL + COIN_PRICE_ENDPOINT, options); // Fetch ERC20 token prices by interval
 
-    let response = await axios.get(PRO_COINGECKO_URL + PRICE_ENDPOINT, options); // Fetch coin prices by interval
-
-    if (response.status !== 200) {
+        if (response.status !== 200) {
+            res.status(400).json({
+                message: "Could not fetch coin price duration data"
+            });
+        }
+        else {
+            // Conditionally send the response and format it conforming to the interval
+            // Incorporate the dayjs library for easy date formatting
+            let prices = response.data.prices;
+            if (interval === '24'){
+                res.status(200).json({
+                    coinPrices: prices.map(price => ({ 
+                        time: dayjs(price[0]).format('YYYY-MM-DD HH:mm:ss').split(" ")[1], 
+                        price: Number(Number(price[1])) 
+                    })).splice(24) 
+                });
+            }
+            else {
+                res.status(200).json({
+                    coinPrices: prices.map(price => ({ 
+                        time: dayjs(price[0]).format('YYYY-MM-DD'), 
+                        price: Number(Number(price[1])) 
+                    }))
+                });
+            }
+        }
+    }
+    catch (error) {
         res.status(400).json({
-            message: "Could not fetch data"
-        });
-    }
-    else {
-        let dayArray = [];
-        for (var i = 1; i < days + 1; i++){
-            // Fetch the x number to determine interval. If 24, it is set to hourly and if 14 or 30, it is daily
-            dayArray.push(moment().subtract(i, 'days').calendar());
-        }
-
-        // Set the coin prices by interval object
-        coinPricesByInterval.time = dayArray.reverse();
-        coinPricesByInterval.coinData = response.data;
-
-        res.status(200).json({
-            coinPricesByDay: coinPricesByInterval
+            message: "Could not fetch coin price duration data"
         });
     }
 }
@@ -124,19 +150,53 @@ exports.currentCoinPrice = async (req, res) => {
 
     let coinInfo = [];
 
-    let response = await axios.get(PRO_COINGECKO_URL + CURRENCY_ENDPOINT + QUERY_STRING, options); // Fetch current coin price
-
-    // If response is not correct, throw Error
-    // If not, return coin data
-    if (response.status !== 200) {
-        res.status(400).json({
-            message: "Could not fetch coin price data"
-        });
-    }
-    else {
+    // Fetch current coin price information using the coin ID provided by user
+    try {
+        let response = await axios.get(PRO_COINGECKO_URL + CURRENCY_ENDPOINT + QUERY_STRING, options); // Fetch current coin price
+        
         coinInfo.push(response.data);
         res.status(200).json({
             coinInfoData: coinInfo
+        });
+    }
+    catch (err) {
+        res.status(400).json({
+            message: "ERROR: " + err
+        });
+    }
+}
+
+exports.coinInformation = async (req, res) => {
+    const { coin } = JSON.parse(req.body.body);
+
+    // QUERY STRING along with CURRENCY ENDPOINT
+    const CURRENCY_ENDPOINT = '/coins/' + coin;
+    
+    // Setting options for authenticated API call
+    let options = {
+        method: "GET",
+        mode: 'cors', // *cors, same-origin
+        headers : {
+            'content-type' : 'application/json',
+            'access-control-allow-origin': '*',
+            'x-cg-pro-api-key' : process.env.COINGECKO_GENERIC_API_KEY // API-KEY for authenticated call
+        }
+    }
+
+    let coinInfo = [];
+
+    // Fetch coin information using the coin ID provided by the user
+    try {
+        let response = await axios.get(PRO_COINGECKO_URL + CURRENCY_ENDPOINT, options); // Fetch coin information   
+        
+        coinInfo.push(response.data);
+        res.status(200).json({
+            coinInfoData: coinInfo
+        });
+    }
+    catch(err) {
+        res.status(400).json({
+            message: "ERROR: " + err
         });
     }
 }
@@ -291,40 +351,6 @@ exports.ERC20CoinPriceDuration = async (req, res) => {
     }
 }
 
-exports.homePageBitcoinPrice = async (req, res) => {
-    const QUERY_STRING_BITCOIN = "?ids=bitcoin&vs_currencies=usd&include_24hr_change=true";
-    const API_ENDPOINT = "/simple/price";
-    let btcPriceData = [];
-
-    // Setting options for authenticated API call
-    let options = {
-        method: "GET",
-        mode: 'cors', // *cors, same-origin
-        headers : {
-            'content-type' : 'application/json',
-            'access-control-allow-origin': '*',
-            'x-cg-pro-api-key' : process.env.COINGECKO_HOME_PAGE_API_KEY // API-KEY for authenticated call
-        }
-    }
-
-    let response = await axios.get(PRO_COINGECKO_URL + API_ENDPOINT + QUERY_STRING_BITCOIN, options); // Fetch Ethereum data
-
-    // If error is found, return it as a response
-    if (response.status !== 200){
-        res.status(400).json({
-            message: "Could not fetch Bitcoin data for home page"
-        });
-    }
-    else {
-
-        // Return back as response, bitcoin price data
-        btcPriceData.push(response.data);
-        res.status(200).json({
-            btcPriceData
-        });
-    }
-}
-
 exports.homePageGlobalMarketData = async (req, res) => {
     const GLOBALMARKETDATA_ENDPOINT = '/global';
     let globalMarketData = [];
@@ -340,16 +366,9 @@ exports.homePageGlobalMarketData = async (req, res) => {
         }
     }
 
-    let response = await axios.get(PRO_COINGECKO_URL + GLOBALMARKETDATA_ENDPOINT, options); // Fetch data related to the global market
-
-    // If error is found, return error response
-    if (response.status !== 200) {
-        res.status(400).json({
-            message: "Could not fetch global market data"
-        });
-    }
-    else {
-
+    try {
+        let response = await axios.get(PRO_COINGECKO_URL + GLOBALMARKETDATA_ENDPOINT, options); // Fetch data related to the global market
+        
         // Send back as response, global market data
         globalMarketData.push(response.data);
 
@@ -357,45 +376,9 @@ exports.homePageGlobalMarketData = async (req, res) => {
             globalMarketData
         });
     }
-}
-
-exports.homePageTrendingCoins = async (req, res) => {
-    const TRENDINGCOINS_ENDPOINT = '/search/trending'; // Trending coins in the market
-    let trendingCoinData = "";
-    
-    // Setting options for authenticated API call
-    let options = {
-        method: "GET",
-        mode: 'cors', // *cors, same-origin
-        headers : {
-            'content-type' : 'application/json',
-            'access-control-allow-origin': '*',
-            'x-cg-pro-api-key' : process.env.COINGECKO_HOME_PAGE_API_KEY_3 // API-KEY for authenticated call
-        }
-    }
-
-    let response = await axios.get(PRO_COINGECKO_URL + TRENDINGCOINS_ENDPOINT, options); // Fetch data related to trending coins
-
-    // Throw error if data could not be fetched
-    if (response.status !== 200) {
+    catch (err) {
         res.status(400).json({
-            message: "Could not fetch trending coins data"
-        });
-    }
-    else {
-        // Format display data and return back to client
-        let information = '';
-        for (var i = 0; i < response.data.coins.length - 2; i++){ 
-            information += response.data.coins[i].item.name;
-            information += ' - ';
-            information += response.data.coins[i].item.symbol;
-            trendingCoinData += information;
-            information = ' | ';
-        }
-
-        // Send back as response, trending coin data
-        res.status(200).json({
-            trendingCoinData: response.data
+            message: "Could not fetch global market data"
         });
     }
 }
@@ -417,17 +400,58 @@ exports.navbarEthPrice = async (req, res) => {
         }
     }
 
-    let response = await axios.get(PRO_COINGECKO_URL + API_ENDPOINT + QUERY_STRING_ETHEREUM, options); // Fetch Ethereum data
-
-    if (response.status !== 200){
+    try {
+        let response = await axios.get(PRO_COINGECKO_URL + API_ENDPOINT + QUERY_STRING_ETHEREUM, options); // Fetch Ethereum data
+        
+        ethPricedata.push(response.data);
+        res.status(200).json({
+            ethPricedata
+        });
+    }
+    catch (err) {
         res.status(400).json({
             message: "Could not fetch Ethereum Navbar data"
         });
     }
-    else {
-        ethPricedata.push(response.data);
+}
+
+exports.homePageTrendingCoins = async (req, res) => {
+    const TRENDINGCOINS_ENDPOINT = '/search/trending'; // Trending coins in the market
+    let trendingCoinData = "";
+    
+    // Setting options for authenticated API call
+    let options = {
+        method: "GET",
+        mode: 'cors', // *cors, same-origin
+        headers : {
+            'content-type' : 'application/json',
+            'access-control-allow-origin': '*',
+            'x-cg-pro-api-key' : process.env.COINGECKO_HOME_PAGE_API_KEY_3 // API-KEY for authenticated call
+        }
+    }
+
+    try {
+        let response = await axios.get(PRO_COINGECKO_URL + TRENDINGCOINS_ENDPOINT, options); // Fetch data related to trending coins
+            
+        // Format display data and return back to client
+        let information = '';
+        for (var i = 0; i < response.data.coins.length - 2; i++){ 
+            information += response.data.coins[i].item.name;
+            information += ' - ';
+            information += response.data.coins[i].item.symbol;
+            trendingCoinData += information;
+            information = ' | ';
+        }
+
+        // Send back as response, trending coin data
         res.status(200).json({
-            ethPricedata
+            trendingCoinData: response.data
+        });
+    }
+    catch (err) {
+        // Throw error if data could not be fetched
+        res.status(400).json({
+            message: "Could not fetch trending coins data"
         });
     }
 }
