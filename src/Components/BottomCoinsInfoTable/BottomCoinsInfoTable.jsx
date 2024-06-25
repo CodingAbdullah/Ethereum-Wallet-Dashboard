@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { selectCoin } from '../../redux/reducer/coinSelectionReducer';
 import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
@@ -9,9 +11,32 @@ const BottomCoinsInfoTable = (props) => {
     let coinTableRowData = [];
     let item = {};
 
+    const dispatch = useDispatch();
+
+    // Fetch the top five losing coins
+    for (var i = 0; i < 5; i++) {
+        item = {
+            id: bottomCoins[i].id,
+            name: bottomCoins[i].name,
+            symbol: String(bottomCoins[i].symbol).toUpperCase() + " - " + bottomCoins[i].image,
+            currentPrice: "$" + bottomCoins[i].usd,
+            percentageChange24Hours: bottomCoins[i].usd_24h_change >= 0 ? "+" + bottomCoins[i].usd_24h_change.toFixed(2) + "%" : bottomCoins[i].usd_24h_change.toFixed(2) + "%"
+        }
+
+        coinTableRowData.push(item);
+        item = {};
+    }
+
     // Column Definitions: Defines the columns to be displayed.
     const [columnDefs, setColumnDefs] = useState([
-        { field: "name", headerName: 'Name', flex: 1 },
+        { field: "name", headerName: 'Name', flex: 1,
+            cellRenderer: (params) => {
+                let filteredID = coinTableRowData.filter(coin => coin.name === params.value)[0].id;
+                return (
+                    <a style={{ color: 'black' }} href="/chart" onClick={ () => dispatch(selectCoin(filteredID)) }>{ params.value }</a>
+                )
+            }
+        },
         { field: "symbol", headerName: "Symbol", flex: 1,
             cellRenderer: (params) => {
                 return (
@@ -28,19 +53,6 @@ const BottomCoinsInfoTable = (props) => {
             }
          },
     ]);
-
-    // Fetch the top five losing coins
-    for (var i = 0; i < 5; i++) {
-        item = {
-            name: bottomCoins[i].name,
-            symbol: String(bottomCoins[i].symbol).toUpperCase() + " - " + bottomCoins[i].image,
-            currentPrice: "$" + bottomCoins[i].usd + " USD",
-            percentageChange24Hours: bottomCoins[i].usd_24h_change >= 0 ? "+" + bottomCoins[i].usd_24h_change.toFixed(2) + "%" : bottomCoins[i].usd_24h_change.toFixed(2) + "%"
-        }
-
-        coinTableRowData.push(item);
-        item = {};
-    }
 
     // Render Ag-Grid React component with row and column data
     // Display coin price data
