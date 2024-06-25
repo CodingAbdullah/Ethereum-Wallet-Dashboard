@@ -6,15 +6,11 @@ export const coinPricesByDayPro = async ({ queryKey }) => {
     
     let options = {
         method: "POST",
-        body: JSON.stringify({ days : queryKey[2], coin: queryKey[1] }),
+        body: JSON.stringify({ interval : queryKey[2], coin: queryKey[1] }),
         headers: {
             'content-type' : 'application/json'
         }
     }
-
-    // let QUERY_STRING_PRICES = `?vs_currency=usd&days=${queryKey[2]}`; // Default selection for now.
-    // let PRICE_ENDPOINT = "/coins/" + queryKey[1] + "/market_chart" + QUERY_STRING_PRICES + "&interval=daily";
-    // let coinPricesByInterval = {};
 
     let response = await axios.post(URL + API_ENDPOINT, options); // Fetch coin prices by interval
 
@@ -24,6 +20,6 @@ export const coinPricesByDayPro = async ({ queryKey }) => {
         throw new Error("Could not make coin prices by interval request");
     }
     else {
-        return response.data.coinPricesByDay;
+        return response.data.coinPrices;
     }
 }
