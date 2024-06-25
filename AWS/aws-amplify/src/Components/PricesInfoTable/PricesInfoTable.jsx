@@ -4,11 +4,14 @@ import { selectCoin } from '../../redux/reducer/coinSelectionReducer';
 import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
+import { useNavigate } from 'react-router';
 
 const PricesInfoTable = (props) => {
     const { coinData } = props;
     
     const dispatch = useDispatch(); // Dispatch hook for updating coin selection redux state
+    const navigate = useNavigate(); // Navigate hook for navigating to different routes
+    
     const [filterText, updateFilterText] = useState(''); // Filter text state
 
     let coinTableRowData = [];
@@ -19,12 +22,12 @@ const PricesInfoTable = (props) => {
             id: coinData[i].id,
             name: coinData[i].name,
             symbol: String(coinData[i].symbol).toUpperCase() + " - " + coinData[i].image,
-            currentPrice: "$" + String(Number(coinData[i].current_price)) + " USD",
-            highPrice: "$" + String(Number(coinData[i].high_24h)) + " USD",
-            lowPrice: "$" + String(Number(coinData[i].low_24h)) + " USD",
+            currentPrice: "$" + String(Number(coinData[i].current_price)),
+            highPrice: "$" + String(Number(coinData[i].high_24h)),
+            lowPrice: "$" + String(Number(coinData[i].low_24h)),
             percentageChange24Hours: coinData[i].price_change_percentage_24h >= 0 ? "+" + String(Number(coinData[i].price_change_percentage_24h).toFixed(2)) + "%" : String(Number(coinData[i].price_change_percentage_24h).toFixed(2)) + "%",
-            marketCap: "$" + String(Number(coinData[i].market_cap).toFixed(2)) + " USD",
-            totalVolume: "$" + String(Number(coinData[i].total_volume).toFixed(2)) + " USD"
+            marketCap: "$" + String(Number(coinData[i].market_cap).toFixed(2)),
+            totalVolume: "$" + String(Number(coinData[i].total_volume).toFixed(2))
         };
 
         coinTableRowData.push(item);
