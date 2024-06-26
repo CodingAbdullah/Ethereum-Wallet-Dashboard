@@ -6,10 +6,20 @@ import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied
 const OpenseaAccountInfoTable = (props) => {
     const { data } = props;
     
-    // Column Definitions: Defines the columns to be displayed.
+    // Column Definitions: Defines the columns to be displayed
+    // Conditionally checking data for image url to display as image
     const [columnDefs, setColumnDefs] = useState([
         { field: "openseaAccountInformation", headerName: 'Opensea Account Information', flex: 1 },
-        { field: "data", headerName: "Data", flex: 1 }
+        { field: "data", headerName: "Data", flex: 1,
+            cellRenderer: function (params) {
+                if (params.value.includes("https")) {
+                    return <img src={params.value} alt="Profile Image" style={{ marginTop: '0.15rem', marginBottom: '0.15rem', width: '50px', height: '50px' }} />
+                }
+                else {
+                    return <>{params.value}</>;
+                }
+            }
+        }
     ]); 
     
     // Set an array to incorporate response data
@@ -21,7 +31,7 @@ const OpenseaAccountInfoTable = (props) => {
     }
 
     if (data.profile_image_url !== '') {
-        rowData.push({ openseaAccountInformation: "Profile Image URL", data: data.profile_image_url });
+        rowData.push({ openseaAccountInformation: "Profile Image", data: data.profile_image_url });
     }  
 
     if (data.banner_image_url !== '') {

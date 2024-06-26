@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
+import Badge from '../Badge/Badge';
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 
@@ -19,7 +20,8 @@ const ERC721TransfersInfoTable = (props) => {
             tokenAddress: data[i].token_address,
             id: data[i].token_id,
             from: data[i].from_address,
-            to: data[i].to_address
+            to: data[i].to_address,
+            direction: data[i].to_address === address ? "IN" : "OUT"
         }
 
         coinTableRowData.push(item);
@@ -28,16 +30,16 @@ const ERC721TransfersInfoTable = (props) => {
 
     // Function for handling column renders on window screen size
     const updateColumnDefs = () => {
-        if (window.outerWidth < 850) {
+        if (window.outerWidth < 1050) {
             setColumnDefs([
-                { field: "id", headerName: 'ID', flex: 1 },
+                { field: "id", headerName: 'ID', flex: 0.40 },
                 { field: "from", headerName: "From", flex: 1 },
                 { field: "to", headerName: "To", flex: 1 }
             ]);
         } 
-        else if (window.outerWidth < 1100) {
+        else if (window.outerWidth < 1200) {
             setColumnDefs([
-                { field: "id", headerName: 'ID', flex: 1 },
+                { field: "id", headerName: 'ID', flex: 0.40 },
                 { field: 'tokenAddress', headerName: 'Token Address', flex: 1 },
                 { field: "from", headerName: "From", flex: 1 },
                 { field: "to", headerName: "To", flex: 1 }
@@ -45,11 +47,21 @@ const ERC721TransfersInfoTable = (props) => {
         } 
         else {
             setColumnDefs([
-                { field: "date", headerName: 'Date', flex: 1 },
+                { field: "date", headerName: 'Date', flex: 0.45 },
                 { field: 'tokenAddress', headerName: 'Token Address', flex: 1 },
-                { field: "id", headerName: 'ID', flex: 1 },
+                { field: "id", headerName: 'ID', flex: 0.35 },
                 { field: "from", headerName: "From", flex: 1 },
-                { field: "to", headerName: "To", flex: 1 }
+                { field: "to", headerName: "To", flex: 1 },
+                { field: 'direction', headerName: 'Direction', flex: 0.45,
+                    cellRenderer: function (params) {
+                        if (params.data.to === address) {
+                            return <Badge type="IN" />
+                        }
+                        else {
+                            return <Badge type="OUT" />
+                        }
+                    }
+                },
             ]);
         }
     };

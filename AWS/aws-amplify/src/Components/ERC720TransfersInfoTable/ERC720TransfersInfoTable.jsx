@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Badge from '../Badge/Badge';
 import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
@@ -18,6 +19,7 @@ const ERC720TransfersInfoTable = (props) => {
             date: data[i].block_timestamp.split("T")[0],
             from: data[i].from_address,
             to: data[i].to_address,
+            direction: data[i].to_address === address ? "IN" : "OUT",
             balance: address !== null ? data[i].value : (data[i].value*(1/1000000000000000000))
         }
 
@@ -27,7 +29,7 @@ const ERC720TransfersInfoTable = (props) => {
 
     // Function for handling column renders on window screen size
     const updateColumnDefs = () => {
-        if (window.outerWidth < 600) {
+        if (window.outerWidth < 900) {
             setColumnDefs([
                 { field: "from", headerName: 'From', flex: 1 },
                 { field: "to", headerName: "To", flex: 1 },
@@ -36,9 +38,19 @@ const ERC720TransfersInfoTable = (props) => {
         } 
         else {
             setColumnDefs([
-                { field: "date", headerName: 'Date', flex: 1 },
+                { field: "date", headerName: 'Date', flex: 0.55 },
                 { field: "from", headerName: 'From', flex: 1 },
                 { field: "to", headerName: "To", flex: 1 },
+                { field: 'direction', headerName: 'Direction', flex: 0.35,
+                    cellRenderer: function (params) {
+                        if (params.data.to === address) {
+                            return <Badge type="IN" />
+                        }
+                        else {
+                            return <Badge type="OUT" />
+                        }
+                    }
+                },
                 { field: "balance", headerName: "Balance", flex: 1 }            
             ]);
         }

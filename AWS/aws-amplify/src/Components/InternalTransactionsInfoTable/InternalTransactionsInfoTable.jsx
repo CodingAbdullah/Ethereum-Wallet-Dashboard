@@ -18,6 +18,7 @@ const InternalTransactionsInfoTable = (props) => {
             timeStamp: new Date(data[i].timeStamp*1000).toString().split("GMT")[0].trim() +"-EST",
             from: data[i].from,
             to: data[i].to,
+            direction: data[i].to === walletAddress ? "IN" : "OUT",
             value: data[i].value*(1/1000000000000000000).toPrecision(4) + " ETH"
         }
         coinTableRowData.push(item);
@@ -51,9 +52,18 @@ const InternalTransactionsInfoTable = (props) => {
         else {
             setColumnDefs([
                 { field: "timeStamp", headerName: 'Time Stamp', flex: 1 },
-                { field: "blockNumber", headerName: "Block Number", flex: 1 },
                 { field: "from", headerName: "From", flex: 1 },
-                { field: "to", headerName: "To", flex: 1 },  
+                { field: "to", headerName: "To", flex: 1 },
+                { field: 'direction', headerName: 'Direction', flex: 0.45,
+                    cellRenderer: function (params) {
+                        if (params.data.to === walletAddress) {
+                            return <Badge type="IN" />
+                        }
+                        else {
+                            return <Badge type="OUT" />
+                        }
+                    }
+                }, 
                 { field: "value", headerName: "Value", flex: 1 }
             ]);
         }
