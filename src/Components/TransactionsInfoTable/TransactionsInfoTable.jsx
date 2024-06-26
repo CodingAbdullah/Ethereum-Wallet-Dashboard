@@ -18,7 +18,7 @@ const TransactionsInfoTable = (props) => {
             timeStamp: networkFetch ? data[i].block_timestamp.split(".")[0] : new Date(data[i].timeStamp*1000).toString().split("GMT")[0].trim() +"-EST",
             from: networkFetch ? data[i].from_address : data[i].from,
             to: networkFetch ? data[i].to_address : data[i].to,
-            direction: networkFetch ? ( walletAddress.toLowerCase() === data[i].to_address ? <Badge type="IN" /> : <Badge type="OUT" /> ) : ( walletAddress.toLowerCase() === data[i].to ? <Badge type="IN" /> : <Badge type="OUT" /> ),
+            direction: networkFetch ? ( walletAddress.toLowerCase() === data[i].to_address ? "IN" : "OUT" ) : ( walletAddress.toLowerCase() === data[i].to ? "IN" : "OUT" ),
             value: isMatic ? (data[i].value*(1/1000000000000000000)).toPrecision(4) + " MATIC" : (data[i].value*(1/1000000000000000000)).toPrecision(4) + " ETH"
         }
         coinTableRowData.push(item);
@@ -45,17 +45,26 @@ const TransactionsInfoTable = (props) => {
             setColumnDefs([
                 { field: "timeStamp", headerName: 'Time Stamp', flex: 1 },
                 { field: "from", headerName: "From", flex: 1 },
-                { field: "to", headerName: "To", flex: 1 },  
+                { field: "to", headerName: "To", flex: 1 },
                 { field: "value", headerName: "Value", flex: 1 }    
             ]);
         }
         else {
             setColumnDefs([
-                { field: "timeStamp", headerName: 'Time Stamp', flex: 1 },
-                { field: "blockNumber", headerName: "Block Number", flex: 1 },
+                { field: "timeStamp", headerName: 'Time Stamp', flex: 0.75 },
                 { field: "from", headerName: "From", flex: 1 },
-                { field: "to", headerName: "To", flex: 1 },  
-                { field: "value", headerName: "Value", flex: 1 }
+                { field: "to", headerName: "To", flex: 1 },
+                { field: 'direction', headerName: 'Direction', flex: 0.45,
+                    cellRenderer: function (params) {
+                        if (params.data.direction === "IN") {
+                            return <Badge type="IN" />
+                        }
+                        else {
+                            return <Badge type="OUT" />
+                        }
+                    }
+                },  
+                { field: "value", headerName: "Value", flex: 0.55 }
             ]);
         }
       };
