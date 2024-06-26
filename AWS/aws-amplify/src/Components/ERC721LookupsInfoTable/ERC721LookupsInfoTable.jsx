@@ -14,14 +14,26 @@ const ERC721LookupsInfoTable = (props) => {
         if (window.outerWidth < 900) {
             setColumnDefs([
                 { field: "name", headerName: 'Collection Name', flex: 1 },
-                { field: "link", headerName: "Link", flex: 1 }
+                { field: "link", headerName: "Link", flex: 1,
+                    cellRenderer: (params) => {
+                        return (
+                            <a style={{ color: 'black' }} target='_blank' href={ params.value }>{ data.name + " - NFT Link" }</a>
+                        )
+                    }
+                 }
             ]);
         } 
         else {
             setColumnDefs([
                 { field: "name", headerName: 'Collection Name', flex: 1 },
                 { field: "tokenId", headerName: "Token ID", flex: 1 },
-                { field: "link", headerName: "Link", flex: 1 }                        
+                { field: "link", headerName: "Link", flex: 1,
+                    cellRenderer: (params) => {
+                        return (
+                            <a style={{ color: 'black' }} target='_blank' href={ params.value }>{ data.name + " - NFT Link" }</a>
+                        )
+                    }
+                 }                        
             ]);
         }
     };
@@ -43,7 +55,7 @@ const ERC721LookupsInfoTable = (props) => {
                     rowData={[
                        { name: data.name, 
                          tokenId: data.token_id,
-                         link: "opensea.io/assets/ethereum/" + data.token_address + "/" + data.token_id
+                         link: "https://opensea.io/assets/ethereum/" + data.token_address + "/" + data.token_id
                        }
                     ]}
                     columnDefs={columnDefs} />

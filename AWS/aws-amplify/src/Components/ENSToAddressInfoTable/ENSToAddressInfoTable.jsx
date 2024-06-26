@@ -17,7 +17,13 @@ const ENSToAddressInfoTable = (props) => {
                     ]}
                     columnDefs={[
                         { field: "address", headerName: 'Address', flex: 1 },
-                        { field: "personalWebsite", headerName: "Personal website", flex: 1 } 
+                        { field: "personalWebsite", headerName: "Personal website", flex: 1,
+                            cellRenderer: (params) => {
+                                return (
+                                    <a style={{ color: 'black' }} target='_blank' href={ params.value }>Personal Wallet Site Link</a>
+                                )
+                            }
+                         } 
                     ]} />
             </div>
         </>

@@ -17,7 +17,7 @@ const ERC721HoldingsInfoTable = (props) => {
         item = {
             name: data.result[i].name,
             tokenAddress: data.result[i].token_address,
-            link: "opensea.io/assets/ethereum/" + data.result[i].token_address + "/" + data.result[i].token_id
+            link: "https://opensea.io/assets/ethereum/" + data.result[i].token_address + "/" + data.result[i].token_id
         }
 
         coinTableRowData.push(item);
@@ -29,14 +29,28 @@ const ERC721HoldingsInfoTable = (props) => {
         if (window.outerWidth < 750) {
             setColumnDefs([
                 { field: "name", headerName: 'Name', flex: 1 },
-                { field: "link", headerName: "Link", flex: 1 }
+                { field: "link", headerName: "Link", flex: 1,
+                    cellRenderer: (params) => {
+                        let filteredName = coinTableRowData.filter(item => item.link === params.value)[0].name;
+                        return (
+                            <a style={{ color: 'black' }} target='_blank' href={ params.value }>{ filteredName + " - NFT Link" }</a>
+                        )
+                    }
+                 }
             ]);
         } 
         else {
             setColumnDefs([
                 { field: "name", headerName: 'Name', flex: 1 },
                 { field: "tokenAddress", headerName: "Token Address", flex: 1 },
-                { field: "link", headerName: "Link", flex: 1 }
+                { field: "link", headerName: "Link", flex: 1,
+                    cellRenderer: (params) => {
+                        let filteredName = coinTableRowData.filter(item => item.link === params.value)[0].name;
+                        return (
+                            <a style={{ color: 'black' }} target='_blank' href={ params.value }>{ filteredName + " - NFT Link" }</a>
+                        )
+                    }
+                 }
             ]);
         }
     };
