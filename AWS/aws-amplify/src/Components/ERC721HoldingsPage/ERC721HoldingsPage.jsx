@@ -5,6 +5,7 @@ import ERC721TransfersInfoTable from '../ERC721TransfersInfoTable/ERC721Transfer
 import NetworkSelector from '../NetworkSelector/NetworkSelector';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
+import ERC721HoldingCollectionsInfoTable from '../ERC721HoldingCollectionsInfoTable/ERC721HoldingCollectionsInfoTable';
 
 const ERC721HoldingsPage = () => {
 
@@ -20,11 +21,16 @@ const ERC721HoldingsPage = () => {
         information: null
     });
 
+    const [ERC721CollectionHoldings, updateERC721CollectionHoldings] = useState({
+        information: null
+    });
+
     const navigate = useNavigate();
 
-    const NODE_SERVER_URL = "https://18.221.208.44.nip.io"; // AWS EC2 Node Server URL
+    const NODE_SERVER_URL = "http://localhost:5000"; // AWS EC2 Node Server URL
     const NFT_ENDPOINT = '/address-erc721-holdings';
     const NFT_TRANSFERS_ENDPOINT = '/address-erc721-transfers';
+    const NFT_COLLECTIONS_ENDPOINT = '/address-erc721-collection-holdings';
 
     const [networkID, updateNetworkID] = useState('eth'); // Network selector set to default value
 
@@ -40,6 +46,13 @@ const ERC721HoldingsPage = () => {
             }
         });
         updateERC721Transfers((prevState) => {
+            return {
+                ...prevState,
+                information: null
+            }
+        });
+
+        updateERC721CollectionHoldings((prevState) => {
             return {
                 ...prevState,
                 information: null
@@ -96,7 +109,7 @@ const ERC721HoldingsPage = () => {
                         });
                     }
                 }
-            })
+            });
 
             axios.post(NODE_SERVER_URL + NFT_TRANSFERS_ENDPOINT, options)
             .then(response => {
@@ -122,6 +135,43 @@ const ERC721HoldingsPage = () => {
                             return {
                                 ...prevState,
                                 information: response.data.information.result // If data exists, add it to state
+                            }
+                        });
+                    }
+                }
+            });
+
+            axios.post(NODE_SERVER_URL + NFT_COLLECTIONS_ENDPOINT, options) // NFT endpoint for retrieving information related to holdings
+            .then(response => {
+                if (response.status !== 200){
+                    updateAlert(true);
+                    updateEmptyAlert(false);
+                    updateERC721CollectionHoldings((prevState) => {
+                        return {
+                            ...prevState,
+                            information: null
+                        }
+                    });
+                }
+                else {
+                    if (response.status === 200 && response.data.information.result.length === 0){ // If empty, display warning
+                        updateEmptyAlert(true);
+                        updateAlert(false);
+                        updateERC721CollectionHoldings((prevState) => {
+                            return {
+                                ...prevState,
+                                information: null
+                            }
+                        });
+                    }
+                    else {
+                        updateAlert(false); // Remove alerts if any exist
+                        updateEmptyAlert(false);
+
+                        updateERC721CollectionHoldings((prevState) => {
+                            return {
+                                ...prevState,
+                                information: response.data.information.result
                             }
                         });
                     }
@@ -157,6 +207,16 @@ const ERC721HoldingsPage = () => {
             </main>
             { isEmpty ? null : 
                 <>
+                    <main style={{marginTop: '2rem'}} class="p-3" role="main">
+                        <div>
+                            {
+                                ERC721CollectionHoldings.information === null ? null :
+                                    <>
+                                        <ERC721HoldingCollectionsInfoTable data={ ERC721CollectionHoldings.information } />
+                                    </>
+                            }
+                        </div>
+                    </main>
                     <main style={{marginTop: '-3rem'}} class="p-3" role="main">
                         <div>
                             {

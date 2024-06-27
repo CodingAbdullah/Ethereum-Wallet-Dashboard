@@ -77,7 +77,7 @@ const ERC721TransfersInfoTable = (props) => {
     return (
         <>
             <hr style={{ marginTop: '3rem' }} />
-            <p><b>ERC721 Transfers</b><br /><i>{ address }</i></p>
+            <p><b>ERC721 Transfers</b><br /><i>List of all ERC721 token transfers by wallet</i></p>
             <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', height: 200, width: '100%' }}>
                 <AgGridReact
                     rowData={coinTableRowData}
