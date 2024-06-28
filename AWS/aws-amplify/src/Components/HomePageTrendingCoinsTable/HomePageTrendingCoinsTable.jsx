@@ -24,19 +24,22 @@ const HomePageTrendingCoinsTable = (props) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    for (var i = 0; i < 5; i++) {
-        item = {
-            id: coins[i].item.id,
-            rank: coins[i].item.market_cap_rank,
-            name: coins[i].item.name,
-            symbol: coins[i].item.symbol + " - " + coins[i].item.small,
-            marketCap: coins[i].item.data.market_cap,
-            price: coins[i].item.data.price < 0.01 ? "$" + coins[i].item.data.price : formatCurrency(coins[i].item.data.price),
-            priceChange: coins[i].item.data.price_change_percentage_24h.usd >= 0 ? "+" + numeral(coins[i].item.data.price_change_percentage_24h.usd).format('0.00') + '%' : numeral(coins[i].item.data.price_change_percentage_24h.usd).format('0.00') + '%'
-        }
+    // Adding a check to ensure page loads safely
+    if (coins.length >= 5) {
+        for (var i = 0; i < 5; i++) {
+            item = {
+                id: coins[i].item.id,
+                rank: coins[i].item.market_cap_rank,
+                name: coins[i].item.name,
+                symbol: coins[i].item.symbol + " - " + coins[i].item.small,
+                marketCap: coins[i].item.data.market_cap,
+                price: coins[i].item.data.price < 0.01 ? "$" + coins[i].item.data.price : formatCurrency(coins[i].item.data.price),
+                priceChange: coins[i].item.data.price_change_percentage_24h.usd >= 0 ? "+" + numeral(coins[i].item.data.price_change_percentage_24h.usd).format('0.00') + '%' : numeral(coins[i].item.data.price_change_percentage_24h.usd).format('0.00') + '%'
+            }
 
-        coinTableRowData.push(item);
-        item = {};
+            coinTableRowData.push(item);
+            item = {};
+        }
     }
     
     const [rowData, updateRowData] = useState(coinTableRowData);
