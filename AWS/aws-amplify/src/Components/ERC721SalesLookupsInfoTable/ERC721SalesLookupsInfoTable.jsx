@@ -86,7 +86,7 @@ const ERC721SalesLookupInfoTable = (props) => {
         return (
             <>
                 <hr style={{ marginTop: '3rem' }} />
-                <p><b>ERC721 Sales Information</b><br /><i>Sales history of the ERC721 token</i></p>
+                <p><b>ERC721 Token Sales Information</b><br /><i>Sales history of the ERC721 token</i></p>
                 <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', height: 200, width: '100%' }}>
                     <AgGridReact
                         rowData={rowDataInformation}

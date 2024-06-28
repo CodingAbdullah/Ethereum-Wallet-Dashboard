@@ -16,9 +16,11 @@ import { updateAddress, resetAddress } from '../../redux/reducer/walletAddressRe
 import HomePageDescriptionSection from '../HomePageDescriptionSection/HomePageDescriptionSection';
 import HomePageTrendingCoinsTable from '../HomePageTrendingCoinsTable/HomePageTrendingCoinsTable';
 import HomePageTrendingCollectionsTable from '../HomePageTrendingCollectionsTable/HomePageTrendingCollectionsTable';
+import HomePageMarketCapChart from '../HomePageMarketCapChart/HomePageMarketCapChart';
 import ChangeHighlight from 'react-change-highlight';
 import './HomePage.css';
 import Alert from '../Alert/Alert';
+import { marketCapData } from '../../UtilFunctions/marketCapDataPRO';
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -39,6 +41,11 @@ const Home = () => {
         queryFn: homePageGlobalDefiDataPro
     });
 
+    const marketCapChartDataQuery = useQuery({
+        queryKey: ['market cap chart data'],
+        queryFn: marketCapData
+    });
+    
     const trendingCoinsQuery = useQuery({
         queryKey: ['transaction data'],
         queryFn: homePageTrendingCoinsPro
@@ -72,15 +79,16 @@ const Home = () => {
     }
 
     // Conditionally render based on loading, error, or success states for each of the four queries
-    if (trendingCoinsQuery.isLoading || globalMarketDataQuery.isLoading || globalDefiDataQuery.isLoading) {
+    if (trendingCoinsQuery.isLoading || globalMarketDataQuery.isLoading || globalDefiDataQuery.isLoading || marketCapChartDataQuery.isLoading) {
         return <div role="main">Loading...</div>
     }
-    else if (trendingCoinsQuery.isError || globalMarketDataQuery.isError || globalDefiDataQuery.isError){
+    else if (trendingCoinsQuery.isError || globalMarketDataQuery.isError || globalDefiDataQuery.isError || marketCapChartDataQuery.isError){
         return <div role="main">Error fetching data!</div>
     }
-    else if (trendingCoinsQuery.isSuccess && globalMarketDataQuery.isSuccess && globalDefiDataQuery.isSuccess){
+    else if (trendingCoinsQuery.isSuccess && globalMarketDataQuery.isSuccess && globalDefiDataQuery.isSuccess && marketCapChartDataQuery.isSuccess){
         // Global market data information, destructuring data
         const { active_cryptocurrencies } = globalMarketDataQuery.data[0].data;
+        const { markets } = globalMarketDataQuery.data[0].data;
         const { usd } = globalMarketDataQuery.data[0].data.total_market_cap;
         const { btc, eth } = globalMarketDataQuery.data[0].data.market_cap_percentage;
         const { market_cap_change_percentage_24h_usd } = globalMarketDataQuery.data[0].data;
@@ -96,22 +104,35 @@ const Home = () => {
                         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <h1 class="h2 p-3">Market Data</h1>
                         </div>
-                        <h5 style={{ marginBottom: '1rem', width: '50%', marginLeft: 'auto', marginRight: 'auto' }}><b>Global Markets</b></h5>
-                        <p style={{ marginRight: '0.5rem' }}><b>Active Currencies: </b> { active_cryptocurrencies }</p>      
-                        <p style={{ marginRight: '0.5rem' }}><b>Total Market Cap: </b> ${ (usd).toFixed(2) }</p>
-                        <p style={{ marginRight: '0.5rem' }}><b>Market Dominance: </b> BTC { (btc).toFixed(2) + "%" } <b>|</b> ETH { (eth).toFixed(2) + "%" }</p>
-                        <p style={{ marginBottom: '4rem', marginRight: '0.5rem' }}><b>24 Hour Market Cap % Change: </b>
-                            <p style={{ display: 'inline', color: market_cap_change_percentage_24h_usd < 0 ? 'red' : 'green', fontWeight: 'bold'} }>
-                                { market_cap_change_percentage_24h_usd < 0 ? "" : "+" }{ (market_cap_change_percentage_24h_usd).toFixed(2) + "%" }
-                            </p>
-                        </p>
-                        <hr />
-                        <h5 style={{ marginBottom: '1rem', width: '50%', marginLeft: 'auto', marginRight: 'auto' }}><b>DeFi Markets</b></h5>
-                        <p style={{ marginRight: '0.5rem' }}><b>DeFi Market Cap: </b> { "$" + Number(globalDefiDataQuery.data[0].defi_market_cap).toFixed(2) }</p>      
-                        <p style={{ marginRight: '0.5rem' }}><b>ETH Market Cap: </b> { "$" + Number(globalDefiDataQuery.data[0].eth_market_cap).toFixed(2) }</p>
-                        <p style={{ marginRight: '0.5rem' }}><b>Trading Volume: </b> { "$" + Number(globalDefiDataQuery.data[0].trading_volume_24h).toFixed(2) }</p>
-                        <p style={{ marginRight: '0.5rem' }}><b>Top Coin Name: </b> { globalDefiDataQuery.data[0].top_coin_name }</p>
-                        <p style={{ marginRight: '0.5rem' }}><b>Top Coin DeFi Dominance: </b> { Number(globalDefiDataQuery.data[0].top_coin_defi_dominance).toFixed(2) + "%" }</p>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6 col-lg-6">
+                                    <h5 style={{ marginBottom: '1rem', width: '50%', marginLeft: 'auto', marginRight: 'auto' }}><b>Global Markets</b></h5>
+                                    <p style={{ marginRight: '0.5rem' }}><b>Active Currencies: </b> { active_cryptocurrencies }</p>      
+                                    <p style={{ marginRight: '0.5rem' }}><b>Number of Exchanges: </b> { markets }</p>      
+                                    <p style={{ marginRight: '0.5rem' }}><b>Total Market Cap: </b> ${ (usd).toFixed(2) }</p>
+                                    <p style={{ marginRight: '0.5rem' }}><b>Market Dominance: </b> BTC { (btc).toFixed(2) + "%" } <b>|</b> ETH { (eth).toFixed(2) + "%" }</p>
+                                    <p style={{ marginBottom: '4rem', marginRight: '0.5rem' }}><b>24 Hour Market Cap % Change: </b>
+                                    <p style={{ display: 'inline', color: market_cap_change_percentage_24h_usd < 0 ? 'red' : 'green', fontWeight: 'bold'} }>
+                                        { market_cap_change_percentage_24h_usd < 0 ? "" : "+" }{ (market_cap_change_percentage_24h_usd).toFixed(2) + "%" }</p>
+                                    </p>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-6">
+                                    <h5 style={{ marginBottom: '1rem', width: '50%', marginLeft: 'auto', marginRight: 'auto' }}><b>DeFi Markets</b></h5>
+                                    <p style={{ marginRight: '0.5rem' }}><b>DeFi Market Cap: </b> { "$" + Number(globalDefiDataQuery.data[0].defi_market_cap).toFixed(2) }</p>      
+                                    <p style={{ marginRight: '0.5rem' }}><b>ETH Market Cap: </b> { "$" + Number(globalDefiDataQuery.data[0].eth_market_cap).toFixed(2) }</p>
+                                    <p style={{ marginRight: '0.5rem' }}><b>Trading Volume: </b> { "$" + Number(globalDefiDataQuery.data[0].trading_volume_24h).toFixed(2) }</p>
+                                    <p style={{ marginRight: '0.5rem' }}><b>Top Coin Name: </b> { globalDefiDataQuery.data[0].top_coin_name }</p>
+                                    <p style={{ marginRight: '0.5rem' }}><b>Top Coin DeFi Dominance: </b> { Number(globalDefiDataQuery.data[0].top_coin_defi_dominance).toFixed(2) + "%" }</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div>
+                                <hr style={{ marginTop: '3rem' }} />
+                                <HomePageMarketCapChart data={ marketCapChartDataQuery.data } />
+                            </div>
+                        </div>
                         <div class="row">
                             <div>
                                 <hr style={{ marginTop: '3rem' }} />
