@@ -7,7 +7,16 @@ const ERC721LookupsInfoTable = (props) => {
     const { data, address } = props;     
     
     // Column Definitions: Defines the columns to be displayed.
-    const [columnDefs, setColumnDefs] = useState([]);
+    const [columnDefs, setColumnDefs] = useState([
+        { field: "name", headerName: 'Collection Name', flex: 1 },
+        { field: "link", headerName: "Link", flex: 1,
+            cellRenderer: (params) => {
+                return (
+                    <a style={{ color: 'black' }} target='_blank' href={ params.value }>{ "NFT Link" }</a>
+                )
+            }
+        }
+    ]);
    
     // Function for handling column renders on window screen size
     const updateColumnDefs = () => {
@@ -17,10 +26,10 @@ const ERC721LookupsInfoTable = (props) => {
                 { field: "link", headerName: "Link", flex: 1,
                     cellRenderer: (params) => {
                         return (
-                            <a style={{ color: 'black' }} target='_blank' href={ params.value }>{ data.name + " - NFT Link" }</a>
+                            <a style={{ color: 'black' }} target='_blank' href={ params.value }>{ "NFT Link" }</a>
                         )
                     }
-                 }
+                }
             ]);
         } 
         else {
@@ -30,7 +39,7 @@ const ERC721LookupsInfoTable = (props) => {
                 { field: "link", headerName: "Link", flex: 1,
                     cellRenderer: (params) => {
                         return (
-                            <a style={{ color: 'black' }} target='_blank' href={ params.value }>{ data.name + " - NFT Link" }</a>
+                            <a style={{ color: 'black' }} target='_blank' href={ params.value }>{ "NFT Link" }</a>
                         )
                     }
                  }                        
@@ -49,7 +58,7 @@ const ERC721LookupsInfoTable = (props) => {
     return (
         <>
             <hr style={{ marginTop: '3rem' }} />
-            <p><b>ERC721 Lookup Information</b><br /><i>Brief Summary of ERC721 token</i></p>
+            <p><b>ERC721 Token Lookup Information</b><br /><i>Brief Summary of ERC721 token</i></p>
             <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', height: 92.5, width: '100%' }}>
                 <AgGridReact
                     rowData={[
