@@ -33,7 +33,7 @@ const ERC721LookupsOpenseaProfile = (props) => {
         <>
             <hr style={{ marginTop: '3rem' }} />
             <p><b>ERC721 Token Opensea Profile</b><br /><i>Opensea information related to the ERC721 token</i></p>
-            { openseaTokenData.nft.image_url !== null ? <img src={openseaTokenData.nft.image_url } height="200" width="200" alt="No Token Image Found" /> : null } 
+            { openseaTokenData.nft.display_image_url !== null ? <img src={openseaTokenData.nft.display_image_url } height="200" width="200" alt="No Token Image Found" /> : null } 
             <p><i>{ openseaTokenData.nft.name }</i></p>
             <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', height: 200, width: '100%' }}>
                 <AgGridReact
