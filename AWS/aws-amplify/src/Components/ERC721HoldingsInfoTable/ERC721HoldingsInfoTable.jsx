@@ -28,12 +28,16 @@ const ERC721HoldingsInfoTable = (props) => {
     const updateColumnDefs = () => {
         if (window.outerWidth < 750) {
             setColumnDefs([
-                { field: "name", headerName: 'Name', flex: 1 },
+                { field: "name", headerName: 'Name', flex: 1,
+                    cellRenderer: (params) => {
+                        return <>{params.value ? params.value : "N/A"}</>
+                    }
+                 },
                 { field: "link", headerName: "Link", flex: 1,
                     cellRenderer: (params) => {
                         let filteredName = coinTableRowData.filter(item => item.link === params.value)[0].name;
                         return (
-                            <a style={{ color: 'black' }} target='_blank' href={ params.value }>{ filteredName + " - NFT Link" }</a>
+                            <a style={{ color: 'black' }} target='_blank' href={ params.value }>{ filteredName ? filteredName : '' + " - NFT Link" }</a>
                         )
                     }
                  }
@@ -41,13 +45,17 @@ const ERC721HoldingsInfoTable = (props) => {
         } 
         else {
             setColumnDefs([
-                { field: "name", headerName: 'Name', flex: 1 },
+                { field: "name", headerName: 'Name', flex: 1,
+                    cellRenderer: (params) => {
+                        return <>{params.value ? params.value : "N/A"}</>
+                    }
+                },
                 { field: "tokenAddress", headerName: "Token Address", flex: 1 },
                 { field: "link", headerName: "Link", flex: 1,
                     cellRenderer: (params) => {
                         let filteredName = coinTableRowData.filter(item => item.link === params.value)[0].name;
                         return (
-                            <a style={{ color: 'black' }} target='_blank' href={ params.value }>{ filteredName + " - NFT Link" }</a>
+                            <a style={{ color: 'black' }} target='_blank' href={ params.value }>{ filteredName ? filteredName + " - NFT Link" : "NFT Link" }</a>
                         )
                     }
                  }
