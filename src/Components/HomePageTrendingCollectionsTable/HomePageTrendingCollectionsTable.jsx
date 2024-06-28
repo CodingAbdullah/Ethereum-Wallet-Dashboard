@@ -10,18 +10,21 @@ const HomePageTrendingCollectionsTable = (props) => {
     let coinTableRowData = [];
     let item = {};
 
-    // Looping through collections structure and formatting data for display
-    for (var i = 0; i < 5; i++) {
-        item = {
-            symbol: collections[i].symbol + " - " + collections[i].thumb,
-            name: collections[i].name,
-            floorPrice: collections[i].data.floor_price,
-            percentChange: collections[i].data.floor_price_in_usd_24h_percentage_change >= 0 ? "+" + numeral(collections[i].data.floor_price_in_usd_24h_percentage_change).format('0.00') + '%' : numeral(collections[i].data.floor_price_in_usd_24h_percentage_change).format('0.00') + '%',
-            volume: collections[i].data.h24_volume
+    // Adding a check to ensure page loads safely
+    if (collections.length >= 5) {
+        // Looping through collections structure and formatting data for display
+        for (var i = 0; i < 5; i++) {
+            item = {
+                symbol: collections[i].symbol + " - " + collections[i].thumb,
+                name: collections[i].name,
+                floorPrice: collections[i].data.floor_price,
+                percentChange: collections[i].data.floor_price_in_usd_24h_percentage_change >= 0 ? "+" + numeral(collections[i].data.floor_price_in_usd_24h_percentage_change).format('0.00') + '%' : numeral(collections[i].data.floor_price_in_usd_24h_percentage_change).format('0.00') + '%',
+                volume: collections[i].data.h24_volume
+            }
+            
+            coinTableRowData.push(item);
+            item = {};
         }
-        
-        coinTableRowData.push(item);
-        item = {};
     }
     
     const [rowData, updateRowData] = useState(coinTableRowData);
