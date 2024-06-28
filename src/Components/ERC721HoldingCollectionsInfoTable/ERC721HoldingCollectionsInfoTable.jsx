@@ -31,8 +31,16 @@ const ERC721HoldingCollectionsInfoTable = (props) => {
     const updateColumnDefs = () => {
         if (window.outerWidth < 500) {
             setColumnDefs([
-                { field: "name", headerName: 'Name', flex: 1 },
-                { field: "symbol", headerName: "Symbol", flex: 1 },
+                { field: "name", headerName: 'Name', flex: 1,
+                    cellRenderer: (params) => {
+                        return <>{params.value ? params.value : "N/A"}</>
+                    }
+                 },
+                { field: "symbol", headerName: "Symbol", flex: 1,
+                    cellRenderer: (params) => {
+                        return <>{params.value ? params.value : "N/A"}</>
+                    }
+                 },
                 { field: "collectionLogo", headerName: "Logo", flex: 0.5,
                     cellRenderer: (params) => {
                         return <img src={ params.value } alt="No Logo" style={{ marginTop: '0.15rem', marginBottom: '0.25rem', width: '30px', height: '25px' }} />
@@ -42,8 +50,16 @@ const ERC721HoldingCollectionsInfoTable = (props) => {
         } 
         else if (window.outerWidth < 1000) {
             setColumnDefs([
-                { field: "name", headerName: 'Name', flex: 1 },
-                { field: "symbol", headerName: "Symbol", flex: 1 },
+                { field: "name", headerName: 'Name', flex: 1,
+                    cellRenderer: (params) => {
+                        return <>{params.value ? params.value : "N/A"}</>
+                    }
+                 },
+                { field: "symbol", headerName: "Symbol", flex: 1,
+                    cellRenderer: (params) => {
+                        return <>{params.value ? params.value : "N/A"}</>
+                    }
+                 },
                 { field: "collectionLogo", headerName: "Logo", flex: 0.5,
                     cellRenderer: (params) => {
                         return <img src={ params.value } alt="No Logo" style={{ marginTop: '0.15rem', marginBottom: '0.25rem', width: '30px', height: '25px' }} />
@@ -54,8 +70,16 @@ const ERC721HoldingCollectionsInfoTable = (props) => {
         }
         else if (window.outerWidth < 1250) {
             setColumnDefs([
-                { field: "name", headerName: 'Name', flex: 1 },
-                { field: "symbol", headerName: "Symbol", flex: 1 },
+                { field: "name", headerName: 'Name', flex: 1,
+                    cellRenderer: (params) => {
+                        return <>{params.value ? params.value : "N/A"}</>
+                    }
+                 },
+                { field: "symbol", headerName: "Symbol", flex: 1,
+                    cellRenderer: (params) => {
+                        return <>{params.value ? params.value : "N/A"}</>
+                    }
+                 },
                 { field: "collectionLogo", headerName: "Logo", flex: 1,
                     cellRenderer: (params) => {
                         return <img src={ params.value } alt="No Logo" style={{ marginTop: '0.15rem', marginBottom: '0.25rem', width: '30px', height: '25px' }} />
@@ -67,8 +91,16 @@ const ERC721HoldingCollectionsInfoTable = (props) => {
         }
         else {
             setColumnDefs([
-                { field: "name", headerName: 'Name', flex: 1 },
-                { field: "symbol", headerName: "Symbol", flex: 1 },
+                { field: "name", headerName: 'Name', flex: 1,
+                    cellRenderer: (params) => {
+                        return <>{params.value ? params.value : "N/A"}</>
+                    }
+                },
+                { field: "symbol", headerName: "Symbol", flex: 1,
+                    cellRenderer: (params) => {
+                        return <>{params.value ? params.value : "N/A"}</>
+                    }
+                 },
                 { field: "collectionLogo", headerName: "Logo", flex: 0.5,
                     cellRenderer: (params) => {
                         return <img src={ params.value } alt="No Logo" style={{ marginTop: '0.15rem', marginBottom: '0.25rem', width: '30px', height: '25px' }} />

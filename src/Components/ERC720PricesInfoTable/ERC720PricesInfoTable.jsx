@@ -6,10 +6,20 @@ import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied
 const ERC20PricesInfoTable = (props) => {
     const { coinInformation } = props; // Destructure data
 
-    // Column Definitions: Defines the columns to be displayed.
+    // Column Definitions: Defines the columns to be displayed
+    // Adding color features to data related to percent changes in price
     const [columnDefs, setColumnDefs] = useState([
       { field: "tokenInformation", headerName: 'Token Information', flex: 1 },
-      { field: "data", headerName: "Data", flex: 1 }
+      { field: "data", headerName: "Data", flex: 1,
+        cellRenderer: (params) => {
+          if (String(params.value).charAt(0) === '+' || String(params.value).charAt(0) === '-') {
+              return String(params.value).charAt(0) === '+' ? <p style={{ color: 'green' }}><b>{params.value}</b></p> : <p style={{ color: 'red' }}><b>{params.value}</b></p>
+          }
+          else {
+              return <p>{params.value}</p>
+          }
+        }
+       }
     ]);    
     
     const [rowDefs, setRowDefs] = useState([
