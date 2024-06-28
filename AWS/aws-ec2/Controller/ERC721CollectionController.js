@@ -79,3 +79,28 @@ exports.getERC721CollectionAttributes = (req, res) => {
     .then(response => { res.status(200).json({ information: response })})
     .catch(err => res.status(400).json({ information: err }));
 }
+
+exports.getERC721TopCollections = (req, res) => {
+
+    // Setting options to fetch top collections
+    const options = {
+        method: 'GET',
+        headers: {
+            'content-type' : 'application/json',
+            'X-API-Key' : process.env.MORALIS_API_KEY 
+        }
+    };
+
+    axios.get("https://deep-index.moralis.io/api/v2.2/market-data/nfts/top-collections", options)
+    .then(response => {
+        res.status(200).json({
+            topCollections: response.data
+        });
+    })
+    .catch(err => {
+        res.status(400).json({
+            information: err
+        });
+    })
+
+}

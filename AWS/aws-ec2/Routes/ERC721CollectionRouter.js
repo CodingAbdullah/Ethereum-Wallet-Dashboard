@@ -8,5 +8,6 @@ router.post('/erc721-collection-transfers', ERC721CollectionController.getERC721
 router.post('/erc721-collection-sales', ERC721CollectionController.getERC721CollectionSales);
 router.post('/erc721-collection-floor-price', ERC721CollectionController.getERC721CollectionFloorPrice);
 router.post('/erc721-collection-attributes', ERC721CollectionController.getERC721CollectionAttributes);
+router.get('/erc-721-top-trending-collections', ERC721CollectionController.getERC721TopCollections);
 
 module.exports = router;
