@@ -4,6 +4,8 @@ const ALCHEMY_URL = require('../Utils/NetworkMapper').NETWORK_MAPPER.alchemy_url
 const sdk = require('api')('@alchemy-docs/v1.0#3yq3i17l9sqr4d6'); // SDK ID for Alchemy package found through docs
 const axios = require('axios');
 
+const PRO_COINGECKO_URL = 'https://pro-api.coingecko.com/api/v3/';
+
 exports.getERC721CollectionData = (req, res) => {
     const { address } = JSON.parse(req.body.body);
 
@@ -11,7 +13,7 @@ exports.getERC721CollectionData = (req, res) => {
         method: 'GET',
         headers: {
             'content-type' : 'application/json', 
-            'x-api-key' : process.env.MORALIS_API_KEY
+            'x-api-key' : process.env.MORALIS_API_KEY_2
         }
     };
 
@@ -22,6 +24,23 @@ exports.getERC721CollectionData = (req, res) => {
 
 }
 
+exports.getERC721CollectionExtraData = (req, res) => {
+    const { address } = JSON.parse(req.body.body);
+
+    const options = {
+        method: 'GET',
+        headers: {
+            'content-type' : 'application/json', 
+            'x-cg-pro-api-key' : process.env.COINGECKO_GENERIC_API_KEY
+        }
+    };
+
+    // Run backend request
+    axios.get(PRO_COINGECKO_URL + 'nfts/ethereum/contract/' + address, options)
+    .then(response => res.status(200).json({ information: response.data }))
+    .catch(err => res.status(400).json({ information: err }) );
+}
+
 exports.getERC721CollectionTransfers = (req, res) => {
     const { address } = JSON.parse(req.body.body);
     const TRANSFERS_ENDPOINT = '/transfers';
@@ -30,7 +49,7 @@ exports.getERC721CollectionTransfers = (req, res) => {
         method: 'GET',
         headers: {
             'content-type' : 'application/json',
-            'x-api-key' : process.env.MORALIS_API_KEY 
+            'x-api-key' : process.env.MORALIS_API_KEY_2
         }
     };
 
@@ -48,7 +67,7 @@ exports.getERC721CollectionSales = (req, res) => {
         method: 'GET',
         headers: {
             'content-type' : 'application/json',
-            'x-api-key' : process.env.MORALIS_API_KEY 
+            'x-api-key' : process.env.MORALIS_API_KEY_2
         }
     };
 
@@ -87,7 +106,7 @@ exports.getERC721TopCollections = (req, res) => {
         method: 'GET',
         headers: {
             'content-type' : 'application/json',
-            'X-API-Key' : process.env.MORALIS_API_KEY 
+            'X-API-Key' : process.env.MORALIS_API_KEY_2
         }
     };
 
@@ -101,6 +120,5 @@ exports.getERC721TopCollections = (req, res) => {
         res.status(400).json({
             information: err
         });
-    })
-
+    });
 }

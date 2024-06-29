@@ -4,12 +4,13 @@ import { useQuery } from '@tanstack/react-query';
 import { ERC721TopCollections } from '../../UtilFunctions/erc721TopCollectionsPRO';
 import axios from 'axios';
 import Alert from '../Alert/Alert';
-import ERC721CollectionTrendsInfoTable from '../ERC721CollectionTrendsInfoTable/ERC721CollectionTrendsInfoTable';
-import ERC721CollectionDataInfoTable from '../ERC721CollectionDataInfoTable/ERC721CollectionDataInfoTable';
-import ERC721CollectionTransferInfoTable from '../ERC721CollectionTransferInfoTable/ERC721CollectionTransferInfoTable';
-import ERC721CollectionSalesInfoTable from '../ERC721CollectionSalesInfoTable/ERC721CollectionSalesInfoTable';
-import ERC721CollectionFloorPriceInfoTable from '../ERC721CollectionFloorPriceInfoTable/ERC721CollectionFloorPriceInfoTable';
 import ERC721CollectionAttributeSummaryInfoTable from '../ERC721CollectionAttributeSummaryInfoTable/ERC721CollectionAttributeSummaryInfoTable';
+import ERC721CollectionDataInfoTable from '../ERC721CollectionDataInfoTable/ERC721CollectionDataInfoTable';
+import ERC721CollectionExtraDataInfoTable from '../ERC721CollectionExtraDataInfoTable/ERC721CollectionExtraDataInfoTable';
+import ERC721CollectionFloorPriceInfoTable from '../ERC721CollectionFloorPriceInfoTable/ERC721CollectionFloorPriceInfoTable';
+import ERC721CollectionSalesInfoTable from '../ERC721CollectionSalesInfoTable/ERC721CollectionSalesInfoTable';
+import ERC721CollectionTransferInfoTable from '../ERC721CollectionTransferInfoTable/ERC721CollectionTransferInfoTable';
+import ERC721CollectionTrendsInfoTable from '../ERC721CollectionTrendsInfoTable/ERC721CollectionTrendsInfoTable';
 
 const ERC721CollectionPage = () => {
 
@@ -18,6 +19,7 @@ const ERC721CollectionPage = () => {
     const [setAlert, updateAlert] = useState(false);
 
     const NODE_SERVER_URL = "http://localhost:5000"; // Node Server for API end points
+    const EXTRA_INFO_ENDPOINT = '/erc721-collection-extra-data';
     const TRANSFERS_ENDPOINT = '/erc721-collection-transfers';
     const TRADES_ENDPOINT = '/erc721-collection-sales';
     const FLOOR_PRICE_ENDPOINT = '/erc721-collection-floor-price';
@@ -28,7 +30,15 @@ const ERC721CollectionPage = () => {
     const ERC721TopCollectionsQuery = useQuery({
         queryKey: ['erc721-top-collections'],
         queryFn: ERC721TopCollections
-    })
+    });
+
+    const [ExtraNFTData, updateExtraNFTData] = useState({
+        information: null
+    });
+
+    const[NFTAttributes, updateNFTAttributes] = useState({
+        information: null
+    });
 
     const [NFTData, updateNFTData] = useState({
         information: null
@@ -38,19 +48,22 @@ const ERC721CollectionPage = () => {
         information: null
     });
 
-    const [NFTTransfers, updateNFTTransfers] = useState({
-        information: null
-    });
-
-    const[NFTAttributes, updateNFTAttributes] = useState({
-        information: null
-    });
-
     const [NFTTrades, updateNFTTrades] = useState({
         information: null
     });
 
+    const [NFTTransfers, updateNFTTransfers] = useState({
+        information: null
+    });
+
     const alertHandler = () => { // Clear data if there is an error, function to be invoked
+        updateExtraNFTData((prevState) => {
+            return {
+                ...prevState,
+                information: null
+            }
+        });
+
         updateNFTData((prevState) => {
             return {
                 ...prevState,
@@ -108,6 +121,34 @@ const ERC721CollectionPage = () => {
                     'content-type' : 'application/json', 
                 }
             }
+
+            try {
+                // Extra Collection Data
+                const response = await axios.post(NODE_SERVER_URL + EXTRA_INFO_ENDPOINT, options); // NFT endpoint for retrieving information related to collection
+                
+                if (response.status !== 200){
+                    updateAlert(true);
+                    alertHandler();
+                }
+                else {
+                    if (response.status === 200 && response.data.information.total === 0){ // If empty, clear data
+                        alertHandler();
+                    }
+                    else {
+                        updateAlert(false); // Remove alerts if any exist
+                        updateExtraNFTData((prevState) => {
+                            return {
+                                ...prevState,
+                                information: response.data.information
+                            }
+                        });
+                    }
+                }
+            }
+            catch {
+                alertHandler();
+                updateAlert(true);
+            };
 
             try {
                 // Collection Data
@@ -239,76 +280,84 @@ const ERC721CollectionPage = () => {
         }
     }
 
-        if (ERC721TopCollectionsQuery.isLoading) {
-            return <div>Loading...</div>
-        }
-        else if (ERC721TopCollectionsQuery.isError) {
-            return <div>Error Loading Top Collections Data</div>
-        }
-        else {
-            return (
-                <div className="erc721-collection-page">
-                    <main role="main" class="p-3">
-                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h1 class="h2">ERC721 Collection Analytics</h1>
+    if (ERC721TopCollectionsQuery.isLoading) {
+        return <div>Loading...</div>
+    }
+    else if (ERC721TopCollectionsQuery.isError) {
+        return <div>Error Loading Top Collections Data</div>
+    }
+    else {
+        return (
+            <div className="erc721-collection-page">
+                <main role="main" class="p-3">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">ERC721 Collection Analytics</h1>
+                    </div>
+                    { setAlert ? <Alert type='danger' /> : null }
+                    <p><b>Top ERC721 Collections</b><br /><i>Lookup the top collections by market cap</i></p>
+                    <ERC721CollectionTrendsInfoTable data={ ERC721TopCollectionsQuery.data } />
+                    <hr style={{ marginTop: '3rem', marginBottom: '2rem' }} />
+                    <div class="jumbotron">
+                        <div class="container">
+                            <p>Enter contract address of an <b>ERC721</b> collection for a quick analysis</p>
+                            <form onSubmit={ formHandler }>
+                                <input class="form-control" style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%' }} onChange={e => updateTokenAddress(e.target.value)} type='text' placeholder='Enter contract address'></input>
+                                <button style={{ marginTop: '2rem' }} type='submit' class='btn btn-success'>Submit</button>
+                            </form>
+                            <button style={{ marginTop: '2rem', display: 'inline' }} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
+                            <button style={{ marginTop: '2rem', marginLeft: '2rem' }} class='btn btn-warning' onClick={clearHandler}>Clear</button> 
                         </div>
-                        { setAlert ? <Alert type='danger' /> : null }
-                        <p><b>Top ERC721 Collections</b><br /><i>Lookup the top collections by market cap</i></p>
-                        <ERC721CollectionTrendsInfoTable data={ ERC721TopCollectionsQuery.data } />
-                        <hr style={{ marginTop: '3rem', marginBottom: '2rem' }} />
-                        <div class="jumbotron">
-                            <div class="container">
-                                <p>Enter contract address of an <b>ERC721</b> collection for a quick analysis</p>
-                                <form onSubmit={ formHandler }>
-                                    <input class="form-control" style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%' }} onChange={e => updateTokenAddress(e.target.value)} type='text' placeholder='Enter contract address'></input>
-                                    <button style={{ marginTop: '2rem' }} type='submit' class='btn btn-success'>Submit</button>
-                                </form>
-                                <button style={{ marginTop: '2rem', display: 'inline' }} class='btn btn-primary' onClick={() => navigate("/")}>Go Home</button>
-                                <button style={{ marginTop: '2rem', marginLeft: '2rem' }} class='btn btn-warning' onClick={clearHandler}>Clear</button> 
-                            </div>
-                        </div>
-                    </main>
-                    { 
-                        NFTData.information === null ? null : 
-                            <>
-                                <main style={{marginTop: '3rem'}} role="main" class="p-3">
-                                    <ERC721CollectionDataInfoTable data={ NFTData } /> 
-                                </main>
-                            </>  
-                    }
-                    {
-                        NFTFloorPrice.information === null ? null :
-                            <>
-                                <ERC721CollectionFloorPriceInfoTable data={ NFTFloorPrice.information } />
-                            </>
-                    }
-                    {
-                        NFTAttributes.information === null ? null :
-                            <>
-                                <hr style={{ marginTop: '3rem', marginBottom: '2rem' }} />
-                                <p><b>ERC721 Collection Attributes</b><br /><i>List of attributes and their sub-attributes and collection quantity</i></p>
-                                <ERC721CollectionAttributeSummaryInfoTable data={ NFTAttributes.information } />
-                            </>
-                    }
-                    {
-                        NFTTransfers.information === null ? null :
-                            <>
-                                <hr style={{ marginTop: '3rem', marginBottom: '2rem' }} />
-                                <p><b>ERC721 Collection Transfers</b><br /><i>Recent token transfer activity within collection</i></p>
-                                <ERC721CollectionTransferInfoTable data={ NFTTransfers.information.result } />
-                            </>
-                    }
-                    {
-                        NFTTrades.information === null ? null :
-                            <>
-                                <hr style={{ marginTop: '3rem', marginBottom: '2rem' }} />
-                                <p><b>ERC721 Collection Sales</b><br /><i>Recent token sales activity within collection</i></p>
-                                <ERC721CollectionSalesInfoTable data={ NFTTrades.information.result } />
-                            </>
-                    }
-                </div>
-            )
-        }
+                    </div>
+                </main>
+                { 
+                    NFTData.information === null ? null : 
+                        <>
+                            <main style={{marginTop: '3rem'}} role="main" class="p-3">
+                                <ERC721CollectionDataInfoTable data={ NFTData } /> 
+                            </main>
+                        </>  
+                }
+                { 
+                    ExtraNFTData.information === null ? null : 
+                        <>
+                            <main style={{marginTop: '3rem'}} role="main" class="p-3">
+                                <ERC721CollectionExtraDataInfoTable data={ ExtraNFTData.information } /> 
+                            </main>
+                        </>  
+                }
+                {
+                    NFTFloorPrice.information === null ? null :
+                        <>
+                            <ERC721CollectionFloorPriceInfoTable data={ NFTFloorPrice.information } />
+                        </>
+                }
+                {
+                    NFTAttributes.information === null ? null :
+                        <>
+                            <hr style={{ marginTop: '3rem', marginBottom: '2rem' }} />
+                            <p><b>ERC721 Collection Attributes</b><br /><i>List of attributes and their sub-attributes and collection quantity</i></p>
+                            <ERC721CollectionAttributeSummaryInfoTable data={ NFTAttributes.information } />
+                        </>
+                }
+                {
+                    NFTTransfers.information === null ? null :
+                        <>
+                            <hr style={{ marginTop: '3rem', marginBottom: '2rem' }} />
+                            <p><b>ERC721 Collection Transfers</b><br /><i>Recent token transfer activity within collection</i></p>
+                            <ERC721CollectionTransferInfoTable data={ NFTTransfers.information.result } />
+                        </>
+                }
+                {
+                    NFTTrades.information === null ? null :
+                        <>
+                            <hr style={{ marginTop: '3rem', marginBottom: '2rem' }} />
+                            <p><b>ERC721 Collection Sales</b><br /><i>Recent token sales activity within collection</i></p>
+                            <ERC721CollectionSalesInfoTable data={ NFTTrades.information.result } />
+                        </>
+                }
+            </div>
+        )
+    }
 
 }
 

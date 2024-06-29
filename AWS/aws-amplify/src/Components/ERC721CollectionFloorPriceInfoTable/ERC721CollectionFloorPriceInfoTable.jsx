@@ -85,7 +85,7 @@ const ERC721CollectionFloorPriceInfoTable = (props) => {
     return (        
         <>
             <hr style={{ marginTop: '3rem' }} />
-            <p><b>ERC721 Collection Floor Prices</b><br /><i>Check the floor price of the collection by marketplace</i></p>
+            <p><b>ERC721 Collection Marketplace Floor Prices</b><br /><i>Check collection floor prices by marketplace</i></p>
             <div className="ag-theme-quartz" style={{ marginTop: '2rem', marginLeft: 'auto', marginRight: 'auto', height: 150, width: '100%' }}>
                 <AgGridReact
                     rowData={marketPlaceValues}
