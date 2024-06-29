@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 
 const ERC721CollectionAttributeSummaryInfoTable = (props) => {
     const { data } = props;
-    const traitKeys = Object.keys(data.information.summary);
-    
-    let keyAttributeList = [];
-    let keySubAttributePairs = [];
 
+    const [columnDefs, setColumnDefs] = useState([
+        { field: "subAttribute", headerName: "Sub-Attribute", flex: 1 },
+        { field: "quantity", headerName: "Quantity", flex: 1 },
+   ]);
+
+    const traitKeys = Object.keys(data.information.summary); // Fetch list of attributes in a collection
+    let keySubAttributePairs = [];
+    let rowItems = {};
+    
     // Iterate through attributes and nested attributes and reconfigure to array within array setup for mapping using keys
     for (var i = 0; i < traitKeys.length; i++) {
         let subTraitKeys = Object.keys(data.information.summary[traitKeys[i]]); // Array of sub attribute keys from parent attribute
@@ -15,50 +23,51 @@ const ERC721CollectionAttributeSummaryInfoTable = (props) => {
             keySubAttributePairs.push({ [subTraitKeys[j]]: data.information.summary[traitKeys[i]][subTraitKeys[j]] })
         }
 
-        keyAttributeList.push({ [traitKeys[i]] : keySubAttributePairs }); // Push to parent array
+        rowItems[traitKeys[i]] = keySubAttributePairs;
         keySubAttributePairs = []; // Reset child array for re-iteration of key-value pairs
     }
-    
-    // Map attributes and sub attributes into tables/sub-tables
-    const tabulatedNestedAttributes = keyAttributeList.map((record, key) => {
-        return (
-                <>
-                    <tr id={key}>
-                        <th style={{border: '1px solid black', fontSize: '10.5px'}}>{Object.keys(record)[0]}</th>
-                        <th style={{border: '1px solid black', fontSize: '10.5px'}}>-</th>
-                    </tr>
-                        {       
-                            record[Object.keys(record)[0]].map((subrecords, key) => {
-                                return (
-                                    <tr id={key}>
-                                        <td>{Object.keys(subrecords)[0]}</td>
-                                        <td>{subrecords[Object.keys(subrecords)[0]]}</td>
-                                    </tr>
-                                )
-                            })
-                        }
-                </>
-        );
-    });
 
+    let rowValues = [];
+    let item = {};
+
+    // Mapping each sub attribute to { subAttribute, quantity } object to be inserted into separate tables
+    for (var i = 0; i < traitKeys.length; i++) {
+        let subAttributeArray = [];
+        for (var j = 0; j < rowItems[traitKeys[i]].length; j++) {
+            item = {
+                subAttribute: Object.keys(rowItems[traitKeys[i]][j])[0],
+                quantity: rowItems[traitKeys[i]][j][Object.keys(rowItems[traitKeys[i]][j])[0]]
+            }
+
+            subAttributeArray.push(item);
+        }
+
+        // Inserting each attribute and its sub attributes into a single row
+        rowValues.push({ [traitKeys[i]]: subAttributeArray });
+        item = {};
+    }
+            
+    // Map attributes and sub attributes into tables/sub-tables
     return (
-            <div class="container p-3">
-                        {
-                            tabulatedNestedAttributes.map((tabulatedValues, key) => {
-                                return (
-                                    <table id={key} class="container p-3">
-                                        <table class="container col-md-9 p-3" style={{ marginBottom: '2rem', border: '1px solid black', fontSize: '10.5px', width: '100%' }}>
-                                            <tr style={{ border: '1px solid black', fontSize: '10.5x' }}>
-                                                <th style={{ border: '1px solid black', fontSize: '10.5px' }}>Attributes</th>
-                                                <th style={{ border: '1px solid black', fontSize: '10.5px' }}>No. Within Collection</th>
-                                            </tr>
-                                            { tabulatedValues }
-                                        </table>
-                                    </table>
-                                )
-                            })
-                        }
-                </div>
+        <>
+            {
+                rowValues.map((trait, key) => {
+                    return (
+                        <>
+                            <div style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%' }}>
+                                <p><b>{Object.keys(trait)[0]}</b></p>
+                                <div className="ag-theme-quartz" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', height: 150, width: '100%' }}>
+                                    <AgGridReact
+                                        rowData={trait[Object.keys(trait)[0]]}
+                                        columnDefs={columnDefs} />
+                                </div>
+                            </div>
+                            <br />
+                        </>
+                    )
+                })
+            }
+        </>
     )
 }
 

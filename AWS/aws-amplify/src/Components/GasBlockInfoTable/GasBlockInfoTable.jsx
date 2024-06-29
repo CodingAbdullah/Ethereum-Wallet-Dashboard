@@ -80,7 +80,7 @@ const GasBlockInfoTable = (props) => {
     return (
         <>
             <hr style={{ marginTop: '3rem' }} />
-            <p><b>Block Gas Price Information</b><br /><i>Gas prices needed to have an X% probability to enter next block.</i></p>
+            <p><b>Block Gas Price Information</b><br /><i>Gas prices needed to have an X% probability to enter next block</i></p>
             <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', height: 200, width: '100%' }}>
                 <AgGridReact
                     rowData={rowData}

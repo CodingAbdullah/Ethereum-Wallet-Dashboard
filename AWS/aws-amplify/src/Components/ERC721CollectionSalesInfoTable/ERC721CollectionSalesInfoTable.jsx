@@ -1,51 +1,87 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 
-const ERC721CollectionTradeInfoTable = (props) => {
+const ERC721CollectionSalesInfoTable = (props) => {
     const { data } = props;
 
-    // Retrieve recent sales from a NFT collection
+    let salesRowData = [];
+    let item = {};
+
+    // Transform row data to be displayed in the ERC721 Collection Sales Info Table
+    for (var i = 0; i < data.length; i++) {
+        
+        let ids = ''; // Data manipulation for display
+        if (data[i].token_ids.length > 1){
+            for (var i = 0 ; i < data[i].token_ids.length; i++){
+                ids += data[i].token_ids + ", ";
+            }
+
+            ids = ids.substring(0, ids.length - 2); // Remove the delimiter and space at the end
+        }
+        else {
+            ids = data[i].token_ids; // Else, keep ID as is
+        }
+
+        item = {
+            buyer: data[i].buyer_address,
+            seller: data[i].seller_address,
+            ids,
+            price: Number(data[i].price*(1/1000000000000000000)).toPrecision(4) + " ETH",
+            time: String(data[i].block_timestamp.split("T")[0]) + ' - ' + String(data[i].block_timestamp.split("T")[1]).split(".")[0]
+        }
+
+        salesRowData.push(item);
+        item = {};
+    }
+
+    // Defining columns to be added to the ERC721 Collection Sales Info Table
+    const [columnDefs, setColumnDefs] = useState([
+        { field: "buyer", headerName: "Buyer", flex: 0.5 },
+        { field: "seller", headerName: "Seller", flex: 1 },
+        { field: "ids", headerName: "Token ID", flex: 1 },
+        { field: "price", headerName: "Price", flex: 1 },
+        { field: "time", headerName: "Time", flex: 1 }
+    ]);
+
+    // Function for handling column renders on window screen size
+    const updateColumnDefs = () => {
+        if (window.outerWidth < 900) {
+            setColumnDefs([
+                { field: "ids", headerName: "Token ID", flex: 0.5 },
+                { field: "price", headerName: "Price", flex: 1 },
+                { field: "time", headerName: "Time", flex: 1 },
+            ]);
+        }
+        else {
+            setColumnDefs([
+                { field: "ids", headerName: "Token ID", flex: 0.5 },
+                { field: "buyer", headerName: "Buyer", flex: 1 },
+                { field: "seller", headerName: "Seller", flex: 1 },
+                { field: "price", headerName: "Price", flex: 1 },
+                { field: "time", headerName: "Time", flex: 1 }
+            ]);
+        }
+    };
+
+    // Dynamically adjust table size depending on screen size
+    useEffect(() => {
+        updateColumnDefs();
+        window.addEventListener('resize', updateColumnDefs);
+        return () => window.removeEventListener('resize', updateColumnDefs);
+    }, []);
+
+    // Posting sample data from the collection along with their token hashes
     return (
-        <div style={{marginTop: '3rem'}} className="p-3">
-            <table style={{border: '1px solid black'}}>
-                <thead style={{border: '1px solid black'}}>
-                <tr style={{border: '1px solid black'}}>
-                    <th style={{border: '1px solid black'}} scope="col">Buyer</th>
-                    <th style={{border: '1px solid black'}} scope="col">Seller</th>
-                    <th style={{border: '1px solid black'}} scope="col">Token Address</th>
-                    <th style={{border: '1px solid black'}} scope="col">Token Id(s)</th>
-                    <th style={{border: '1px solid black'}} scope="col">Price</th>
-                    <th style={{border: '1px solid black'}} scope="col">Time</th>
-                </tr>
-                </thead>
-                <tbody>
-                    {
-                        data.map((record, key) => {
-                            let ids = ''; // Data manipulation for display
-                            if (record.token_ids.length > 1){
-                                for (var i = 0 ; i < record.token_ids.length; i++){
-                                    ids += record.token_ids + ", ";
-                                }
-                                ids = ids.substring(0, ids.length - 2); // Remove the delimiter and space at the end
-                            }
-                            else {
-                                ids = record.token_ids; // Else, keep id as is
-                            }
-                            return (
-                                <tr id={key} style={{border: '1px solid black'}}>
-                                    <td style={{border: '1px solid black', fontSize: '10.5px'}}>{record.buyer_address}</td>
-                                    <td style={{border: '1px solid black', fontSize: '10.5px'}}>{record.seller_address}</td>
-                                    <td style={{border: '1px solid black', fontSize: '10.5px'}}>{record.token_address}</td>
-                                    <td style={{border: '1px solid black', fontSize: '10.5px'}}>{ids}</td>
-                                    <td style={{border: '1px solid black', fontSize: '10.5px'}}>{(record.price*(1/1000000000000000000)).toPrecision(4)} ETH</td>
-                                    <td style={{border: '1px solid black', fontSize: '10.5px'}}>{record.block_timestamp.split("Z")[0]}</td>
-                                </tr>
-                            )
-                        })
-                    }
-                </tbody>
-            </table>
-        </div>
+        <>
+            <div className="ag-theme-quartz" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', height: 150, width: '100%' }}>
+                <AgGridReact
+                    rowData={salesRowData}
+                    columnDefs={columnDefs} />
+            </div>
+        </>
     )
 }
 
-export default ERC721CollectionTradeInfoTable;
+export default ERC721CollectionSalesInfoTable;
