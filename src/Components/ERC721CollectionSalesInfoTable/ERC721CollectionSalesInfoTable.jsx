@@ -75,7 +75,7 @@ const ERC721CollectionSalesInfoTable = (props) => {
     // Posting sample data from the collection along with their token hashes
     return (
         <>
-            <div className="ag-theme-quartz" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', height: 150, width: '100%' }}>
+            <div className="ag-theme-quartz" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', height: 250, width: '100%' }}>
                 <AgGridReact
                     rowData={salesRowData}
                     columnDefs={columnDefs} />

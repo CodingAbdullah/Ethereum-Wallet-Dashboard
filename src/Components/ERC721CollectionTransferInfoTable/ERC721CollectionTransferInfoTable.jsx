@@ -60,7 +60,7 @@ const ERC721CollectionTransferInfoTable = (props) => {
     // Posting sample data from the collection along with their token hashes
     return (
         <>
-            <div className="ag-theme-quartz" style={{ marginTop: '2rem', marginLeft: 'auto', marginRight: 'auto', height: 150, width: '100%' }}>
+            <div className="ag-theme-quartz" style={{ marginTop: '2rem', marginLeft: 'auto', marginRight: 'auto', height: 250, width: '100%' }}>
                 <AgGridReact
                     rowData={collectionRowData}
                     columnDefs={columnDefs} />
