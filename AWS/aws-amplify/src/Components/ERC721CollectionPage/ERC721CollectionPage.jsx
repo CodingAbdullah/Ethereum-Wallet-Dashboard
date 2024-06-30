@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { ERC721TopCollections } from '../../UtilFunctions/erc721TopCollectionsPRO';
@@ -11,14 +11,25 @@ import ERC721CollectionFloorPriceInfoTable from '../ERC721CollectionFloorPriceIn
 import ERC721CollectionSalesInfoTable from '../ERC721CollectionSalesInfoTable/ERC721CollectionSalesInfoTable';
 import ERC721CollectionTransferInfoTable from '../ERC721CollectionTransferInfoTable/ERC721CollectionTransferInfoTable';
 import ERC721CollectionTrendsInfoTable from '../ERC721CollectionTrendsInfoTable/ERC721CollectionTrendsInfoTable';
+import ERC721CollectionFloorPriceChart from '../ERC721CollectionFloorPriceChart/ERC721CollectionFloorPriceChart';
+import ERC721CollectionMarketCapChart from '../ERC721CollectionMarketCapChart/ERC721CollectionMarketCapChart';
+import ERC721CollectionVolumeChart from '../ERC721CollectionVolumeChart/ERC721CollectionVolumeChart';
+import DurationSelector from '../DurationSelector/DurationSelector';
 
 const ERC721CollectionPage = () => {
 
     const [tokenAddress, updateTokenAddress] = useState("");
     const [setTokenAddress, updateSetTokenAddress] = useState('');
+    const [chartinterval, updateChartInterval] = useState('14');
+
     const [setAlert, updateAlert] = useState(false);
 
+    const chartIntervalHandler = e => {
+        updateChartInterval(e.target.value);
+    }
+
     const NODE_SERVER_URL = "http://localhost:5000"; // Node Server for API end points
+    const CHART_INFO_ENDPOINT = '/erc721-collection-chart-data';
     const EXTRA_INFO_ENDPOINT = '/erc721-collection-extra-data';
     const TRANSFERS_ENDPOINT = '/erc721-collection-transfers';
     const TRADES_ENDPOINT = '/erc721-collection-sales';
@@ -30,6 +41,10 @@ const ERC721CollectionPage = () => {
     const ERC721TopCollectionsQuery = useQuery({
         queryKey: ['erc721-top-collections'],
         queryFn: ERC721TopCollections
+    });
+
+    const [ChartNFTData, updateChartNFTData] = useState({
+        information: null
     });
 
     const [ExtraNFTData, updateExtraNFTData] = useState({
@@ -56,7 +71,43 @@ const ERC721CollectionPage = () => {
         information: null
     });
 
+
+    useEffect(() => {
+        // ERC721 Collection Chart data
+        // Set options for fetch and flight responses
+        // Make API call to backend to fetch chart data based on every interval change
+        const chartOptions = {
+            method: 'POST',
+            mode: 'cors',
+            body: JSON.stringify({ address: tokenAddress, interval: chartinterval }),
+            headers: {
+                'content-type' : 'application/json', 
+            }
+        }
+
+        axios.post(NODE_SERVER_URL + CHART_INFO_ENDPOINT, chartOptions)
+        .then(response => {
+            updateChartNFTData((prevState) => {
+                return {
+                    ...prevState,
+                    information: response.data
+                }
+            });
+        })
+        .catch(() => {
+            alertHandler();
+            updateAlert(true);
+        });
+    }, [chartinterval, updateChartInterval]);
+
     const alertHandler = () => { // Clear data if there is an error, function to be invoked
+        updateChartNFTData((prevState) => { 
+            return {
+                ...prevState,
+                information: null
+            }
+        });
+
         updateExtraNFTData((prevState) => {
             return {
                 ...prevState,
@@ -124,6 +175,7 @@ const ERC721CollectionPage = () => {
 
             try {
                 // Extra Collection Data
+
                 const response = await axios.post(NODE_SERVER_URL + EXTRA_INFO_ENDPOINT, options); // NFT endpoint for retrieving information related to collection
                 
                 if (response.status !== 200){
@@ -171,6 +223,38 @@ const ERC721CollectionPage = () => {
                             }
                         });
                     }
+                }
+            }
+            catch {
+                alertHandler();
+                updateAlert(true);
+            };
+
+            try {
+                // ERC721 Collection Chart data
+                // Set options for fetch and flight responses
+                const chartOptions = {
+                    method: 'POST',
+                    mode: 'cors',
+                    body: JSON.stringify({ address: tokenAddress, interval: chartinterval }),
+                    headers: {
+                        'content-type' : 'application/json', 
+                    }
+                }
+
+                const collectionChartData = await axios.post(NODE_SERVER_URL + CHART_INFO_ENDPOINT, chartOptions);
+                
+                if (collectionChartData.status !== 200){
+                    updateAlert(true);
+                    alertHandler();
+                }
+                else {
+                    updateChartNFTData((prevState) => {
+                        return {
+                            ...prevState,
+                            information: collectionChartData.data
+                        }
+                    });
                 }
             }
             catch {
@@ -312,9 +396,29 @@ const ERC721CollectionPage = () => {
                 { 
                     NFTData.information === null ? null : 
                         <>
-                            <main style={{marginTop: '3rem'}} role="main" class="p-3">
-                                <ERC721CollectionDataInfoTable data={ NFTData } /> 
-                            </main>
+                            <ERC721CollectionDataInfoTable data={ NFTData } /> 
+                        </>  
+                }
+                { 
+                    ChartNFTData.information === null || NFTData.information === null ? null : 
+                        <>
+                            <hr style={{ marginTop: '3rem', marginBottom: '2rem' }} />
+                            <ERC721CollectionMarketCapChart interval={ chartinterval === '15' ? '14' : chartinterval } marketCapData={ ChartNFTData.information.marketCaps } name={ NFTData.information.result[0].name } /> 
+                        </>  
+                }
+                { 
+                    ChartNFTData.information === null || NFTData.information === null ? null : 
+                        <>
+                            <hr style={{ marginTop: '3rem', marginBottom: '2rem' }} />
+                            <ERC721CollectionFloorPriceChart interval={ chartinterval === '15' ? '14' : chartinterval } floorPriceData={ ChartNFTData.information.floorPrices } name={ NFTData.information.result[0].name } /> 
+                        </>  
+                }
+                { 
+                    ChartNFTData.information === null || NFTData.information === null ? null : 
+                        <>
+                            <hr style={{ marginTop: '3rem', marginBottom: '2rem' }} />
+                            <ERC721CollectionVolumeChart interval={ chartinterval === '15' ? '14' : chartinterval } volumeData={ ChartNFTData.information.volumes } name={ NFTData.information.result[0].name } /> 
+                            <DurationSelector priceDurationHandler={ chartIntervalHandler } />
                         </>  
                 }
                 { 

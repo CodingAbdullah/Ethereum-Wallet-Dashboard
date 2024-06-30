@@ -4,6 +4,7 @@ const ERC721CollectionController = require('../Controller/ERC721CollectionContro
 
 // Add routes to be passed to node backend server
 router.post('/erc721-collection-data', ERC721CollectionController.getERC721CollectionData);
+router.post('/erc721-collection-chart-data', ERC721CollectionController.getERC721CollectionChartData);
 router.post('/erc721-collection-extra-data', ERC721CollectionController.getERC721CollectionExtraData);
 router.post('/erc721-collection-transfers', ERC721CollectionController.getERC721CollectionTransfers);
 router.post('/erc721-collection-sales', ERC721CollectionController.getERC721CollectionSales);
