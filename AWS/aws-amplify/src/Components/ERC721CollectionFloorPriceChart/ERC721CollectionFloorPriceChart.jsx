@@ -15,9 +15,9 @@ const ERC721CollectionFloorPriceChart = (props) => {
                 // Data: Data to be displayed in the chart
                 data: floorPriceData,
                 // Series: Defines which chart type and data to use
-                series: [{ type: 'line', xName:'Time', yName: 'Price', xKey: 'time', yKey: 'price' }],
+                series: [{ type: 'line', xName:'Time', yName: 'USD', xKey: 'time', yKey: 'price' }],
                 title: {
-                    text:  `${name} Floor Activity`
+                    text:  `${name} Floor Activity (USD)`
                 },
                 subtitle: {
                     text: `Last ${interval} Days`

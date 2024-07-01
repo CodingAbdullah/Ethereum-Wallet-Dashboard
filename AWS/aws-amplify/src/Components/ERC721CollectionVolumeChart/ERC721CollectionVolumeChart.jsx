@@ -15,9 +15,9 @@ const ERC721CollectionVolumeChart = (props) => {
                 // Data: Data to be displayed in the chart
                 data: volumeData,
                 // Series: Defines which chart type and data to use
-                series: [{ type: 'line', xName:'Time', yName: 'Price', xKey: 'time', yKey: 'price' }],
+                series: [{ type: 'line', xName:'Time', yName: 'USD', xKey: 'time', yKey: 'price' }],
                 title: {
-                    text:  `${name} Volume Activity`
+                    text:  `${name} Volume Activity (USD)`
                 },
                 subtitle: {
                     text: `Last ${interval} Days`

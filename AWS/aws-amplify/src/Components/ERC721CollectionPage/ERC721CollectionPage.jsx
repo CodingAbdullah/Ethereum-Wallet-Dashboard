@@ -76,6 +76,8 @@ const ERC721CollectionPage = () => {
         // ERC721 Collection Chart data
         // Set options for fetch and flight responses
         // Make API call to backend to fetch chart data based on every interval change
+
+        if (tokenAddress === '') return;
         const chartOptions = {
             method: 'POST',
             mode: 'cors',
@@ -424,9 +426,7 @@ const ERC721CollectionPage = () => {
                 { 
                     ExtraNFTData.information === null ? null : 
                         <>
-                            <main style={{marginTop: '3rem'}} role="main" class="p-3">
-                                <ERC721CollectionExtraDataInfoTable data={ ExtraNFTData.information } /> 
-                            </main>
+                            <ERC721CollectionExtraDataInfoTable data={ ExtraNFTData.information } /> 
                         </>  
                 }
                 {
