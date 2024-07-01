@@ -1,61 +1,127 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { ERC20TopCoins } from '../../UtilFunctions/erc20TopCoinsPRO';
 import axios from 'axios';
 import Alert from '../Alert/Alert';
+import DurationSelector from '../DurationSelector/DurationSelector';
+import ERC720PricesChart from '../ERC720PricesChart/ERC720PricesChart';
+import ERC20PricesInfoTable from '../ERC720PricesInfoTable/ERC720PricesInfoTable';
 import ERC720TransfersInfoTable from '../ERC720TransfersInfoTable/ERC720TransfersInfoTable';
 import ERC720PricesInfoTable from '../ERC720PricesInfoTable/ERC720PricesInfoTable';
+import ERC720CollectionTopCoinsInfoTable from '../ERC720CollectionTopCoinsInfoTable/ERC720CollectionTopCoinsInfoTable';
+import ERC720CollectionTransfersInfoTable from '../ERC720CollectionTransfersInfoTable/ERC720CollectionTransfersInfoTable';
+import ERC720CollectionOwnersInfoTable from '../ERC720CollectionOwnersInfoTable/ERC720CollectionOwnersInfoTable';
 
 const ERC720CollectionPage = () => {
-
     const [tokenAddress, updateTokenAddress] = useState("");
-    const [setAlert, updateAlert] = useState(false);
-    const [setPrice, updateERC20Price] = useState(null);
+    const [interval, updateInterval] = useState('24');
+    const [formAlert, updateAlert] = useState("");
 
-    const [ERC20Transfers, updateTransfers] = useState({
+    // State for tracking ERC20 token information, prices, and current ERC20 price
+    const [erc20Information, updateErc20Information] = useState({
+      coinData: null
+    });
+
+    const [erc20Prices, updateErc20Prices] = useState({ 
+      coinPrice: null
+    });
+
+    const [currentERC20Price, updateCurrentERC20Price] = useState({
+      currentValue: null
+    });
+
+    const [erc20Transfers, updateERC20Transfers] = useState({
+        information: null 
+    });
+
+    const [erc20Owners, updateERC20Owners] = useState({
         information: null
     });
 
-    const [ERC20Information, updateERC20Information] = useState({
-        information: null
+    const topERC20TokensQuery = useQuery({
+        queryKey: ['top-erc20-tokens'],
+        queryFn: ERC20TopCoins
     });
 
     const navigate = useNavigate();
 
-    // Node Server endpoints
-    const NODE_SERVER_URL = "https://18.221.208.44.nip.io"; // AWS EC2 Node Server URL
-    const NODE_SERVER_TOKEN_PRICE_ENDPOINT = '/erc20-token-price';
-    const NODE_SERVER_TOKEN_TRANSFER_ENDPOINT = '/erc20-transfer';
-
-    const COINGECKO_URL = 'https://api.coingecko.com/api/v3'; // API Endpoints
-    const ERC20_INFO_ENDPOINT = '/coins/ethereum/contract/' + tokenAddress;
-
-    const alertHandler = () => {
-        updateAlert(true); // Add alerts if any don't exist, and clear all information for analytics
-        updateTransfers((prevState) => {
-            return {
-                ...prevState,
-                information: null
-            }
-        });
-        updateERC20Price(null);
-        updateERC20Information((prevState) => {
-            return {
-                ...prevState,
-                information: null
-            }
-        });
+    const intervalHandler = e => {
+        updateInterval(e.target.value);
     }
 
+    // Price, Chart, Information Table, Top ERC20 Tokens, Transfers, Owners
+    // Import ERC20Chart component and Info Table, and ERC20PricesPage Component
+
+    // Fetch data based on interval change
+    useEffect(() => {
+        const URL = 'http://localhost:5000';
+        const ERC20_PRICE_ENDPOINT = '/ERC20-coin-price-duration';
+
+        // Checking if token value is defined before proceeding with API call
+        if (tokenAddress !== '' && tokenAddress.length === 42 && tokenAddress.substring(0, 2) === "0x"){
+            let options = {
+                method: "POST",
+                body: JSON.stringify({ contract: tokenAddress, interval }),
+                headers: {
+                    'content-type' : 'application/json'
+                }
+            }
+            
+            // Request ERC20 token price information
+            axios.post(URL + ERC20_PRICE_ENDPOINT, options)
+            .then(response => {
+                updateErc20Prices(prevState => {
+                return {
+                    ...prevState,
+                    coinPrice: response.data.coinPrices
+                }
+                });
+            })
+            .catch(() => {
+                clearHandler();
+                updateAlert("invalid");
+            });
+        }
+        else return;
+    }, 
+    [interval, updateInterval]);
+
+    // Clear all data when requested
+    // Set toggle back to default
     const clearHandler = () => {
-        updateAlert(false); // Add alerts if any don't exist, and clear all information for analytics
-        updateTransfers((prevState) => {
+        updateAlert("");
+        updateErc20Information(prevState => {
+            return {
+                ...prevState,
+                coinData: null
+            }
+        });
+
+        // Clearing all data
+        updateErc20Prices(prevState => {
+            return {
+                ...prevState,
+                coinPrice: null
+            }
+        });
+
+        updateCurrentERC20Price(prevState => {
+            return {
+                ...prevState,
+                currentValue: null
+            }
+        });
+
+        // Add data related to ERC20 token owners and transfers
+        updateERC20Owners(prevState => {
             return {
                 ...prevState,
                 information: null
             }
         });
-        updateERC20Price(null);
-        updateERC20Information((prevState) => {
+
+        updateERC20Transfers(prevState => {
             return {
                 ...prevState,
                 information: null
@@ -63,99 +129,131 @@ const ERC720CollectionPage = () => {
         });
     }
 
-    const formHandler = (e) => {
+    const formHandler = async (e) => {
         e.preventDefault();
 
-        // Set options for fetch and flight responses
-        const options = {
-            method: 'POST',
-            mode: 'cors',
-            body: JSON.stringify({ address : tokenAddress }),
-            headers: {
-                'content-type' : 'application/json', 
-                'accept': 'application/json',
-            }
-        }
+        // Update and set token address to what was entered and update chart toggle
+        if (tokenAddress !== '' && tokenAddress.length === 42 && tokenAddress.substring(0, 2) === "0x"){
+            clearHandler();
 
-        if (tokenAddress.length === 42 && tokenAddress.substring(0, 2) === '0x'){
-            axios.post(NODE_SERVER_URL + NODE_SERVER_TOKEN_TRANSFER_ENDPOINT, options) // ERC20 endpoint for retrieving information related to transfers
+            const URL = 'http://localhost:5000';
+            const ERC20_INFO_ENDPOINT = '/ERC20-coin-information';
+            const ERC20_PRICE_ENDPOINT = '/ERC20-coin-price-duration';
+            const CURRENT_ERC20_PRICE_ENDPOINT = '/current-ERC20-price';
+            const ERC20_OWNER_ENDPOINT = '/erc20-owners';
+            const ERC20_TRANSFER_ENDPOINT = '/erc20-transfer';
+
+            let options = {
+                method: "POST",
+                body: JSON.stringify({ contract: tokenAddress, interval }),
+                headers: {
+                    'content-type' : 'application/json'
+                }
+            }
+        
+            // Request ERC20 token price information
+            axios.post(URL + ERC20_PRICE_ENDPOINT, options)
             .then(response => {
-                if (response.status !== 200){
-                    updateAlert(true);
-                    alertHandler();
-                }
-                else {
-                    if (response.status === 200 && response.data.information.result.length === 0){ // If empty, remove information
-                        updateAlert(false);
-                        alertHandler();
+                updateErc20Prices(prevState => {
+                    return {
+                        ...prevState,
+                        coinPrice: response.data.coinPrices
                     }
-                    else {
-                        updateAlert(false); // Remove alerts if any exist
-                        updateTransfers((prevState) => {
-                            return {
-                                ...prevState,
-                                information: response.data.information.result
-                            }
-                        });
-                    }
-                }
+                });
             })
             .catch(() => {
-                alertHandler();
+                clearHandler();
+                updateAlert("invalid");
             });
 
-            axios.post(NODE_SERVER_URL + NODE_SERVER_TOKEN_PRICE_ENDPOINT, options) // ERC20 endpoint for retrieving information related to price
-                .then(response => {
-                    if (response.status !== 200){
-                        alertHandler();                    
-                    }
-                    else {
-                        if (response.status === 200 && Object.keys(response.data.information).length === 0){ // If empty, clear price
-                            alertHandler();                            
-                        }
-                        else {
-                            updateERC20Price(response.data.information.usdPrice);
-                        }
-                    }
-                })
-                .catch((err) => {
-                    alertHandler();
-                });
-            
-            axios.get(COINGECKO_URL + ERC20_INFO_ENDPOINT) // Retrieve price of ERC20 coin from coingecko
+            // Request ERC20 token information
+            axios.post(URL + ERC20_INFO_ENDPOINT, options)
             .then(response => {
-                if (response.status !== 200){
-                    alertHandler();
-                }
-                else {
-                    if (response.status === 200 && Object.keys(response).length > 0) { // Check results to see if they match criteria
-                        updateERC20Information((prevState) => {
-                            return {
-                                ...prevState,
-                                information: response.data
-                            }
-                        })
+                updateErc20Information(prevState => {
+                    return {
+                        ...prevState,
+                        coinData: response.data.ERC20CoinData
                     }
-                    else {
-                        alertHandler();
-                    }
-                }
+                });
             })
             .catch(() => {
-                alertHandler();
+                clearHandler();
+                updateAlert("invalid");
+            });
+
+            // Request ERC20 current price
+            axios.post(URL + CURRENT_ERC20_PRICE_ENDPOINT, options)
+            .then(response => {
+                updateCurrentERC20Price(prevState => {
+                    return {
+                        ...prevState,
+                        currentValue: response.data.price
+                    }
+                });
+            })
+            .catch(() => {
+                clearHandler();
+                updateAlert("invalid");
+            });
+
+            // Request ERC20 token owners
+            axios.post(URL + ERC20_OWNER_ENDPOINT, options)
+            .then(response => {
+                updateERC20Owners(prevState => {
+                    return {
+                        ...prevState,
+                        information: response.data.information
+                    }
+                });
+            })
+            .catch(() => {
+                clearHandler();
+                updateAlert("invalid");
+            });
+
+            // Request ERC20 token transfers
+            axios.post(URL + ERC20_TRANSFER_ENDPOINT, options)
+            .then(response => {
+                updateERC20Transfers(prevState => {
+                    return {
+                        ...prevState,
+                        information: response.data.information
+                    }
+                });
+            })
+            .catch(() => {
+                clearHandler();
+                updateAlert("invalid");
             });
         }
         else {
-            alertHandler();
-        }   
+            if (formAlert === "invalid"){ // If the format is not of length 42 and start with 0x (hex), throw error
+                e.target.reset();
+            }
+            else {
+                clearHandler();
+                updateAlert("invalid"); // If repeated multiple times, clear input and keep error as is
+            }
+        }
     }
+
+    // Conditionally rendering ERC20 token information
+    if (topERC20TokensQuery.isLoading) {
+        return <div>Loading...</div>
+    }
+    else if (topERC20TokensQuery.isError) {
+        return <div>Error loading ERC20 token data</div>
+    }
+    else {
         return (
             <div className="erc720-collection-page">
                 <main role="main" class="p-3">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">ERC20 Token Analytics</h1>
                     </div>
-                    { setAlert ? <Alert type='danger' /> : null }
+                    <ERC720CollectionTopCoinsInfoTable data={topERC20TokensQuery.data} />
+                    { formAlert ? <Alert type='danger' /> : null }
+                    <hr style={{ marginTop: '3rem' }} />
                     <div class="jumbotron">
                         <div class="container">
                             <p>Enter contract address of an <b>ERC20</b> token for a quick analysis</p>
@@ -167,40 +265,31 @@ const ERC720CollectionPage = () => {
                             <button style={{marginTop: '2rem', marginLeft: '2rem'}} class='btn btn-warning' onClick={clearHandler}>Clear</button>
                         </div>  
                     </div>
-                </main>
-                <main class="p-3" role="main">
-                    { setPrice === null ? null : <h3 style={{marginTop: '3rem', marginBottom: '1.5rem'}}>Price: $<b>{setPrice.toPrecision(4)}</b> USD/Token</h3> } 
-                    <div>
-                        {
-                            ERC20Information.information === null ? null :
-                                <>
-                                    <main role="main">
-                                        <div style={{marginTop: '1rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                            <h3 class="h3">ERC20 Statistics</h3>
-                                        </div>
-                                    </main>
-                                    <ERC720PricesInfoTable data={ERC20Information} />
-                                </>
-                        }
-                    </div>
-                </main>
-                <main class="p-3" role="main">
-                    <div>
-                        {
-                            ERC20Transfers.information === null ? null :
-                                <>
-                                    <main role="main">
-                                        <div style={{marginTop: '3rem'}} class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                            <h3 class="h3">ERC20 Transfers (Recent or Top 100)</h3>
-                                        </div>
-                                    </main>
-                                    <ERC720TransfersInfoTable address={null} data={ERC20Transfers.information} />
-                                </>
-                        }
-                    </div>
+                    {
+                        erc20Information.coinData !== null && currentERC20Price.currentValue !== null && formAlert === '' && erc20Prices.coinPrice !== null && erc20Transfers.information !== null && erc20Owners.information !== null ? 
+                        <>
+                            <hr style={{ marginTop: '3rem' }} />
+                            <h2>{ erc20Information.coinData.name }</h2>
+                            <i>{ erc20Information.coinData.contract_address }</i>
+                            <br />
+                            <img style={{ marginTop: '1rem', marginBottom: '1rem' }} src={ erc20Information.coinData.image.small } />
+                            {
+                                Object.keys(erc20Information.coinData.description).length !== 0 ?
+                                    <p style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%' }}><i>{ erc20Information.coinData.description.en }</i></p>
+                                : null
+                            }
+                            <ERC720PricesChart tokenPrice={ currentERC20Price.currentValue } coinInformation={ erc20Information.coinData } priceData={ erc20Prices.coinPrice } />
+                            <DurationSelector priceDurationHandler={ intervalHandler } />
+                            <ERC720PricesInfoTable coinInformation={ erc20Information.coinData } />
+                            { erc20Transfers.information.result.length !== 0 ? <ERC720CollectionTransfersInfoTable data={ erc20Transfers.information.result } /> : null }
+                            { erc20Owners.information.result.length !== 0 ? <ERC720CollectionOwnersInfoTable data={ erc20Owners.information.result } /> : null }
+                        </>
+                        : null
+                    }
                 </main>
             </div>
         )
     }
+}
 
 export default ERC720CollectionPage;

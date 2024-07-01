@@ -5,7 +5,7 @@ import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied
 
 const ERC720CollectionTopCoinsInfoTable = (props) => {
     const { data } = props;
-    console.log(data);
+
     let coinTableRowData = [];
     let item = {}
 
@@ -17,7 +17,7 @@ const ERC720CollectionTopCoinsInfoTable = (props) => {
             tokenLogo: data[i].token_logo,
             contractAddress: data[i].contract_address,
             priceUsd: data[i].price_usd,
-            pricePercentChange: data[i].price_24h_percent_change,
+            pricePercentChange: data[i]["price_24h_percent_change"],
             marketCap: data[i].market_cap_usd
         }
         coinTableRowData.push(item);
@@ -26,11 +26,13 @@ const ERC720CollectionTopCoinsInfoTable = (props) => {
 
     // Setting column definitions for the ERC20 Collection Top Coins Info Table
     const [columnDefs, setColumnDefs] = useState([
-        { field: "tokenName", headerName: 'Token Name', flex: 1 },
-        { field: "tokenSymbol", headerName: 'Token Symbol', flex: 1 },
-        { field: "tokenLogo", headerName: 'Token Logo', flex: 1,
+        { field: "tokenName", headerName: 'Name', flex: 1 },
+        { field: "tokenSymbol", headerName: 'ticker', flex: 1 },
+        { field: "tokenLogo", headerName: 'Logo', flex: 1,
             cellRenderer: (params) => {
-                return <img src={params.value} alt="Token Logo" style={{ width: '50px', height: '50px' }} />
+                return (
+                    <img src={ params.value } alt="No Logo" style={{ width: '25px', height: '25px' }} />
+                )
             }
         },
         { field: "contractAddress", headerName: 'Contract Address', flex: 1 },
@@ -39,12 +41,12 @@ const ERC720CollectionTopCoinsInfoTable = (props) => {
                 return <p>${params.value}</p>
             }
         },
-        { field: "pricePercentChange", headerName: 'Price % Change (24H)', flex: 1,
+        { field: "pricePercentChange", headerName: '24 Hr. % Change', flex: 1,
             cellRenderer: (params) => {
-                return params.value >= 0 ? <p style={{ color: 'green' }}>{params.value}%</p> : <p style={{ color: 'red' }}>{params.value}%</p>
+                return params.value >= 0 ? <p style={{ color: 'green' }}><b>{Number(params.value).toFixed(2)}%</b></p> : <p style={{ color: 'red' }}><b>{Number(params.value).toFixed(2)}%</b></p>
             }
         },
-        { field: "marketCap", headerName: 'Market Cap (USD)', flex: 1,
+        { field: "marketCap", headerName: 'Market Cap', flex: 1,
             cellRenderer: (params) => {
                 return <p>${params.value}</p>
             }
@@ -55,11 +57,13 @@ const ERC720CollectionTopCoinsInfoTable = (props) => {
     const updateColumnDefs = () => {
         if (window.outerWidth < 800) {
             setColumnDefs([
-                { field: "tokenName", headerName: 'Token Name', flex: 1 },
-                { field: "tokenSymbol", headerName: 'Token Symbol', flex: 1 },
-                { field: "tokenLogo", headerName: 'Token Logo', flex: 1,
+                { field: "tokenName", headerName: 'Name', flex: 1 },
+                { field: "tokenSymbol", headerName: 'Ticker', flex: 1 },
+                { field: "tokenLogo", headerName: 'Logo', flex: 1,
                     cellRenderer: (params) => {
-                        return <img src={params.value} alt="Token Logo" style={{ width: '50px', height: '50px' }} />
+                        return (
+                            <img src={ params.value } alt="No Logo" style={{ width: '25px', height: '25px' }} />
+                        )
                     }
                 },
                 { field: "priceUsd", headerName: 'Price (USD)', flex: 1,
@@ -69,13 +73,15 @@ const ERC720CollectionTopCoinsInfoTable = (props) => {
                 }
             ]);
         }
-        else if (window.outerWidth < 1250) {
+        else if (window.outerWidth < 1050) {
             setColumnDefs([
                 { field: "tokenName", headerName: 'Token Name', flex: 1 },
                 { field: "tokenSymbol", headerName: 'Token Symbol', flex: 1 },
-                { field: "tokenLogo", headerName: 'Token Logo', flex: 1,
+                { field: "tokenLogo", headerName: 'Logo', flex: 1,
                     cellRenderer: (params) => {
-                        return <img src={params.value} alt="Token Logo" style={{ width: '50px', height: '50px' }} />
+                        return (
+                            <img src={ params.value } alt="No Logo" style={{ width: '25px', height: '25px' }} />
+                        )
                     }
                 },
                 { field: "priceUsd", headerName: 'Price (USD)', flex: 1,
@@ -83,12 +89,12 @@ const ERC720CollectionTopCoinsInfoTable = (props) => {
                         return <p>${params.value}</p>
                     }
                 }, 
-                { field: "pricePercentChange", headerName: 'Price % Change (24H)', flex: 1,
+                { field: "pricePercentChange", headerName: '24 Hr. % Change', flex: 1,
                     cellRenderer: (params) => {
-                        return params.value >= 0 ? <p style={{ color: 'green' }}>{params.value}%</p> : <p style={{ color: 'red' }}>{params.value}%</p>
+                        return params.value >= 0 ? <p style={{ color: 'green' }}><b>{Number(params.value).toFixed(2)}%</b></p> : <p style={{ color: 'red' }}><b>{Number(params.value).toFixed(2)}%</b></p>
                     }
                 },
-                { field: "marketCap", headerName: 'Market Cap (USD)', flex: 1,
+                { field: "marketCap", headerName: 'Market Cap', flex: 1,
                     cellRenderer: (params) => {
                         return <p>${params.value}</p>
                     }
@@ -97,11 +103,13 @@ const ERC720CollectionTopCoinsInfoTable = (props) => {
         }
         else {
             setColumnDefs([
-                { field: "tokenName", headerName: 'Token Name', flex: 1 },
-                { field: "tokenSymbol", headerName: 'Token Symbol', flex: 1 },
-                { field: "tokenLogo", headerName: 'Token Logo', flex: 1,
+                { field: "tokenName", headerName: 'Name', flex: 1 },
+                { field: "tokenSymbol", headerName: 'Ticker', flex: 1 },
+                { field: "tokenLogo", headerName: 'Logo', flex: 1,
                     cellRenderer: (params) => {
-                        return <img src={params.value} alt="Token Logo" style={{ width: '50px', height: '50px' }} />
+                        return (
+                            <img src={ params.value } alt="No Logo" style={{ width: '25px', height: '25px' }} />
+                        )
                     }
                 },
                 { field: "contractAddress", headerName: 'Contract Address', flex: 1 },
@@ -110,12 +118,12 @@ const ERC720CollectionTopCoinsInfoTable = (props) => {
                         return <p>${params.value}</p>
                     }
                 },
-                { field: "pricePercentChange", headerName: 'Price % Change (24H)', flex: 1,
+                { field: "pricePercentChange", headerName: '24 Hr. % Change', flex: 1,
                     cellRenderer: (params) => {
-                        return params.value >= 0 ? <p style={{ color: 'green' }}>{params.value}%</p> : <p style={{ color: 'red' }}>{params.value}%</p>
+                        return params.value >= 0 ? <p style={{ color: 'green' }}><b>{Number(params.value).toFixed(2)}%</b></p> : <p style={{ color: 'red' }}><b>{Number(params.value).toFixed(2)}%</b></p>
                     }
                 },
-                { field: "marketCap", headerName: 'Market Cap (USD)', flex: 1,
+                { field: "marketCap", headerName: 'Market Cap', flex: 1,
                     cellRenderer: (params) => {
                         return <p>${params.value}</p>
                     }
@@ -135,7 +143,6 @@ const ERC720CollectionTopCoinsInfoTable = (props) => {
     // Render Ag-Grid React component with row and column data
     return (
         <>
-            <hr style={{ marginTop: '3rem' }} />
             <p><b>Top ERC20 Coins</b><br /><i>Look up the top ERC20 tokens by market cap</i></p>
             <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', height: 200, width: '100%' }}>
                 <AgGridReact

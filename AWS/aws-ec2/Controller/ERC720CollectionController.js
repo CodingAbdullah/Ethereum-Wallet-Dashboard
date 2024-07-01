@@ -56,7 +56,7 @@ exports.getTokenPrice = (req, res) => {
 }
     
 exports.getTokenTransfer = (req, res) => {
-    const { address } = JSON.parse(req.body.body); // Get address for request to Moralis
+    const { contract } = JSON.parse(req.body.body); // Get address for request to Moralis
     
     // Pass in API key for backend request
     const options = {
@@ -64,11 +64,11 @@ exports.getTokenTransfer = (req, res) => {
         headers: {
             'content-type': 'application/json',
             'accept' : 'application/json',
-            'X-API-KEY' : process.env.MORALIS_API_KEY
+            'X-API-KEY' : process.env.MORALIS_API_KEY_2
         } 
     }
 
-    axios.get("https://deep-index.moralis.io/api/v2.2/erc20/" + address + '/transfers', options) // Pass in address value for request
+    axios.get("https://deep-index.moralis.io/api/v2.2/erc20/" + contract + '/transfers', options) // Pass in address value for request
     .then(response => {
         res.status(200).json({
             information: response.data
@@ -82,7 +82,7 @@ exports.getTokenTransfer = (req, res) => {
 }
 
 exports.getTokenOwners = (req, res) => {
-    const { address } = JSON.parse(req.body.body); // Get address for request to Moralis
+    const { contract } = JSON.parse(req.body.body); // Get address for request to Moralis
     
     // Pass in API key for backend request
     const options = {
@@ -90,11 +90,11 @@ exports.getTokenOwners = (req, res) => {
         headers: {
             'content-type': 'application/json',
             'accept' : 'application/json',
-            'X-API-KEY' : process.env.MORALIS_API_KEY
+            'X-API-KEY' : process.env.MORALIS_API_KEY_2
         } 
     }
 
-    axios.get("https://deep-index.moralis.io/api/v2.2/erc20/" + address + '/owners', options) // Pass in address values for request
+    axios.get("https://deep-index.moralis.io/api/v2.2/erc20/" + contract + '/owners', options) // Pass in address values for request
     .then(response => {
         res.status(200).json({
             information: response.data
