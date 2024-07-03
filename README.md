@@ -3,15 +3,14 @@ A descriptive web app, detailing the history of all transactions including all k
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-<b>Starting December 29, 2023, dashboard will revert to free version usage of the CoinGecko API. </b>
-<b>Wil incorporate ethers/web3.js and XMTP for messaging soon. </b>
+<b>Will incorporate ethers/web3.js, and XMTP for messaging. </b>
 <br />
 <br />
 
 ### `Testnet Information`
-<p>Note that APIs related to the <b>Ropsten, Rinkeby, Goerli, and Kovan testnets are NO LONGER AVAILABLE. </b>Searches related to these networks will be removed.</b>
+<p>Note that APIs related to the <b>Ropsten, Rinkeby, Goerli, and Kovan testnets are NO LONGER AVAILABLE.</b> Searches related to these networks will be removed.</b>
 <br />
-<p>Only the Sepolia and the new Holesky testnets will be supported. </p>
+<p>Only the Sepolia and the new Holesky testnet will be supported. </p>
 <br />
 
 ### `List of APIs Incorporated`
