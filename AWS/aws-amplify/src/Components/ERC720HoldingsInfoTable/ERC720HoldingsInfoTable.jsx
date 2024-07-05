@@ -61,7 +61,7 @@ const ERC720HoldingsInfoTable = (props) => {
     return (
         <>
             <hr style={{ marginTop: '3rem' }} />
-            <p><b>ERC20 Holdings</b><br /><i>{ address }</i></p>
+            <p><b>ERC20 Holdings</b><br /><i>List of individual tokens owned by wallet</i></p>
             <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', height: 200, width: '100%' }}>
                 <AgGridReact
                     rowData={coinTableRowData}

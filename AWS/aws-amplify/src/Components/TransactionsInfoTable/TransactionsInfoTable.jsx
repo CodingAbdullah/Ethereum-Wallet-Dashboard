@@ -6,7 +6,7 @@ import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the 
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 
 const TransactionsInfoTable = (props) => {
-    const { data, walletAddress, isMatic, networkFetch } = props; // Retrieving data from transactions page
+    const { data, walletAddress, networkFetch } = props; // Retrieving data from transactions page
     
     let coinTableRowData = [];
     let item = {};
@@ -19,8 +19,9 @@ const TransactionsInfoTable = (props) => {
             from: networkFetch ? data[i].from_address : data[i].from,
             to: networkFetch ? data[i].to_address : data[i].to,
             direction: networkFetch ? ( walletAddress.toLowerCase() === data[i].to_address ? "IN" : "OUT" ) : ( walletAddress.toLowerCase() === data[i].to ? "IN" : "OUT" ),
-            value: isMatic ? (data[i].value*(1/1000000000000000000)).toPrecision(4) + " MATIC" : (data[i].value*(1/1000000000000000000)).toPrecision(4) + " ETH"
+            value: (data[i].value*(1/1000000000000000000)).toPrecision(4) + " ETH"
         }
+        
         coinTableRowData.push(item);
         item = {};
     }
