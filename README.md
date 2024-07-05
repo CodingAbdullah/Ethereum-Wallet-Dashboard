@@ -1,17 +1,15 @@
 # Ethereum-Wallet-Dashboard
-A descriptive web app, detailing the history of all transactions including all kinds of ERC transactions by incorporating various different APIs from select resources.
+A lightweight Etherscan implementation for the Ethereum network. Swiftly allowing users to view wallet activity, transactions, asset holdings, tokenomics of ERC20 tokens, coin prices by market cap and so much more.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). It also incorporates Node.js/Express.js for the back-end and utilizes AWS for cloud deployment.
 
-<b>Starting December 29, 2023, dashboard will revert to free version usage of the CoinGecko API. </b>
-<b>Wil incorporate ethers/web3.js and XMTP for messaging soon. </b>
 <br />
 <br />
 
 ### `Testnet Information`
-<p>Note that APIs related to the <b>Ropsten, Rinkeby, Goerli, and Kovan testnets are NO LONGER AVAILABLE. </b>Searches related to these networks will be removed.</b>
+<p>Note that APIs related to the <b>Ropsten, Rinkeby, Goerli, and Kovan testnets are NO LONGER AVAILABLE.</b> Searches related to these networks will be removed.</b>
 <br />
-<p>Only the Sepolia and the new Holesky testnets will be supported. </p>
+<p>Only the <b>Sepolia</b> and the new <b>Holesky testnets</b> will be supported. </p>
 <br />
 
 ### `List of APIs Incorporated`
@@ -90,17 +88,15 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### `AWS Amplify Front-end Deployment`
 
-The front-end application is deployed to **AWS Amplify.** The link to the front-end AWS deployment is redirected to a custom domain using AWS Route 53 [AWS Amplify](https://aws.d3rwxneb2bnpjl.amplifyapp.com/).
+The front-end application is deployed through **AWS Amplify.** Link to the front-end AWS deployment can be found here: [AWS Amplify](https://aws.d3rwxneb2bnpjl.amplifyapp.com/).
 
-**The final website has been deployed.** However, from time to time, testing, security, and refinement will be done. The back-end server has been deployed and configured for security, SSL, and so on using an AWS EC2 instance.
-
-**Adding L2 features to the Ethereum-Wallet-Dashboard**
+Time to time, testing, security, and refinement will be done. The back-end server has been deployed and configured for security, SSL, and so on using an AWS EC2 instance.
 
 <br />
 
 ### `AWS Amplify Back-end Deployment`
 
-The back-end application has been deployed to the cloud using AWS. The full stack application consists of a React front-end deployed to AWS Amplify and a Node back-end deployed to an AWS EC2 instance. Communication between the two applications is secure. AWS has complete features on security and reliability.
+The back-end application has been deployed to the cloud using AWS. The full stack application consists of a React front-end deployed using AWS Amplify and a Node back-end deployed to an AWS EC2 instance. Communication between the two applications is secure. AWS has complete features on security and reliability.
 
 <br />
 
@@ -110,9 +106,9 @@ All available scripts run under the front-end folder of this repository. You mus
 
 For security reasons, many APIs that require Authorization, will be moved to the back-end and be made available for front-end usage via node server with connected routes. It is from these routes that API calls will be made to fetch information and send as responses to the front-end.
 
-Therefore, this is now a full stack project and it is required to have both the front-end and back-end servers running simultaneously on different ports for correct communication and function.
+Therefore, it is required to have both the front-end and back-end servers running simultaneously on different ports for correct communication and function.
 
-Running this project locally will require you to acquire separate API keys for running API requests to resources. These include various different sites such as Etherscan, Moralis, and Alchemy. Dev's keys are hidden in this project under the .env file which was not committed to GitHub for security reasons. 
+Running this project locally will require you to acquire separate API keys for running API requests to resources. These include various different sites such as CoinGecko, Etherscan, Moralis, and Alchemy. Dev's keys are hidden in this project under the .env file which was not committed to GitHub for security reasons. 
 
 No API keys means failed requests to select API resources.
 
@@ -134,9 +130,9 @@ Below, is a list of links to the appropriate API resources used in this project.
 
 [Alchemy](https://docs.alchemy.com/reference/)
 <br />
-[Blocknative](https://blocknative.com/)
+[Blocknative](https://docs.blocknative.com/)
 <br />
-[CoinGecko](https://www.coingecko.com/en/api/documentation)
+[CoinGecko](https://docs.coingecko.com/reference/introduction)
 <br />
 [Etherscan](https://etherscan.io/apis)
 <br />
@@ -144,21 +140,21 @@ Below, is a list of links to the appropriate API resources used in this project.
 <br />
 [Opensea](https://docs.opensea.io/reference/api-overview)
 <br />
-[Transpose](https://transpose.io/)
+[Transpose](https://docs.transpose.io/)
 
 <br />
 
 ## Local/AWS Configuration
 
 ### Local
-<p>Due to size and refactoring, the <b>LOCAL_DEV_ENV</b> directory has been removed. To run locally, ensure that React components that make calls to the back-end server, point to localhost <code>http://localhost:5000</code>.</p> 
+<p>Due to size and refactoring, the <b>LOCAL_DEV_ENV</b> directory has been removed. To run locally, ensure that React components make calls to the back-end server and point to <code>http://localhost:5000</code>.</p>
 
-You'll also need to install all the node modules and dependencies under the <code>package.json</code> file as the node_modules folder was not committed. This can be done with <code>npm install</code>. You'll also need to add the <code>.env</code> file in the back-end directory as it contains all the API keys for your back-end server.
+You'll also need to install all node modules and dependencies under the <code>package.json</code> file as the node_modules folder was not committed. This can be done with <code>npm install</code>. You'll also need to add the <code>.env</code> file in the back-end directory as it contains all the API keys for your back-end server.
 
 <br />
 
 ### AWS
-If you want to run this app on the cloud, you'll need to configure quite a few things before getting started. This app makes use of AWS Amplify and AWS EC2, services which are offered for free and allow for hosting and deploying front-end and back-end applications. These can be accessed under the AWS folder of this app.
+If you want to run this app in the cloud, you'll need to configure quite a few things before getting started. This app makes use of AWS Amplify and AWS EC2, services which are offered for free and allow for hosting and deploying front-end and back-end applications. These can be accessed in the AWS folder of this app.
 
 #### AWS Amplify (Front-end)
 The two main folders in this project, each represent a standalone app that can be deployed to an independent server. When deploying the front-end application, you'll need to create a local branch and copy over the front-end code. 
