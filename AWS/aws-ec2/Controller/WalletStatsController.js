@@ -38,15 +38,13 @@ exports.addressDetails = (req, res) => {
         .then(response => { 
             res.status(200).json({ 
                 information: { message: 'OK', result: response.data.balance }  
-            })
+            });
         })
         .catch(err => 
             res.status(400).json({ 
                 information: err 
         }));
-
     }
-
 }
 
 exports.transactionsByAddress = (req, res) => {
@@ -75,7 +73,40 @@ exports.transactionsByAddress = (req, res) => {
             res.status(200).json({ 
                 information: { message: 'OK', isMoralis: true, result: response.data.result },
                 isMoralis : true
-            })
+            });
+        })
+        .catch(err => 
+            res.status(400).json({ 
+                information: err 
+        }));
+    }
+}
+
+// Endpoint for fetching the net worth of a wallet
+exports.walletNetWorth = (req, res) => {
+    const { address, network } = JSON.parse(req.body.body);
+
+    if (network !== 'eth') {
+        res.status(200).json({
+            information: { result: [] }
+        });
+    }
+    else {
+        const options = {
+            method: 'GET',
+            headers: {
+                'content-type' : 'application/json',
+                'X-API-KEY' : process.env.MORALIS_API_KEY_2
+            }
+        }
+
+        // Retrieving information related to a wallet's net worth on ETH mainnet
+        axios.get("https://deep-index.moralis.io/api/v2.2/wallets/" + address 
+                + "/net-worth?chains%5B0%5D=eth&exclude_spam=true&exclude_unverified_contracts=true", options)
+        .then(response => { 
+            res.status(200).json({ 
+                walletNetWorth: response.data
+            });
         })
         .catch(err => 
             res.status(400).json({ 
@@ -103,12 +134,13 @@ exports.addressERC20Holdings = (req, res) => {
     .then(response => { 
         res.status(200).json({ 
             information: response.data 
-        })
+        });
     })
     .catch(err => 
         res.status(400).json({ 
             information: err 
-    }));
+        })
+    );
 }
 
 exports.addressERC721Holdings = (req, res) => {
@@ -130,12 +162,11 @@ exports.addressERC721Holdings = (req, res) => {
     .then(response => {
         res.status(200).json({
             information: response.data
-        })
+        });
     })
     .catch(err => {
-        console.log(err);
         res.status(400).json({
             information: err
-        })
-    })
+        });
+    });
 }
