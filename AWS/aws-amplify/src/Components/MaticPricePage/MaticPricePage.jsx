@@ -1,149 +1,156 @@
-import React, { useRef, useState } from 'react';
-import { Line } from 'react-chartjs-2';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { coinPricesByDay } from '../../UtilFunctions/coinPricesByDay';
-import { currentCoinPrice } from '../../UtilFunctions/currentCoinPrice';
-import { coinPricesByDayPro } from '../../UtilFunctions/coinPricesByDayPRO';
 import { currentCoinPricePro } from '../../UtilFunctions/currentCoinPricePRO';
-import ChangeHighlight from 'react-change-highlight';
+import { coinInfoPro } from '../../UtilFunctions/coinInfoPRO';
+import { AgChartsReact } from 'ag-charts-react';
+import axios from 'axios';
+import DurationSelector from '../DurationSelector/DurationSelector';
 import './MaticPricePage.css';
 
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-} from 'chart.js';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
 const MaticPricePage = () => {
-    const navigate = useNavigate();
+    const [alert, updateAlert] = useState('');
 
-    // Set it to 7 days by default
-    const [interval, updateInterval] = useState(7);
+    // Price interval state
+    const [interval, updateInterval] = useState('24');
 
-    const coinPriceQuery = useQuery({
-      queryKey: ['coin', 'matic-network', interval],
-      queryFn: coinPricesByDayPro
+    // Interval handler function
+    const intervalHandler = e => {
+        updateInterval(e.target.value);
+    }
+
+    // State for fetching coin price data
+    const [coinPrices, updateCoinPrices] = useState({
+      prices: []
+    });
+
+    // Running request upon component initialization
+    // Navigate away if the coin is not defined
+    useEffect(() => {
+      const URL = 'http://localhost:5000';
+      const COIN_PRICE_ENDPOINT = '/coin-prices-by-day';
+
+      // Checking if token value is defined before proceeding with API call        
+      let options = {
+          method: "POST",
+          body: JSON.stringify({ coin: "matic-network", interval }),
+          headers: {
+            'content-type' : 'application/json'
+          }
+      }
+      
+      // Request coin price information
+      axios.post(URL + COIN_PRICE_ENDPOINT, options)
+      .then(response => {
+        updateCoinPrices(prevState => {
+          return {
+            ...prevState,
+            prices: response.data.coinPrices
+          }
+        });
+      })
+      .catch(() => {
+        updateAlert("invalid");
+      });
+    }, []);
+
+    // Fetch data based on interval change
+    useEffect(() => {
+      const URL = 'http://localhost:5000';
+      const COIN_PRICE_ENDPOINT = '/coin-prices-by-day';
+
+      // Checking if token value is defined before proceeding with API call        
+      let options = {
+          method: "POST",
+          body: JSON.stringify({ coin: "matic-network", interval }),
+          headers: {
+            'content-type' : 'application/json'
+          }
+      }
+      
+      // Request coin price information
+      axios.post(URL + COIN_PRICE_ENDPOINT, options)
+      .then(response => {
+        updateCoinPrices(prevState => {
+          return {
+            ...prevState,
+            prices: response.data.coinPrices
+          }
+        });
+      })
+      .catch(() => {
+        updateAlert("invalid");
+      });
+    }, 
+    [interval, updateInterval]);
+
+    const coinInformationQuery = useQuery({
+      queryKey: ['coin information', "matic-network"],
+      queryFn: coinInfoPro 
     });
 
     const currentCoinPriceQuery = useQuery({
-      queryKey: ['current coin price', 'matic-network'],
+      queryKey: ['current coin price', "matic-network"],
       queryFn: currentCoinPricePro
     });
 
-    // Matic coin price reference
-    const maticPriceRef = useRef();
+    // Display Title, 24 Hr. Price % Change, Price of Coin
+    if (!coinPrices.prices || currentCoinPriceQuery.isLoading || coinInformationQuery.isLoading) {
+      return <div role="main">Loading...</div>
+    }
+    else if (alert !== '' || currentCoinPriceQuery.isError || coinInformationQuery.isError) {
+      return <div role="main">Could not load page due to error</div>
+    }
+    else if (coinPrices.prices.length === 0) {
+      return <div role="main">No data available</div>
+    }
+    else {
+      // Coin information, current price, and price duration data 
+      // Format domains for each chart
+      let information = coinInformationQuery.data[0];
+      let currentPriceInformation = currentCoinPriceQuery.data[0][Object.keys(currentCoinPriceQuery.data[0])[0]];
 
-  // Set display configurations
-  var coinData = {
-    labels: coinPriceQuery.data?.time,
-    datasets: [{
-      label: 'Matic Price',
-      data: coinPriceQuery.data?.coinData.prices.map(x => x[1].toFixed(2)),
-      backgroundColor: 'red',
-      borderColor: 'red',
-      borderWidth: 1
-    }]
-  };
+      let minValue = Math.min(...coinPrices.prices.map(price => price.price));
+      let maxValue = Math.max(...coinPrices.prices.map(price => price.price));
 
-  // Adding options to enhance charts
-  var options = {
-    maintainAspectRatio: false,
-    plugins: {
-      title: {
-        display: true,
-        text: "Matic Chart"
-      },
-      legend: {
-        display: true,
-        position: "bottom"
-      }
-     }
-  }
-
-  let buttonDaysArray = ["Last 7 days", "Last 14 Days", "Last 30 Days"];
-  let buttons = buttonDaysArray.map((day, key) =>  {
-    return <button id={ key } 
-                   disabled={ day.includes(`${interval}`)} 
-                   onClick={ e => { e.preventDefault(); updateInterval(Number(day.split(" ")[1])); }} // Split on space and fetch middle value which is a Number
-                   style={{ marginTop: '2rem', marginRight: '1rem', marginBottom: '5rem', paddingLeft: '0.5rem', paddingRight: '0.5rem' }} 
-                   className="btn btn-secondary">{ day }</button>
-  });
-
-  // Display Title, 24 Hr. Price% Change, Price of Coin
-  if (coinPriceQuery.isLoading || currentCoinPriceQuery.isLoading) {
-    return <div role="main">Loading...</div>
-  }
-  else if (coinPriceQuery.isError || currentCoinPriceQuery.isError) {
-    return <div role="main">Could not load page due to error</div>
-  }
-  else if (coinPriceQuery.data && currentCoinPriceQuery.data){
-    // Generic coin setup using Object keys from API responses to generate output
-    let currentCoinPrice = currentCoinPriceQuery.data[0];
-    let objKey = Object.keys(currentCoinPriceQuery.data[0])[0];
-
-    // Retrieve previous coin price for price highlighting
-    let previousMaticPrice = Number(maticPriceRef.current?.innerHTML.split(" ")[0].substring(1));
-
-    // Matic dynamic CSS class for price change
-    let maticPriceCSSColourPicker = maticPriceRef.current === undefined ? "" : ( currentCoinPrice[objKey].usd >= previousMaticPrice ? "tickerUpHighlight" : "tickerDownHighlight" );
-
-    return (
-      <div>
-        <main role="main">
-          <ChangeHighlight highlightClassName={ maticPriceCSSColourPicker } showAfter={ 100 } hideAfter={ 3000 }>
-            <h3 style={{ marginTop: '2rem' }}>{"Matic " } Price: 
-              <b ref={ maticPriceRef } style={{ marginLeft: '0.25rem' }}>
-                { 
-                  currentCoinPrice[objKey].usd >= 1 ? 
-                  "$" + currentCoinPrice[objKey].usd.toFixed(2) + " USD" : 
-                  "$" + currentCoinPrice[objKey].usd + " USD" 
-                }
-              </b>
-            </h3>
-          </ChangeHighlight>
-          <h5 style={{ marginBottom: '2rem', display: 'inline' }}>24-Hr % Chg:
-            { 
-              currentCoinPrice[objKey].usd_24h_change < 0 ? 
-                <h5 style={{ display: 'inline', color: 'red' }}>{ " " + currentCoinPrice[objKey].usd_24h_change.toFixed(2) + "%" }</h5> : 
-                <h5 style={{ display: 'inline', color: 'green' }}>{ " +" + currentCoinPrice[objKey].usd_24h_change.toFixed(2) + "%" }</h5>
-            }
-            </h5>
-          <br />
-          <div>
-            <div style={{ marginTop: '2rem' }}>
-              <Line 
-                data={ coinData }
-                height={ 250 }
-                width={ 250 }
-                options={ options }
-              />
-            </div>
+      return (
+        <>
+          <div className="ag-theme-quartz" style={{ height: 350, width: '100%' }}>
+            <AgChartsReact options={{
+                // Data: Data to be displayed in the chart
+                data: coinPrices.prices,
+                // Series: Defines which chart type and data to use
+                series: [{ type: 'line', xName: 'Time', yName: 'Price', xKey: 'time', yKey: 'price' }],
+                title: {
+                    text:  `${information.name} Price: $${currentPriceInformation.usd} USD`
+                },
+                subtitle: {
+                    text: `24 Hour % Change: ${currentPriceInformation.usd_24h_change >= 0 ? "+" + Number(currentPriceInformation.usd_24h_change).toFixed(2) + "%" : Number(currentPriceInformation.usd_24h_change).toFixed(2) + "%" }`
+                },
+                legend: {
+                    enabled: true
+                },
+                axes: [
+                    {
+                        type: 'string',
+                        position: 'bottom',
+                        title: {
+                            text: 'Time'
+                        }
+                    },
+                    {
+                        type: 'number',
+                        position: 'left',
+                        title: {
+                            text: 'Price'
+                        },
+                        domain: [minValue, maxValue]
+                    }
+                ]
+            }} />
           </div>
-          <div className="button-section" style={{ marginTop: '1rem', marginLeft: '1rem' }}>
-            { buttons }
-          </div>
-          <div>
-            <button className="btn btn-success" style={{ marginRight: '0.25rem' }} onClick={ () => navigate("/") }>Go To Dashboard</button>
-          </div>
-        </main>
-      </div>
-    )
+          <DurationSelector priceDurationHandler={ intervalHandler } />
+        </>
+      );
   }
 }
 

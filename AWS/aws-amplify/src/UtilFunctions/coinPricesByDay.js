@@ -1,4 +1,5 @@
 import axios from 'axios';
+/*
 import moment from 'moment';
     
 // Check to see if the parameters exist and are valid, run to check prices, selection area for the different coins
@@ -28,3 +29,4 @@ export const coinPricesByDay = async ({ queryKey }) => {
 
     return coinPricesByInterval;
 }
+*/
