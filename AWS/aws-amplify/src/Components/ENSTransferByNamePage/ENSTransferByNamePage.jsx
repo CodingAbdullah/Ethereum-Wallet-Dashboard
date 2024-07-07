@@ -82,15 +82,16 @@ const ENSTransferByNamePage = () => {
     return (
         <div className="ens-page">
             <main role="main" class="p-3">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">ENS Lookups</h1>
+                <div>                    
+                    <h1>ENS Lookups</h1>
+                    <hr />
                 </div>
                 { setAlert ? <Alert type='danger' /> : null }
                 { emptyAlert ? <Alert type='warning' /> : null }
                 <div class="jumbotron">
                     <div class="container">
-                        <form onSubmit={ENSTransferHandler}>
-                            <label>ENS transfers by name</label>
+                        <form onSubmit={ ENSTransferHandler }>
+                            <p className="lead text-muted"><i>ENS transfers by name</i></p>
                             <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} type="text" placeholder="Enter ENS name for transfer data" onChange={e => updateENSAddress(e.target.value)} />
                             <button style={{marginTop: '2rem'}} class="btn btn-success" type='submit'>Lookup Transfers</button>
                         </form>

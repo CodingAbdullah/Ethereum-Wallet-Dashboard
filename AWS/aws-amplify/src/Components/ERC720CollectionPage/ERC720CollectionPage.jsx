@@ -248,15 +248,16 @@ const ERC720CollectionPage = () => {
         return (
             <div className="erc720-collection-page">
                 <main role="main" class="p-3">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">ERC20 Token Analytics</h1>
+                    <div>                    
+                        <h1>ERC20 Collection Analytics</h1>
+                        <hr />
                     </div>
                     <ERC720CollectionTopCoinsInfoTable data={topERC20TokensQuery.data} />
                     { formAlert ? <Alert type='danger' /> : null }
                     <hr style={{ marginTop: '3rem' }} />
                     <div class="jumbotron">
                         <div class="container">
-                            <p>Enter contract address of an <b>ERC20</b> token for a quick analysis</p>
+                            <p className="lead text-muted"><i>Enter contract address of an <b>ERC20</b> token for a quick analysis</i></p>
                             <form onSubmit={formHandler}>
                                 <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} onChange={e => updateTokenAddress(e.target.value)} type='text' placeholder='Enter token address'></input>
                                 <button style={{marginTop: '2rem'}} type='submit' class='btn btn-success'>Submit</button>

@@ -18,7 +18,7 @@ const Footer = () => {
                         <a style={{ color:'black' }} href="https://docs.opensea.io/reference/api-overview" target="_blank" rel="noreferrer"><img style={{ marginRight: '0.25rem'}} src={require("../../assets/images/opensea.png")} width="20" height="20" alt="logo" />Opensea</a><span style={{ marginLeft: '0.25rem', marginRight: '0.25rem' }}><b>|</b></span>
                         <a style={{ color:'black' }} href="https://transpose.io/" target="_blank" rel="noreferrer"><img style={{ marginRight: '0.25rem'}} src={require("../../assets/images/transpose.png")} width="20" height="20" alt="logo" />Transpose</a>
                     </p>
-                    <p className="copyright-paragraph">{ statement } <a style={{ color: 'black' }} href="https://reactjs.org/">React</a><img className="react-logo" src={require("../../assets/images/logo.svg").default} alt="logo" /></p>
+                    <p style={{ fontSize: '1rem' }} className="lead text-muted"><b>{ statement } <a style={{ color: 'black' }} href="https://reactjs.org/">React</a><img className="react-logo" src={require("../../assets/images/logo.svg").default} alt="logo" /></b></p>
                 </div>
             </footer>
         )

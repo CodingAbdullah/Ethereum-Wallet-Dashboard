@@ -187,15 +187,16 @@ const ERC721HoldingsPage = () => {
     return (
         <div className="erc-721-token-page">
             <main role="main" class="p-3">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h2>ERC721 Token Holdings</h2>
+                <div>
+                    <h1>ERC721 Token Holdings</h1>
+                    <hr />
                 </div>
                 { setAlert ? <Alert type="danger" /> : null }
                 { isEmpty ? <Alert type="warning" /> : null }
                 <div class="jumbotron">
                     <div class="container">
                         <form onSubmit={ walletHandler }>
-                            <label>Enter wallet address (Top 100 NFTs/Transfers will be displayed) </label>
+                            <p className="lead text-muted"><i>Enter wallet address (Top 100 NFTs/Transfers will be displayed) </i></p>
                             <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} type="text" onChange={e => updateWalletAddress(e.target.value)} placeholder="Enter wallet address" required />
                             <NetworkSelector blockchainNetwork={ updateNetworkHandler } />
                             <button style={{ marginTop: '2rem' }} type="submit" class="btn btn-success">Check Data</button>

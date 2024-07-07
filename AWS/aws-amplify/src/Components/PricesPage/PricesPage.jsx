@@ -29,8 +29,9 @@ const PricesPage = () => {
         return (
             <div>
                 <main role="main" className="p-3">
-                    <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 className="h2">Cryptocurrency Price Lookups</h1>
+                    <div>
+                        <h1>Cryptocurrency Price Lookups</h1>
+                        <hr />
                     </div>
                 </main>
                 <TopCoinsInfoTable topCoins={ topBottomCoinsQuery.data.top_gainers } />

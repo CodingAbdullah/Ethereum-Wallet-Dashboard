@@ -61,7 +61,7 @@ const OptimismPricePage = () => {
       // Checking if token value is defined before proceeding with API call        
       let options = {
           method: "POST",
-          body: JSON.stringify({ coin: "matic-network", interval }),
+          body: JSON.stringify({ coin: "optimism", interval }),
           headers: {
             'content-type' : 'application/json'
           }

@@ -14,12 +14,13 @@ const ENSPage = () => {
     return (
         <div>
             <main role="main" className="p-3">
-                <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 className="h2">ENS Lookups</h1>
+                <div>                    
+                    <h1>ENS Lookups</h1>
+                    <hr />
                 </div>
                 <div className="jumbotron" style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%' }}>
                     <div className="container">
-                        <p>Select ENS lookup options from the menu below!</p>
+                        <p className="lead text-muted"><i>Select ENS lookup options from the menu below!</i></p>
                         <select value={ ENSURL } onChange={ selectHandler } className="form-select" aria-label="Default select example">
                             <option selected value="address-to-ens-lookup">Address → ENS</option>
                             <option value="ens-to-address-lookup">ENS → Address</option>

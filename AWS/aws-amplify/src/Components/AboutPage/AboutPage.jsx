@@ -1,69 +1,75 @@
-import React from 'react';
-import { useNavigate } from 'react-router';
+// About Page for the Ethereum Wallet Dashboard
 
 const AboutPage = () => {
-    const navigate = useNavigate();
-    return (
-        <div className='about'>
-                <main role="main" class="p-3">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h1>About</h1>
-                            <hr />
-                    </div>
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap pt-3 pb-2 mb-3 border-bottom">
-                            <p>The Ethereum Wallet Dashboard provides users with a more visual description of everything related to crypto and their crypto-related assets. 
-                                Centred around the concept of Etherscan, but more lightweight in nature. Offers the ability to quickly visualize and analyze information. 
-                                Whether you are looking up wallet activity, perform analytics or get a quick check up on prices, this is the place to do it! 
-                            </p>
-                    </div>
-                    <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h4>Open Source Code</h4>
-                            <hr />
-                    </div>
-                    <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <p>
-                                All the code required to make this web application possible is open source and available for all. 
-                                This was done to ensure safety and allow anyone to verify the application for themselves prior to usage.
-                                Link to the code repository is <b><a style={{ color: 'black' }} href="https://github.com/CodingAbdullah/Ethereum-Wallet-Dashboard">here</a>.</b>
-                            </p>
-                            <hr />
-                    </div>
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h4>Features</h4>
-                            <hr />
-                    </div>
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <p>Daily/Weekly/Monthly coin charts, organized by market cap. In addition, ens lookups, wallet analytics, transactions (including internal, ERC20, ERC721, ERC1155, if applicable), 
-                                and historical information pertaining to a wallet, including historical Ether balance.
-                            </p>
-                    </div>
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h4>Credits</h4>
-                            <hr />
-                    </div>
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <p>Much of the information that is obtained through this app is provided by external, trusted, open-source APIs. 
-                                These are publicly verified and secure meaning that you do not have to worry about security. The APIs used in this project were free of charge, with some limited restrictions [calls/(second/minute/hour), etc.].
-                                A list of these can be found in the footer section of this app.
-                            </p>
-                            <hr />
-                    </div>
 
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h4>Author/Developer Information</h4>
-                            <hr />
+    return (
+        <main role="main">
+            <section className="jumbotron text-center">
+                <div class="container">
+                    <h1 style={{ marginTop: '1rem' }}>About</h1>
+                    <hr />
+                    <p class="lead text-muted">
+                        <i>An implementation of a lightweight version of Etherscan! Feel free to explore all there is in the world of Ethereum with one click!
+                        View wallet activity, recent transactions, asset holdings, ERC20/721 token data, prices, and so much more!</i>
+                    </p>
+                    <p style={{ marginTop: '2rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} class="lead muted">
+                        <i>If you are interested in learning about the developer, you can visit their bio <a style={{ color: 'black' }} href="https://github.com/CodingAbdullah" target="_blank" rel="noreferrer">here!</a></i>
+                    </p>
+                </div>
+            </section>
+            <div class="py-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <img src={ require("../../assets/images/about_code.png") } style={{ marginTop: '1rem', borderRadius: '25%' }} width="100" height="100" alt="No Logo" />
+                                    <h3 style={{ marginTop: '2rem' }}>Open Source</h3>
+                                    <hr />
+                                    <p class="card-text text-muted">
+                                        <i>Project is continually growing and adding features as the blockchain space evolves. As such, the codebase will always be open source!</i>
+                                    </p>
+                                    <a style={{ marginBottom: '1rem' }} target="_blank" rel="noreferrer" href="https://github.com/CodingAbdullah/Ethereum-Wallet-Dashboard" className="btn btn-success">
+                                        View Source Code!
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-body">
+                                    <img src={ require("../../assets/images/about_chart.png") } style={{ marginTop: '1rem', borderRadius: '25%' }} width="100" height="100" alt="No Logo" />
+                                    <h3 style={{ marginTop: '2rem' }}>Live Updates</h3>
+                                    <hr />
+                                    <p class="card-text text-muted">
+                                        <i>Features are updated in real-time! Explore coin prices, ENS lookups, and information related to your wallet!</i>
+                                    </p>
+                                    <a style={{ marginBottom: '1rem' }} target="_blank" rel="noreferrer" href="/prices" className="btn btn-success">
+                                        View Coin Prices!
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-body">
+                                    <img src={ require("../../assets/images/about_ethereum.png") } style={{ marginTop: '1rem', borderRadius: '25%' }} width="100" height="100" alt="No Logo" />
+                                    <h3 style={{ marginTop: '2rem' }}>Crypto APIs</h3>
+                                    <hr />
+                                    <p class="card-text">
+                                        <i>APIs are the main source of truth. They are verified and secure meaning that you do not have to worry about security!</i>
+                                    </p>
+                                    <a style={{ marginBottom: '1rem' }} href="https://github.com/CodingAbdullah/Ethereum-Wallet-Dashboard/blob/main/README.md" rel="no referrer" target="_blank" class="btn btn-success">
+                                        View the APIs!
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <p>If you are interested in learning more about the developer behind this project, you can visit their bio here: {" "}
-                                <a style={{ color: 'black' }} href="https://kingabdullah.codes" target="_blank" rel="noreferrer"><b>About The Developer</b></a>
-                            </p>
-                    </div>
-                    <div>
-                        <button class="btn btn-success" style={{ marginTop: '1.5rem' }} onClick={() => navigate("/")}>Go Home</button>
-                    </div>
-                </main>
-        </div>
-    )
+                </div>
+            </div>
+        </main>
+    );
 }
 
 export default AboutPage;

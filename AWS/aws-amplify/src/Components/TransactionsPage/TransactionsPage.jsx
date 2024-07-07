@@ -79,8 +79,9 @@ const Transactions = () => {
         return ( 
             <>
                 <main role="main" class="p-3">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">Transactions</h1>
+                    <div>                    
+                        <h1>Transactions</h1>
+                        <hr />
                     </div>
                     <TransactionsAccountInfoTable walletAddress={ walletAddress } walletBalance={ walletBalancesQuery.data } ethPrice={ ethPriceQuery.data[0] } />
                 </main>  

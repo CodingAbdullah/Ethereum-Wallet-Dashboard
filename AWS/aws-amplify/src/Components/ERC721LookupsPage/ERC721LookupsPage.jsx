@@ -204,13 +204,14 @@ const ERC721LookupsPage = () => {
     return (
         <div>
              <main role="main" class="p-3">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h2>ERC721 Token Lookup</h2>
+                <div>                    
+                    <h1>ERC721 Token Lookups</h1>
+                    <hr />
                 </div>
                 { setAlert ? <Alert type="danger" /> : null }
                 <div class="jumbotron">                    
                 <form onSubmit={ tokenHandler }>
-                    <p>Enter ERC721 contract address & token ID for information</p>
+                    <p className="lead text-muted"><i>Enter ERC721 contract address & token ID for information</i></p>
                     <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} type="text" onChange={e => updateTokenAddress(e.target.value)} placeholder="Enter contract address" required />
                     <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} type="number" onChange={e => updateTokenId(e.target.value)} placeholder="Enter token ID" required />
                     <NetworkSelector blockchainNetwork={ updateNetworkHandler } />

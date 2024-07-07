@@ -13,12 +13,13 @@ const CollectionsPage = () => {
     return (
         <div>
             <main role="main" className="p-3">
-                <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 className="h2">Token Analytics</h1>
+                <div>                    
+                    <h1>Token Analytics</h1>
+                    <hr />
                 </div>
                 <div className="jumbotron">
                     <div className="container">
-                        <p>Select collection type below for a quick analysis!</p>
+                        <p className="lead text-muted"><i>Select collection type below for a quick analysis!</i></p>
                         <select style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%' }} onChange={ collectionHandler } className="form-select" aria-label="Default select example">
                             <option selected value="erc720-collection">ERC20 Collection Analytics</option>
                             <option value="erc721-collection">ERC721 Collection Analytics</option>

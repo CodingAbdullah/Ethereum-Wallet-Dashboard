@@ -19,7 +19,7 @@ const NetworkSelector = (props) => {
     return (
         <main style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%' }} role="main">            
             <label style={{ marginTop: '3rem' }}>
-                <p style={{ marginBottom: '0.5rem' }}>Network Selector (<b>mainnet</b> by default)</p>
+                <p className="lead text-muted" style={{ marginBottom: '0.5rem' }}><i>Network Selector (<b>mainnet</b> by default)</i></p>
             </label>
             { optionsValue }
         </main>

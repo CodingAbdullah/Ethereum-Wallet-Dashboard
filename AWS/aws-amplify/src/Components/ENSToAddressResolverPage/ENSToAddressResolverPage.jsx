@@ -97,15 +97,16 @@ const ENSToAddressResolverPage = () => {
     return (
         <div className="ens-page">
             <main role="main" class="p-3">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">ENS Lookups</h1>
+                <div>                    
+                    <h1>ENS Lookups</h1>
+                    <hr />
                 </div>
                 { setAlert ? <Alert type='danger' /> : null }
                 { emptyAlert ? <Alert type='warning' /> : null }
                 <div class="jumbotron">
                     <div class="container">
                         <form onSubmit={ ENSToAddressHandler }>
-                            <label>ENS<b>{" → "}</b> Address Resolver</label>
+                            <p className="lead text-muted"><i>ENS<b>{" → "}</b> Address Resolver</i></p>
                             <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} placeholder="Enter ENS" type="text" onChange={e => updateENSToAddress(e.target.value)} />
                             <button style={{marginTop: '2rem'}} class="btn btn-success" type='submit'>Lookup Reversal</button>
                         </form>

@@ -45,8 +45,9 @@ const GasTrackerPage = () => {
         return (
             <div className='gas-tracker-page'>
                 <main role="main" class="p-3">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">Gas Information</h1>
+                    <div>                    
+                        <h1>Gas Information</h1>
+                        <hr />
                     </div>
                     <p><b>Ecosystem Overview</b><br /><i>High end look at the blockchain</i></p>
                     <div className="ag-theme-quartz" style={{ marginLeft: 'auto', marginRight: 'auto', height: 200, width: '100%' }}>
