@@ -177,14 +177,15 @@ const ERC720TokenPricesPage = () => {
     return (
       <div>
         <main role="main" className="p-3">
-          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h2>ERC20 Token Market Data</h2>
+          <div>            
+            <h1>ERC20 Token Market Data</h1>
+            <hr />
           </div>
           { formAlert === "invalid" ? <div><Alert type="danger"/></div> : <div/> }
           <div class="jumbotron">
             <div class="container">
               <form onSubmit={ formHandler } style={{ marginTop: '1.5rem' }}>
-                <label>Enter ERC20 contract address (<b>ETH mainnet</b> only)</label>
+                <p className="lead text-muted"><i>Enter ERC20 contract address (<b>ETH mainnet</b> only)</i></p>
                 <input class="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }} type="text" ref={ tokenContractAddressRef } placeholder="Enter contract address" required />
                 <button style={{ marginTop: '2rem' }} type="submit" class="btn btn-success">Check Data</button>
               </form>

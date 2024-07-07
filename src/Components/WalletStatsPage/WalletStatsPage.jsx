@@ -229,13 +229,14 @@ const WalletStats = () => {
     return (
         <div className="wallet-stats">
             <main role="main" className="p-3">
-                <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h2 className="h2">Wallet Analytics</h2>
+                <div>                    
+                    <h1>Wallet Analytics</h1>
+                    <hr />
                 </div>
                 {setAlert ? <Alert type='danger' /> : null}
                 <div className="jumbotron">
                     <div className="container">
-                        <p>Enter <b>wallet address</b> for a quick analysis</p>
+                        <p className="lead text-muted"><i>Enter <b>wallet address</b> for a quick analysis</i></p>
                         <form onSubmit={formHandler}>
                             <input className="form-control" style={{ marginTop: '1rem', marginLeft: 'auto', marginRight: 'auto', width: '50%' }}
                                 placeholder="Enter Wallet Address" onChange={(e) => updateWalletAddress(e.target.value)} required />

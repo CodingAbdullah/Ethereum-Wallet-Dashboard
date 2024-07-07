@@ -78,7 +78,7 @@ const ERC721CollectionPage = () => {
         // Make API call to backend to fetch chart data based on every interval change
 
         if (tokenAddress.length !== 42 && tokenAddress.substring(0, 2) !== '0x') return;
-
+        
         const chartOptions = {
             method: 'POST',
             mode: 'cors',
@@ -377,8 +377,9 @@ const ERC721CollectionPage = () => {
         return (
             <div className="erc721-collection-page">
                 <main role="main" class="p-3">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">ERC721 Collection Analytics</h1>
+                    <div>                    
+                        <h1>ERC721 Collection Analytics</h1>
+                        <hr />
                     </div>
                     { setAlert ? <Alert type='danger' /> : null }
                     <p><b>Top ERC721 Collections</b><br /><i>Lookup the top collections by market cap</i></p>
@@ -386,7 +387,7 @@ const ERC721CollectionPage = () => {
                     <hr style={{ marginTop: '3rem', marginBottom: '2rem' }} />
                     <div class="jumbotron">
                         <div class="container">
-                            <p>Enter contract address of an <b>ERC721</b> collection for a quick analysis</p>
+                            <p className="lead text-muted"><i>Enter contract address of an <b>ERC721</b> collection for a quick analysis</i></p>
                             <form onSubmit={ formHandler }>
                                 <input class="form-control" style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%' }} onChange={e => updateTokenAddress(e.target.value)} type='text' placeholder='Enter contract address'></input>
                                 <button style={{ marginTop: '2rem' }} type='submit' class='btn btn-success'>Submit</button>
@@ -427,9 +428,7 @@ const ERC721CollectionPage = () => {
                 { 
                     ExtraNFTData.information === null ? null : 
                         <>
-                            <main style={{marginTop: '3rem'}} role="main" class="p-3">
-                                <ERC721CollectionExtraDataInfoTable data={ ExtraNFTData.information } /> 
-                            </main>
+                            <ERC721CollectionExtraDataInfoTable data={ ExtraNFTData.information } /> 
                         </>  
                 }
                 {

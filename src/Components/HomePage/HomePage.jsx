@@ -96,13 +96,15 @@ const Home = () => {
         return (
             <div class="home">
                 <main role="main">
-                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h1 class="h2 p-3">Dashboard</h1>
+                        <div>
+                            <h1 style={{ marginTop: '1.5rem' }}>Dashboard</h1>
+                            <hr />
                         </div>
                         { formAlert === "invalid" ? <div><Alert type="danger"/></div> : <div/> }
                         <HomePageDescriptionSection form={ formHandler } updatingAddress={ updateFormAddress } />
-                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h1 class="h2 p-3">Market Data</h1>
+                        <div>
+                            <h3 style={{ marginTop: '3rem' }}>Market Data</h3>
+                            <hr />
                         </div>
                         <div class="container">
                             <div class="row">
@@ -129,21 +131,20 @@ const Home = () => {
                         </div>
                         <div class="row">
                             <div>
-                                <hr style={{ marginTop: '3rem' }} />
+                                <hr style={{ marginTop: '1rem' }} />
                                 <HomePageMarketCapChart data={ marketCapChartDataQuery.data } />
                             </div>
                         </div>
                         <div class="row">
                             <div>
-                                <hr style={{ marginTop: '3rem' }} />
+                                <hr style={{ marginTop: '2rem' }} />
                                 <h5 style={{ marginBottom: '1rem', width: '50%', marginLeft: 'auto', marginRight: 'auto' }}><b>Trending Coins</b></h5>
                                 <HomePageTrendingCoinsTable coins={ trendingCoinsQuery.data.coins } />
                             </div>
                         </div>
                         <div class="row">
                             <div>
-                                <hr style={{ marginTop: '3rem' }} />
-                                <h5 style={{ marginBottom: '1rem', width: '50%', marginLeft: 'auto', marginRight: 'auto' }}><b>Trending Collections</b></h5>
+                                <h5 style={{ marginTop: '2rem', marginBottom: '1rem', width: '50%', marginLeft: 'auto', marginRight: 'auto' }}><b>Trending Collections</b></h5>
                                 <HomePageTrendingCollectionsTable collections={ trendingCoinsQuery.data.nfts } />
                             </div>
                         </div>

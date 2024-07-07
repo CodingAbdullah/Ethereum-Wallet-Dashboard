@@ -19,7 +19,7 @@ const DurationSelector = (props) => {
         <>
             <main style={{ marginLeft: 'auto', marginRight: 'auto', width: '50%' }} role="main">            
                 <label style={{ marginTop: '1rem' }}>
-                    <p style={{ marginBottom: '0.5rem' }}>Select Price Interval</p>
+                    <p className="lead text-muted" style={{ marginBottom: '0.5rem' }}><i>Select Price Interval</i></p>
                 </label>
                 { optionsValue }
             </main>
