@@ -86,6 +86,22 @@ const Navbar = () => {
                                     <li><a className="dropdown-item" href="/walletAnalytics">Wallet Analytics</a></li>
                                 </ul>
                             </li>
+                            <li className="nav-item dropdown">
+                                <a style={ styles.navLinkColor } className="nav-link dropdown-toggle" href="#" id="defi" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                    DeFi
+                                </a>
+                                <ul className="dropdown-menu" aria-labelledby="defi">
+                                    <li><a className="dropdown-item" href="/pools">Pools</a></li>
+                                    <li><a className="dropdown-item" href="/dexes">DEXes</a></li>
+                                </ul>
+                            </li>
+                            <li className="nav-item">
+                                <a style={ styles.navLinkColor } className="nav-link" href="#" id="extra" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                    Extra
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
