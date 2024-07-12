@@ -33,6 +33,40 @@ const Navbar = () => {
                                 <a style={ styles.navLinkColor } className="nav-link" aria-current="page" href="/about">About</a>
                             </li>
                             <li className="nav-item dropdown">
+                                <a style={ styles.navLinkColor } className="nav-link dropdown-toggle" href="#" id="analytics" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                    Analytics
+                                </a>
+                                <ul className="dropdown-menu" aria-labelledby="analytics">
+                                    <li><a className="dropdown-item" href="/collections">Token Analytics</a></li>
+                                    <li><a className="dropdown-item" href="/walletAnalytics">Wallet Analytics</a></li>
+                                </ul>
+                            </li>
+                            <li className="nav-item dropdown">
+                                <a style={ styles.navLinkColor } className="nav-link dropdown-toggle" href="#" id="extra" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                    Extra
+                                </a>
+                                <ul className="dropdown-menu" aria-labelledby="defi">
+                                    <li><a className="dropdown-item" href="/dexes">DEXs</a></li>
+                                    <li><a className="dropdown-item" href="/pools">Pools</a></li>
+                                </ul>
+                            </li>
+                            <li className="nav-item">
+                                <a style={ styles.navLinkColor } className="nav-link" href="/gas-tracker">Gas Station</a>
+                            </li>
+                            <li className="nav-item dropdown">
+                                <a style={ styles.navLinkColor } className="nav-link dropdown-toggle" href="#" id="dashboards" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                    Layer 2 Dashboards
+                                </a>
+                                <ul className="dropdown-menu" aria-labelledby="dashboards">
+                                    <li><a className="dropdown-item" target="_blank" href="https://arbitrum-aws.d1pqf6famiyi96.amplifyapp.com/">Arbitrum</a></li>
+                                    <li><a className="dropdown-item" target="_blank" href="https://optimism-aws.d22w7ozmz21la.amplifyapp.com/">Optimism</a></li>                                    
+                                    <li><a className="dropdown-item" target="_blank" href="https://aws.d2n4l9is533l0n.amplifyapp.com/">Polygon</a></li>
+                                </ul>
+                            </li>
+                            <li className="nav-item dropdown">
                                 <a style={ styles.navLinkColor } className="nav-link dropdown-toggle" href="#" id="prices" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                     Prices
@@ -61,46 +95,6 @@ const Navbar = () => {
                                     <li><a className="dropdown-item" href="/ens-lookup">ENS</a></li>
                                     <li><a className="dropdown-item" href="/erc721-lookups">ERC721 Token Lookups</a></li>
                                 </ul>
-                            </li>
-                            <li className="nav-item dropdown">
-                                <a style={ styles.navLinkColor } className="nav-link dropdown-toggle" href="#" id="dashboards" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                    Layer 2 Dashboards
-                                </a>
-                                <ul className="dropdown-menu" aria-labelledby="dashboards">
-                                    <li><a className="dropdown-item" target="_blank" href="https://arbitrum-aws.d1pqf6famiyi96.amplifyapp.com/">Arbitrum</a></li>
-                                    <li><a className="dropdown-item" target="_blank" href="https://optimism-aws.d22w7ozmz21la.amplifyapp.com/">Optimism</a></li>                                    
-                                    <li><a className="dropdown-item" target="_blank" href="https://aws.d2n4l9is533l0n.amplifyapp.com/">Polygon</a></li>
-                                </ul>
-                            </li>
-                            <li className="nav-item">
-                                <a style={ styles.navLinkColor } className="nav-link" href="/gas-tracker">Gas Station</a>
-                            </li>
-                            <li className="nav-item dropdown">
-                                <a style={ styles.navLinkColor } className="nav-link dropdown-toggle" href="#" id="analytics" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                    Analytics
-                                </a>
-                                <ul className="dropdown-menu" aria-labelledby="analytics">
-                                    <li><a className="dropdown-item" href="/collections">Token Analytics</a></li>
-                                    <li><a className="dropdown-item" href="/walletAnalytics">Wallet Analytics</a></li>
-                                </ul>
-                            </li>
-                            <li className="nav-item dropdown">
-                                <a style={ styles.navLinkColor } className="nav-link dropdown-toggle" href="#" id="defi" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                    DeFi
-                                </a>
-                                <ul className="dropdown-menu" aria-labelledby="defi">
-                                    <li><a className="dropdown-item" href="/pools">Pools</a></li>
-                                    <li><a className="dropdown-item" href="/dexes">DEXes</a></li>
-                                </ul>
-                            </li>
-                            <li className="nav-item">
-                                <a style={ styles.navLinkColor } className="nav-link" href="#" id="extra" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                    Extra
-                                </a>
                             </li>
                         </ul>
                     </div>
