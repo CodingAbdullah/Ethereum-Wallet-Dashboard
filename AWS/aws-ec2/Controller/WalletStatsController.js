@@ -108,10 +108,9 @@ exports.walletNetWorth = (req, res) => {
                 walletNetWorth: response.data
             });
         })
-        .catch(err => 
-            res.status(400).json({ 
-                information: err 
-        }));
+        .catch(() => {
+            res.status(400).json({});
+        });
     }
 }
 
@@ -136,11 +135,9 @@ exports.addressERC20Holdings = (req, res) => {
             information: response.data 
         });
     })
-    .catch(err => 
-        res.status(400).json({ 
-            information: err 
-        })
-    );
+    .catch(() => {
+        res.status(400).json({});
+    });
 }
 
 exports.addressERC721Holdings = (req, res) => {
@@ -164,9 +161,7 @@ exports.addressERC721Holdings = (req, res) => {
             information: response.data
         });
     })
-    .catch(err => {
-        res.status(400).json({
-            information: err
-        });
+    .catch(() => {
+        res.status(400).json({});
     });
 }

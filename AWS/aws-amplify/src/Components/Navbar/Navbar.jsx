@@ -48,7 +48,7 @@ const Navbar = () => {
                                     Extra
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="defi">
-                                    <li><a className="dropdown-item" href="/dexes">DEXs</a></li>
+                                    <li><a className="dropdown-item" href="/dexs">DEXs</a></li>
                                     <li><a className="dropdown-item" href="/pools">Pools</a></li>
                                 </ul>
                             </li>

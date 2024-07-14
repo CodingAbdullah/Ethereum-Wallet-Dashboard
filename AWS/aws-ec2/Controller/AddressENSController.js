@@ -22,10 +22,8 @@ exports.addressToENSInformation = (req, res) => {
             information: response.data
         })
     })
-    .catch(err => {
-        res.status(400).json({
-            information: err
-        });
+    .catch(() => {
+        res.status(400).json({});
     })
 }
 
@@ -52,9 +50,9 @@ exports.additionalENSInformation = (req, res) => {
             information: response.data
         })
     })
-    .catch(err => {
-        console.log(err);
-    });
+    .catch(() => {
+        res.status(400).json({});
+    })
 
     /*
     sdk.get('/ens-records-by-name?ens_names=' + ensName, { 'x-api-key': process.env.TRANSPOSE_API_KEY_1 })
@@ -94,10 +92,10 @@ exports.ensOwnershipInformation = (req, res) => {
             information: response.data
         })
     })
-    .catch(err => {
-        console.log(err);
-    });
-
+    .catch(() => {
+        res.status(400).json({});
+    })
+    
     /*
     sdk.get('/ens-records-by-owner?owner_address=' + walletAddress, { 'x-api-key': process.env.TRANSPOSE_API_KEY_2 })
     .then(response => {
@@ -136,9 +134,9 @@ exports.ensResolverInformation = (req, res) => {
             information: response.data
         })
     })
-    .catch(err => {
-        console.log(err);
-    });
+    .catch(() => {
+        res.status(400).json({});
+    })
 /*
     sdk.get('/ens-records-by-resolved-account?resolved_address=' + walletAddress, { 'x-api-key': process.env.TRANSPOSE_API_KEY_3 })
     .then(response => {

@@ -20,13 +20,12 @@ exports.ensTransfersByName = (req, res) => {
 
     axios.get('https://api.transpose.io/ens/ens-transfers-by-name?' + new URLSearchParams(params), options)
     .then(response => {
-        console.log(response);
         res.status(200).json({
             information: response.data
         })
     })
-    .catch(err => {
-        console.log(err);
+    .catch(() => {
+        res.status(400).json({});
     });
 
 /*
@@ -63,13 +62,12 @@ exports.ensTransfersById = (req, res) => {
 
     axios.get('https://api.transpose.io/ens/ens-transfers-by-token-id?' + new URLSearchParams(params), options)
     .then(response => {
-        console.log(response);
         res.status(200).json({
             information: response.data
         })
     })
-    .catch(err => {
-        console.log(err);
+    .catch(() => {
+        res.status(400).json({});
     });
 
     /*

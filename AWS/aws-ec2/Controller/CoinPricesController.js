@@ -25,11 +25,9 @@ exports.coinPrices = (req, res) => {
             coinData: response.data
         });
     })
-    .catch(err => {
-        res.status(400).json({
-            information: err
-        });
-    });   
+    .catch(() => {
+        res.status(400).json({});
+    })   
 }
 
 // Fetch top coins by gains and losses for the day
@@ -54,10 +52,8 @@ exports.topBottomCoins = (req, res) => {
             topBottomCoins: response.data
         });
     })
-    .catch(err => {
-        res.status(400).json({
-            information: err
-        });
+    .catch(() => {
+        res.status(400).json({});
     });
 }
 
@@ -161,7 +157,7 @@ exports.currentCoinPrice = async (req, res) => {
     }
     catch (err) {
         res.status(400).json({
-            message: "ERROR: " + err
+            message: "ERROR: "
         });
     }
 }
@@ -196,7 +192,7 @@ exports.coinInformation = async (req, res) => {
     }
     catch(err) {
         res.status(400).json({
-            message: "ERROR: " + err
+            message: "ERROR: "
         });
     }
 }

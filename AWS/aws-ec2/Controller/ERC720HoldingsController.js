@@ -23,11 +23,9 @@ exports.getAddressTokenHoldings = (req, res) => {
             information: response.data
         })
     })
-    .catch(err => 
-        res.status(400).json({
-            information: err
-        })
-    );
+    .catch(() => {
+        res.status(400).json({});
+    });
 }   
 
 exports.getAddressTokenTransfers = (req, res) => { 
@@ -51,9 +49,7 @@ exports.getAddressTokenTransfers = (req, res) => {
             information: response.data
         })
     })
-    .catch(err => 
-        res.status(400).json({
-            information: err
-        })
-    );
+    .catch(() => {
+        res.status(400).json({});
+    });
 }   

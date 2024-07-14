@@ -29,10 +29,8 @@ exports.erc721SalesById = (req, res) => {
             information: response.data
         });
     })
-    .catch(err => {
-        res.status(400).json({
-            information: err
-        });
+    .catch(() => {
+        res.status(400).json({});
     });
 }
 
@@ -52,7 +50,9 @@ exports.erc721TokenLookup = (req, res) => {
     // Making request to Moralis API for finding ERC721 token information
     axios.get(MORALIS_URL + 'nft/' + address + "/" + id + "?chain=" + network + "&format=decimal", options)
     .then(response => res.status(200).json({ information: response.data }))
-    .catch(err => res.status(400).json({ information: err }));
+    .catch(() => {
+        res.status(400).json({});
+    });
 }
 
 // Retrieve ERC721 token transfer information
@@ -73,7 +73,9 @@ exports.erc721TokenTransferLookup = (req, res) => {
     // Making request to Moralis API for finding ERC721 token transfer information
     axios.get(MORALIS_URL + 'nft/' + address + "/" + id + LOOKUP_ENDPOINT + "?chain=" + network + "&format=decimal", options)
     .then(response => res.status(200).json({ information: response.data }))
-    .catch(err => res.status(400).json({ information: err }));
+    .catch(() => {
+        res.status(400).json({});
+    });
 }
 
 // Retrieve ERC721 token rarity information
@@ -101,10 +103,8 @@ exports.erc721TokenRarityLookup = (req, res) => {
                 information: { data: response.data }
             });
         })
-        .catch(err => {
-            res.status(400).json({
-                information: err 
-            });
+        .catch(() => {
+            res.status(400).json({});
         });
     }
 }
@@ -137,10 +137,8 @@ exports.erc721TokenOpenseaInformation = (req, res) => {
                 information: [response.data]
             });
         })
-        .catch(err => {
-            res.status(400).json({
-                information: err
-            });
+        .catch(() => {
+            res.status(400).json({});
         });
     }
 }

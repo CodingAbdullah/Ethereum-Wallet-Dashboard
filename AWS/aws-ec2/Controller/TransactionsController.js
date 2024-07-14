@@ -17,7 +17,9 @@ exports.getAddressTransactionBalance = (req, res) => {
     
     axios.get(ETHERSCAN_ETH_URL + "?module=" + mod + "&action=" + action + "&address=" + address + "&tag=" + tag + "&apikey=" + API_KEY)
     .then(response => res.status(200).json({ information: response.data }))
-    .catch(err => res.status(400).json({ information: err }));
+    .catch(() => {
+        res.status(400).json({});
+    });
 }
 
 exports.getAddressTransactionHistory = (req, res) => {
@@ -27,7 +29,9 @@ exports.getAddressTransactionHistory = (req, res) => {
     axios.get(ETHERSCAN_ETH_URL + '?module=' + mod + "&action=txlist&address=" + address + "&startblock=" + startBlock 
     + '&endblock=' + endBlock + "&page=" + page + "&offset=" + 1000 + "&sort=" + sort + "&apikey=" + API_KEY)
     .then(response => res.status(200).json({ information: response.data }))
-    .catch(err => res.status(400).json({ information: err }));
+    .catch(() => {
+        res.status(400).json({});
+    });
 }
 
 exports.getAddressInternalTransactionHistory = (req, res) => {
@@ -37,7 +41,9 @@ exports.getAddressInternalTransactionHistory = (req, res) => {
     axios.get(ETHERSCAN_ETH_URL + '?module=' + mod + '&action=txlistinternal&address=' + address + '&startblock=' + startBlock
     + '&endblock=' + endBlock + '&page=' + page + '&offset=' + 1000 + '&sort=' + sort + '&apikey=' + API_KEY) 
     .then(response => { res.status(200).json({ information: response.data })})
-    .catch(err => res.status(400).json({ information: err }));
+    .catch(() => {
+        res.status(400).json({});
+    });
 }
 
 exports.openseaAccountInformation = (req, res) => {
@@ -57,5 +63,7 @@ exports.openseaAccountInformation = (req, res) => {
     // Gather data about Opensea account
     axios.get(OPENSEA_URL + 'accounts/' + address, options)
     .then(response => res.status(200).json({ information: response.data }))
-    .catch(err => res.status(400).json({ information: err }));
+    .catch(() => {
+        res.status(400).json({});
+    });
 }

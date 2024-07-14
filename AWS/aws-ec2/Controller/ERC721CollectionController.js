@@ -21,8 +21,9 @@ exports.getERC721CollectionData = (req, res) => {
     // Run backend request
     axios.get(MORALIS_URL + 'nft/' + address, options)
     .then(response => res.status(200).json({ information: response.data }))
-    .catch(err => res.status(400).json({ information: err }));
-
+    .catch(() => {
+        res.status(400).json({});
+    });
 }
 
 exports.getERC721CollectionExtraData = (req, res) => {
@@ -39,7 +40,9 @@ exports.getERC721CollectionExtraData = (req, res) => {
     // Run backend request
     axios.get(PRO_COINGECKO_URL + 'nfts/ethereum/contract/' + address, options)
     .then(response => res.status(200).json({ information: response.data }))
-    .catch(err => res.status(400).json({ information: err }) );
+    .catch(() => {
+        res.status(400).json({});
+    });
 }
 
 exports.getERC721CollectionChartData = (req, res) => {
@@ -79,7 +82,9 @@ exports.getERC721CollectionChartData = (req, res) => {
             }))
         });
     })
-    .catch(err => { console.log(err.message); res.status(400).json({ information: err }) });
+    .catch(() => {
+        res.status(400).json({});
+    });
 }
 
 exports.getERC721CollectionTransfers = (req, res) => {
@@ -97,7 +102,9 @@ exports.getERC721CollectionTransfers = (req, res) => {
     // Run backend request
     axios.get(MORALIS_URL + 'nft/' + address + TRANSFERS_ENDPOINT, options)
     .then(response => res.status(200).json({ information: response.data }))
-    .catch(err => res.status(400).json({ information: err }));
+    .catch(() => {
+        res.status(400).json({});
+    });
 }
 
 exports.getERC721CollectionSales = (req, res) => {
@@ -115,7 +122,9 @@ exports.getERC721CollectionSales = (req, res) => {
     // Run backend request
     axios.get(MORALIS_URL + 'nft/' + address + TRADES_ENDPOINT, options)
     .then(response => res.status(200).json({ information: response.data }))
-    .catch(err => res.status(400).json({ information: err }));
+    .catch(() => {
+        res.status(400).json({});
+    });
 }
 
 exports.getERC721CollectionFloorPrice = (req, res) => {
@@ -126,7 +135,9 @@ exports.getERC721CollectionFloorPrice = (req, res) => {
 
     sdk.getFloorPrice({ apiKey: process.ALCHEMY_API_KEY_1 , contractAddress: address })
     .then(response => res.status(200).json({ information: response }))
-    .catch(err => res.status(400).json({ information: err }));
+    .catch(() => {
+        res.status(400).json({});
+    });
 }
 
 exports.getERC721CollectionAttributes = (req, res) => {
@@ -137,7 +148,9 @@ exports.getERC721CollectionAttributes = (req, res) => {
     
     sdk.summarizeNFTAttributes({ contractAddress: address, apiKey: process.env.ALCHEMY_API_KEY_2 })
     .then(response => { res.status(200).json({ information: response })})
-    .catch(err => res.status(400).json({ information: err }));
+    .catch(() => {
+        res.status(400).json({});
+    });
 }
 
 exports.getERC721TopCollections = (req, res) => {
@@ -157,9 +170,7 @@ exports.getERC721TopCollections = (req, res) => {
             topCollections: response.data
         });
     })
-    .catch(err => {
-        res.status(400).json({
-            information: err
-        });
+    .catch(() => {
+        res.status(400).json({});
     });
 }

@@ -22,11 +22,9 @@ exports.getTopERC20Tokens = (req, res) => {
             information: response.data
         });
     })
-    .catch(err => 
-        res.status(400).json({
-            information: err
-        })
-    );
+    .catch(() => {
+        res.status(400).json({});
+    });
 }
 
 exports.getTokenPrice = (req, res) => { 
@@ -48,11 +46,9 @@ exports.getTokenPrice = (req, res) => {
             information: response.data
         })
     })
-    .catch(err => 
-        res.status(400).json({
-            information: err
-        })
-    );
+    .catch(() => {
+        res.status(400).json({});
+    });
 }
     
 exports.getTokenTransfer = (req, res) => {
@@ -74,11 +70,9 @@ exports.getTokenTransfer = (req, res) => {
             information: response.data
         });
     })
-    .catch(err => 
-        res.status(400).json({
-            information: err
-        })
-    );
+    .catch(() => {
+        res.status(400).json({});
+    });
 }
 
 exports.getTokenOwners = (req, res) => {
@@ -100,9 +94,7 @@ exports.getTokenOwners = (req, res) => {
             information: response.data
         });
     })
-    .catch(err => 
-        res.status(400).json({
-            information: err
-        })
-    );
+    .catch(() => {
+        res.status(400).json({});
+    });
 }

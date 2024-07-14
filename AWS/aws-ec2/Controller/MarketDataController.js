@@ -31,9 +31,7 @@ exports.globalMarketCapData = (req, res) => {
             }))
         });
     })
-    .catch(err => 
-        res.status(400).json({
-            information: err
-        })
-    );
+    .catch(() => {
+        res.status(400).json({});
+    });
 }

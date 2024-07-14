@@ -24,9 +24,7 @@ exports.globalDefiData = (req, res) => {
             information: response.data
         });
     })
-    .catch(err => 
-        res.status(400).json({
-            information: err
-        })
-    );
+    .catch(() => {
+        res.status(400).json({});
+    });
 }
