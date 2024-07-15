@@ -3,14 +3,10 @@ A lightweight Etherscan implementation for the Ethereum network. Swiftly allowin
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). It also incorporates Node.js/Express.js for the back-end and utilizes AWS for cloud deployment.
 
-<br />
-<br />
-
 ### `Testnet Information`
 <p>Note that APIs related to the <b>Ropsten, Rinkeby, Goerli, and Kovan testnets are NO LONGER AVAILABLE.</b> Searches related to these networks will be removed.</b>
 <br />
 <p>Only the <b>Sepolia</b> and the new <b>Holesky testnets</b> will be supported. </p>
-<br />
 
 ### `List of APIs Incorporated`
 <table>
@@ -76,15 +72,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
     </tr>
 </table>
 
-<br />
-
 ### `AWS Route 53`
 **Domain was purchased using Namecheap and propagated through AWS Route 53 name servers.**
 **Domain:** https://www.ethwdashboard.xyz/
 
 **Backup Link Here:** https://aws.d3rwxneb2bnpjl.amplifyapp.com/
-
-<br />
 
 ### `AWS Amplify Front-end Deployment`
 
@@ -92,13 +84,9 @@ The front-end application is deployed through **AWS Amplify.** Link to the front
 
 Time to time, testing, security, and refinement will be done. The back-end server has been deployed and configured for security, SSL, and so on using an AWS EC2 instance.
 
-<br />
-
 ### `AWS Amplify Back-end Deployment`
 
 The back-end application has been deployed to the cloud using AWS. The full stack application consists of a React front-end deployed using AWS Amplify and a Node back-end deployed to an AWS EC2 instance. Communication between the two applications is secure. AWS has complete features on security and reliability.
-
-<br />
 
 ### `Start Here`
 
@@ -112,21 +100,15 @@ Running this project locally will require you to acquire separate API keys for r
 
 No API keys means failed requests to select API resources.
 
-<br />
-
 ## `Dockerfile`
 Attached within the server folders are Dockerfiles needed to Dockerize the servers and run as standalone containers. This will essentially, allow users to containerize the application by generating an image to represent the servers and run them as containers.
  
-<br />
-
 ## `Scripts`
 For basic project setup, scripts for each operating system (MAC/WINDOWS) have been provided as bash, powershell scripts respectively.
 
-<br />
-
 ### `Links`
 
-Below, is a list of links to the appropriate API resources used in this project. <b>Opensea API is now available and will be incorporated into the project in the near future. <br /> Changes to the ERC721 Collection, Holdings, and Analytics sections in particular, will see an update. Alchemy may still be used depending on usage requirements. </b>
+Below, is a list of links to the appropriate API resources used in this project.
 
 [Alchemy](https://docs.alchemy.com/reference/)
 <br />
@@ -142,16 +124,12 @@ Below, is a list of links to the appropriate API resources used in this project.
 <br />
 [Transpose](https://docs.transpose.io/)
 
-<br />
-
 ## Local/AWS Configuration
 
 ### Local
 <p>Due to size and refactoring, the <b>LOCAL_DEV_ENV</b> directory has been removed. To run locally, ensure that React components make calls to the back-end server and point to <code>http://localhost:5000</code>.</p>
 
 You'll also need to install all node modules and dependencies under the <code>package.json</code> file as the node_modules folder was not committed. This can be done with <code>npm install</code>. You'll also need to add the <code>.env</code> file in the back-end directory as it contains all the API keys for your back-end server.
-
-<br />
 
 ### AWS
 If you want to run this app in the cloud, you'll need to configure quite a few things before getting started. This app makes use of AWS Amplify and AWS EC2, services which are offered for free and allow for hosting and deploying front-end and back-end applications. These can be accessed in the AWS folder of this app.
@@ -161,43 +139,10 @@ The two main folders in this project, each represent a standalone app that can b
 
 This can be done with the `git checkout <branch name>` command on your local terminal, followed by deletions of the back-end folder. Followed by the usual, `git add, git commit, git push` commands.
 
-
 #### AWS EC2 (Back-end)
 When configuring the back-end server on the cloud, a lot needs to be done to successfully create an EC2 instance, configure security groups, route traffic and add a SSL certificate. But that is just to configure the server, you'll need to deploy your node-express app and have it run as a background process in real-time to receive and respond to incoming API requests.
 
 A link to spin up a virtual server on AWS can be found here: [AWS EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/get-set-up-for-amazon-ec2.html).
 
 #### AWS Lambda (Future Integration)
-<b>The back-end to this project will be transitioning to AWS Lambda soon. EC2, while provides great versatility, for the size of this project, Lambda will be more cost-efficient. </b>
-
-<br />
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The back-end to this project will be transitioning to AWS Lambda soon. EC2, while provides great versatility, for the size of this project, Lambda will be more cost-efficient.
