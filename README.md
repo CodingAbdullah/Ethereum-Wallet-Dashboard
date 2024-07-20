@@ -4,7 +4,7 @@ A lightweight Etherscan implementation for the Ethereum network. Swiftly allowin
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). It also incorporates Node.js/Express.js for the back-end and utilizes AWS for cloud deployment.
 
 ### `Testnet Information`
-<p>Note that APIs related to the <b>Ropsten, Rinkeby, Goerli, and Kovan testnets are NO LONGER AVAILABLE.</b> Searches related to these networks will be removed.</b>
+<p>Note that APIs related to the <b>Ropsten, Rinkeby, Goerli, and Kovan testnets are NO LONGER AVAILABLE.</b> Searches related to these networks has been removed.</b>
 <br />
 <p>Only the <b>Sepolia</b> and the new <b>Holesky testnets</b> will be supported. </p>
 
