@@ -6,8 +6,6 @@ import axios from 'axios';
 import Alert from '../Alert/Alert';
 import DurationSelector from '../DurationSelector/DurationSelector';
 import ERC720PricesChart from '../ERC720PricesChart/ERC720PricesChart';
-import ERC20PricesInfoTable from '../ERC720PricesInfoTable/ERC720PricesInfoTable';
-import ERC720TransfersInfoTable from '../ERC720TransfersInfoTable/ERC720TransfersInfoTable';
 import ERC720PricesInfoTable from '../ERC720PricesInfoTable/ERC720PricesInfoTable';
 import ERC720CollectionTopCoinsInfoTable from '../ERC720CollectionTopCoinsInfoTable/ERC720CollectionTopCoinsInfoTable';
 import ERC720CollectionTransfersInfoTable from '../ERC720CollectionTransfersInfoTable/ERC720CollectionTransfersInfoTable';

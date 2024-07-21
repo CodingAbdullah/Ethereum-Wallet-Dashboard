@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import ENSToAddressInfoTable from '../ENSToAddressInfoTable/ENSToAddressInfoTable';
-import AdditionalAddressENSInfoTable from '../AdditionalAddressENSInfoTable/AdditionalAddressENSInfoTable';
 import ENSOwnershipInfoTable from '../ENSOwnershipInfoTable/ENSOwnershipInfoTable';
 import ENSResolverInfoTable from '../ENSResolverInfoTable/ENSResolverInfoTable';
 import Alert from '../Alert/Alert';

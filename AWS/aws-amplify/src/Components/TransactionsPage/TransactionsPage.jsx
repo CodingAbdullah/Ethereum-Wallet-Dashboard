@@ -7,7 +7,6 @@ import TransactionsAccountInfoTable from '../TransactionsAccountInfoTable/Transa
 import TransactionsInfoTable from '../TransactionsInfoTable/TransactionsInfoTable';
 import InternalTransactionsInfoTable from '../InternalTransactionsInfoTable/InternalTransactionsInfoTable';
 import { resetAddress } from '../../redux/reducer/walletAddressReducer';
-import { currentCoinPrice } from '../../UtilFunctions/currentCoinPrice';
 import { currentCoinPricePro } from '../../UtilFunctions/currentCoinPricePRO';
 import { openseaAccountInformation } from '../../UtilFunctions/openseaAccountInfo';
 import { walletBalance } from '../../UtilFunctions/walletBalance';

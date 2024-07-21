@@ -1,20 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
-import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { coinPricesByDay } from '../../UtilFunctions/coinPricesByDay';
-import { metricsNavbarEthPrice } from '../../UtilFunctions/metricsNavbarEthPrice';
-import { coinPricesByDayPro } from '../../UtilFunctions/coinPricesByDayPRO';
-import { metricsNavbarEthPricePro } from '../../UtilFunctions/metricsNavbarEthPricePRO';
-import { erc20CoinInfoPro } from '../../UtilFunctions/erc20CoinInfoPRO';
-import { erc20CoinPriceDurationPro } from '../../UtilFunctions/erc20CoinPriceDurationPRO';
 import Alert from '../Alert/Alert';
 import ERC720PricesInfoTable from '../ERC720PricesInfoTable/ERC720PricesInfoTable';
 import ERC720PricesChart from '../ERC720PricesChart/ERC720PricesChart';
 import DurationSelector from '../DurationSelector/DurationSelector';
-import ChangeHighlight from 'react-change-highlight';
-import { AgChartsReact } from 'ag-charts-react';
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 import './ERC720PricesPage.css';
