@@ -23,7 +23,7 @@ const Navbar = () => {
         <div>
             <nav className="navbar navbar-expand-lg navbar-light bg-dark">
                 <div className="container-fluid">
-                    <a style={ styles.navTitleLinkAttributes } className="p-2 navbar-brand" href="/">Ethereum Wallet Dashboard</a>
+                    <a style={ styles.navTitleLinkAttributes } className="p-2 navbar-brand" href="/">Ethereum Dashboard</a>
                     <button style = { styles.buttonAttributes } className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
