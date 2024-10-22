@@ -20,7 +20,7 @@ const BottomCoinsInfoTable = (props) => {
             name: bottomCoins[i].name,
             symbol: String(bottomCoins[i].symbol).toUpperCase() + " - " + bottomCoins[i].image,
             currentPrice: "$" + bottomCoins[i].usd,
-            marketCap: bottomCoins[i].market_cap,
+            marketCap: bottomCoins[i].market_cap_rank,
             percentageChange24Hours: bottomCoins[i].usd_24h_change >= 0 ? "+" + bottomCoins[i].usd_24h_change.toFixed(2) + "%" : bottomCoins[i].usd_24h_change.toFixed(2) + "%"
         }
 
@@ -46,7 +46,7 @@ const BottomCoinsInfoTable = (props) => {
             }
         },
         { field: "currentPrice", headerName: "Price", flex: 1 },
-        { field: "marketCap", headerName: "Market Cap", flex: 1 },
+        { field: "marketCap", headerName: "Market Cap Rank", flex: 1 },
         { field: "percentageChange24Hours", headerName: "24 Hr % Change", flex: 1,
             cellRenderer: (params) => {
                 return (
