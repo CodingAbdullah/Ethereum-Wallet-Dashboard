@@ -20,6 +20,7 @@ const BottomCoinsInfoTable = (props) => {
             name: bottomCoins[i].name,
             symbol: String(bottomCoins[i].symbol).toUpperCase() + " - " + bottomCoins[i].image,
             currentPrice: "$" + bottomCoins[i].usd,
+            marketCap: bottomCoins[i].market_cap,
             percentageChange24Hours: bottomCoins[i].usd_24h_change >= 0 ? "+" + bottomCoins[i].usd_24h_change.toFixed(2) + "%" : bottomCoins[i].usd_24h_change.toFixed(2) + "%"
         }
 
@@ -45,13 +46,14 @@ const BottomCoinsInfoTable = (props) => {
             }
         },
         { field: "currentPrice", headerName: "Price", flex: 1 },
+        { field: "marketCap", headerName: "Market Cap", flex: 1 },
         { field: "percentageChange24Hours", headerName: "24 Hr % Change", flex: 1,
             cellRenderer: (params) => {
                 return (
                     <p style={{ color: 'red' }}><b>{params.value}</b></p>
                 )
             }
-         },
+         }
     ]);
 
     // Render Ag-Grid React component with row and column data
