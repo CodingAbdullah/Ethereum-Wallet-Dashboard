@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { selectCoin } from '../../redux/reducer/coinSelectionReducer';
 import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
