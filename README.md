@@ -74,15 +74,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### `AWS Route 53`
 **Domain was purchased using Namecheap and propagated through AWS Route 53 name servers.**
-**Domain:** https://www.ethwdashboard.xyz/
+**Domain:** https://ethereumdashboard.dev/
 
-**Backup Link Here:** https://aws.d3rwxneb2bnpjl.amplifyapp.com/
+### `AWS Amplify Front-end Deployment`.
 
-### `AWS Amplify Front-end Deployment`
-
-The front-end application is deployed through **AWS Amplify.** Link to the front-end AWS deployment can be found here: [AWS Amplify](https://aws.d3rwxneb2bnpjl.amplifyapp.com/).
-
-Time to time, testing, security, and refinement will be done. The back-end server has been deployed and configured for security, SSL, and so on using an AWS EC2 instance.
+The front-end of the application has been deployed to the cloud using AWS Amplify.
 
 ### `AWS Amplify Back-end Deployment`
 
