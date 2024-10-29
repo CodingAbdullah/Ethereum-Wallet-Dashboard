@@ -28,7 +28,8 @@ exports.handler = async (event) => {
                 'Content-Type': 'application/json'
             }
         };
-    } catch (error) {
+    } 
+    catch (error) {
         console.error('Error fetching token price:', error);
         return {
             statusCode: error.response?.status || 500,

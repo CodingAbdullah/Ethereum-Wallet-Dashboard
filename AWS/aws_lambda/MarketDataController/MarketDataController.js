@@ -35,7 +35,8 @@ exports.handler = async (event) => {
                 'Content-Type': 'application/json'
             }
         };
-    } catch (error) {
+    } 
+    catch (error) {
         console.error('Error fetching market cap data:', error);
         return {
             statusCode: 400,

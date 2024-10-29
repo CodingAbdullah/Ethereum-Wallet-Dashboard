@@ -1,4 +1,3 @@
-require('dotenv').config({ path: '../.env' });
 const axios = require('axios');
 
 const PRO_COINGECKO_URL = 'https://pro-api.coingecko.com/api/v3/';

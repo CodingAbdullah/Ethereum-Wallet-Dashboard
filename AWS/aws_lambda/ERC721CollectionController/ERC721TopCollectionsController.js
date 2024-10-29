@@ -1,5 +1,3 @@
-
-require('dotenv').config({ path: '../.env' });
 const axios = require('axios');
 
 // Data to fetch top ERC721 collections

@@ -20,7 +20,8 @@ exports.handler = async (event) => {
             body: JSON.stringify({ information: response.data }),
             headers: { 'Content-Type': 'application/json' }
         };
-    } catch (error) {
+    } 
+    catch (error) {
         console.error('Error fetching data:', error);
         return {
             statusCode: 400,

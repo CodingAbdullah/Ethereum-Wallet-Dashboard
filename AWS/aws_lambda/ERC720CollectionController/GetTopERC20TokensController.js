@@ -20,7 +20,8 @@ exports.handler = async (event) => {
                 'Content-Type': 'application/json'
             }
         };
-    } catch (error) {
+    } 
+    catch (error) {
         console.error('Error fetching top ERC20 tokens:', error);
         return {
             statusCode: error.response?.status || 500,

@@ -25,7 +25,8 @@ exports.handler = async (event) => {
                 'Access-Control-Allow-Origin': '*'
             }
         };
-    } catch (error) {
+    } 
+    catch (error) {
         console.error('Error:', error);
 
         return {

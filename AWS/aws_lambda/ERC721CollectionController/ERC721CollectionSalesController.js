@@ -1,5 +1,3 @@
-
-require('dotenv').config({ path: '../.env' });
 const axios = require('axios');
 
 /*  
@@ -8,19 +6,8 @@ const axios = require('axios');
     Moralis will be used for the other testnets on Ethereum
     Polygonscan for their mainnet and their Mumbai testnet
 */
-exports.NETWORK_MAPPER = {
-    'eth': 'https://api.etherscan.io/api',
-    'goerli': 'https://api-goerli.etherscan.io/api',
-    'kovan': 'https://api-kovan.etherscan.io/api',
-    'ropsten': 'https://api-ropsten.etherscan.io/api',
-    'rinkeby': 'https://api-rinkeby.etherscan.io/api',
-    'sepolia': 'https://api-sepolia.etherscan.io/api',
-    'polygon': 'https://api.polygonscan.com/api',
-    'polygon-mumbai': 'https://api-testnet.polygonscan.com/api',
-    'alchemy_url': 'https://eth-mainnet.g.alchemy.com/nft/v2',
-    'blocknative_url': 'https://api.blocknative.com/gasprices/blockprices',
-    'moralis_url': 'https://deep-index.moralis.io/api/v2/',
-    'opensea_url': 'https://api.opensea.io/api/v2/'
+const NETWORK_MAPPER = {
+    'moralis_url': 'https://deep-index.moralis.io/api/v2/'
 };
 
 exports.getERC721CollectionSales = async (req, res) => {
@@ -37,9 +24,10 @@ exports.getERC721CollectionSales = async (req, res) => {
         };
 
         // Run backend request
-        const response = await axios.get(this.NETWORK_MAPPER.moralis_url + 'nft/' + address + TRADES_ENDPOINT, options);
+        const response = await axios.get(NETWORK_MAPPER.moralis_url + 'nft/' + address + TRADES_ENDPOINT, options);
         res.status(200).json({ information: response.data });
-    } catch (error) {
+    } 
+    catch (error) {
         console.error(error); // Log the error for debugging
         res.status(400).json({ error: 'Failed to fetch ERC721 collection sales' });
     }
