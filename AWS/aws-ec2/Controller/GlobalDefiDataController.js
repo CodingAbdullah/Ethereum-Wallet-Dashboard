@@ -28,3 +28,28 @@ exports.globalDefiData = (req, res) => {
         res.status(400).json({});
     });
 }
+
+exports.trendingPoolsData = (req, res) => {
+    const TRENDING_POOLS_ENDPOINT = '/onchain/networks/trending_pools';
+    
+    // Pass in API key for backend request
+    const options = {
+        method: 'GET',
+        headers: {
+            'content-type': 'application/json',
+            'accept' : 'application/json',
+            'x-cg-pro-api-key' : process.env.COINGECKO_HOME_PAGE_API_KEY_3
+        } 
+    }
+
+    // Pass in address and chain values
+    axios.get(PRO_COINGECKO_URL + TRENDING_POOLS_ENDPOINT, options)
+    .then(response => {
+        res.status(200).json({
+            information: response.data
+        });
+    })
+    .catch(() => {
+        res.status(400).json({});
+    });
+}
