@@ -3,6 +3,8 @@
 import fetcher from '../utils/functions/fetcher';
 import { useRef } from 'react';
 import useSWR from 'swr';
+import EthereumGasDataType from '../utils/types/EthereumGasDataType';
+import NavbarEthereumDataType from '../utils/types/NavbarEthereumDataType';
 
 // Custom Metrics Navbar Component
 // useSWR for efficient data fetching
@@ -10,8 +12,8 @@ export default function MetricsNavbar() {
     const ethPriceRef = useRef<HTMLSpanElement>(null);
 
     // Data fetching using the custom fetcher function and useSWR
-    const { data: ethData, error: ethError, isLoading: ethLoading } = useSWR('api/navbar/ethereum-price', fetcher, { refreshInterval: 5000 });
-    const { data: gasData, error: gasError, isLoading: gasLoading } = useSWR('api/navbar/gas-track', fetcher, { refreshInterval: 5000 });
+    const { data: ethData, error: ethError, isLoading: ethLoading } = useSWR<NavbarEthereumDataType>('api/navbar/ethereum-price', fetcher, { refreshInterval: 5000 });
+    const { data: gasData, error: gasError, isLoading: gasLoading } = useSWR<EthereumGasDataType>('api/navbar/gas-track', fetcher, { refreshInterval: 5000 });
 
     // Conditionally rendering component
     if (ethError || gasError) 

@@ -33,7 +33,6 @@ export default function CollectionsPage() {
                 <p className="text-xl text-gray-400 mb-12 text-center">
                     Dive deep into the world of token collections and their performance
                 </p>
-                
                 <Card className="bg-gray-900 border-gray-800 shadow-xl w-full">
                     <CardHeader className="border-b border-gray-800 pb-6">
                         <CardTitle className="text-3xl text-gray-100">Select Collection Type</CardTitle>
