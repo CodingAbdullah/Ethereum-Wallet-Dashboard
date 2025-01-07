@@ -1,7 +1,7 @@
 # Ethereum-Wallet-Dashboard
-A lightweight Etherscan implementation for the Ethereum network. Swiftly allowing users to view wallet activity, transactions, asset holdings, tokenomics of ERC20 tokens, coin prices by market cap and so much more.
+A lightweight Etherscan implementation for the Ethereum network. Swiftly allowing users to view wallet activity, transactions, asset holdings, tokenomics of ERC20/721 tokens, coin prices by market cap and so much more.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). It also incorporates Node.js/Express.js for the back-end and utilizes AWS for cloud deployment.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), but is in the midst of moving to Next.js As it stands, it incorporates Node.js/Express.js for the back-end and utilizes AWS for cloud deployment.
 
 ### `Testnet Information`
 <p>Note that APIs related to the <b>Ropsten, Rinkeby, Goerli, and Kovan testnets are NO LONGER AVAILABLE.</b> Searches related to these networks has been removed.</b>
@@ -140,5 +140,5 @@ When configuring the back-end server on the cloud, a lot needs to be done to suc
 
 A link to spin up a virtual server on AWS can be found here: [AWS EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/get-set-up-for-amazon-ec2.html).
 
-#### AWS Lambda (Future Integration)
-The back-end to this project will be transitioning to AWS Lambda soon. EC2, while provides great versatility, for the size of this project, Lambda will be more cost-efficient.
+#### Future Integration (Next.js)
+This project will transition to using Next.js, soon and will do away with AWS altogether. Streamlines the process with Vercel deployment and has added benefits such as saving on cloud costs and SEO.
