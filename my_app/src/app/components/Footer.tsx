@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { ExternalLink } from 'lucide-react'
 import { FooterLinks } from '../utils/constants/FooterLinks'
 import SocialMediaIcon from './SocialMediaIcon'
@@ -11,7 +12,7 @@ export default function Footer() {
                     <nav className="flex flex-wrap justify-center gap-4 md:gap-6">
                         {
                             FooterLinks.ecosystem.map((link) => (
-                                <a
+                                <Link
                                     key={link.name}
                                     href={link.href}
                                     className="text-gray-400 hover:text-gray-100 transition-colors duration-300 flex items-center group"
@@ -20,7 +21,7 @@ export default function Footer() {
                                 >
                                     <span className="font-mono tracking-wider">{ link.name }</span>
                                     <ExternalLink className="h-4 w-4 ml-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                                </a>
+                                </Link>
                         ))}
                     </nav>
                 </div>
