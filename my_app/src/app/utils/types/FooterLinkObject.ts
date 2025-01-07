@@ -1,7 +1,7 @@
-import FooterLinkType from './FooterLinkType';
+import LinkType from './LinkType';
 
 // Custom Footer Links Object Type
 export default interface FooterLinksObject {
-    ecosystem: FooterLinkType[];
-    social: FooterLinkType[];
+    ecosystem: LinkType[];
+    social: LinkType[];
 };

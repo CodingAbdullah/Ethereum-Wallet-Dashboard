@@ -32,7 +32,7 @@ export default function Footer() {
                 </div>
                 <div className="border-t border-gray-800 pt-5 text-center">
                     <p className="text-gray-500 text-sm font-mono">
-                        &copy; { new Date().getFullYear() } ΞTHERΞUM ΞCOSYSTΞM. Powered by Next.js
+                        &copy; { new Date().getFullYear() } ΞTHERΞUM DASHBOARD. Powered by Next.js
                     </p>
                 </div>
             </div>

@@ -1,9 +1,9 @@
 import Link from "next/link";
-import FooterLinkType from "../utils/types/FooterLinkType"
 import { Github, X } from 'lucide-react';
+import LinkType from "../utils/types/LinkType";
 
 // Socia Media Icon Custom Component
-export default function SocialMediaIcon(socialMediaLink: FooterLinkType) {
+export default function SocialMediaIcon(socialMediaLink: LinkType) {
     const { href, name } = socialMediaLink;
     
     // Conditionally render Social Media icons based on name
