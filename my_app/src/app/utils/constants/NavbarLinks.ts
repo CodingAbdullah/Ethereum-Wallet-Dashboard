@@ -6,7 +6,7 @@ export const NavbarLinks: NavbarLinkObject[] = [
         name: 'Analytics',
         dropdown: [
             { name: 'Token Analytics', href: '/collections' },
-            { name: 'Wallet Analytics', href: '/analytics/wallet' }
+            { name: 'Wallet Analytics', href: '/wallet-analytics' }
         ]
     },
     {
