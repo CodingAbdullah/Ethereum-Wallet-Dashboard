@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+// Opensea URL for processing request
 const OPENSEA_URL = 'https://api.opensea.io/api/v2/';
 
 // Custom Route Handler function
