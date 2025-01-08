@@ -31,8 +31,8 @@ export const NavbarLinks: NavbarLinkObject[] = [
     {
         name: 'Token Holdings',
         dropdown: [
-            { name: 'ERC20 Holdings', href: '/holdings/erc20' },
-            { name: 'ERC721 Holdings', href: '/holdings/erc721' }
+            { name: 'ERC20 Holdings', href: '/erc20-holdings' },
+            { name: 'ERC721 Holdings', href: '/erc721-holdings' }
         ]
     },
     {
