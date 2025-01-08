@@ -16,7 +16,7 @@ export default function CollectionsPage() {
         setCollectionURL(value);
     }
 
-    // Push endpoint value to /collections/ path
+    // Push endpoint value to /collections path
     const handleViewCollection = () => {
         router.push(`/collections/${collectionURL}`);
     }

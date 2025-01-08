@@ -38,7 +38,7 @@ export const NavbarLinks: NavbarLinkObject[] = [
     {
         name: 'Token Lookups',
         dropdown: [
-            { name: 'ENS', href: '/lookups/ens' },
+            { name: 'ENS', href: '/ens-lookup' },
             { name: 'ERC721 Token Lookups', href: '/lookups/erc721' }
         ]
     }
