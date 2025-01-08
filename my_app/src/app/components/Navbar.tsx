@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from 'react'
-import Link from 'next/link'
+import { useState } from 'react';
+import Link from 'next/link';
 import { Menu, X, ChevronDown } from 'lucide-react'
 import { NavbarLinks } from '../utils/constants/NavbarLinks';
 
+// Navbar Custom Component
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
@@ -13,6 +14,7 @@ export default function Navbar() {
     setOpenDropdown(openDropdown === name ? null : name)
   }
 
+  // Render Navbar Custom Component Conditionally
   return (
     <nav className="bg-gray-900 text-gray-300 border-b border-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -11,7 +11,9 @@ export const NavbarLinks: NavbarLinkObject[] = [
     },
     {
         name: 'Gas Station',
-        dropdown: []
+        dropdown: [{
+            name: 'Gas Information', href: '/gas-tracker'
+        }]
     },
     {
         name: 'Layer Two Dashboards',
