@@ -5,6 +5,8 @@ const OPENSEA_URL = 'https://api.opensea.io/api/v2/';
 
 // Custom Route Handler function
 export default async function POST(request: Request){
+    
+    // Parse request body
     const body = await request.json();
 
     // Set options for making authenticated API calls
@@ -18,12 +20,13 @@ export default async function POST(request: Request){
     }
     
     // Gather data about Opensea account
-    const data = await fetch(OPENSEA_URL + 'accounts/' + body.address, options);
+    const response = await fetch(OPENSEA_URL + 'accounts/' + body.address, options);
     
     // Fetch data using the Ethereum data endpoints
-    if (!data.ok) 
+    if (!response.ok) 
         return NextResponse.json({ error: 'Failed to fetch Ethereum price' }, { status: 500 });
     else {
+        const data = await response.json();
         return NextResponse.json(data);
     }
 }

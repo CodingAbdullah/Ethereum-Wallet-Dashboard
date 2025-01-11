@@ -1,7 +1,6 @@
 'use client';
 
-import fetcher from '../utils/functions/fetcher';
-import { useRef } from 'react';
+import fetcher from '../utils/functions/NavbarFetcher';
 import useSWR from 'swr';
 import EthereumGasDataType from '../utils/types/EthereumGasDataType';
 import NavbarEthereumDataType from '../utils/types/NavbarEthereumDataType';
@@ -9,8 +8,6 @@ import NavbarEthereumDataType from '../utils/types/NavbarEthereumDataType';
 // Custom Metrics Navbar Component
 // useSWR for efficient data fetching
 export default function MetricsNavbar() {
-    const ethPriceRef = useRef<HTMLSpanElement>(null);
-
     // Data fetching using the custom fetcher function and useSWR
     const { data: ethData, error: ethError, isLoading: ethLoading } = useSWR<NavbarEthereumDataType>('api/navbar/ethereum-price', fetcher, { refreshInterval: 5000 });
     const { data: gasData, error: gasError, isLoading: gasLoading } = useSWR<EthereumGasDataType>('api/navbar/gas-track', fetcher, { refreshInterval: 5000 });
@@ -34,7 +31,7 @@ export default function MetricsNavbar() {
                             <span className="ping-animation w-2 h-2 bg-green-500 rounded-full"></span>
                             <span className="text-green-500 text-xs font-semibold">Live</span>
                         </div>                        
-                            <span>ETH Price: <span ref={ethPriceRef}>${ Number(ethereum.usd).toFixed(2) }</span></span>
+                            <span>ETH Price: <span>${ Number(ethereum.usd).toFixed(2) }</span></span>
                         <span>
                             24-Hr % Chg: 
                             <span className={ethereum.usd_24h_change >= 0 ? 'text-green-500' : 'text-red-500'}>
