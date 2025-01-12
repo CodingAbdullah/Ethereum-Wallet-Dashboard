@@ -1,5 +1,5 @@
 // Custom fetcher function to be used for working with requests, client-side
-export default async function WalletFetcher(url: string) {
+export default async function GenericFetcher(url: string) {
     const res = await fetch(url); // Authorize Fetch Request
 
     // Check response status
