@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 const PRO_COINGECKO_URL = "https://pro-api.coingecko.com/api/v3";
 
 // Custom Route Handler function
-export default async function GET(){
+export async function GET(){
     const DEFI_ENDPOINT = "/global/decentralized_finance_defi";
     
     // Pass in API key for backend request
@@ -18,12 +18,13 @@ export default async function GET(){
     }
 
     // Pass in address and chain values and make request
-    const data = await fetch(PRO_COINGECKO_URL + DEFI_ENDPOINT, options);
+    const response = await fetch(PRO_COINGECKO_URL + DEFI_ENDPOINT, options);
 
     // Fetch data using the Ethereum data endpoints
-    if (!data.ok) 
+    if (!response.ok) 
         return NextResponse.json({ error: 'Failed to fetch Ethereum price' }, { status: 500 });
     else {
+        const data = await response.json();
         return NextResponse.json(data);
     }
 }

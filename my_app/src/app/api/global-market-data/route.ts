@@ -3,9 +3,8 @@ import { NextResponse } from "next/server";
 const PRO_COINGECKO_URL = "https://pro-api.coingecko.com/api/v3"; // Pro CoinGecko API Endpoint
 
 // Custom Route Handler function
-export default async function GET(){
+export async function GET(){
     const GLOBALMARKETDATA_ENDPOINT = '/global';
-    let globalMarketData = [];
 
     // Setting options for authenticated API call
     const options = {
@@ -22,17 +21,15 @@ export default async function GET(){
     
     // Return response based on data fetch
     if (!data.ok) {
-        NextResponse.json({
+        return NextResponse.json({
             message: "Could not fetch global market data"
         }, { status: 400 });
     }
     else {
         // Send back as response, global market data
         const information = await data.json();
-        globalMarketData.push(information);
-        
-        NextResponse.json({
-            globalMarketData
+        return NextResponse.json({
+            information
         });
     }
 }
