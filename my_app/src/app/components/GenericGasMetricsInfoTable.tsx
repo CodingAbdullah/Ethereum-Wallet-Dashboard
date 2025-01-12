@@ -11,10 +11,10 @@ export default function GenericGasMetricsInfoTable() {
 
     // Conditionally render the Generic Gas Metrics Info Table Component
     if (error) {
-        return <div>Error loading data..</div>
+        throw new Error();
     }
     else if (isLoading){
-        return <div>Loading data..</div>
+        return <div>Loading data...</div>
     }
     else {
         
