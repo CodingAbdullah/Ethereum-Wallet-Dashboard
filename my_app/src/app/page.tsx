@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Button } from '../app/components/ui/button';
 import HomePageWalletForm from './components/HomePageWalletForm';
 import HomePageMarketDataSection from './components/HomePageMarketDataSection';
+import HomePageGlobalMarketCapChart from './components/HomePageGlobalMarketCapChart';
 
 // Home Page Custom Component
 export default function HomePage() {
@@ -25,7 +26,7 @@ export default function HomePage() {
       </div>
       <hr className='mt-5' />
       <HomePageMarketDataSection />
-      <hr className='mt-5' />
+      <HomePageGlobalMarketCapChart />
     </div>
   )
 }
