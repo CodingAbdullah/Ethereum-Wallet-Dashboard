@@ -1,72 +1,75 @@
 'use client';
 
-import useSWR from "swr";
-import GenericFetcher from "../utils/functions/GenericFetcher";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
+import useSWR from 'swr';
+import GenericFetcher from '../utils/functions/GenericFetcher';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 
 // Home Page Market Data Section Component
 export default function HomePageGlobalMarketCapChart() {
-    const { data: marketData, error: marketError, isLoading: marketDataLoading } = useSWR('api/global-market-data', GenericFetcher, { refreshInterval: 50000 });
-    const { data: defiData, error: defiError, isLoading: defiLoading } = useSWR('api/global-defi-data', GenericFetcher, { refreshInterval: 50000 });
+    const { data: marketChartData, error: marketChartError, isLoading: marketChartLoading } = useSWR('api/global-market-cap-chart-data', GenericFetcher, { refreshInterval: 50000 });
 
     // Conditionally render data
-    if (marketError || defiError) {
+    if (marketChartError) {
         return <div>Error Loading Data...</div>
     }
-    else if (marketDataLoading || defiLoading) {
+    else if (marketChartLoading) {
         return <div>Loading Data...</div>
     }
     else {
         // Retrieve key information
-        const marketTableData = marketData.information.data;
-        const { data } = defiData;
+        const chartData = marketChartData.capValues;
 
         // Render data based on market information
         return (
-            <div className="p-6 bg-gray-900 shadow-lg">
-                <h2 className="text-2xl mb-6 text-gray-100 mx-auto">Market Overview</h2>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <Card className="bg-gray-800 border-gray-700">
-                        <CardHeader>
-                            <CardTitle className="text-xl text-gray-100">Global Markets</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-gray-300">
-                            <div className="space-y-2">
-                                <p>Active Currencies: <span className="text-gray-100">{marketTableData.active_cryptocurrencies}</span></p>
-                                <p>Number of Exchanges: <span className="text-gray-100">{marketTableData.markets}</span></p>
-                                <p>Total Market Cap: <span className="text-gray-100">{"$" + Number(marketTableData.total_market_cap.usd).toFixed(2)}</span></p>
-                                <p>Market Dominance: 
-                                    <span className="text-gray-100"> BTC {Number(marketTableData.market_cap_percentage.btc).toFixed(2) + '%'} | ETH {Number(marketTableData.market_cap_percentage.eth).toFixed(2) + '%'}</span>
-                                </p>
-                                {
-                                    marketTableData.market_cap_change_percentage_24h_usd < 0 ? 
-                                        <p>24 Hour Market Cap % Change: 
-                                            <span className="text-red-400">{Number(marketTableData.market_cap_change_percentage_24h_usd).toFixed(2) + '%'}</span>
-                                        </p>
-                                        :
-                                        <p>24 Hour Market Cap % Change: 
-                                            <span className="text-green-400">{Number(marketTableData.market_cap_change_percentage_24h_usd).toFixed(2) + '%'}</span>
-                                        </p>
-                                }
-                            </div>
-                        </CardContent>
-                    </Card>
-                    <Card className="bg-gray-800 border-gray-700">
-                        <CardHeader>
-                            <CardTitle className="text-xl text-gray-100">DeFi Markets</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-gray-300">
-                            <div className="space-y-2">
-                                <p>DeFi Market Cap: <span className="text-gray-100">{"$" + Number(data.defi_market_cap).toFixed(2)}</span></p>
-                                <p>ETH Market Cap: <span className="text-gray-100">{"$" + Number(data.eth_market_cap).toFixed(2)}</span></p>
-                                <p>Trading Volume: <span className="text-gray-100">{"$" + Number(data.trading_volume_24h).toFixed(2)}</span></p>
-                                <p>Top Coin Name: <span className="text-gray-100">{data.top_coin_name}</span></p>
-                                <p>Top Coin DeFi Dominance: <span className="text-gray-100">{Number(data.top_coin_defi_dominance).toFixed(2) + '%'}</span></p>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
-            </div>
+            <Card className="w-full bg-gray-800 border-gray-700 mt-10">
+                <CardHeader>
+                    <CardTitle className="text-xl text-gray-100">Global Market Cap (Last 30 Days)</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="h-[400px] w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <LineChart
+                                data={chartData}
+                                margin={{
+                                    top: 5,
+                                    right: 30,
+                                    left: 20,
+                                    bottom: 5
+                                }}
+                            >
+                            <CartesianGrid strokeDasharray="3 3" stroke="#444" />
+                            <XAxis 
+                                dataKey="date" 
+                                stroke="#888" 
+                                tick={{fill: '#888'}}
+                                tickFormatter={(value) => value.slice(5, 10)}
+                            />
+                            <YAxis 
+                                stroke="#888" 
+                                dataKey="price"
+                                tick={{fill: '#888'}}
+                                tickFormatter={(value) => `$${(value / 1e12).toFixed(2)}B`}                            />
+                            <Tooltip 
+                                contentStyle={{backgroundColor: '#333', border: 'none'}}
+                                labelStyle={{color: '#888'}}
+                                itemStyle={{color: '#fff'}}
+                                formatter={(value: number) => [`$${(value / 1e12).toFixed(2)}B`, 'Price']}
+                            />
+                            <Legend />
+                            <Line 
+                                type="monotone" 
+                                dataKey="price" 
+                                stroke="#ff4136" 
+                                strokeWidth={2}
+                                dot={false}
+                                name="Global Market Cap Data"
+                            />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </div>
+                </CardContent>
+            </Card>
         )
     }
 }
