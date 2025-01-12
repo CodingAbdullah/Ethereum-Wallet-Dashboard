@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../co
 // Collections Page Custom Component
 export default function CollectionsPage() {
     const router = useRouter();
-    const [collectionURL, setCollectionURL] = useState("erc720-collection");
+    const [collectionURL, setCollectionURL] = useState("erc20-collection");
 
     // Dynamically handle collection URL settings
     const handleCollectionChange = (value: string) => {
@@ -41,12 +41,12 @@ export default function CollectionsPage() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6 pt-6">
-                        <Select onValueChange={handleCollectionChange} defaultValue="erc720-collection">
+                        <Select onValueChange={handleCollectionChange} defaultValue="erc20-collection">
                             <SelectTrigger className="w-full bg-gray-800 text-gray-100 border-gray-700 hover:bg-gray-750 focus:ring-gray-400">
                                 <SelectValue placeholder="Select collection type" />
                             </SelectTrigger>
                             <SelectContent className="bg-gray-800 text-gray-100 border-gray-700">
-                                <SelectItem value="erc720-collection">ERC20 Collection Analytics</SelectItem>
+                                <SelectItem value="erc20-collection">ERC20 Collection Analytics</SelectItem>
                                 <SelectItem value="erc721-collection">ERC721 Collection Analytics</SelectItem>
                             </SelectContent>
                         </Select>         
