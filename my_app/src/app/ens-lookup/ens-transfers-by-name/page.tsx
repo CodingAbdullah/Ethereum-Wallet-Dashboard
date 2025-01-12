@@ -8,7 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from "../../components/ui/alert";
 import ENSValidator from '@/app/utils/functions/ENSValidator';
 
 // Address Lookup By Name Custom Component
-export default function AddressLookupByNamePage() {
+export default function ENSTransfersByNamePage() {
     const [walletDomain, setWalletDomain] = useState("")
     const [showAlert, setShowAlert] = useState(false)
 

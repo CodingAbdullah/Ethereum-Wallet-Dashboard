@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../..
 import { Alert, AlertDescription, AlertTitle } from "../../components/ui/alert";
 
 // Address Lookup By Id Custom Component
-export default function AddressLookupByIdPage() {
+export default function ENSTransfersByIDPage() {
     const [tokenID, setTokenID] = useState("")
     const [showAlert, setShowAlert] = useState(false)
 
