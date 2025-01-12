@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 const PRO_COINGECKO_URL = "https://pro-api.coingecko.com/api/v3"; // Pro CoinGecko API Endpoint
 
 // Custom Route Handler function
-export default async function GET(){
+export async function GET(){
     const TRENDINGCOINS_ENDPOINT = '/search/trending'; // Trending coins in the market
     let trendingCoinData = "";
     
@@ -34,13 +34,13 @@ export default async function GET(){
         }
 
         // Return trending coins data
-        NextResponse.json({
+        return NextResponse.json({
             trendingCoinData: trendingCoins
         });
     }
     else {
         // Return error message
-        NextResponse.json({
+        return NextResponse.json({
             message: "Could not fetch trending coins data"
         }, { status: 400 });
     }
