@@ -1,0 +1,55 @@
+'use client';
+
+import { useEffect } from 'react'
+import Link from 'next/link'
+import { AlertCircle, RotateCcw, Home } from 'lucide-react'
+import { Button } from "../components/ui/button"
+
+// Custom Error Page for Ethereum Gas
+export default function GasDataErrorPage({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string }
+  reset: () => void
+}) {
+  useEffect(() => {
+    // Log the error to an error reporting service
+    console.error(error)
+  }, [error])
+
+  // Render Custom Error Page for Ethereum Gas Data
+  return (
+    <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="text-center">
+        <AlertCircle className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+        <h1 className="text-3xl font-bold text-gray-100 mb-4">Unable to Fetch Gas Data</h1>
+        <p className="text-xl text-gray-400 mb-8">
+          We're having trouble retrieving the latest Ethereum gas prices. This could be due to network issues or API limitations.
+        </p>
+        <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+          <Button 
+            onClick={reset}
+            className="inline-flex items-center px-6 py-3 border border-gray-700 text-base font-medium rounded-md text-gray-100 bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-gray-600 transition-colors duration-200"
+          >
+            <RotateCcw className="w-5 h-5 mr-2" />
+            Try Again
+          </Button>
+          <Button 
+            asChild
+            variant="outline"
+            className="inline-flex items-center px-6 py-3 border border-gray-600 text-base font-medium rounded-md text-gray-300 bg-gray-900 hover:bg-gray-800 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-gray-600 transition-colors duration-200"
+          >
+            <Link href="/dashboard">
+              <Home className="w-5 h-5 mr-2" />
+              Back to Dashboard
+            </Link>
+          </Button>
+        </div>
+      </div>
+      <div className="mt-12 text-gray-500 text-sm">
+        <p>If this problem persists, please contact our support team.</p>
+      </div>
+    </div>
+  )
+}
