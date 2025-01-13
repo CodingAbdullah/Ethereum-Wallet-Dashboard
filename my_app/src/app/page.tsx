@@ -4,6 +4,7 @@ import HomePageWalletForm from './components/HomePageWalletForm';
 import HomePageMarketDataSection from './components/HomePageMarketDataSection';
 import HomePageGlobalMarketCapChart from './components/HomePageGlobalMarketCapChart';
 import HomePageTrendingCoinsTable from './components/HomePageTrendingCoinsTable';
+import HomePageTrendingCollectionsTable from './components/HomePageTrendingCollectionsTable';
 
 // Home Page Custom Component
 export default function HomePage() {
@@ -29,6 +30,7 @@ export default function HomePage() {
       <HomePageMarketDataSection />
       <HomePageGlobalMarketCapChart />
       <HomePageTrendingCoinsTable />
+      <HomePageTrendingCollectionsTable />
     </div>
   )
 }
