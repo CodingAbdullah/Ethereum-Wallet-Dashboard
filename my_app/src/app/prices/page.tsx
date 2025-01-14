@@ -2,11 +2,11 @@ import CryptoPricesTable from "@/app/components/CryptoPricesTable";
 import TopWinningCoinsTable from "../components/TopWinningCoinsTable";
 import TopLosingCoinsTable from "../components/TopLosingCoinsTable";
 
-// Gas Tracker Page
+// Cryptocurrency Prices Page
 export default function CryptoCurrencyPricesPage() {
 
-    // Render the Gas Tracker Page
-    // Include the Generic Gas Metrics Table and the Gas Block Info Table Components
+    // Render the Cryptocurrency Prices Page
+    // Include the Top Winning and Top Losing Coins Table Components
     return (
         <div className="bg-gray-800 text-gray-300 py-10 px-4 sm:px-6 lg:px-8 shadow-lg">
             <h1 className="text-5xl font-bold mb-6 text-center">

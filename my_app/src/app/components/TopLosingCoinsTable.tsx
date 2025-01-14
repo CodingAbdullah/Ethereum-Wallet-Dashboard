@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import GenericFetcher from "../utils/functions/GenericFetcher";
 import TopLosingCoinsType from "../utils/types/TopLosingCoinsType";
 
-// Top Winning Coins Table Custom Component
+// Top Losing Coins Table Custom Component
 export default function TopLosingCoinsTable() {
     const { data: coins, error: coinsError, isLoading: loadingCoins } = useSWR('api/top-bottom-coin-prices', GenericFetcher, { refreshInterval: 300000 });
     
@@ -18,7 +18,7 @@ export default function TopLosingCoinsTable() {
         return <div className="text-gray-300 p-4">Loading Losing Coins Data Table...</div>
     }
     else {
-        // Retrieve data for winning coin prices data table
+        // Retrieve data for losing coin prices data table
         const coinsData: TopLosingCoinsType[] = coins.top_losers;
 
         // Render component using the information provided
