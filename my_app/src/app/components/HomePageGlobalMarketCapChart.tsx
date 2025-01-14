@@ -11,10 +11,10 @@ export default function HomePageGlobalMarketCapChart() {
 
     // Conditionally render data
     if (marketChartError) {
-        return <div>Error Loading Data...</div>
+        return <div>Error Loading Market Cap Chart Data...</div>
     }
     else if (marketChartLoading) {
-        return <div>Loading Data...</div>
+        return <div>Loading Market Cap Chart Data...</div>
     }
     else {
         // Retrieve key information

@@ -1,4 +1,6 @@
 import CryptoPricesTable from "@/app/components/CryptoPricesTable";
+import TopWinningCoinsTable from "../components/TopWinningCoinsTable";
+import TopLosingCoinsTable from "../components/TopLosingCoinsTable";
 
 // Gas Tracker Page
 export default function CryptoCurrencyPricesPage() {
@@ -16,6 +18,8 @@ export default function CryptoCurrencyPricesPage() {
                 Dive deep into coin price metrics
             </p>
             <hr className='mt-5' />
+            <TopWinningCoinsTable />
+            <TopLosingCoinsTable />
             <CryptoPricesTable />
         </div>
     )

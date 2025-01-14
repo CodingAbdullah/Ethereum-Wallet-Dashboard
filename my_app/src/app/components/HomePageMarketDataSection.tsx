@@ -14,7 +14,7 @@ export default function HomePageMarketDataSection() {
         return <div>Error Loading Data...</div>
     }
     else if (marketDataLoading || defiLoading) {
-        return <div>Loading Data...</div>
+        return <div>Loading Market Data...</div>
     }
     else {
         // Retrieve key information

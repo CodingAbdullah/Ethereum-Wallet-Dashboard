@@ -15,7 +15,7 @@ export default function HomePageTrendingCollectionsTable() {
         return <div>Error Loading Data...</div>
     }
     else if (loadingTrendingCoins) {
-        return <div>Loading Trending Coins Data...</div>
+        return <div>Loading Trending Collections Data...</div>
     }
     else {
         // Utilize collection data for Table display
