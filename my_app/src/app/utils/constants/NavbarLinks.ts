@@ -26,7 +26,7 @@ export const NavbarLinks: NavbarLinkObject[] = [
     {
         name: 'Prices',
         dropdown: [
-            { name: 'Coin Prices', href: '/prices/coins' },
+            { name: 'Coin Prices', href: '/prices' },
             { name: 'ERC20 Token Prices', href: '/prices/erc20' }
         ]
     },
