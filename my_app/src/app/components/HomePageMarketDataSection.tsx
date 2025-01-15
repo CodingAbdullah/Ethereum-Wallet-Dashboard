@@ -41,11 +41,11 @@ export default function HomePageMarketDataSection() {
                                 {
                                     marketTableData.market_cap_change_percentage_24h_usd < 0 ? 
                                         <p>24 Hour Market Cap % Change: 
-                                            <span className="text-red-400">{Number(marketTableData.market_cap_change_percentage_24h_usd).toFixed(2) + '%'}</span>
+                                            <span className="text-red-400">{" " + Number(marketTableData.market_cap_change_percentage_24h_usd).toFixed(2) + '%'}</span>
                                         </p>
                                         :
                                         <p>24 Hour Market Cap % Change: 
-                                            <span className="text-green-400">{Number(marketTableData.market_cap_change_percentage_24h_usd).toFixed(2) + '%'}</span>
+                                            <span className="text-green-400">{" +" + Number(marketTableData.market_cap_change_percentage_24h_usd).toFixed(2) + '%'}</span>
                                         </p>
                                 }
                             </div>

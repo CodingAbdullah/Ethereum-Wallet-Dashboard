@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ethereum Wallet Dashboard",
+  title: "Ethereum Dashboard",
   description: "Powered by Next.js, lookup everything there is to know within the Ethereum ecosystem"
 };
 
@@ -26,7 +26,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  
   return (
     <html lang="en">
       <body
