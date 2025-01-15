@@ -21,7 +21,7 @@ export default function TransactionError({
 
     // Custom JSX for rendering Error component
     return (
-        <div className="bg-gray-800 min-h-screen flex items-center justify-center px-4">
+        <div className="bg-gray-800 text-gray-300 py-10 px-4 sm:px-6 lg:px-8 shadow-lg">
             <div className="max-w-3xl w-full text-center">
                 <h1 className="text-5xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-gray-400 via-gray-200 to-gray-400">
                     Invalid Wallet Address
