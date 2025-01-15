@@ -65,12 +65,12 @@ export default function CryptoPriceTable() {
                                         <span>{String(coin.symbol).toUpperCase()}</span>
                                     </div>
                                 </TableCell>
-                                <TableCell className="text-gray-300">{"$" + Number(coin.current_price).toFixed(2)}</TableCell>
+                                <TableCell className="text-gray-300">{Number(coin.current_price) < 0.01 ? '<$0.01' : "$" + Number(coin.current_price).toFixed(2)}</TableCell>
                                 <TableCell className={Number(coin.price_change_percentage_24h) >= 0 ? 'text-green-500' : 'text-red-500'}>
                                     {Number(coin.price_change_percentage_24h)> 0 ? '+' + Number(coin.price_change_percentage_24h).toFixed(2) : Number(coin.price_change_percentage_24h).toFixed(2)}%
                                 </TableCell>
-                                <TableCell className="text-gray-300">{"$" + Number(coin.high_24h).toFixed(2)}</TableCell>
-                                <TableCell className="text-gray-300">{"$" + Number(coin.low_24h).toFixed(2)}</TableCell>
+                                <TableCell className="text-gray-300">{Number(coin.high_24h) < 0.01 ? '<$0.01' : "$" + Number(coin.high_24h).toFixed(2)}</TableCell>
+                                <TableCell className="text-gray-300">{Number(coin.low_24h) < 0.01 ? '<$0.01' : "$" + Number(coin.low_24h).toFixed(2)}</TableCell>
                                 <TableCell className="text-gray-300">{"$" + Number(coin.market_cap).toFixed(2)}</TableCell>
                                 <TableCell className="text-gray-300">{"$" + Number(coin.total_volume).toFixed(2)}</TableCell>
                             </TableRow>

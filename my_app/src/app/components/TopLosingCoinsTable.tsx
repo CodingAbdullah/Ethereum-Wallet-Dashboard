@@ -45,7 +45,7 @@ export default function TopLosingCoinsTable() {
                                         <span>{String(coin.symbol).toUpperCase()}</span>
                                     </div>
                                 </TableCell>
-                                <TableCell className="text-gray-300">{"$" + Number(coin.usd).toFixed(2)}</TableCell>
+                                <TableCell className="text-gray-300">{Number(coin.usd) < 0.01 ? '<$0.01' : "$" + Number(coin.usd).toFixed(2)}</TableCell>
                                 <TableCell className={Number(coin.usd_24h_change) >= 0 ? 'text-green-500' : 'text-red-500'}>
                                     {Number(coin.usd_24h_change)> 0 ? '+' + Number(coin.usd_24h_change).toFixed(2) : Number(coin.usd_24h_change).toFixed(2)}%
                                 </TableCell>
