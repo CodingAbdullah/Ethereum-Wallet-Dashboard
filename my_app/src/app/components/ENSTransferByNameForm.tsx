@@ -1,52 +1,54 @@
-"use client";
+'use client';
 
 import { useState } from "react";
 import { Input } from "./../components/ui/input";
 import { Button } from "./../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./../components/ui/card";
 import { Alert, AlertDescription } from "./../components/ui/alert";
-import ENSTransfersByIDType from "../utils/types/ENSTransferByIDType";
-import ENSTransferByIDInfoTable from "./ENSTransferByIDInfoTable";
+import ENSValidator from "../utils/functions/ENSValidator";
+import ENSTransferByNameInfoTable from "./ENSTransferByNameInfoTable";
+import ENSTransfersByNameType from "../utils/types/ENSTransfersByNameType";
 
-// ENS Transfer by ID Custom Component
-export default function ENSTransferByIDForm() {
-    const [tokenID, setTokenID] = useState("")
-    const [showAlert, setShowAlert] = useState(false)
-    const [transferInformation, updateTransferInformation] = useState<ENSTransfersByIDType[]>();
+// ENS Transfer By Name Custom Component
+export default function ENSTransferByNameForm()  {
+    const [walletDomain, setWalletDomain] = useState<string>("");
+    const [showAlert, setShowAlert] = useState<boolean>(false);
+    const [addressInformation, updateAddressInformation] = useState<ENSTransfersByNameType[]>();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (tokenID.length === 0) {
+        // Handle form submission logic here
+        if (!ENSValidator(walletDomain)){
             setShowAlert(true);
         }
         else {
             // FETCH API for ENS data from a given wallet address
             setShowAlert(false);
-            const res = await fetch('/api/ens-transfers-by-id', {
+            const res = await fetch('/api/ens-transfers-by-name', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: tokenID })
-              });
+                body: JSON.stringify({ address: walletDomain })
+            });
 
             // Check condition of FETCH request
             if (res.ok) {
                 const data = await res.json();
-                updateTransferInformation(data.results);
+                updateAddressInformation(data.results);
             }
             else {
                 throw new Error();
-            } 
+            }
         }
     }
 
-    // Render the ENS Transfers By ID Component
+    // Render the ENS Transfers By Name Component
     return (
-       <>
+        <>
             {showAlert && (
                 <Alert variant="destructive" className="mb-6">
                     <AlertDescription>
-                        There was an error processing your request. Please ensure you are entering a valid ENS token ID.
+                        There was an error processing your request. Please ensure you are entering a valid ENS domain.
                     </AlertDescription>
                 </Alert>
             )}
@@ -54,15 +56,15 @@ export default function ENSTransferByIDForm() {
                 <CardHeader className="border-b border-gray-800 pb-6">
                     <CardTitle className="text-3xl font-bold text-gray-100">Analyze Transfers</CardTitle>
                     <CardDescription className="text-gray-400 text-lg font-light">
-                        Enter ENS token ID for in-depth analysis
+                        Enter ENS domain for in-depth analysis
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6 pt-6">
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <Input
-                            placeholder="Enter ENS Token ID"
-                            value={tokenID}
-                            onChange={(e) => setTokenID(e.target.value)}
+                            placeholder="Enter Wallet Domain"
+                            value={walletDomain}
+                            onChange={(e) => setWalletDomain(e.target.value)}
                             className="w-full bg-gray-800 text-gray-100 border-gray-700 focus:ring-gray-400 placeholder-gray-500"
                             required
                         />
@@ -77,9 +79,7 @@ export default function ENSTransferByIDForm() {
                     </form>
                 </CardContent>
             </Card>
-            {
-                transferInformation ? <ENSTransferByIDInfoTable data={transferInformation} /> : null
-            }
-       </> 
+            { addressInformation ? <ENSTransferByNameInfoTable data={addressInformation} /> : null }
+        </>
     )
 }
