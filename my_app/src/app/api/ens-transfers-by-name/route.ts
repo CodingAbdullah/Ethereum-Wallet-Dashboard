@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 // Custom Route Handler function
-export default async function POST(request: Request) {
+export async function POST(request: Request) {
     // JSON format the body
     const body = await request.json();
 
@@ -21,12 +21,13 @@ export default async function POST(request: Request) {
     }
 
     // Fetch data based on options
-    const data = await fetch('https://api.transpose.io/ens/ens-transfers-by-name?' + new URLSearchParams(params), options);
+    const response = await fetch('https://api.transpose.io/ens/ens-transfers-by-name?' + new URLSearchParams(params), options);
 
     // Fetch data using the Ethereum data endpoints
-    if (!data.ok) 
+    if (!response.ok) 
         return NextResponse.json({ error: 'Failed to fetch Ethereum price' }, { status: 500 });
     else {
+        const data = await response.json();
         return NextResponse.json(data);
     }
 }
