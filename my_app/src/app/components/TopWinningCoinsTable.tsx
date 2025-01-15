@@ -8,7 +8,7 @@ import TopWinningCoinsType from "../utils/types/TopWinningCoinsType";
 
 // Top Winning Coins Table Custom Component
 export default function TopWinningCoinsTable() {
-    const { data: coins, error: coinsError, isLoading: loadingCoins } = useSWR('api/top-bottom-coin-prices', GenericFetcher, { refreshInterval: 300000 });
+    const { data: coins, error: coinsError, isLoading: loadingCoins } = useSWR('/api/top-bottom-coin-prices', GenericFetcher, { refreshInterval: 300000 });
     
     // Conditionally render this component
     if (coinsError){
@@ -41,7 +41,7 @@ export default function TopWinningCoinsTable() {
                                 <TableCell className="font-medium text-gray-100">{coin.name}</TableCell>
                                 <TableCell className="text-gray-300">
                                     <div className="flex items-center space-x-2">
-                                        <Image alt={`${coin.symbol} logo`} height={20} width={20} src={coin.image} />
+                                        <Image unoptimized alt={`${coin.symbol} logo`} height={20} width={20} src={coin.image} />
                                         <span>{String(coin.symbol).toUpperCase()}</span>
                                     </div>
                                 </TableCell>

@@ -3,12 +3,13 @@
 import useSWR from "swr";
 import Image from "next/image";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
-import WalletFetcher from "../utils/functions/WalletFetcher";
+import WalletFetcher from "@/app/utils/functions/GenericFetcher";
 import TrendingCoinsType from "../utils/types/TrendingCoinsType";
+import GenericFetcher from "../utils/functions/GenericFetcher";
 
 // Trending Coins Table Custom Component
 export default function HomePageTrendingCoinsTable() {
-    const { data: trendsData, error: trendingCoinsDataError, isLoading: loadingTrendingCoins } = useSWR('api/trending-coin-data', WalletFetcher, { refreshInterval: 30000 });
+    const { data: trendsData, error: trendingCoinsDataError, isLoading: loadingTrendingCoins } = useSWR('/api/trending-coin-data', GenericFetcher, { refreshInterval: 30000 });
     
     // Conditionally render this component
     if (trendingCoinsDataError){
@@ -40,7 +41,7 @@ export default function HomePageTrendingCoinsTable() {
                                 <TableCell className="font-medium text-gray-100">{coin.item.name}</TableCell>
                                 <TableCell className="text-gray-300">
                                     <div className="flex items-center space-x-2">
-                                        <Image alt={`${coin.item.symbol} logo`} height={15} width={15} src={coin.item.small} />
+                                        <Image unoptimized alt={`${coin.item.symbol} logo`} height={15} width={15} src={coin.item.small} />
                                         <span>{coin.item.symbol}</span>
                                     </div>
                                 </TableCell>

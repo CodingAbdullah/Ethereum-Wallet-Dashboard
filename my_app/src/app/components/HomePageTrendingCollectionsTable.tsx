@@ -3,12 +3,12 @@
 import useSWR from "swr";
 import Image from "next/image";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
-import WalletFetcher from "../utils/functions/WalletFetcher";
+import WalletFetcher from "@/app/utils/functions/GenericFetcher";
 import TrendingCollectionsType from "../utils/types/TrendingCollectionsType";
 
 // Trending Collections Table Custom Component
 export default function HomePageTrendingCollectionsTable() {
-    const { data: trendsData, error: trendingCoinsDataError, isLoading: loadingTrendingCoins } = useSWR('api/trending-coin-data', WalletFetcher, { refreshInterval: 30000 });
+    const { data: trendsData, error: trendingCoinsDataError, isLoading: loadingTrendingCoins } = useSWR('/api/trending-coin-data', WalletFetcher, { refreshInterval: 30000 });
     
     // Conditionally render this component
     if (trendingCoinsDataError){
@@ -39,7 +39,7 @@ export default function HomePageTrendingCollectionsTable() {
                                 <TableCell className="font-medium text-gray-100">{collection.name}</TableCell>
                                 <TableCell className="text-gray-300">
                                     <div className="flex items-center space-x-2">
-                                        <Image alt={`${collection.symbol} logo`} height={15} width={15} src={collection.thumb} />
+                                        <Image unoptimized alt={`${collection.symbol} logo`} height={15} width={15} src={collection.thumb} />
                                         <span>{collection.symbol}</span>
                                     </div>
                                 </TableCell>

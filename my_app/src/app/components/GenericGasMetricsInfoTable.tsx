@@ -1,12 +1,12 @@
 "use client";
 
 import useSWR from "swr";
-import NavbarFetcher from "../utils/functions/NavbarFetcher";
+import GenericFetcher from "@/app/utils/functions/GenericFetcher";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
 
 // Generic Gas Metrics Info Table Component
 export default function GenericGasMetricsInfoTable() {
-    const gasMetricsInfo = useSWR('api/gas-track', NavbarFetcher, { refreshInterval: 30000 });
+    const gasMetricsInfo = useSWR('/api/gas-track', GenericFetcher, { refreshInterval: 30000 });
     const { data, error, isLoading } = gasMetricsInfo;
 
     // Conditionally render the Generic Gas Metrics Info Table Component
