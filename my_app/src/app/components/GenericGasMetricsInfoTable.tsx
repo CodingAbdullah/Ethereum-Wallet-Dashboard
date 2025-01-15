@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 
 // Generic Gas Metrics Info Table Component
 export default function GenericGasMetricsInfoTable() {
-    const gasMetricsInfo = useSWR('/api/gas-track', GenericFetcher, { refreshInterval: 30000 });
+    const gasMetricsInfo = useSWR('/api/navbar/gas-track', GenericFetcher, { refreshInterval: 30000 });
     const { data, error, isLoading } = gasMetricsInfo;
 
     // Conditionally render the Generic Gas Metrics Info Table Component
