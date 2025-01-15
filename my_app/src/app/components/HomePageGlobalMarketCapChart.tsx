@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 
 // Home Page Market Data Section Component
 export default function HomePageGlobalMarketCapChart() {
-    const { data: marketChartData, error: marketChartError, isLoading: marketChartLoading } = useSWR('api/global-market-cap-chart-data', GenericFetcher, { refreshInterval: 50000 });
+    const { data: marketChartData, error: marketChartError, isLoading: marketChartLoading } = useSWR('/api/global-market-cap-chart-data', GenericFetcher, { refreshInterval: 50000 });
 
     // Conditionally render data
     if (marketChartError) {

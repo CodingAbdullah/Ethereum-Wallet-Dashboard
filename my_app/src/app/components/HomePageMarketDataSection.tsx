@@ -6,8 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 
 // Home Page Market Data Section Component
 export default function HomePageMarketDataSection() {
-    const { data: marketData, error: marketError, isLoading: marketDataLoading } = useSWR('api/global-market-data', GenericFetcher, { refreshInterval: 50000 });
-    const { data: defiData, error: defiError, isLoading: defiLoading } = useSWR('api/global-defi-data', GenericFetcher, { refreshInterval: 50000 });
+    const { data: marketData, error: marketError, isLoading: marketDataLoading } = useSWR('/api/global-market-data', GenericFetcher, { refreshInterval: 50000 });
+    const { data: defiData, error: defiError, isLoading: defiLoading } = useSWR('/api/global-defi-data', GenericFetcher, { refreshInterval: 50000 });
 
     // Conditionally render data
     if (marketError || defiError) {
