@@ -5,7 +5,7 @@ import { Button } from './components/ui/button';
 // Not Found Page for the Default Route
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
+    <div className="bg-gray-800 text-gray-300 py-10 px-4 sm:px-6 lg:px-8 shadow-lg">
       <div className="text-center">
         <h1 className="text-6xl font-bold text-gray-100 mb-4">404</h1>
         <h2 className="text-3xl font-semibold text-gray-300 mb-6">Page Not Found</h2>

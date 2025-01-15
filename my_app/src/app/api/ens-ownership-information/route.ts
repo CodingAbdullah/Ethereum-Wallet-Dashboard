@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 // Custom Route Handler function
 export async function POST(request: Request) {
     const body = await request.json();
-    console.log(body);
+
     // Set the parameters
     const params = {
         "chain_id": "ethereum",
