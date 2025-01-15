@@ -23,9 +23,9 @@ export default function AddressToENSLookupPageError({
     <div className="bg-gray-800 text-gray-300 py-10 px-4 sm:px-6 lg:px-8 shadow-lg">
       <div className="text-center">
         <AlertCircle className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-        <h1 className="text-3xl font-bold text-gray-100 mb-4">Unable to fetch ENS data</h1>
+        <h1 className="text-3xl font-bold text-gray-100 mb-4">Unable to Fetch Address</h1>
         <p className="text-xl text-gray-400 mb-8">
-          We are having trouble retrieving the latest ENS data. This could be due to network issues or an invalid wallet address.
+          We are having trouble retrieving the address associated with the ENS domain. This could be due to network issues or an invalid ENS domain.
         </p>
         <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
           <Button 
