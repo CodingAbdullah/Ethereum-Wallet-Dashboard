@@ -5,8 +5,8 @@ import Link from 'next/link'
 import { AlertCircle, Home } from 'lucide-react'
 import { Button } from "../../components/ui/button"
 
-// Custom Error Page for Address to ENS Lookup
-export default function AddressToENSLookupPageError({
+// Custom Error Page for ENS Transfer By Name Lookup
+export default function ENSTransferByNamePageError({
   error,
   reset,
 }: {

@@ -8,7 +8,7 @@ import ENSOwnershipType from "../utils/types/ENSOwnershipType";
 // ENS Ownership Info Table Component
 export default function ENSOwnershipInfoTable(props: { data: string }) {
     const { data } = props;
-    const ensOwnershipInfo = useSWR(['/api/ens-ownership-information', { address: data }], PostFetcher, { refreshInterval: 30000 });
+    const ensOwnershipInfo = useSWR(['/api/ens-ownership-information', { address: data }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 30000 });
     const { data: ensOwnershipData, error, isLoading } = ensOwnershipInfo;
 
     // Conditionally render ENS Ownership data
