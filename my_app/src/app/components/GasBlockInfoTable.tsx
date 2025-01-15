@@ -21,7 +21,7 @@ export default function GasBlockInfoTable() {
         const gasBlockData: GasBlockInfoType[] = data.blockPrices[0].estimatedPrices;
         // Render the Gas Block Info Table Component
         return (
-            <div className="p-4 bg-gray-900 shadow-lg">
+            <div className="p-4 bg-gray-900 mt-10 shadow-lg">
                 <h2 className="text-2xl font-bold mb-4 text-gray-100">Gas Block Metrics</h2>
                 <Table>
                     <TableHeader>
