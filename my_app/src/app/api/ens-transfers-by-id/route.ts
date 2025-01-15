@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     // Set parameters for request
     const params = {
         chain_id : 'ethereum',
-        ens_name: body.id
+        token_id: body.id
     }
 
     // Set options for request
@@ -24,8 +24,9 @@ export async function POST(request: Request) {
     const response = await fetch('https://api.transpose.io/ens/ens-transfers-by-token-id?' + new URLSearchParams(params), options)
 
     // Fetch data using the Ethereum data endpoints
-    if (!response.ok) 
+    if (!response.ok) {
         return NextResponse.json({ error: 'Failed to fetch Ethereum price' }, { status: 500 });
+    }
     else {
         const data = await response.json();
         return NextResponse.json(data);
