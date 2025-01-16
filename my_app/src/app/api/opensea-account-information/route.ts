@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 const OPENSEA_URL = 'https://api.opensea.io/api/v2/';
 
 // Custom Route Handler function
-export default async function POST(request: Request){
+export async function POST(request: Request){
     
     // Parse request body
     const body = await request.json();
