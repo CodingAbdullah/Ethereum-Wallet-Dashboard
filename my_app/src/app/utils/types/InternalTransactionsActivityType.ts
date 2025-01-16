@@ -1,6 +1,6 @@
 // Internal Transactions Activity Type
 export default interface InternalTransactionsActivtyType {
-    timestamp: string,
+    timeStamp: string,
     from: string,
     to: string,
     value: string
