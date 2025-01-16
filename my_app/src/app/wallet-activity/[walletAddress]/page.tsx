@@ -8,7 +8,7 @@ import addressValidator from "@/app/utils/functions/addressValidator";
 export default async function WalletActivityPage({ params }: { params: { walletAddress: string } }) {
     const parameters = await params;
     const walletAddress = parameters.walletAddress;
-
+    
     // Dynamically render this page based on wallet address validity
     if (!addressValidator(walletAddress)) {
         throw new Error();

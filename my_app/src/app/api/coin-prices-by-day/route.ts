@@ -38,28 +38,28 @@ export async function POST(request: Request){
     const response = await fetch(PRO_COINGECKO_URL + COIN_PRICE_ENDPOINT, options);
 
     if (!response.ok) {
-        NextResponse.json({
+        return NextResponse.json({
             message: "Could not fetch coin price duration data"
         });
     }
     else {
         const information = await response.json();
-        const prices: [string, string] = information;
+        const prices: [[number, number]] = information.prices;
         
         // Conditionally send the response and format it conforming to the interval
         // Incorporate the dayjs library for easy date formatting
         if (interval === '24'){
-            NextResponse.json({
+            return NextResponse.json({
                 coinPrices: prices.map(price => ({ 
-                    time: dayjs(price[0]).format('YYYY-MM-DD HH:mm:ss').split(" ")[1], 
+                    date: dayjs(price[0]).format('YYYY-MM-DD HH:mm:ss').split(" ")[1], 
                     price: Number(Number(price[1])) 
                 })).splice(24) 
             });
         }
         else {
-            NextResponse.json({
+            return NextResponse.json({
                 coinPrices: prices.map(price => ({ 
-                    time: dayjs(price[0]).format('YYYY-MM-DD'), 
+                    date: dayjs(price[0]).format('YYYY-MM-DD'), 
                     price: Number(Number(price[1])) 
                 }))
             });
