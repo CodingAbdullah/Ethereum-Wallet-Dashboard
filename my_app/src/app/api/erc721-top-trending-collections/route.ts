@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 // Custom Route Handler function
-export default async function GET(){
+export async function GET(){
    // Setting options to fetch top collections
    const options = {
         method: 'GET',
@@ -12,11 +12,11 @@ export default async function GET(){
     }
 
     // Fetch data using the FETCH api
-    const data = await fetch("https://deep-index.moralis.io/api/v2.2/market-data/nfts/top-collections", options)
+    const response = await fetch("https://deep-index.moralis.io/api/v2.2/market-data/nfts/top-collections", options)
     
     // Conditionally return data based on data fetch
-    if (data.ok) {
-        const information = await data.json();
+    if (response.ok) {
+        const information = await response.json();
         NextResponse.json({
             topCollections: information
         })

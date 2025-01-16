@@ -5,7 +5,7 @@ const MORALIS_URL = 'https://deep-index.moralis.io/api/v2/';
 const erc20Endpoint = 'erc20/';
 
 // Custom Route Handler function
-export default async function POST(request: Request){
+export async function POST(request: Request){
     const body = await request.json();  // Retrieve information from request
 
     // Pass in API key for backend request
@@ -19,12 +19,13 @@ export default async function POST(request: Request){
     }
 
     // Fetch data based on parameter values
-    const data = await fetch(MORALIS_URL + erc20Endpoint + body.address + '/price', options) // Pass in address and chain values
+    const response = await fetch(MORALIS_URL + erc20Endpoint + body.address + '/price', options) // Pass in address and chain values
     
     // Fetch data using the Ethereum data endpoints
-    if (!data.ok) 
+    if (!response.ok) 
         return NextResponse.json({ error: 'Failed to fetch Ethereum price' }, { status: 500 });
     else {
+        const data = await response.json();
         return NextResponse.json(data);
     }
 }

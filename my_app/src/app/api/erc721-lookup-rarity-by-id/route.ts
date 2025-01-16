@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 const ALCHEMY_URL = 'https://eth-mainnet.g.alchemy.com/nft/v2';
 
 // Custom Route Handler function
-export default async function POST(request: Request){
+export async function POST(request: Request){
     const body = await request.json(); // Retrieve data from request
     const { address, id, network } = body;
 
@@ -24,11 +24,11 @@ export default async function POST(request: Request){
         };
 
         // Making request to Alchemy API for finding ERC721 token rarity
-        const data = await fetch(ALCHEMY_URL + '/' + process.env.ALCHEMY_API_KEY_1 + "/computeRarity?contractAddress=" + address + "&tokenId=" + id, options)
+        const response = await fetch(ALCHEMY_URL + '/' + process.env.ALCHEMY_API_KEY_1 + "/computeRarity?contractAddress=" + address + "&tokenId=" + id, options)
         
         // Conditionally return data based on request status
-        if (data.ok) {
-            const information = await data.json();
+        if (response.ok) {
+            const information = await response.json();
             NextResponse.json({
                 information : { data: information }
             });

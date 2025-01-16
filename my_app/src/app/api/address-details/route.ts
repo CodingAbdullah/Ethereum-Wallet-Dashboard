@@ -8,7 +8,7 @@ const action = "balance";
 const tag = "latest";
 
 // Custom Route Handler function
-export default async function POST(request: Request){
+export async function POST(request: Request){
     const body = await request.json(); // Retrieve information from request
 
     if (body.network === 'eth' || body.network === 'sepolia'){
@@ -16,13 +16,14 @@ export default async function POST(request: Request){
         const network: keyof typeof NETWORK_MAPPER = body.network; // Type assertion for network
         
         // Gather wallet analytics using API resources and running checks to see if wallet address is valid
-        const data = await fetch(NETWORK_MAPPER[network] + "?module=" + mod + "&action=" + action + "&address=" + body.address + "&tag=" + tag + "&apikey=" + 
+        const response = await fetch(NETWORK_MAPPER[network] + "?module=" + mod + "&action=" + action + "&address=" + body.address + "&tag=" + tag + "&apikey=" + 
          process.env.ETHERSCAN_API_KEY)
             
         // Fetch data using the Ethereum data endpoints
-        if (!data.ok) 
+        if (!response.ok) 
             return NextResponse.json({ error: 'Failed to fetch Ethereum price' }, { status: 500 });
         else {
+            const data = response.json();
             return NextResponse.json(data);
         }
     }
@@ -37,12 +38,13 @@ export default async function POST(request: Request){
         }
         
         // Transactions endpoint for retrieving information related to an wallet's activity on an ETH testnet
-        const data = await fetch(MORALIS_URL + body.address + '/balance?chain=' + body.network, options)
+        const response = await fetch(MORALIS_URL + body.address + '/balance?chain=' + body.network, options)
         
         // Fetch data using the Ethereum data endpoints
-        if (!data.ok) 
+        if (!response.ok) 
             return NextResponse.json({ error: 'Failed to fetch Ethereum price' }, { status: 500 });
         else {
+            const data = await response.json();
             return NextResponse.json(data);
         }
     }

@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 const MORALIS_URL = 'https://deep-index.moralis.io/api/v2/';
 
 // Custom Route Handler function
-export default async function POST(request: Request){
+export async function POST(request: Request){
     const body = await request.json(); // Retrieve data from request
     const { address, id, network } = body;
 
@@ -22,11 +22,11 @@ export default async function POST(request: Request){
     }
 
     // Making request to Moralis API for finding ERC721 token transfer information
-    const data = await fetch(MORALIS_URL + 'nft/' + address + "/" + id + LOOKUP_ENDPOINT + "?chain=" + network + "&format=decimal", options)
+    const response = await fetch(MORALIS_URL + 'nft/' + address + "/" + id + LOOKUP_ENDPOINT + "?chain=" + network + "&format=decimal", options)
     
     // Conditionally return data based on request status
-    if (data.ok) {
-        const information = await data.json();
+    if (response.ok) {
+        const information = await response.json();
         NextResponse.json({
             information
         });

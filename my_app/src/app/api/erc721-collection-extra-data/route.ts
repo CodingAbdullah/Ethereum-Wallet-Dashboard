@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 const PRO_COINGECKO_URL = "https://pro-api.coingecko.com/api/v3"; // Pro CoinGecko API Endpoint
 
 // Custom Route Handler function
-export default async function POST(request: Request){
+export async function POST(request: Request){
     const body = await request.json(); // Retrieve information from request
     
     // Setting options parameter for request
@@ -16,15 +16,16 @@ export default async function POST(request: Request){
     };
 
     // Run backend request
-    const data = await fetch(PRO_COINGECKO_URL + 'nfts/ethereum/contract/' + body.address, options);
+    const response = await fetch(PRO_COINGECKO_URL + 'nfts/ethereum/contract/' + body.address, options);
 
-    if (!data.ok) {
+    // Conditionally return data
+    if (!response.ok) {
         NextResponse.json({
             message: "Could not retrieve ERC721 collection data"
         }, { status: 400 });
     }
     else {
-        const information = await data.json();
+        const information = await response.json();
         NextResponse.json({
             information
         });

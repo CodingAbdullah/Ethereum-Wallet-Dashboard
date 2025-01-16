@@ -17,11 +17,11 @@ export async function GET(){
         } as HeadersInit
     }
 
-    const data = await fetch(PRO_COINGECKO_URL + TRENDINGCOINS_ENDPOINT, options); // Fetch data related to trending coins
+    const response = await fetch(PRO_COINGECKO_URL + TRENDINGCOINS_ENDPOINT, options); // Fetch data related to trending coins
     
     // Conditionally return data based on data fetch
-    if (data.ok) {
-        const trendingCoins = await data.json();
+    if (response.ok) {
+        const trendingCoins = await response.json();
 
         // Format display data and return back to client
         let information = '';

@@ -7,7 +7,7 @@ export async function GET(){
     const TOP_BOTTOM_COINS_ENDPOINT = "/coins/top_gainers_losers?vs_currency=usd";
     
     // Setting options for authenticated API call
-    let options = {
+    const options = {
         method: "GET",
         headers : {
             'content-type' : 'application/json',

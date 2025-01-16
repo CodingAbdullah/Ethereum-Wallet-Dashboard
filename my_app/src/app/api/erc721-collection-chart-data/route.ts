@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 const PRO_COINGECKO_URL = "https://pro-api.coingecko.com/api/v3"; // Pro CoinGecko API Endpoint
 
 // Custom Route Handler function
-export default async function POST(request: Request){
+export async function POST(request: Request){
     const body = await request.json(); // Retrieve information from request
     const { address, interval } = body;
 
@@ -20,17 +20,17 @@ export default async function POST(request: Request){
     };
 
     // Run backend request to fetch ERC721 Collection Chart data
-    const data = await fetch(PRO_COINGECKO_URL + 'nfts/ethereum/contract/' + address + '/market_chart?days=' + modifiedInterval, options);
+    const response = await fetch(PRO_COINGECKO_URL + 'nfts/ethereum/contract/' + address + '/market_chart?days=' + modifiedInterval, options);
 
     // Conditionally return response based on data fetch
-    if (data.ok) {
-        let information = await data.json();
+    if (response.ok) {
+        const information = await response.json();
     
         // Get hold of floor price, market cap, and volume data of the collection
         // Modify each part of the data by including time and value
-        let floor_price: [string, string] = information.floor_price_usd;
-        let market_cap: [string, string] = information.market_cap_usd;
-        let volume: [string, string] = information['h24_volume_usd'];
+        const floor_price: [string, string] = information.floor_price_usd;
+        const market_cap: [string, string] = information.market_cap_usd;
+        const volume: [string, string] = information['h24_volume_usd'];
 
         NextResponse.json({
             floorPrices: floor_price.map(floorPriceValue => ({ 

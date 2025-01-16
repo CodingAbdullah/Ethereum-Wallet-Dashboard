@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 // Custom Route Handler function
-export default async function POST(request: Request){
+export async function POST(request: Request){
     const body = await request.json(); // Retrieve information from request
     const { address, id } = body;
 
@@ -23,11 +23,11 @@ export default async function POST(request: Request){
     }
 
     // Making request to Transpose API for finding ERC721 token sales information
-    const data = await fetch("https://api.transpose.io/nft/sales-by-token-id?" + new URLSearchParams(params), options)
+    const response = await fetch("https://api.transpose.io/nft/sales-by-token-id?" + new URLSearchParams(params), options)
     
     // Conditionally return data based on fetch request
-    if (data.ok) {
-        const information = await data.json();
+    if (response.ok) {
+        const information = await response.json();
         NextResponse.json({
             information
         });

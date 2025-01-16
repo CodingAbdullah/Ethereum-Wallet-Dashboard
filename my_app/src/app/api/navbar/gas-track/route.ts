@@ -15,13 +15,13 @@ async function fetchEthereumGas() {
         } as HeadersInit
     }
     
-    const res = await fetch(BLOCKNATIVE_URL, options);
+    const response = await fetch(BLOCKNATIVE_URL, options);
 
     // Fetch Gas using Ethereum endpoints
-    if (!res.ok) 
+    if (!response.ok) 
         throw new Error('Failed to fetch Ethereum price');
     
-    return res.json();
+    return response.json();
 }
 
 // Main route function for handling request

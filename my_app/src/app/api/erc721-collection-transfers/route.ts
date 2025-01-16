@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 const MORALIS_URL = 'https://deep-index.moralis.io/api/v2/';
 
 // Custom Route Handler function
-export default async function POST(request: Request){
+export async function POST(request: Request){
     const body = await request.json(); // Retrieve data from request
 
     const TRANSFERS_ENDPOINT = '/transfers'; // Transfers endpoint
@@ -19,11 +19,11 @@ export default async function POST(request: Request){
     };
 
     // Run backend request
-    const data = await fetch(MORALIS_URL + 'nft/' + body.address + TRANSFERS_ENDPOINT, options)
+    const response = await fetch(MORALIS_URL + 'nft/' + body.address + TRANSFERS_ENDPOINT, options)
 
     // Conditionally render data based on request result
-    if (data.ok) {
-        const information = await data.json();
+    if (response.ok) {
+        const information = await response.json();
 
         // Return response containing data
         NextResponse.json({

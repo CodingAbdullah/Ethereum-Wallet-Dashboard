@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 const PRO_COINGECKO_URL = "https://pro-api.coingecko.com/api/v3"; // Pro CoinGecko API Endpoint
 
 // Custom Route Handler function
-export default async function POST(request: Request){
+export async function POST(request: Request){
     const body = await request.json(); // Retrieve data from request
 
     // QUERY STRING along with CURRENCY ENDPOINT
@@ -11,7 +11,7 @@ export default async function POST(request: Request){
     const CURRENCY_ENDPOINT = '/simple/price';
     
     // Setting options for authenticated API call
-    let options = {
+    const options = {
         method: "GET",
         headers : {
             'content-type' : 'application/json',
@@ -23,11 +23,11 @@ export default async function POST(request: Request){
     let coinInfo = [];
 
     // Fetch current coin price information using the coin ID provided by user
-    let data = await fetch(PRO_COINGECKO_URL + CURRENCY_ENDPOINT + QUERY_STRING, options); // Fetch current coin price
+    const response = await fetch(PRO_COINGECKO_URL + CURRENCY_ENDPOINT + QUERY_STRING, options); // Fetch current coin price
     
     // Return data based on status of fetch request
-    if (data.ok) {
-        let information = await data.json();
+    if (response.ok) {
+        const information = await response.json();
         coinInfo.push(information);
 
         NextResponse.json({

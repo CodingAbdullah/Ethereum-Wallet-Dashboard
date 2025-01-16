@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 const MORALIS_URL = 'https://deep-index.moralis.io/api/v2/';
 
 // Custom Route Handler function
-export default async function POST(request: Request){
+export async function POST(request: Request){
     const body = await request.json()
 
     // Trades endpoint
@@ -20,16 +20,16 @@ export default async function POST(request: Request){
     };
 
     // Run backend request
-    const data = await fetch(MORALIS_URL + 'nft/' + body.address + TRADES_ENDPOINT, options)
+    const response = await fetch(MORALIS_URL + 'nft/' + body.address + TRADES_ENDPOINT, options)
  
     // Conditionally return data based on fetch request
-    if (!data.ok) {
+    if (!response.ok) {
         NextResponse.json({
             message: "Could not fetch ERC721 collection sales data"
         }, { status: 400 });
     }
     else {
-        const information = await data.json(); 
+        const information = await response.json(); 
 
         NextResponse.json({
             information

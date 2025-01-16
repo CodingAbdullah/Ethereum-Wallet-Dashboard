@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 const PRO_COINGECKO_URL = "https://pro-api.coingecko.com/api/v3"; // Pro CoinGecko API Endpoint
 
 // Custom Route Handler function
-export default async function POST(request: Request){
+export async function POST(request: Request){
     const body = await request.json(); // Retrieve information from request
     const { coin, interval } = body;
 
@@ -25,7 +25,7 @@ export default async function POST(request: Request){
     }
 
     // Setting options for authenticated API call
-    let options = {
+    const options = {
         method: "GET",
         headers : {
             'content-type' : 'application/json',
@@ -35,15 +35,15 @@ export default async function POST(request: Request){
     }
 
     // Fetch data based on request parameters
-    const data = await fetch(PRO_COINGECKO_URL + COIN_PRICE_ENDPOINT, options);
+    const response = await fetch(PRO_COINGECKO_URL + COIN_PRICE_ENDPOINT, options);
 
-    if (!data.ok) {
+    if (!response.ok) {
         NextResponse.json({
             message: "Could not fetch coin price duration data"
         });
     }
     else {
-        const information = await data.json();
+        const information = await response.json();
         const prices: [string, string] = information;
         
         // Conditionally send the response and format it conforming to the interval

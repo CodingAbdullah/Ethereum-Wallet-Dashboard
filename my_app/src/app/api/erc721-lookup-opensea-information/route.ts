@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 const OPENSEA_URL = 'https://api.opensea.io/api/v2/';
 
 // Custom Route Handler function
-export default async function POST(request: Request){
+export async function POST(request: Request){
     const body = await request.json();
     const { address, id, network } = body;
 
@@ -26,11 +26,11 @@ export default async function POST(request: Request){
         };
 
         // Making request to Opensea API to retrieve ERC721 token information
-        const data = await fetch(OPENSEA_URL + 'chain/' + (network === 'eth' ? 'ethereum' : network) +  "/contract/" + address + '/nfts/' + id, options);
+        const response = await fetch(OPENSEA_URL + 'chain/' + (network === 'eth' ? 'ethereum' : network) +  "/contract/" + address + '/nfts/' + id, options);
         
         // Conditionally returning data based on fetch request
-        if (data.ok) {
-            const information = await data.json();
+        if (response.ok) {
+            const information = await response.json();
             NextResponse.json({
                 information: [information]
             });

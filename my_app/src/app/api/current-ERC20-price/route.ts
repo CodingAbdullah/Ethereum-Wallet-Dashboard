@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 const PRO_COINGECKO_URL = "https://pro-api.coingecko.com/api/v3"; // Pro CoinGecko API Endpoint
 
 // Custom Route Handler function
-export default async function POST(request: Request){
+export async function POST(request: Request){
     const body = await request.json(); // Retrieve information from request
     
     // Endpoint for fetching ERC20 token price
@@ -20,15 +20,15 @@ export default async function POST(request: Request){
     }
 
     // Safely fetching data using axios, escaping with try-catch block
-    const data = await fetch(PRO_COINGECKO_URL + ERC20_PRICE_ENDPOINT, options); // Fetch ERC20 token prices by interval
+    const response = await fetch(PRO_COINGECKO_URL + ERC20_PRICE_ENDPOINT, options); // Fetch ERC20 token prices by interval
     
-    if (!data.ok) {
+    if (!response.ok) {
         NextResponse.json({
             message: "Could not fetch ERC20 coin data"
         }, { status : 400 });
     }
     else {
-        let information = await data.json();
+        const information = await response.json();
         NextResponse.json({
             price: information[Object.keys(information)[0]].usd
         });

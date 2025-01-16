@@ -16,13 +16,13 @@ async function fetchEthereumPrice() {
         } as HeadersInit
     } 
     
-    const res = await fetch(PRO_COINGECKO_URL + API_ENDPOINT + QUERY_STRING_ETHEREUM, options);
+    const response = await fetch(PRO_COINGECKO_URL + API_ENDPOINT + QUERY_STRING_ETHEREUM, options);
 
     // Fetch data using the Ethereum data endpoints
-    if (!res.ok) 
+    if (!response.ok) 
         throw new Error('Failed to fetch Ethereum price');
     
-    return res.json();
+    return response.json();
 }
 
 // Main route function for handling request
