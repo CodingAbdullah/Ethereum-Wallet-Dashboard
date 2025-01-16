@@ -1,5 +1,6 @@
 // Coin Prices Data Type
 export default interface CoinPricesType {
+    id: string
     name: string,
     symbol: string,
     image: string,

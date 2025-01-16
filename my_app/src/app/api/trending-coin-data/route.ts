@@ -23,16 +23,6 @@ export async function GET(){
     if (response.ok) {
         const trendingCoins = await response.json();
 
-        // Format display data and return back to client
-        let information = '';
-        for (var i = 0; i < trendingCoins.coins.length - 2; i++){ 
-            information += trendingCoins.coins[i].item.name;
-            information += ' - ';
-            information += trendingCoins.coins[i].item.symbol;
-            trendingCoinData += information;
-            information = ' | ';
-        }
-
         // Return trending coins data
         return NextResponse.json({
             trendingCoinData: trendingCoins

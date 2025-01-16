@@ -18,7 +18,7 @@ export async function GET(){
 
     // Make an API call to fetch top and bottom coins
     const response = await fetch(PRO_COINGECKO_URL + TOP_BOTTOM_COINS_ENDPOINT, options);
-
+    
     // Fetch data using the Ethereum data endpoints
     if (!response.ok)
         return NextResponse.json({ error: 'Failed to fetch Ethereum price' }, { status: 500 });
