@@ -2,8 +2,8 @@
 
 import useSWR from "swr";
 import Image from "next/image";
+import Link from "next/link";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
-import WalletFetcher from "@/app/utils/functions/GenericFetcher";
 import TrendingCoinsType from "../utils/types/TrendingCoinsType";
 import GenericFetcher from "../utils/functions/GenericFetcher";
 
@@ -38,7 +38,9 @@ export default function HomePageTrendingCoinsTable() {
                     <TableBody>
                         {trendingCoinData.splice(0, 7).map(coin => (
                             <TableRow key={coin.item.id} className="border-b border-gray-800">
-                                <TableCell className="font-medium text-gray-100">{coin.item.name}</TableCell>
+                                <TableCell className="font-medium text-gray-100">
+                                    <Link href={'/prices/' + coin.item.id}><u>{coin.item.name}</u></Link>
+                                </TableCell>                                
                                 <TableCell className="text-gray-300">
                                     <div className="flex items-center space-x-2">
                                         <Image unoptimized alt={`${coin.item.symbol} logo`} height={15} width={15} src={coin.item.small} />

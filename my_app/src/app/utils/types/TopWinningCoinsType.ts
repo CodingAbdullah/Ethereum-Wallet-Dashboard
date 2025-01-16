@@ -1,5 +1,6 @@
 // Top Winning Coins Data Type
 export default interface TopWinningCoinsType {
+    id: string
     name: string,
     symbol: string,
     image: string,

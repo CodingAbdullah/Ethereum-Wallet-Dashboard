@@ -1,5 +1,6 @@
 // Top Losing Coins Data Type
 export default interface TopLosingCoinsType {
+    id: string
     name: string,
     symbol: string,
     image: string,

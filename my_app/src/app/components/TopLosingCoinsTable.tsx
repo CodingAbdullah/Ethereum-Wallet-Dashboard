@@ -2,6 +2,7 @@
 
 import useSWR from "swr";
 import Image from "next/image";
+import Link from "next/link";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
 import GenericFetcher from "../utils/functions/GenericFetcher";
 import TopLosingCoinsType from "../utils/types/TopLosingCoinsType";
@@ -38,7 +39,9 @@ export default function TopLosingCoinsTable() {
                     <TableBody>
                         {coinsData.splice(0, 5).map(coin => (
                             <TableRow key={coin.name} className="border-b border-gray-800">
-                                <TableCell className="font-medium text-gray-100">{coin.name}</TableCell>
+                                <TableCell className="font-medium text-gray-100">
+                                    <Link href={'/prices/' + coin.id}><u>{coin.name}</u></Link>
+                                </TableCell>                                
                                 <TableCell className="text-gray-300">
                                     <div className="flex items-center space-x-2">
                                         <Image unoptimized alt={`${coin.symbol} logo`} height={20} width={20} src={coin.image} />
