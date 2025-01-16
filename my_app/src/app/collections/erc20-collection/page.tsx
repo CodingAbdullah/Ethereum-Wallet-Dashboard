@@ -5,6 +5,7 @@ import { Input } from "./../../components/ui/input";
 import { Button } from "./../../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./../../components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "./../../components/ui/alert";
+import TopERC20CoinsInfoTable from '@/app/components/TopERC20CoinsInfoTable';
 
 // ERC20 Collection Analytics Page
 export default function ERC20CollectionAnalyticsPage() {
@@ -64,6 +65,7 @@ export default function ERC20CollectionAnalyticsPage() {
                     </CardContent>
                 </Card>
             </div>
+            <TopERC20CoinsInfoTable />
         </div>
     )
 }
