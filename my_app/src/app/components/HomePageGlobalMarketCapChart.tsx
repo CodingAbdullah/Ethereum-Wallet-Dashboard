@@ -20,6 +20,12 @@ export default function HomePageGlobalMarketCapChart() {
         // Retrieve key information
         const chartData = marketChartData.capValues;
 
+        // Adjusting the y-axis for display
+        const chart = marketChartData.capValues.map((item: any) => item.price);
+        const min = Math.min(...chart);
+        const max = Math.max(...chart);
+        const buffer = (max - min) * 0.1; // 10% buffer
+        
         // Render data based on market information
         return (
             <Card className="w-full bg-gray-800 border-gray-700 mt-10">
@@ -49,6 +55,7 @@ export default function HomePageGlobalMarketCapChart() {
                                 stroke="#888" 
                                 dataKey="price"
                                 tick={{fill: '#888'}}
+                                domain={[Math.max(0, min - buffer), max + buffer]}
                                 tickFormatter={(value) => `$${(value / 1e12).toFixed(2)}B`}                            />
                             <Tooltip 
                                 contentStyle={{backgroundColor: '#333', border: 'none'}}
@@ -62,7 +69,7 @@ export default function HomePageGlobalMarketCapChart() {
                                 dataKey="price" 
                                 stroke="#ff4136" 
                                 strokeWidth={2}
-                                dot={false}
+                                dot={true}
                                 name="Global Market Cap Data"
                             />
                             </LineChart>
