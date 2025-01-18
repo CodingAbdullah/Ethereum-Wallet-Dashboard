@@ -32,7 +32,7 @@ export default function TopERC20CoinsInfoTable() {
                             <TableHead className="text-gray-300">Symbol</TableHead>
                             <TableHead className="text-gray-300">Price</TableHead>
                             <TableHead className="text-gray-300">Price Change</TableHead>
-                            <TableHead className="text-gray-300">Market Cap Rank</TableHead>
+                            <TableHead className="text-gray-300">Market Cap</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
