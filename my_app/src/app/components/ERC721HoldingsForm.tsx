@@ -1,61 +1,73 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./ui/card";
 import { Alert, AlertDescription } from "./ui/alert";
-import addressValidator from "../utils/functions/addressValidator";
-import NetworkSelector from "./NetworkSelector";
-import ERC20TransfersInfoTable from "./ERC20TransfersInfoTable";
-import ERC20HoldingsInfoTable from "./ERC20HoldingsInfoTable";
-import ERC20HoldingsType from "../utils/types/ERC20HoldingsType";
-import ERC20TransfersType from "../utils/types/ERC20TransfersType";
+import addressValidator from '../utils/functions/addressValidator';
+import NetworkSelector from './NetworkSelector';
 
-// ERC20 Holdings Form Custom Component
-export default function ERC20HoldingsForm() {
+// ERC721 Holdings Form Custom Component
+export default function ERC721HoldingsForm() {
     const [walletAddress, setWalletAddress] = useState("");
     const [network, setNetwork] = useState("eth");
     const [showAlert, setShowAlert] = useState(false);
-    const [erc20Holdings, updateERC20Holdings] = useState<ERC20HoldingsType[]>();
-    const [erc20Transfers, updateERC20Transfers] = useState<ERC20TransfersType[]>();
+    const [erc721Collections, updateERC721Collections] = useState<any>();
+    const [erc721Holdings, updateERC721Holdings] = useState<any>();
+    const [erc721Transfers, updateERC721Transfers] = useState<any>();
 
-    // Handle form submissions here
+    // Handle Form Submissions here
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Handle form submission logic here
+        // Handle Form Submission Logic here
         if (!addressValidator(walletAddress.trim())){
             setShowAlert(true);
         }
         else {
-            // FETCH API for ERC20 Holdings and Transfers data from a given wallet address
+            // FETCH API for retrieving ERC721 Holdings, Transfers, and Collections data for a given wallet address
             setShowAlert(false);
-            const erc20HoldingsData = await fetch('/api/address-erc20-holdings', {
+            const erc721Collections = await fetch('/api/address-erc721-collection-holdings', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ address: walletAddress.trim(), network })
             });
 
-            const erc20TransfersData = await fetch('/api/address-erc20-transfers', {
+            const erc721Holdings = await fetch('/api/address-erc721-holdings', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ address: walletAddress.trim(), network })
             });
 
-            // Check the status of ERC20 Holdings Data
-            if (erc20HoldingsData.ok) {
-                const erc20HoldingsResponse = await erc20HoldingsData.json();
-                updateERC20Holdings(erc20HoldingsResponse);
+            const erc721Transfers = await fetch('/api/address-erc721-transfers', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ address: walletAddress.trim(), network })
+            });
+
+            // Check the status of ERC721 Holdings Data
+            if (erc721Holdings.ok) {
+                const erc721HoldingsResponse = await erc721Holdings.json();
+                updateERC721Holdings(erc721HoldingsResponse);
             }
             else {
                 throw new Error();
             }
 
-            // Check the status of ERC20 Transfers Data
-            if (erc20TransfersData.ok) {
-                const erc20TransfersResponse = await erc20TransfersData.json();
-                updateERC20Transfers(erc20TransfersResponse.result);
+            // Check the status of ERC721 Transfers Data
+            if (erc721Transfers.ok) {
+                const erc721TransfersResponse = await erc721Transfers.json();
+                updateERC721Transfers(erc721TransfersResponse.result);
+            }
+            else {
+                throw new Error();
+            }
+
+            // Check the status of ERC721 Collections Data
+            if (erc721Collections.ok) {
+                const erc721CollectionsResponse = await erc721Collections.json();
+                updateERC721Collections(erc721CollectionsResponse.result);
             }
             else {
                 throw new Error();
@@ -68,19 +80,19 @@ export default function ERC20HoldingsForm() {
         setNetwork(selectedNetwork);
     }
 
-    // Render the ERC20 Holdings Form component
+    // Render the ERC721 Holdings Form component
     return (
         <>
             {showAlert && (
                 <Alert variant="destructive" className="mb-6">
                     <AlertDescription>
-                        There was an error processing your request. Please enter a valid wallet address.
+                        There was an error processing your request. Please try again.
                     </AlertDescription>
                 </Alert>
             )}
-            <Card className="bg-gray-900 border-gray-800 shadow-xl mt-10 w-full">
+            <Card className="bg-gray-900 border-gray-800 shadow-xl w-full">
                 <CardHeader className="border-b border-gray-800 pb-6">
-                    <CardTitle className="text-3xl font-bold text-gray-100">Analyze ERC20 Holdings</CardTitle>
+                    <CardTitle className="text-3xl font-bold text-gray-100">Analyze Holdings</CardTitle>
                     <CardDescription className="text-gray-400 text-lg font-light">
                         Enter wallet address for in-depth analysis
                     </CardDescription>
@@ -101,14 +113,12 @@ export default function ERC20HoldingsForm() {
                                 type="submit"
                                 className="bg-gradient-to-r from-gray-600 to-gray-400 text-white py-2 px-6 rounded-md hover:from-gray-500 hover:to-gray-300 transition-all duration-300 transform hover:scale-105 font-medium"
                             >
-                                Analyze Holdings
+                                Check Balances
                             </Button>
                         </div>
                     </form>
                 </CardContent>
             </Card>
-            { erc20Holdings ? <ERC20HoldingsInfoTable data={erc20Holdings} /> : null }
-            { erc20Transfers ? <ERC20TransfersInfoTable data={erc20Transfers} address={walletAddress} /> : null }
         </>
     )
 }
