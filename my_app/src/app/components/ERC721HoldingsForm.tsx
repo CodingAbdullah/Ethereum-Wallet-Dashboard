@@ -7,15 +7,21 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./ui/
 import { Alert, AlertDescription } from "./ui/alert";
 import addressValidator from '../utils/functions/addressValidator';
 import NetworkSelector from './NetworkSelector';
+import ERC721CollectionsHoldingsType from '../utils/types/ERC721CollectionsHoldingsType';
+import ERC721HoldingsType from '../utils/types/ERC721HoldingsType';
+import ERC721TransfersType from '../utils/types/ERC721TransfersType';
+import ERC721CollectionsHoldingsInfoTable from './ERC721CollectionsHoldingsInfoTable';
+import ERC721HoldingsInfoTable from './ERC721HoldingsInfoTable';
+import ERC721TransfersInfoTable from './ERC721TransfersInfoTable';
 
 // ERC721 Holdings Form Custom Component
 export default function ERC721HoldingsForm() {
     const [walletAddress, setWalletAddress] = useState("");
     const [network, setNetwork] = useState("eth");
     const [showAlert, setShowAlert] = useState(false);
-    const [erc721Collections, updateERC721Collections] = useState<any>();
-    const [erc721Holdings, updateERC721Holdings] = useState<any>();
-    const [erc721Transfers, updateERC721Transfers] = useState<any>();
+    const [erc721Collections, updateERC721Collections] = useState<ERC721CollectionsHoldingsType[]>();
+    const [erc721Holdings, updateERC721Holdings] = useState<ERC721HoldingsType[]>();
+    const [erc721Transfers, updateERC721Transfers] = useState<ERC721TransfersType[]>();
 
     // Handle Form Submissions here
     const handleSubmit = async (e: React.FormEvent) => {
@@ -49,7 +55,7 @@ export default function ERC721HoldingsForm() {
             // Check the status of ERC721 Holdings Data
             if (erc721Holdings.ok) {
                 const erc721HoldingsResponse = await erc721Holdings.json();
-                updateERC721Holdings(erc721HoldingsResponse);
+                updateERC721Holdings(erc721HoldingsResponse.result);
             }
             else {
                 throw new Error();
@@ -119,6 +125,9 @@ export default function ERC721HoldingsForm() {
                     </form>
                 </CardContent>
             </Card>
+            { erc721Collections ? <ERC721CollectionsHoldingsInfoTable data={erc721Collections} /> : null }
+            { erc721Holdings ? <ERC721HoldingsInfoTable data={erc721Holdings} /> : null }
+            { erc721Transfers ? <ERC721TransfersInfoTable data={erc721Transfers} address={walletAddress.trim()} /> : null }
         </>
     )
 }
