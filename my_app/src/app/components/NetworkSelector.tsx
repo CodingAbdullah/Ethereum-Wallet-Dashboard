@@ -1,18 +1,10 @@
 'use client';
 
-import { usePathname } from 'next/navigation'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
 // Network Selector Custom Component
-export default function NetworkSelector() {
-    const pathname = usePathname()
-
-    const isSelectVisible = !['/erc20-token-prices', '/collections/erc720-collection', '/collections/erc721-collection'].includes(pathname)
-
-    // Conditionally render the selector component
-    if (!isSelectVisible) {
-        return null;
-    }
+export default function NetworkSelector(props: { networkSelector: (network: string) => void }) {
+    const { networkSelector } = props;
 
     // Render the Network Selector Component
     return (
@@ -22,7 +14,7 @@ export default function NetworkSelector() {
                     Network Selector
                 </p>
             </label>
-            <Select defaultValue="eth">
+            <Select onValueChange={networkSelector} defaultValue="eth">
                 <SelectTrigger className="w-full bg-gray-900 text-gray-100 border-gray-700 hover:bg-gray-800 focus:ring-gray-400 rounded-md">
                     <SelectValue placeholder="Select Network" />
                 </SelectTrigger>

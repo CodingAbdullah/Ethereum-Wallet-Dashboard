@@ -15,14 +15,14 @@ export default function AboutPage() {
                     <p className="text-xl text-gray-300 mb-10 leading-relaxed">
                         Explore the world of Ethereum with just one click. View wallet activity, recent transactions, asset holdings, ERC20/721 token data, prices, and so much more!
                     </p>
-                    <a 
+                    <Link 
                         href="https://github.com/CodingAbdullah" 
                         target="_blank" 
                         rel="noreferrer"
                         className="inline-block bg-gradient-to-r from-gray-600 to-gray-400 text-white py-3 px-6 rounded-full hover:from-gray-500 hover:to-gray-300 transition-all duration-300 transform hover:scale-105"
                     >
                         Learn About the Developer
-                    </a>
+                    </Link>
                 </div>
             </section>
             <section className="py-20 px-4">
@@ -33,7 +33,7 @@ export default function AboutPage() {
                             <div key={index} className="bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105">
                                 <div className="p-8 flex flex-col items-center text-center h-full justify-between">
                                     <div>
-                                        <FontAwesomeIcon icon={feature.icon} className="text-7xl text-gray-400 mb-6" />
+                                        <FontAwesomeIcon icon={feature.icon} className="text-2xl font-semibold mb-4" />
                                         <h3 className="text-2xl font-semibold mb-4">{feature.title}</h3>
                                         <p className="text-gray-400 mb-6">
                                             {feature.description}
