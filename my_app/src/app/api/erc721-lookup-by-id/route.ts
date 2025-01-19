@@ -1,28 +1,23 @@
 import { NextResponse } from "next/server";
 
+const MORALIS_URL = 'https://deep-index.moralis.io/api/v2/';
+
 // Custom Route Handler function
 export async function POST(request: Request){
-    const body = await request.json(); // Retrieve data from request
-    const { address, id } = body;
+    const { address, id, network } = await request.json();
 
-    // Set params
-    const params = {
-        "chain_id": "ethereum",
-        "contract_address": address,
-        "token_id": id
-    }
-
-    // Set options parameter for request
+    // Setting options for request
     const options = {
+        method: 'GET',
         headers: {
             'content-type': 'application/json',
             'accept' : 'application/json',
-            'X-API-KEY' : process.env.TRANSPOSE_API_KEY_1
+            'X-API-KEY' : process.env.MORALIS_API_KEY
         } as HeadersInit
     }
 
-    // Making request to Transpose API for finding ERC721 token sales information
-    const response = await fetch("https://api.transpose.io/nft/sales-by-token-id?" + new URLSearchParams(params), options)
+    // Making request to Moralis API for finding ERC721 token information
+    const response = await fetch(MORALIS_URL + 'nft/' + address + "/" + id + "?chain=" + network + "&format=decimal", options)
     
     // Conditionally return data based on request status
     if (response.ok) {
