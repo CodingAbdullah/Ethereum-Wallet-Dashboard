@@ -10,12 +10,12 @@ export async function POST(request: Request){
 
     // If the holesky testnet is requested, return response with no information
     if (network === 'holesky') {
-        NextResponse.json({
+        return NextResponse.json({
             information: []
         });
     }
     else {
-        // Setting options to make authenticated API calls to retrieve ERC721 token information
+        // Setting options to make authenticated API calls to retrieve ERC721 Opensea token information
         const options = {
             method: 'GET',
             headers: {
@@ -25,18 +25,19 @@ export async function POST(request: Request){
             } as HeadersInit
         };
 
-        // Making request to Opensea API to retrieve ERC721 token information
+        // Making request to Opensea API to retrieve ERC721 Opensea token information
         const response = await fetch(OPENSEA_URL + 'chain/' + (network === 'eth' ? 'ethereum' : network) +  "/contract/" + address + '/nfts/' + id, options);
         
         // Conditionally returning data based on fetch request
         if (response.ok) {
             const information = await response.json();
-            NextResponse.json({
-                information: [information]
+
+            return NextResponse.json({
+                information
             });
         }
         else {
-            NextResponse.json({}, { status: 400 });
+            return NextResponse.json({}, { status: 400 });
         }
     }
 }

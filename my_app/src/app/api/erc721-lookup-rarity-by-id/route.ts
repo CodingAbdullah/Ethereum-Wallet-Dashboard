@@ -10,7 +10,7 @@ export async function POST(request: Request){
 
     if (network !== 'eth') {
         // Throw an alert on this message
-        NextResponse.json({
+        return NextResponse.json({
             information: { data: null } 
         });
     }
@@ -29,12 +29,12 @@ export async function POST(request: Request){
         // Conditionally return data based on request status
         if (response.ok) {
             const information = await response.json();
-            NextResponse.json({
+            return NextResponse.json({
                 information : { data: information }
             });
         }
         else {
-            NextResponse.json({}, { status: 400 });
+            return NextResponse.json({}, { status: 400 });
         } 
     }
 }
