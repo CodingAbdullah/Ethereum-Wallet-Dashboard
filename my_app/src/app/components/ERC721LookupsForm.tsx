@@ -8,6 +8,10 @@ import { Alert, AlertDescription } from "./ui/alert";
 import NetworkSelector from './NetworkSelector';
 import addressValidator from '../utils/functions/addressValidator';
 import ERC721LookupsInfoTable from './ERC721LookupsInfoTable';
+import ERC721OpenseaTokenLookupInfoTable from './ERC721OpenseaTokenLookupInfoTable';
+import ERC721SalesLookupsInfoTable from './ERC721SalesLookupsInfoTable';
+import ERC721TransferLookupsInfoTable from './ERC721TransferLookupsInfoTable';
+import ERC721RarityLookupsInfoTable from './ERC721RarityLookupsInfoTable';
 
 // ERC721 Lookups Form Custom Component
 export default function ERC721LookupsForm() {
@@ -84,6 +88,10 @@ export default function ERC721LookupsForm() {
                 </CardContent>
             </Card>
             { tableStatus ? <ERC721LookupsInfoTable address={tokenAddress} tokenID={tokenID} network={network} /> : null }
+            { tableStatus ? <ERC721OpenseaTokenLookupInfoTable address={tokenAddress} tokenID={tokenID} network={network} /> : null }
+            { tableStatus && network === 'eth' ? <ERC721SalesLookupsInfoTable address={tokenAddress} tokenID={tokenID} network={network} /> : null }
+            { tableStatus ? <ERC721TransferLookupsInfoTable address={tokenAddress} tokenID={tokenID} network={network} /> : null } 
+            { tableStatus ? <ERC721RarityLookupsInfoTable address={tokenAddress} tokenID={tokenID} network={network} /> : null } 
         </>
     )
 }

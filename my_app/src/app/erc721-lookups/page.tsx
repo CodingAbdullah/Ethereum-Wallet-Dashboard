@@ -1,21 +1,7 @@
-'use client';
-
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import ERC721LookupsForm from '../components/ERC721LookupsForm';
 
 // ERC721 Lookups Page Custom Component
 export default function ERC721LookupsPage() {
-    const router = useRouter();
-    const [tokenID, setTokenID] = useState("");
-    const [walletAddress, setWalletAddress] = useState("");
-    const [network, setNetwork] = useState("eth");
-    const [showAlert, setShowAlert] = useState(false);
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        // Handle form submission logic here
-    }
     
     // Render the ERC721 Token Lookups Page Component
     return (
@@ -29,8 +15,8 @@ export default function ERC721LookupsPage() {
                 <p className="text-xl text-gray-400 mb-12 text-center">
                     Analyze an ERC721 token from a collection
                 </p>
-                <ERC721LookupsForm />
             </div>
+            <ERC721LookupsForm />
         </div>
     )
 }

@@ -10,8 +10,10 @@ import Link from "next/link";
 export default function ERC721LookupsInfoTable(props: { address: string, network: string, tokenID: string } ) {
     const { address, network, tokenID } = props;
 
-    const {data, error, isLoading } = useSWR(['/api/erc721-lookup-by-id', { address, network, id: tokenID }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 30000 });
+    // Make API call upon loading the custom component
+    const { data, error, isLoading } = useSWR(['/api/erc721-lookup-by-id', { address, network, id: tokenID }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 30000 });
     
+    // Conditionally render ERC721 Lookups Info Table component
     if (isLoading) {
         return <div>Loading ERC721 Lookups Info Table Component</div>
     }
@@ -24,7 +26,7 @@ export default function ERC721LookupsInfoTable(props: { address: string, network
         // Render ERC721 Lookups Info Table Component
         return (
             <div className="p-4 bg-gray-900 mt-10 shadow-lg">
-                <h2 className="text-2xl font-bold mb-4 text-gray-100">ERC721 Lookup Information</h2>
+                <h2 className="text-2xl font-bold mb-4 text-gray-100">Quick Token Overiew</h2>
                 <Table>
                     <TableHeader>
                         <TableRow>
