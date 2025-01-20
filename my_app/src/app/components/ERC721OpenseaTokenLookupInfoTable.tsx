@@ -4,6 +4,7 @@ import useSWR from "swr";
 import PostFetcher from "../utils/functions/PostFetcher";
 import ERC721OpenseaTokenLookupInfoType from "../utils/types/ERC721OpenseaTokenLookupInfoType";
 import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from "./ui/table";
+import ERC721TokenPictureSection from "./ERC721TokenPictureSection";
 
 // Custom ERC721 Opensea Token Lookup Info Table Component
 export default function ERC721OpenseaTokenLookupInfoTable(props: { address: string, network: string, tokenID: string } ) {
@@ -26,6 +27,7 @@ export default function ERC721OpenseaTokenLookupInfoTable(props: { address: stri
         return (
             <div className="p-4 bg-gray-900 mt-10 shadow-lg">
                 <h2 className="text-2xl font-bold mb-4 text-gray-100">Opensea Token Information</h2>
+                <ERC721TokenPictureSection url={openseaInformation.image_url} name={openseaInformation.name} />
                 <Table>
                     <TableHeader>
                         <TableRow>
