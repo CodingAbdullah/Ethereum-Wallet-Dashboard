@@ -7,7 +7,7 @@ import Link from "next/link";
 // Custom ERC721 Holdings Info Table Component
 export default function ERC721HoldingsInfoTable(props: { data: ERC721HoldingsType[] } ) {
     const { data } = props;
-    console.log(data);
+
     // Render ERC721 Holdings Info Table Component
     return (
         <div className="p-4 bg-gray-900 mt-10 shadow-lg">
