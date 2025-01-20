@@ -10,7 +10,7 @@ export async function POST(request: Request){
     const ERC20_INFO_ENDPOINT = '/coins/ethereum/contract/' + body.contract;
 
     // Setting options for authenticated API call
-    let options = {
+    const options = {
         method: "GET",
         headers : {
             'content-type' : 'application/json',
@@ -24,14 +24,14 @@ export async function POST(request: Request){
 
     // Return data based on status of FETCH request
     if (!response.ok) {
-        NextResponse.json({
+        return NextResponse.json({
             message: "Could not fetch ERC20 coin data"
         }, { status: 400 });
     }
     else {
         const information = await response.json();
-        NextResponse.json({
-            ERC20CoinData: information
+        return NextResponse.json({
+            information
         });
     }
 }

@@ -1,28 +1,30 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
 import addressValidator from '../utils/functions/addressValidator';
+import ERC20TokenInformationSection from '../components/ERC20TokenInformationSection';
 
 // ERC20 Token Prices Page Custom Component
 export default function ERC20TokenPricesPage() {
-    const router = useRouter()
     const [tokenAddress, updateTokenAddress] = useState("")
     const [showAlert, setShowAlert] = useState(false)
+    const [tableStatus, updateTableStatus] = useState(false);
 
     const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
-        // Handle form submission logic here
+        e.preventDefault();
 
+        // Handle form submission logic here
         if (addressValidator(tokenAddress)){
-            // Add code here
+            setShowAlert(false);
+            updateTableStatus(true);
         }
         else {
             setShowAlert(true);
+            updateTableStatus(false);
         }
     }
     
@@ -72,6 +74,7 @@ export default function ERC20TokenPricesPage() {
                     </form>
                 </CardContent>
             </Card>
+            { tableStatus ? <ERC20TokenInformationSection address={tokenAddress} /> : null }
         </div>
     )
 }

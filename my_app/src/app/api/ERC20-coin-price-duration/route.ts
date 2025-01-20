@@ -32,13 +32,13 @@ export async function POST(request: Request){
             'access-control-allow-origin': '*',
             'x-cg-pro-api-key' : process.env.COINGECKO_ERC20_PRICES_API_KEY // API-KEY for authenticated call
         } as HeadersInit
-    }
+    };
 
     // Safely fetching data using axios, escaping with try-catch block
     const response = await fetch(PRO_COINGECKO_URL + ERC20_PRICE_ENDPOINT, options); // Fetch ERC20 token prices by interval
 
     if (!response.ok) {
-        NextResponse.json({
+        return NextResponse.json({
             message: "Could not fetch ERC20 price duration data"
         }, { status: 400 });
     }
@@ -46,20 +46,20 @@ export async function POST(request: Request){
         // Conditionally send the response and format it conforming to the interval
         // Incorporate the dayjs library for easy date formatting
         const information = await response.json();
-        const prices: [string, string] = information;
+        const prices: [[number, number]] = information.prices;
 
         if (interval === '24'){
-            NextResponse.json({
+            return NextResponse.json({
                 coinPrices: prices.map(price => ({ 
-                    time: dayjs(price[0]).format('YYYY-MM-DD HH:mm:ss').split(" ")[1], 
+                    date: dayjs(price[0]).format('YYYY-MM-DD HH:mm:ss').split(" ")[1], 
                     price: Number(Number(price[1])) 
                 })).splice(24) 
             });
         }
         else {
-            NextResponse.json({
+            return NextResponse.json({
                 coinPrices: prices.map(price => ({ 
-                    time: dayjs(price[0]).format('YYYY-MM-DD'), 
+                    date: dayjs(price[0]).format('YYYY-MM-DD'), 
                     price: Number(Number(price[1])) 
                 }))
             });
