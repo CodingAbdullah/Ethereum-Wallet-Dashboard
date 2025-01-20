@@ -18,7 +18,6 @@ export default function ENSTransferByIDInfoTable(props: { data: ENSTransfersByID
                         <TableHead className="text-gray-300">Category</TableHead>
                         <TableHead className="text-gray-300">From</TableHead>
                         <TableHead className="text-gray-300">To</TableHead>
-
                     </TableRow>
                 </TableHeader>
                 <TableBody>
