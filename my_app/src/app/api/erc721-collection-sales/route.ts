@@ -24,14 +24,14 @@ export async function POST(request: Request){
  
     // Conditionally return data based on fetch request
     if (!response.ok) {
-        NextResponse.json({
+        return NextResponse.json({
             message: "Could not fetch ERC721 collection sales data"
         }, { status: 400 });
     }
     else {
         const information = await response.json(); 
 
-        NextResponse.json({
+        return NextResponse.json({
             information
         });
     }

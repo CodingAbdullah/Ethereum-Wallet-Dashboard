@@ -16,17 +16,17 @@ export async function POST(request: Request){
     };
 
     // Run backend request
-    const response = await fetch(PRO_COINGECKO_URL + 'nfts/ethereum/contract/' + body.address, options);
+    const response = await fetch(PRO_COINGECKO_URL + '/nfts/ethereum/contract/' + body.address, options);
 
     // Conditionally return data
     if (!response.ok) {
-        NextResponse.json({
+        return NextResponse.json({
             message: "Could not retrieve ERC721 collection data"
         }, { status: 400 });
     }
     else {
         const information = await response.json();
-        NextResponse.json({
+        return NextResponse.json({
             information
         });
     }

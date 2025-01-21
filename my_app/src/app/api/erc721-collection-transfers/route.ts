@@ -26,12 +26,12 @@ export async function POST(request: Request){
         const information = await response.json();
 
         // Return response containing data
-        NextResponse.json({
+        return NextResponse.json({
             information
         });
     }
     else {
-        NextResponse.json({
+        return NextResponse.json({
             message: "Could not retrieve ERC721 collection transfers data"
         }, { status: 400 });
     }

@@ -12,7 +12,7 @@ export default function ERC721CollectionSalesInfoTable(props : { address: string
 
     // Conditionally render component
     if (isLoading) {
-        return <div>Loading ERC721 Collection Data Info Table...</div>
+        return <div>Loading ERC721 Collection Sales Info Table...</div>
     }
     else if (error) {
         throw new Error();
@@ -23,7 +23,7 @@ export default function ERC721CollectionSalesInfoTable(props : { address: string
         // Render the ERC721 Collection Sales Info Table Component
         return (
             <div className="p-4 bg-gray-900 mt-10 shadow-lg">
-                <h2 className="text-2xl font-bold mb-4 text-gray-100">Collection Sales</h2>
+                <h2 className="text-2xl font-bold mb-4 text-gray-100">Sales</h2>
                 <Table>
                     <TableHeader>
                         <TableRow>
