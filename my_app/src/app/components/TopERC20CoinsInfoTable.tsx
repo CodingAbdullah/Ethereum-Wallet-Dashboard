@@ -20,6 +20,7 @@ export default function TopERC20CoinsInfoTable() {
     else {
         // Retrieve data for losing coin prices data table
         const coinsData: TopERC20CoinsType[] = coins;
+        
         // Render component using the information provided
         return (
             <div className="p-4 bg-gray-900 mt-10 mt-10 shadow-lg">

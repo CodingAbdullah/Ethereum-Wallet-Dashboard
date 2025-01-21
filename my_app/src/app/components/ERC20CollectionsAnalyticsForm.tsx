@@ -38,7 +38,6 @@ export default function ERC20CollectionsAnalyticsForm() {
         <>
             {showAlert && (
                 <Alert variant="destructive" className="mb-6">
-                    <AlertTitle>Error</AlertTitle>
                     <AlertDescription>
                         There was an error processing your request. Please try again.
                     </AlertDescription>
