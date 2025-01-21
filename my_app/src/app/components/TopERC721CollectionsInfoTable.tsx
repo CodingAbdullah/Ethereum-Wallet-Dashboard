@@ -47,11 +47,11 @@ export default function TopERC721CollectionsInfoTable() {
                                 </TableCell>
                                 <TableCell className="text-gray-300">{"$" + collection.floor_price_usd}</TableCell>
                                 <TableCell className={Number(collection.floor_price_usd_24hr_percent_change) >= 0 ? 'text-green-500' : 'text-red-500'}>
-                                    {Number(collection.floor_price_usd_24hr_percent_change) > 0 ? '+' + Number(collection.floor_price_usd_24hr_percent_change).toFixed(2) + '%' : Number(collection.floor_price_usd_24hr_percent_change).toFixed(2) + "%"}
+                                    {Number(collection.floor_price_usd_24hr_percent_change) >= 0 ? '+' + Number(collection.floor_price_usd_24hr_percent_change).toFixed(2) + '%' : Number(collection.floor_price_usd_24hr_percent_change).toFixed(2) + "%"}
                                 </TableCell>
                                 <TableCell className="text-gray-300">{"$" + collection.volume_usd}</TableCell>
                                 <TableCell className={Number(collection.volume_24hr_percent_change) >= 0 ? 'text-green-500' : 'text-red-500'}>
-                                    {Number(collection.volume_24hr_percent_change) > 0 ? '+' + Number(collection.volume_24hr_percent_change).toFixed(2) + '%' : Number(collection.volume_24hr_percent_change).toFixed(2) + "%"}
+                                    {Number(collection.volume_24hr_percent_change) >= 0 ? '+' + Number(collection.volume_24hr_percent_change).toFixed(2) + '%' : Number(collection.volume_24hr_percent_change).toFixed(2) + "%"}
                                 </TableCell>
                             </TableRow>
                         ))}
