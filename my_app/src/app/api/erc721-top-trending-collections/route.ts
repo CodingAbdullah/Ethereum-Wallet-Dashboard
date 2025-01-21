@@ -17,11 +17,11 @@ export async function GET(){
     // Conditionally return data based on data fetch
     if (response.ok) {
         const information = await response.json();
-        NextResponse.json({
+        return NextResponse.json({
             topCollections: information
         })
     }
     else {
-        NextResponse.json({});
+        return NextResponse.json({}, { status: 400 });
     }
 }
