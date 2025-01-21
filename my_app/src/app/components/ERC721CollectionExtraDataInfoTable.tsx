@@ -24,7 +24,7 @@ export default function ERC721CollectionExtraDataInfoTable(props : { address: st
         // Render ERC721 Collection Extra Data Info Table Component
         return (
             <div className="p-4 bg-gray-900 mt-10 shadow-lg">
-                <h2 className="text-2xl font-bold mb-4 text-gray-100">ERC721 Collection Information</h2>
+                <h2 className="text-2xl font-bold mb-4 text-gray-100">Extra Collection Information</h2>
                 <Table>
                     <TableHeader>
                         <TableRow>

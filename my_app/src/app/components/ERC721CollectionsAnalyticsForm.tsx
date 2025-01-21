@@ -7,6 +7,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./../
 import { Alert, AlertDescription, AlertTitle } from "./../components/ui/alert";
 import addressValidator from '../utils/functions/addressValidator';
 import TopERC721CollectionsInfoTable from './TopERC721CollectionsInfoTable';
+import ERC721CollectionDataInfoTable from './ERC721CollectionDataInfoTable';
+import ERC721CollectionExtraDataInfoTable from './ERC721CollectionExtraDataInfoTable';
+import ERC721CollectionSalesInfoTable from './ERC721CollectionSalesInfoTable';
 
 // ERC721 Collections Analytics Form Custom Component
 export default function ERC721CollectionsAnalyticsForm() {
@@ -68,6 +71,9 @@ export default function ERC721CollectionsAnalyticsForm() {
                 </CardContent>
             </Card>
             { tableStatus ? null : <TopERC721CollectionsInfoTable /> }
+            { tableStatus ? <ERC721CollectionDataInfoTable address={collectionAddress} /> : null }
+            { tableStatus ? <ERC721CollectionExtraDataInfoTable address={collectionAddress} /> : null }
+            { tableStatus ? <ERC721CollectionSalesInfoTable address={collectionAddress} /> : null }
         </>
     )
 }
