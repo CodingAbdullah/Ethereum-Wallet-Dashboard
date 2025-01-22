@@ -49,7 +49,7 @@ export default function ERC721CollectionMarketCapChart(props: { data: ERC721Coll
                                 Market Cap: 
                             </CardDescription>
                             <CardDescription className="text-gray-100">
-                                {" $" + data.market_cap.usd}
+                                <b>{" $" + data.market_cap.usd}</b>
                             </CardDescription>
                         </div>
                         <Select value={interval} onValueChange={setInterval}>

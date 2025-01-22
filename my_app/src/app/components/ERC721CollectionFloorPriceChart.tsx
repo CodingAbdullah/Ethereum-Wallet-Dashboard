@@ -49,7 +49,7 @@ export default function ERC721CollectionFloorPriceChart(props: { data: ERC721Col
                                 Floor Price: 
                             </CardDescription>
                             <CardDescription className='text-gray-100'>
-                                <b>{' ' + String(data.floor_price.usd) + ' ETH'}</b>
+                                <b>{' $' + String(data.floor_price.usd)}</b>
                             </CardDescription>
                         </div>
                         <Select value={interval} onValueChange={setInterval}>
@@ -87,7 +87,7 @@ export default function ERC721CollectionFloorPriceChart(props: { data: ERC721Col
                                     tick={{fill: '#888'}}
                                     domain={[Math.max(0, min - buffer), max + buffer]}
                                     padding={{ top: 10, bottom: 10 }}
-                                    tickFormatter={(value) => value.toFixed(2)}
+                                    tickFormatter={(value) => value.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                 />
                                 <Tooltip 
                                     contentStyle={{backgroundColor: '#333', border: 'none'}}
@@ -101,7 +101,7 @@ export default function ERC721CollectionFloorPriceChart(props: { data: ERC721Col
                                     stroke="#ff4136" 
                                     strokeWidth={2}
                                     dot={true}
-                                    name="Floor Price (ETH)"
+                                    name="Floor Price (USD)"
                                 />
                                 </LineChart>
                             </ResponsiveContainer>
