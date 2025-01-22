@@ -3,7 +3,6 @@
 import useSWR from "swr";
 import PostFetcher from "../utils/functions/PostFetcher";
 import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from "./ui/table";
-import ERC721CollectionAttributeType from "../utils/types/ERC721CollectionAttributeType";
 
 // ERC721 Collection Attribute Summary Info Table Custom Component
 export default function ERC721CollectionAttributeSummaryInfoTable(props: { address: string }){
@@ -19,7 +18,9 @@ export default function ERC721CollectionAttributeSummaryInfoTable(props: { addre
     }
     else {
         const erc721CollectionAttributeData = data.information.data.summary;
-        console.log(erc721CollectionAttributeData);
+
+        // Spread out, in an array, the attributes of the particular collection
+        const attributes = [...Object.keys(data.information.data.summary)]; 
 
         // Render Attributes Summary Info Table Component
         return (
@@ -33,8 +34,20 @@ export default function ERC721CollectionAttributeSummaryInfoTable(props: { addre
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow className="border-b border-gray-800">
-                        </TableRow>
+                        {
+                            attributes.map((attribute, index) => {
+                                return (
+                                    <TableRow key={index} className="border-b border-gray-800">
+                                        <TableCell className="text-gray-300">{attribute}</TableCell>
+                                        <TableCell className="text-gray-300">
+                                            <code>
+                                                {JSON.stringify(erc721CollectionAttributeData[attribute])}
+                                            </code>
+                                        </TableCell>
+                                    </TableRow>
+                                )
+                            })
+                        }
                     </TableBody>
                 </Table>
             </div>
