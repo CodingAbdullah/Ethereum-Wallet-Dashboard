@@ -29,7 +29,7 @@ export default function AboutPage() {
                 <div className="container mx-auto">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
                         {
-                        AboutPageCardList.map((feature: AboutPageCardType, index: Number) => (
+                        AboutPageCardList.map((feature: AboutPageCardType, index: number) => (
                             <div key={index} className="bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105">
                                 <div className="p-8 flex flex-col items-center text-center h-full justify-between">
                                     <div>
