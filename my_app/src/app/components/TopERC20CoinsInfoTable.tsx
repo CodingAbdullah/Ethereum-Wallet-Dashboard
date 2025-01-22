@@ -8,7 +8,7 @@ import TopERC20CoinsType from "../utils/types/TopERC20CoinsType";
 
 // Top ERC20 Coins Table Custom Component
 export default function TopERC20CoinsInfoTable() {
-    const { data: coins, error: coinsError, isLoading: loadingCoins } = useSWR('/api/top-erc20-tokens', GenericFetcher, { refreshInterval: 300000 });
+    const { data: coins, error: coinsError, isLoading: loadingCoins } = useSWR('/api/top-erc20-tokens', GenericFetcher, { refreshInterval: 50000 });
     
     // Conditionally render this component
     if (coinsError){

@@ -8,7 +8,7 @@ import TrendingCollectionsType from "../utils/types/TrendingCollectionsType";
 
 // Trending Collections Table Custom Component
 export default function HomePageTrendingCollectionsTable() {
-    const { data: trendsData, error: trendingCoinsDataError, isLoading: loadingTrendingCoins } = useSWR('/api/trending-coin-data', WalletFetcher, { refreshInterval: 30000 });
+    const { data: trendsData, error: trendingCoinsDataError, isLoading: loadingTrendingCoins } = useSWR('/api/trending-coin-data', WalletFetcher, { refreshInterval: 50000 });
     
     // Conditionally render this component
     if (trendingCoinsDataError){

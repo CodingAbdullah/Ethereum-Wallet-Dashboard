@@ -9,7 +9,7 @@ import TopLosingCoinsType from "../utils/types/TopLosingCoinsType";
 
 // Top Losing Coins Table Custom Component
 export default function TopLosingCoinsTable() {
-    const { data: coins, error: coinsError, isLoading: loadingCoins } = useSWR('/api/top-bottom-coin-prices', GenericFetcher, { refreshInterval: 300000 });
+    const { data: coins, error: coinsError, isLoading: loadingCoins } = useSWR('/api/top-bottom-coin-prices', GenericFetcher, { refreshInterval: 50000 });
     
     // Conditionally render this component
     if (coinsError){

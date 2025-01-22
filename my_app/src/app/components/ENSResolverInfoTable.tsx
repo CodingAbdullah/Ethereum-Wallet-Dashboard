@@ -8,7 +8,7 @@ import ENSResolverType from "../utils/types/ENSResolverType";
 // ENS Resolver Info Table Component
 export default function ENSResolverInfoTable(props: { data: string }) {
     const { data } = props;
-    const ensResolverInfo = useSWR(['/api/ens-resolver-information', { address: data }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 30000 });
+    const ensResolverInfo = useSWR(['/api/ens-resolver-information', { address: data }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
     const { data: ensResolverData, error, isLoading } = ensResolverInfo;
 
     // Conditionally render ENS Resolver data

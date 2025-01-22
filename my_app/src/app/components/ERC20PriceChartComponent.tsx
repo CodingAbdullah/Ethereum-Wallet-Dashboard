@@ -15,7 +15,7 @@ export default function ERC20PriceChartComponent(props: { data: ERC20TokenInform
     const [interval, setInterval] = useState('7');
 
     // Fetch data for chart display
-    const { data: erc20ChartData, error: erc20ChartError, isLoading: erc20ChartDataLoading }  = useSWR(['/api/ERC20-coin-price-duration', { contract: address, interval }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 30000 });
+    const { data: erc20ChartData, error: erc20ChartError, isLoading: erc20ChartDataLoading }  = useSWR(['/api/ERC20-coin-price-duration', { contract: address, interval }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
     // Conditionally render data
     if (erc20ChartError) {

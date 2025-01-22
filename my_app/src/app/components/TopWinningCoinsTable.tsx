@@ -9,7 +9,7 @@ import TopWinningCoinsType from "../utils/types/TopWinningCoinsType";
 
 // Top Winning Coins Table Custom Component
 export default function TopWinningCoinsTable() {
-    const { data: coins, error: coinsError, isLoading: loadingCoins } = useSWR('/api/top-bottom-coin-prices', GenericFetcher, { refreshInterval: 300000 });
+    const { data: coins, error: coinsError, isLoading: loadingCoins } = useSWR('/api/top-bottom-coin-prices', GenericFetcher, { refreshInterval: 50000 });
     
     // Conditionally render this component
     if (coinsError){

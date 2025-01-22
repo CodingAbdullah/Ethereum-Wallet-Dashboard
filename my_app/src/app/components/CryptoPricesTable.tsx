@@ -12,7 +12,7 @@ import CoinPricesType from "../utils/types/CoinPricesType";
 // Trending Coins Table Custom Component
 export default function CryptoPriceTable() {
     const [filter, setFilter] = useState("");
-    const { data: coins, error: coinsError, isLoading: loadingCoins } = useSWR('/api/coin-prices', GenericFetcher, { refreshInterval: 30000 });
+    const { data: coins, error: coinsError, isLoading: loadingCoins } = useSWR('/api/coin-prices', GenericFetcher, { refreshInterval: 100000 });
     
     // Conditionally render this component
     if (coinsError){

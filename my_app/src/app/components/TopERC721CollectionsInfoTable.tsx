@@ -8,7 +8,7 @@ import TopERC721CollectionsType from "../utils/types/TopERC721CollectionsType";
 
 // Top ERC721 Collections Info Table Custom Component
 export default function TopERC721CollectionsInfoTable() {
-    const { data: collections, error: collectionsError, isLoading: loadingCollections } = useSWR('/api/erc721-top-trending-collections', GenericFetcher, { refreshInterval: 1000000000 });
+    const { data: collections, error: collectionsError, isLoading: loadingCollections } = useSWR('/api/erc721-top-trending-collections', GenericFetcher, { refreshInterval: 50000 });
     
     // Conditionally render this component
     if (collectionsError){

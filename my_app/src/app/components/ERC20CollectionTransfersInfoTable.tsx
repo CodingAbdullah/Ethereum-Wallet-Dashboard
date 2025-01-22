@@ -10,7 +10,7 @@ export default function ERC20collectionOwnersInfoTable(props: { address: string 
     const { address } = props;
 
     // Make API call upon loading the custom component
-    const { data, error, isLoading } = useSWR(['/api/erc20-transfer', { contract: address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 1000000000 });
+    const { data, error, isLoading } = useSWR(['/api/erc20-transfer', { contract: address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
     
     // Conditionally render the info table 
     if (isLoading) {

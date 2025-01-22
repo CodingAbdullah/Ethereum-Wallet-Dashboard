@@ -27,7 +27,7 @@ export default function Navbar() {
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline">
               {NavbarLinks.map((item, index) => (
-                <div key={item.name} className="relative group">
+                <div key={index} className="relative group">
                   <button
                     onClick={() => toggleDropdown(String(item.name))}
                     className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center"
@@ -74,10 +74,10 @@ export default function Navbar() {
       {isOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {NavbarLinks.map((item) => (
-              <div key={item.name} className="relative">
+            {NavbarLinks.map((item, index) => (
+              <div key={index} className="relative">
                 <button
-                  onClick={() => toggleDropdown(item.name)}
+                  onClick={() => toggleDropdown(String(item.name))}
                   className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium w-full text-left flex justify-between items-center"
                 >
                   {item.name}

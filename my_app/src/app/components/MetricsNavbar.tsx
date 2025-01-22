@@ -9,8 +9,8 @@ import NavbarEthereumDataType from '../utils/types/NavbarEthereumDataType';
 // useSWR for efficient data fetching
 export default function MetricsNavbar() {
     // Data fetching using the custom fetcher function and useSWR
-    const { data: ethData, error: ethError, isLoading: ethLoading } = useSWR<NavbarEthereumDataType>('/api/navbar/ethereum-price', GenericFetcher, { refreshInterval: 5000 });
-    const { data: gasData, error: gasError, isLoading: gasLoading } = useSWR<EthereumGasDataType>('/api/navbar/gas-track', GenericFetcher, { refreshInterval: 5000 });
+    const { data: ethData, error: ethError, isLoading: ethLoading } = useSWR<NavbarEthereumDataType>('/api/navbar/ethereum-price', GenericFetcher, { refreshInterval: 50000 });
+    const { data: gasData, error: gasError, isLoading: gasLoading } = useSWR<EthereumGasDataType>('/api/navbar/gas-track', GenericFetcher, { refreshInterval: 50000 });
 
     // Conditionally rendering component
     if (ethError || gasError) 

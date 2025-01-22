@@ -8,7 +8,7 @@ import ERC721CollectionDataType from "../utils/types/ERC721CollectionDataType";
 // ERC721 Collection Data Info Table Custom Component
 export default function ERC721CollectionDataInfoTable(props: { address: string }){
     const { address } = props;
-    const {data, error, isLoading } = useSWR(['/api/erc721-collection-data', { address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 1000000000 });
+    const {data, error, isLoading } = useSWR(['/api/erc721-collection-data', { address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
     // Conditionally render component
     if (isLoading) {

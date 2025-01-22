@@ -9,7 +9,7 @@ import GenericFetcher from "../utils/functions/GenericFetcher";
 
 // Trending Coins Table Custom Component
 export default function HomePageTrendingCoinsTable() {
-    const { data: trendsData, error: trendingCoinsDataError, isLoading: loadingTrendingCoins } = useSWR('/api/trending-coin-data', GenericFetcher, { refreshInterval: 30000 });
+    const { data: trendsData, error: trendingCoinsDataError, isLoading: loadingTrendingCoins } = useSWR('/api/trending-coin-data', GenericFetcher, { refreshInterval: 50000 });
     
     // Conditionally render this component
     if (trendingCoinsDataError){

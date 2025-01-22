@@ -11,7 +11,7 @@ import ERC20PriceChartComponent from "./ERC20PriceChartComponent";
 // ERC20 Token Information Section Custom Component
 export default function ERC20TokenInformationSection(props: { address: string }) {
     const { address } = props;
-    const { data, error, isLoading } = useSWR(['/api/ERC20-coin-information', { contract: address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 30000 });
+    const { data, error, isLoading } = useSWR(['/api/ERC20-coin-information', { contract: address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
     // Conditionally render component
     if (isLoading) {

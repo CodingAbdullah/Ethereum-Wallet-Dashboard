@@ -10,7 +10,7 @@ export default function ERC721RarityLookupsInfoTable(props: { address: string, t
     const { address, tokenID, network } = props;
 
     // Make API call upon loading the custom component
-    const { data, error, isLoading } = useSWR(['/api/erc721-lookup-rarity-by-id', { address, id: tokenID, network }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 30000 });
+    const { data, error, isLoading } = useSWR(['/api/erc721-lookup-rarity-by-id', { address, id: tokenID, network }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
     
     // Conditionally render the info table 
     if (isLoading) {
