@@ -13,11 +13,14 @@ export async function POST(request: Request) {
     sdk.server(ALCHEMY_URL);
     
     // Retrieve data and return response based on status
-    sdk.summarizeNFTAttributes({ contractAddress: body.address, apiKey: process.env.ALCHEMY_API_KEY_2 })
-    .then((response: Response) => { 
-        NextResponse.json({ information: response })
-    })
-    .catch(() => {
-        NextResponse.json({});
-    });
+    const response = await sdk.summarizeNFTAttributes({ contractAddress: body.address, apiKey: process.env.ALCHEMY_API_KEY_2 });
+
+    if (response){ 
+        return NextResponse.json({ information: response })
+    }
+    else {
+        return NextResponse.json({
+            message: "Could not retrieve ERC721 Collection Attributes"
+        }, { status: 400 });
+    };
 }
