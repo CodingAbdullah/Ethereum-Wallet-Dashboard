@@ -5,9 +5,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../co
 import { Input } from './ui/input';
 import { Alert, AlertDescription } from './ui/alert';
 import { Button } from './ui/button';
-import NetworkSelector from './NetworkSelector';
 import addressValidator from '../utils/functions/addressValidator';
 import TransactionBalanceInfoTable from './TransactionBalanceInfoTable';
+import WalletStatsInfoTable from './WalletStatsInfoTable';
+import WalletPnLBreakdownInfoTable from './WalletPnLBreakdownInfoTable';
+import WalletPnLInfoTable from './WalletPnLInfoTable';
 
 // Wallet Analytics Form Custom Component
 export default function WalletAnalyticsForm() {
@@ -61,7 +63,6 @@ export default function WalletAnalyticsForm() {
                             className="w-full bg-gray-800 text-gray-100 border-gray-700 focus:ring-gray-400 placeholder-gray-500"
                             required
                         />
-                        <NetworkSelector networkSelector={handleNetworkChange} />
                         <div className="flex justify-center space-x-4 pt-4">
                             <Button 
                                 type="submit"
@@ -74,6 +75,9 @@ export default function WalletAnalyticsForm() {
                 </CardContent>
             </Card>
             { tableStatus ? <TransactionBalanceInfoTable address={walletAddress} network={network} /> : null }
-        </>
+            { tableStatus ? <WalletStatsInfoTable address={walletAddress} /> : null }
+            { tableStatus ? <WalletPnLInfoTable address={walletAddress} /> : null }
+            { tableStatus ? <WalletPnLBreakdownInfoTable address={walletAddress} /> : null }
+        </>   
     )
 }
