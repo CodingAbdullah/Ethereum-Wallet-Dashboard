@@ -6,7 +6,7 @@ export async function POST(request: Request){
 
     // Conditionally handle request
     if (body.network !== 'eth') {
-        NextResponse.json({
+        return NextResponse.json({
             information: { result: [] }
         });
     }
@@ -27,7 +27,7 @@ export async function POST(request: Request){
         if (!response.ok) 
             return NextResponse.json({ error: 'Failed to fetch Ethereum price' }, { status: 500 });
         else {
-            const data = response.json();
+            const data = await response.json();
             return NextResponse.json(data);
         }
     }
