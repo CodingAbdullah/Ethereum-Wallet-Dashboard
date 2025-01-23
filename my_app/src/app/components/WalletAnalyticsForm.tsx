@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from './ui/alert';
 import { Button } from './ui/button';
 import NetworkSelector from './NetworkSelector';
 import addressValidator from '../utils/functions/addressValidator';
+import TransactionBalanceInfoTable from './TransactionBalanceInfoTable';
 
 // Wallet Analytics Form Custom Component
 export default function WalletAnalyticsForm() {
@@ -72,6 +73,7 @@ export default function WalletAnalyticsForm() {
                     </form>
                 </CardContent>
             </Card>
+            { tableStatus ? <TransactionBalanceInfoTable address={walletAddress} network={network} /> : null }
         </>
     )
 }
