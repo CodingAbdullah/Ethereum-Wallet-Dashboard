@@ -12,6 +12,7 @@ import ERC721CollectionExtraDataInfoTable from './ERC721CollectionExtraDataInfoT
 import ERC721CollectionSalesInfoTable from './ERC721CollectionSalesInfoTable';
 import ERC721CollectionTransfersInfoTable from './ERC721CollectionTransfersInfoTable';
 import ERC721CollectionAttributeSummaryInfoTable from './ERC721CollectionAttributeSummaryInfoTable';
+import ERC721CollectionFloorPriceInfoTable from './ERC721CollectionFloorPriceInfoTable';
 
 // ERC721 Collections Analytics Form Custom Component
 export default function ERC721CollectionsAnalyticsForm() {
@@ -74,6 +75,7 @@ export default function ERC721CollectionsAnalyticsForm() {
             </Card>
             { tableStatus ? null : <TopERC721CollectionsInfoTable /> }
             { tableStatus ? <ERC721CollectionDataInfoTable address={collectionAddress} /> : null }
+            { tableStatus ? <ERC721CollectionFloorPriceInfoTable address={collectionAddress} /> : null }
             { tableStatus ? <ERC721CollectionExtraDataInfoTable address={collectionAddress} /> : null }
             { tableStatus ? <ERC721CollectionAttributeSummaryInfoTable address={collectionAddress} /> : null }
             { tableStatus ? <ERC721CollectionTransfersInfoTable address={collectionAddress} /> : null }
