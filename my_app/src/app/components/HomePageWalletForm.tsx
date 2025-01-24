@@ -6,7 +6,8 @@ import addressValidator from '../utils/functions/addressValidator';
 
 // Custom Component for working with the Home Page Wallet Form
 export default function HomePageWalletForm() {
-    const [walletAddress, setWalletAddress] = useState('');
+    const [walletAddress, updateWalletAddress] = useState('');
+    const [setWalletAddress, updateSetWalletAddress] = useState('');
     const [error, setError] = useState('');
     const router = useRouter();
 
@@ -14,8 +15,9 @@ export default function HomePageWalletForm() {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         
-        if (addressValidator(walletAddress)) {
-            router.push(`/wallet-activity/${walletAddress}`);
+        if (addressValidator(walletAddress.trim())) {
+            updateSetWalletAddress(walletAddress.trim());
+            router.push(`/wallet-activity/${setWalletAddress}`);
         } 
         else {
             setError('Invalid wallet address. Please check and try again.');
@@ -35,7 +37,7 @@ export default function HomePageWalletForm() {
                     aria-label="Search"
                     required 
                     value={walletAddress}
-                    onChange={(e) => setWalletAddress(e.target.value)}
+                    onChange={(e) => updateWalletAddress(e.target.value)}
                 />
                 <button 
                     className="bg-gradient-to-r from-gray-600 to-gray-400 text-white py-2 px-6 rounded-md hover:from-gray-500 hover:to-gray-300 transition-all duration-300 transform hover:scale-105"

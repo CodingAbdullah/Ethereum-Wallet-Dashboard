@@ -13,7 +13,8 @@ import ENSResolverInfoTable from "./ENSResolverInfoTable";
 
 // Address To ENS Form Custom Component
 export default function AddressToENSForm() {
-    const [walletAddress, setWalletAddress] = useState<string>("");
+    const [walletAddress, updateWalletAddress] = useState<string>("");
+    const [setWalletAddress, updateSetWalletAddress] = useState<string>("");
     const [showAlert, setShowAlert] = useState(false);
     const [accountInformation, setAccountInformation] = useState<AccountInformationType>();
 
@@ -21,18 +22,21 @@ export default function AddressToENSForm() {
         e.preventDefault();
 
         // Handle form submission logic here
-        if (!addressValidator(walletAddress)){
+        // Set the token address to what the form value is for evaluation
+        if (!addressValidator(walletAddress.trim())){
+            updateSetWalletAddress(walletAddress.trim());
             setShowAlert(true);
             setAccountInformation({ name: '' });
         }
         else {
             // FETCH API for ENS data from a given wallet address
             setShowAlert(false);
+            
             const res = await fetch('/api/address-to-ens-information', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ address: walletAddress })
-              });
+                body: JSON.stringify({ address: setWalletAddress })
+            });
 
             // Check condition of FETCH request
             if (res.ok) {
@@ -67,7 +71,7 @@ export default function AddressToENSForm() {
                         <Input
                             placeholder="Enter Wallet Address"
                             value={walletAddress}
-                            onChange={(e) => setWalletAddress(e.target.value)}
+                            onChange={(e) => updateWalletAddress(e.target.value)}
                             className="w-full bg-gray-800 text-gray-100 border-gray-700 focus:ring-gray-400 placeholder-gray-500"
                             required
                         />
@@ -86,8 +90,8 @@ export default function AddressToENSForm() {
                 accountInformation?.name ? 
                     <>
                         <AccountToENSInfoTable data={accountInformation} />
-                        <ENSOwnershipInfoTable data={walletAddress} />
-                        <ENSResolverInfoTable data={walletAddress} />
+                        <ENSOwnershipInfoTable data={setWalletAddress} />
+                        <ENSResolverInfoTable data={setWalletAddress} />
                     </> 
                 : null 
             }

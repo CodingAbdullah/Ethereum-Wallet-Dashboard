@@ -11,7 +11,8 @@ import ENSTransfersByNameType from "../utils/types/ENSTransfersByNameType";
 
 // ENS Transfer By Name Custom Component
 export default function ENSTransferByNameForm()  {
-    const [walletDomain, setWalletDomain] = useState<string>("");
+    const [walletDomain, updateWalletDomain] = useState<string>("");
+    const [setWalletDomain, updateSetWalletDomain] = useState<string>("");
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [addressInformation, updateAddressInformation] = useState<ENSTransfersByNameType[]>();
 
@@ -19,16 +20,18 @@ export default function ENSTransferByNameForm()  {
         e.preventDefault();
 
         // Handle form submission logic here
-        if (!ENSValidator(walletDomain)){
+        if (!ENSValidator(walletDomain.trim())){
             setShowAlert(true);
         }
         else {
             // FETCH API for ENS data from a given wallet address
             setShowAlert(false);
+            updateSetWalletDomain(walletDomain.trim());
+
             const res = await fetch('/api/ens-transfers-by-name', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ address: walletDomain })
+                body: JSON.stringify({ address: setWalletDomain })
             });
 
             // Check condition of FETCH request
@@ -64,7 +67,7 @@ export default function ENSTransferByNameForm()  {
                         <Input
                             placeholder="Enter Wallet Domain"
                             value={walletDomain}
-                            onChange={(e) => setWalletDomain(e.target.value)}
+                            onChange={(e) => updateWalletDomain(e.target.value)}
                             className="w-full bg-gray-800 text-gray-100 border-gray-700 focus:ring-gray-400 placeholder-gray-500"
                             required
                         />

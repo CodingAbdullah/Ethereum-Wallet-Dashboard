@@ -14,8 +14,10 @@ import ERC20TransfersType from "../utils/types/ERC20TransfersType";
 
 // ERC20 Holdings Form Custom Component
 export default function ERC20HoldingsForm() {
-    const [walletAddress, setWalletAddress] = useState("");
-    const [network, setNetwork] = useState("eth");
+    const [walletAddress, updateWalletAddress] = useState("");
+    const [setWalletAddress, updateSetWalletAddress] = useState("");
+    const [network, updateNetwork] = useState("eth");
+    const [setNetwork, updateSetNetwork] = useState('eth');
     const [showAlert, setShowAlert] = useState(false);
     const [erc20Holdings, updateERC20Holdings] = useState<ERC20HoldingsType[]>();
     const [erc20Transfers, updateERC20Transfers] = useState<ERC20TransfersType[]>();
@@ -31,16 +33,19 @@ export default function ERC20HoldingsForm() {
         else {
             // FETCH API for ERC20 Holdings and Transfers data from a given wallet address
             setShowAlert(false);
+            updateSetWalletAddress(walletAddress.trim());
+            updateSetNetwork(network);
+
             const erc20HoldingsData = await fetch('/api/address-erc20-holdings', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ address: walletAddress.trim(), network })
+                body: JSON.stringify({ address: setWalletAddress, setNetwork })
             });
 
             const erc20TransfersData = await fetch('/api/address-erc20-transfers', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ address: walletAddress.trim(), network })
+                body: JSON.stringify({ address: setWalletAddress, setNetwork })
             });
 
             // Check the status of ERC20 Holdings Data
@@ -65,7 +70,7 @@ export default function ERC20HoldingsForm() {
 
     // Network Selection Handler Function
     const handleNetworkChange = (selectedNetwork: string) => {
-        setNetwork(selectedNetwork);
+        updateNetwork(selectedNetwork);
     }
 
     // Render the ERC20 Holdings Form component
@@ -91,7 +96,7 @@ export default function ERC20HoldingsForm() {
                             placeholder="Enter Wallet Address"
                             value={walletAddress}
                             type="text"
-                            onChange={(e) => setWalletAddress(e.target.value)}
+                            onChange={(e) => updateWalletAddress(e.target.value)}
                             className="w-full bg-gray-800 text-gray-100 border-gray-700 focus:ring-gray-400 placeholder-gray-500"
                             required
                         />
@@ -108,7 +113,7 @@ export default function ERC20HoldingsForm() {
                 </CardContent>
             </Card>
             { erc20Holdings ? <ERC20HoldingsInfoTable data={erc20Holdings} /> : null }
-            { erc20Transfers ? <ERC20TransfersInfoTable data={erc20Transfers} address={walletAddress} /> : null }
+            { erc20Transfers ? <ERC20TransfersInfoTable data={erc20Transfers} address={setWalletAddress} /> : null }
         </>
     )
 }

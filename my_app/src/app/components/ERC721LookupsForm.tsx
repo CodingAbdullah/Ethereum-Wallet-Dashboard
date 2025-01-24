@@ -15,9 +15,12 @@ import ERC721RarityLookupsInfoTable from './ERC721RarityLookupsInfoTable';
 
 // ERC721 Lookups Form Custom Component
 export default function ERC721LookupsForm() {
-    const [tokenAddress, setTokenAddress] = useState("");
-    const [tokenID, setTokenID] = useState("");
-    const [network, setNetwork] = useState("eth");
+    const [tokenAddress, updateTokenAddress] = useState("");
+    const [setTokenAddress, updateSetTokenAddress] = useState("");
+    const [tokenID, updateTokenID] = useState("");
+    const [setTokenID, updateSetTokenID] = useState("");
+    const [network, updateNetwork] = useState("eth");
+    const [setNetwork, updateSetNetwork] = useState('eth');
     const [showAlert, setShowAlert] = useState(false);
     const [tableStatus, updateTableStatus] = useState(false);
 
@@ -29,6 +32,9 @@ export default function ERC721LookupsForm() {
         if (addressValidator(tokenAddress.trim())){
             setShowAlert(false);
             updateTableStatus(true);
+            updateSetTokenAddress(tokenAddress.trim());
+            updateSetTokenID(tokenID.trim());
+            updateSetNetwork(network);
         }
         else {
             // If address is not valid, set alerts
@@ -39,7 +45,7 @@ export default function ERC721LookupsForm() {
 
     // Network Selection Handler Function
     const handleNetworkChange = (selectedNetwork: string) => {
-        setNetwork(selectedNetwork);
+        updateNetwork(selectedNetwork);
     }
 
     // Render the ERC721 Lookups Form Custom Component
@@ -64,14 +70,14 @@ export default function ERC721LookupsForm() {
                         <Input
                             placeholder="Enter Collection Address"
                             value={tokenAddress}
-                            onChange={(e) => setTokenAddress(e.target.value)}
+                            onChange={(e) => updateTokenAddress(e.target.value)}
                             className="w-full bg-gray-800 text-gray-100 border-gray-700 focus:ring-gray-400 placeholder-gray-500"
                             required
                         />
                         <Input
                             placeholder="Enter Token ID"
                             value={tokenID}
-                            onChange={(e) => setTokenID(e.target.value)}
+                            onChange={(e) => updateTokenID(e.target.value)}
                             className="w-full bg-gray-800 text-gray-100 border-gray-700 focus:ring-gray-400 placeholder-gray-500"
                             required
                         />
@@ -87,11 +93,11 @@ export default function ERC721LookupsForm() {
                     </form>
                 </CardContent>
             </Card>
-            { tableStatus ? <ERC721LookupsInfoTable address={tokenAddress} tokenID={tokenID} network={network} /> : null }
-            { tableStatus ? <ERC721OpenseaTokenLookupInfoTable address={tokenAddress} tokenID={tokenID} network={network} /> : null }
-            { tableStatus && network === 'eth' ? <ERC721SalesLookupsInfoTable address={tokenAddress} tokenID={tokenID} network={network} /> : null }
-            { tableStatus ? <ERC721TransferLookupsInfoTable address={tokenAddress} tokenID={tokenID} network={network} /> : null } 
-            { tableStatus ? <ERC721RarityLookupsInfoTable address={tokenAddress} tokenID={tokenID} network={network} /> : null } 
+            { tableStatus ? <ERC721LookupsInfoTable address={setTokenAddress} tokenID={setTokenID} network={setNetwork} /> : null }
+            { tableStatus ? <ERC721OpenseaTokenLookupInfoTable address={setTokenAddress} tokenID={setTokenID} network={setNetwork} /> : null }
+            { tableStatus && network === 'eth' ? <ERC721SalesLookupsInfoTable address={setTokenAddress} tokenID={setTokenID} network={setNetwork} /> : null }
+            { tableStatus ? <ERC721TransferLookupsInfoTable address={setTokenAddress} tokenID={setTokenID} network={setNetwork} /> : null } 
+            { tableStatus ? <ERC721RarityLookupsInfoTable address={setTokenAddress} tokenID={setTokenID} network={setNetwork} /> : null } 
         </>
     )
 }

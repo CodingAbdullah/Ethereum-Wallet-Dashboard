@@ -17,7 +17,8 @@ import ERC721CollectionFloorPriceInfoTable from './ERC721CollectionFloorPriceInf
 // ERC721 Collections Analytics Form Custom Component
 export default function ERC721CollectionsAnalyticsForm() {
     const [showAlert, setShowAlert] = useState(false);
-    const [collectionAddress, setCollectionAddress] = useState('');
+    const [collectionAddress, updateCollectionAddress] = useState('');
+    const [setCollectionAddress, updateSetCollectionAddress] = useState('');
     const [tableStatus, updateTableStatus] = useState(false);
 
     // Handle Submit Function
@@ -26,12 +27,13 @@ export default function ERC721CollectionsAnalyticsForm() {
 
         // Check address validity
         // If correct, make a request call to fetch ERC20 Collection Analytics data
-        if (addressValidator(collectionAddress)) {
+        if (addressValidator(collectionAddress.trim())) {
             updateTableStatus(true);
             setShowAlert(false);
         }
         else {
             updateTableStatus(false);
+            updateSetCollectionAddress(collectionAddress.trim());
             setShowAlert(true);
         }
     }
@@ -58,7 +60,7 @@ export default function ERC721CollectionsAnalyticsForm() {
                         <Input
                             placeholder="Enter Collection Address"
                             value={collectionAddress}
-                            onChange={(e) => setCollectionAddress(e.target.value)}
+                            onChange={(e) => updateCollectionAddress(e.target.value)}
                             className="w-full bg-gray-800 text-gray-100 border-gray-700 focus:ring-gray-400 placeholder-gray-500"
                             required
                         />
@@ -74,12 +76,12 @@ export default function ERC721CollectionsAnalyticsForm() {
                 </CardContent>
             </Card>
             { tableStatus ? null : <TopERC721CollectionsInfoTable /> }
-            { tableStatus ? <ERC721CollectionDataInfoTable address={collectionAddress} /> : null }
-            { tableStatus ? <ERC721CollectionFloorPriceInfoTable address={collectionAddress} /> : null }
-            { tableStatus ? <ERC721CollectionExtraDataInfoTable address={collectionAddress} /> : null }
-            { tableStatus ? <ERC721CollectionAttributeSummaryInfoTable address={collectionAddress} /> : null }
-            { tableStatus ? <ERC721CollectionTransfersInfoTable address={collectionAddress} /> : null }
-            { tableStatus ? <ERC721CollectionSalesInfoTable address={collectionAddress} /> : null }
+            { tableStatus ? <ERC721CollectionDataInfoTable address={setCollectionAddress} /> : null }
+            { tableStatus ? <ERC721CollectionFloorPriceInfoTable address={setCollectionAddress} /> : null }
+            { tableStatus ? <ERC721CollectionExtraDataInfoTable address={setCollectionAddress} /> : null }
+            { tableStatus ? <ERC721CollectionAttributeSummaryInfoTable address={setCollectionAddress} /> : null }
+            { tableStatus ? <ERC721CollectionTransfersInfoTable address={setCollectionAddress} /> : null }
+            { tableStatus ? <ERC721CollectionSalesInfoTable address={setCollectionAddress} /> : null }
         </>
     )
 }

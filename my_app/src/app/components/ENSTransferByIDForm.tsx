@@ -10,24 +10,27 @@ import ENSTransferByIDInfoTable from "./ENSTransferByIDInfoTable";
 
 // ENS Transfer by ID Custom Component
 export default function ENSTransferByIDForm() {
-    const [tokenID, setTokenID] = useState("")
+    const [tokenID, updateTokenID] = useState<string>("")
+    const [setTokenID, updateSetTokenID] = useState<string>("");
     const [showAlert, setShowAlert] = useState(false)
     const [transferInformation, updateTransferInformation] = useState<ENSTransfersByIDType[]>();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (tokenID.length === 0) {
+        if (tokenID.trim().length === 0) {
             setShowAlert(true);
         }
         else {
             // FETCH API for ENS data from a given wallet address
             setShowAlert(false);
+            updateSetTokenID(tokenID.trim());
+
             const res = await fetch('/api/ens-transfers-by-id', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: tokenID })
-              });
+                body: JSON.stringify({ id: setTokenID })
+            });
 
             // Check condition of FETCH request
             if (res.ok) {
@@ -62,7 +65,7 @@ export default function ENSTransferByIDForm() {
                         <Input
                             placeholder="Enter ENS Token ID"
                             value={tokenID}
-                            onChange={(e) => setTokenID(e.target.value)}
+                            onChange={(e) => updateTokenID(e.target.value)}
                             className="w-full bg-gray-800 text-gray-100 border-gray-700 focus:ring-gray-400 placeholder-gray-500"
                             required
                         />

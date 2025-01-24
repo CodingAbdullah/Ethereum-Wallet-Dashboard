@@ -16,8 +16,10 @@ import ERC721TransfersInfoTable from './ERC721TransfersInfoTable';
 
 // ERC721 Holdings Form Custom Component
 export default function ERC721HoldingsForm() {
-    const [walletAddress, setWalletAddress] = useState("");
-    const [network, setNetwork] = useState("eth");
+    const [walletAddress, updateWalletAddress] = useState("");
+    const [setWalletAddress, updateSetWalletAddress] = useState("");
+    const [network, updateNetwork] = useState("eth");
+    const [setNetwork, updateSetNetwork] = useState('eth');
     const [showAlert, setShowAlert] = useState(false);
     const [erc721Collections, updateERC721Collections] = useState<ERC721CollectionsHoldingsType[]>();
     const [erc721Holdings, updateERC721Holdings] = useState<ERC721HoldingsType[]>();
@@ -34,22 +36,25 @@ export default function ERC721HoldingsForm() {
         else {
             // FETCH API for retrieving ERC721 Holdings, Transfers, and Collections data for a given wallet address
             setShowAlert(false);
+            updateSetWalletAddress(walletAddress.trim());
+            updateSetNetwork(network);
+
             const erc721Collections = await fetch('/api/address-erc721-collection-holdings', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ address: walletAddress.trim(), network })
+                body: JSON.stringify({ address: setWalletAddress, setNetwork })
             });
 
             const erc721Holdings = await fetch('/api/address-erc721-holdings', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ address: walletAddress.trim(), network })
+                body: JSON.stringify({ address: setWalletAddress, setNetwork })
             });
 
             const erc721Transfers = await fetch('/api/address-erc721-transfers', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ address: walletAddress.trim(), network })
+                body: JSON.stringify({ address: setWalletAddress, setNetwork })
             });
 
             // Check the status of ERC721 Holdings Data
@@ -83,7 +88,7 @@ export default function ERC721HoldingsForm() {
 
     // Network Selection Handler Function
     const handleNetworkChange = (selectedNetwork: string) => {
-        setNetwork(selectedNetwork);
+        updateNetwork(selectedNetwork);
     }
 
     // Render the ERC721 Holdings Form component
@@ -109,7 +114,7 @@ export default function ERC721HoldingsForm() {
                             placeholder="Enter Wallet Address"
                             value={walletAddress}
                             type="text"
-                            onChange={(e) => setWalletAddress(e.target.value)}
+                            onChange={(e) => updateWalletAddress(e.target.value)}
                             className="w-full bg-gray-800 text-gray-100 border-gray-700 focus:ring-gray-400 placeholder-gray-500"
                             required
                         />
@@ -127,7 +132,7 @@ export default function ERC721HoldingsForm() {
             </Card>
             { erc721Collections ? <ERC721CollectionsHoldingsInfoTable data={erc721Collections} /> : null }
             { erc721Holdings ? <ERC721HoldingsInfoTable data={erc721Holdings} /> : null }
-            { erc721Transfers ? <ERC721TransfersInfoTable data={erc721Transfers} address={walletAddress.trim()} /> : null }
+            { erc721Transfers ? <ERC721TransfersInfoTable data={erc721Transfers} address={setWalletAddress} /> : null }
         </>
     )
 }

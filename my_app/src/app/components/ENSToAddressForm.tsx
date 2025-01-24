@@ -12,7 +12,8 @@ import ENSResolverInfoTable from "./ENSResolverInfoTable";
 
 // ENS To Address Form Custom Component
 export default function ENSToAddressForm() {
-    const [walletDomain, setWalletDomain] = useState<string>("");
+    const [walletDomain, updateWalletDomain] = useState<string>("");
+    const [setWalletDomain, updateSetWalletDomain] = useState<string>("");
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [addressInformation, updateAddressInformation] = useState<string>('');
 
@@ -20,17 +21,19 @@ export default function ENSToAddressForm() {
         e.preventDefault();
 
         // Handle form submission logic here
-        if (!ENSValidator(walletDomain)){
+        if (!ENSValidator(walletDomain.trim())){
             setShowAlert(true);
         }
         else {
             // FETCH API for ENS data from a given wallet address
             setShowAlert(false);
+            updateSetWalletDomain(walletDomain.trim());
+
             const res = await fetch('/api/additional-address-to-ens-information', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ensName: walletDomain })
-              });
+                body: JSON.stringify({ ensName: setWalletDomain })
+            });
 
             // Check condition of FETCH request
             if (res.ok) {
@@ -65,7 +68,7 @@ export default function ENSToAddressForm() {
                         <Input
                             placeholder="Enter Wallet Domain"
                             value={walletDomain}
-                            onChange={(e) => setWalletDomain(e.target.value)}
+                            onChange={(e) => updateWalletDomain(e.target.value)}
                             className="w-full bg-gray-800 text-gray-100 border-gray-700 focus:ring-gray-400 placeholder-gray-500"
                             required
                         />
@@ -83,9 +86,9 @@ export default function ENSToAddressForm() {
             {
                 addressInformation ? 
                     <>
-                        <ENSToAddressInfoTable data={{ name: walletDomain, address: addressInformation }} />
-                        <ENSOwnershipInfoTable data={walletDomain} />
-                        <ENSResolverInfoTable data={walletDomain} />
+                        <ENSToAddressInfoTable data={{ name: setWalletDomain, address: addressInformation }} />
+                        <ENSOwnershipInfoTable data={setWalletDomain} />
+                        <ENSResolverInfoTable data={setWalletDomain} />
                     </> 
                 : null 
             }

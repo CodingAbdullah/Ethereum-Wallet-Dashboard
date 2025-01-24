@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Input } from "./../components/ui/input";
 import { Button } from "./../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./../components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "./../components/ui/alert";
+import { Alert, AlertDescription } from "./../components/ui/alert";
 import addressValidator from '../utils/functions/addressValidator';
 import TopERC20CoinsInfoTable from './TopERC20CoinsInfoTable';
 import ERC20TokenInformationSection from './ERC20TokenInformationSection';
@@ -14,7 +14,8 @@ import ERC20CollectionOwnersInfoTable from './ERC20CollectionOwnersInfoTable';
 // ERC20 Collection Analytics Form Custom Component
 export default function ERC20CollectionsAnalyticsForm() {
     const [showAlert, setShowAlert] = useState(false);
-    const [collectionAddress, setCollectionAddress] = useState('');
+    const [collectionAddress, updateCollectionAddress] = useState('');
+    const [setCollectionAddress, updateSetCollectionAddress] = useState('');
     const [tableStatus, updateTableStatus] = useState(false);
 
     // Handle Submit Function
@@ -23,13 +24,14 @@ export default function ERC20CollectionsAnalyticsForm() {
 
         // Check address validity
         // If correct, make a request call to fetch ERC20 Collection Analytics data
-        if (addressValidator(collectionAddress)) {
+        if (addressValidator(collectionAddress.trim())) {
             updateTableStatus(true);
             setShowAlert(false);
         }
         else {
             updateTableStatus(false);
             setShowAlert(true);
+            updateSetCollectionAddress(collectionAddress.trim());
         }
     }
 
@@ -55,7 +57,7 @@ export default function ERC20CollectionsAnalyticsForm() {
                         <Input
                             placeholder="Enter Collection Address"
                             value={collectionAddress}
-                            onChange={(e) => setCollectionAddress(e.target.value)}
+                            onChange={(e) => updateCollectionAddress(e.target.value)}
                             className="w-full bg-gray-800 text-gray-100 border-gray-700 focus:ring-gray-400 placeholder-gray-500"
                             required
                         />
@@ -71,9 +73,9 @@ export default function ERC20CollectionsAnalyticsForm() {
                 </CardContent>
             </Card>
             { tableStatus ? null : <TopERC20CoinsInfoTable /> }
-            { tableStatus ? <ERC20TokenInformationSection address={collectionAddress} /> : null }
-            { tableStatus ? <ERC20CollectionTransfersInfoTable address={collectionAddress} /> : null }
-            { tableStatus ? <ERC20CollectionOwnersInfoTable address={collectionAddress} /> : null }
+            { tableStatus ? <ERC20TokenInformationSection address={setCollectionAddress} /> : null }
+            { tableStatus ? <ERC20CollectionTransfersInfoTable address={setCollectionAddress} /> : null }
+            { tableStatus ? <ERC20CollectionOwnersInfoTable address={setCollectionAddress} /> : null }
         </>
     )
 }

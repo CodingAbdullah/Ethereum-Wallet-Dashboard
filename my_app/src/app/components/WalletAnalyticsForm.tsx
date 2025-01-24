@@ -13,23 +13,19 @@ import WalletPnLInfoTable from './WalletPnLInfoTable';
 
 // Wallet Analytics Form Custom Component
 export default function WalletAnalyticsForm() {
-    const [walletAddress, setWalletAddress] = useState("")
-    const [network, setNetwork] = useState("eth")
-    const [showAlert, setShowAlert] = useState(false)
+    const [walletAddress, updateWalletAddress] = useState("");
+    const [setWalletAddress, updateSetWalletAddress] = useState("");
+    const [showAlert, setShowAlert] = useState(false);
     const [tableStatus, updateTableStatus] = useState(false);
 
-    // Network Selection Handler Function
-    const handleNetworkChange = (selectedNetwork: string) => {
-        setNetwork(selectedNetwork);
-    }
-    
     // Validate wallet address and proceed to presenting information
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
 
-        if (addressValidator(walletAddress)) {
+        if (addressValidator(walletAddress.trim())) {
             setShowAlert(false);
             updateTableStatus(true);
+            updateSetWalletAddress(walletAddress.trim());
         }
         else {
             setShowAlert(true);
@@ -59,7 +55,7 @@ export default function WalletAnalyticsForm() {
                         <Input
                             placeholder="Enter Wallet Address"
                             value={walletAddress}
-                            onChange={(e) => setWalletAddress(e.target.value)}
+                            onChange={(e) => updateWalletAddress(e.target.value)}
                             className="w-full bg-gray-800 text-gray-100 border-gray-700 focus:ring-gray-400 placeholder-gray-500"
                             required
                         />
@@ -74,10 +70,10 @@ export default function WalletAnalyticsForm() {
                     </form>
                 </CardContent>
             </Card>
-            { tableStatus ? <TransactionBalanceInfoTable address={walletAddress} network={network} /> : null }
-            { tableStatus ? <WalletStatsInfoTable address={walletAddress} /> : null }
-            { tableStatus ? <WalletPnLInfoTable address={walletAddress} /> : null }
-            { tableStatus ? <WalletPnLBreakdownInfoTable address={walletAddress} /> : null }
+            { tableStatus ? <TransactionBalanceInfoTable address={setWalletAddress} network="eth" /> : null }
+            { tableStatus ? <WalletStatsInfoTable address={setWalletAddress} /> : null }
+            { tableStatus ? <WalletPnLInfoTable address={setWalletAddress} /> : null }
+            { tableStatus ? <WalletPnLBreakdownInfoTable address={setWalletAddress} /> : null }
         </>   
     )
 }
