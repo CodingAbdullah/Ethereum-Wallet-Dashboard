@@ -38,7 +38,7 @@ export default function HomePageTrendingCollectionsTable() {
                         {trendingCollectionData.map(collection => (
                             <TableRow key={collection.id} className="border-b border-gray-800">
                                 <TableCell className="font-medium text-gray-100">
-                                    <Link href={'/collections/trending-collections/' + collection.id}>
+                                    <Link href={'/collections/erc721-collection/trending-collection/' + collection.id}>
                                         <u>{collection.name}</u>
                                     </Link>
                                 </TableCell> 
