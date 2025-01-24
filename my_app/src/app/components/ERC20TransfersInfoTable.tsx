@@ -4,7 +4,7 @@ import ERC20TransfersType from "../utils/types/ERC20TransfersType";
 import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from "./ui/table";
 
 // Custom ERC20 Transfers Info Table Component
-export default function ERC20TransfersInfoTable(props: { data: ERC20TransfersType[], address: string } ) {
+export default function ERC20TransfersInfoTable(props: { data: ERC20TransfersType[], address: string }) {
     const { data, address } = props;
 
     // Render ERC20 Transfers Info Table Component

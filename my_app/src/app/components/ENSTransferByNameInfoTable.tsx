@@ -4,7 +4,7 @@ import ENSTransfersByNameType from "../utils/types/ENSTransfersByNameType";
 import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from "./ui/table";
 
 // Custom ENS Transfer By Name Info Table Component
-export default function ENSTransferByNameInfoTable(props: { data: ENSTransfersByNameType[] } ) {
+export default function ENSTransferByNameInfoTable(props: { data: ENSTransfersByNameType[] }) {
     const { data } = props;
 
     // Render ENS Transfers By Name Info Table

@@ -39,13 +39,13 @@ export default function ERC20HoldingsForm() {
             const erc20HoldingsData = await fetch('/api/address-erc20-holdings', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ address: setWalletAddress, setNetwork })
+                body: JSON.stringify({ address: setWalletAddress, network: setNetwork })
             });
 
             const erc20TransfersData = await fetch('/api/address-erc20-transfers', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ address: setWalletAddress, setNetwork })
+                body: JSON.stringify({ address: setWalletAddress, network: setNetwork })
             });
 
             // Check the status of ERC20 Holdings Data

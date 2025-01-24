@@ -6,11 +6,11 @@ import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from ".
 import ERC721TransfersType from "../utils/types/ERC721TransfersType";
 
 // Custom ERC721 Transfer Lookups Info Table Component
-export default function ERC721TransferLookupsInfoTable(props: { address: string, tokenID: string, network: string } ) {
+export default function ERC721TransferLookupsInfoTable(props: { address: string, tokenID: string, network: string }) {
     const { address, tokenID, network } = props;
 
     // Make API call upon loading the custom component
-    const {data, error, isLoading } = useSWR(['/api/erc721-lookup-transfer-by-id', { address, id: tokenID, network }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error, isLoading } = useSWR(['/api/erc721-lookup-transfer-by-id', { address, id: tokenID, network }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
     
     // Conditionally render the info table 
     if (isLoading) {

@@ -4,7 +4,7 @@ import ERC721TransfersType from "../utils/types/ERC721TransfersType";
 import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from "./ui/table";
 
 // Custom ERC721 Transfers Info Table Component
-export default function ERC721TransfersInfoTable(props: { data: ERC721TransfersType[], address: string } ) {
+export default function ERC721TransfersInfoTable(props: { data: ERC721TransfersType[], address: string }) {
     const { address, data } = props;
 
     // Render ERC721 Transfers Info Table Component

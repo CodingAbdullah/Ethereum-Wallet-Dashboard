@@ -42,19 +42,19 @@ export default function ERC721HoldingsForm() {
             const erc721Collections = await fetch('/api/address-erc721-collection-holdings', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ address: setWalletAddress, setNetwork })
+                body: JSON.stringify({ address: setWalletAddress, network: setNetwork })
             });
 
             const erc721Holdings = await fetch('/api/address-erc721-holdings', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ address: setWalletAddress, setNetwork })
+                body: JSON.stringify({ address: setWalletAddress, network: setNetwork })
             });
 
             const erc721Transfers = await fetch('/api/address-erc721-transfers', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ address: setWalletAddress, setNetwork })
+                body: JSON.stringify({ address: setWalletAddress, network: setNetwork })
             });
 
             // Check the status of ERC721 Holdings Data

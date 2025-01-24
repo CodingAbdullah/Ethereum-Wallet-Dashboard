@@ -6,9 +6,9 @@ import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from ".
 import PostFetcher from "../utils/functions/PostFetcher";
 
 // Custom Wallet Stats Info Table Component
-export default function WalletStatsInfoTable(props: { address: string } ) {
+export default function WalletStatsInfoTable(props: { address: string }) {
     const { address } = props;
-    const {data, error: walletStatsError, isLoading: loadingWalletStats } = useSWR(['/api/wallet-stats-data', { address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error: walletStatsError, isLoading: loadingWalletStats } = useSWR(['/api/wallet-stats-data', { address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
     if (loadingWalletStats) {
         return <div>Loading Wallet Statistics Info Table Component...</div>

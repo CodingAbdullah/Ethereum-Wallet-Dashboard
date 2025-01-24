@@ -4,7 +4,7 @@ import ENSTransfersByIDType from "../utils/types/ENSTransferByIDType";
 import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from "./ui/table";
 
 // Custom ENS Transfer By ID Info Table Component
-export default function ENSTransferByIDInfoTable(props: { data: ENSTransfersByIDType[] } ) {
+export default function ENSTransferByIDInfoTable(props: { data: ENSTransfersByIDType[] }) {
     const { data } = props;
 
     // Render ENS Transfers By ID Info Table

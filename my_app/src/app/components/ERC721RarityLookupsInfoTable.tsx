@@ -6,7 +6,7 @@ import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from ".
 import ERC721RarityLookupType from "../utils/types/ERC721RarityLookupType";
 
 // Custom ERC721 Rarity Lookups Info Table Component
-export default function ERC721RarityLookupsInfoTable(props: { address: string, tokenID: string, network: string } ) {
+export default function ERC721RarityLookupsInfoTable(props: { address: string, tokenID: string, network: string }) {
     const { address, tokenID, network } = props;
 
     // Make API call upon loading the custom component

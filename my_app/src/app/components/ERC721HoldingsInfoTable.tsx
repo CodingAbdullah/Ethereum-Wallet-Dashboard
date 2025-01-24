@@ -5,7 +5,7 @@ import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from ".
 import Link from "next/link";
 
 // Custom ERC721 Holdings Info Table Component
-export default function ERC721HoldingsInfoTable(props: { data: ERC721HoldingsType[] } ) {
+export default function ERC721HoldingsInfoTable(props: { data: ERC721HoldingsType[] }) {
     const { data } = props;
 
     // Render ERC721 Holdings Info Table Component

@@ -6,7 +6,7 @@ import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from ".
 import WalletBalanceInfoType from "../utils/types/WalletBalanceInfoType";
 
 // Custom Transaction Balance Info Table Component
-export default function TransactionBalanceInfoTable(props: { address: string, network: string } ) {
+export default function TransactionBalanceInfoTable(props: { address: string, network: string }) {
     const { address, network } = props;
 
     // Make API call upon loading the custom component

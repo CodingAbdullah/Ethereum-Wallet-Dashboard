@@ -4,7 +4,7 @@ import ERC721CollectionsHoldingsType from "../utils/types/ERC721CollectionsHoldi
 import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from "./ui/table";
 
 // Custom ERC721 Collections Holdings Info Table Component
-export default function ERC721CollectionsHoldingsInfoTable(props: { data: ERC721CollectionsHoldingsType[] } ) {
+export default function ERC721CollectionsHoldingsInfoTable(props: { data: ERC721CollectionsHoldingsType[] }) {
     const { data } = props;
 
     // Render ERC721 Collections Holdings Info Table Component

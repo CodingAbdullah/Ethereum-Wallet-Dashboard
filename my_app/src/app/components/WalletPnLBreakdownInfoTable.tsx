@@ -7,7 +7,7 @@ import WalletPnLBreakdownInfoType from "../utils/types/WalletPnLBreakdownInfoTyp
 import Image from "next/image";
 
 // Custom Wallet PnL Breakdown Info Table Component
-export default function WalletPnLBreakdownInfoTable(props: { address: string } ) {
+export default function WalletPnLBreakdownInfoTable(props: { address: string }) {
     const { address } = props;
     const { data, error: walletPnLBreakdownError, isLoading: loadingWalletPnLBreakdownData } = useSWR(['/api/wallet-pnl-breakdown-data', { address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 

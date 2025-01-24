@@ -6,9 +6,9 @@ import PostFetcher from "../utils/functions/PostFetcher";
 import WalletPnLInfoType from "../utils/types/WalletPnLInfoType";
 
 // Custom Wallet PnL Info Table Component
-export default function WalletPnLInfoTable(props: { address: string } ) {
+export default function WalletPnLInfoTable(props: { address: string }) {
     const { address } = props;
-    const {data, error: walletPnLError, isLoading: loadingWalletPnL } = useSWR(['/api/wallet-pnl-data', { address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error: walletPnLError, isLoading: loadingWalletPnL } = useSWR(['/api/wallet-pnl-data', { address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
     // Conditionally render Wallet PnL Info Table Component
     if (loadingWalletPnL) {

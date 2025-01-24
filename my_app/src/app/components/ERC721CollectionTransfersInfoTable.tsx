@@ -8,7 +8,7 @@ import ERC721CollectionTransfersInfoType from "../utils/types/ERC721CollectionTr
 // ERC721 Collection Transfers Info Table Custom Component
 export default function ERC721CollectionTransfersInfoTable(props : { address: string }){
     const { address } = props;
-    const {data, error, isLoading } = useSWR(['/api/erc721-collection-transfers', { address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error, isLoading } = useSWR(['/api/erc721-collection-transfers', { address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
     // Conditionally render component
     if (isLoading) {

@@ -7,7 +7,7 @@ import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from ".
 import Link from "next/link";
 
 // Custom ERC721 Lookups Info Table Component
-export default function ERC721LookupsInfoTable(props: { address: string, network: string, tokenID: string } ) {
+export default function ERC721LookupsInfoTable(props: { address: string, network: string, tokenID: string }) {
     const { address, network, tokenID } = props;
 
     // Make API call upon loading the custom component

@@ -12,7 +12,7 @@ import ERC721CollectionVolumeChart from "./ERC721CollectionVolumeChart";
 // ERC721 Collection Extra Data Info Table Custom Component
 export default function ERC721CollectionExtraDataInfoTable(props : { address: string }){
     const { address } = props;
-    const {data, error, isLoading } = useSWR(['/api/erc721-collection-extra-data', { address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error, isLoading } = useSWR(['/api/erc721-collection-extra-data', { address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
     // Conditionally render component
     if (isLoading) {

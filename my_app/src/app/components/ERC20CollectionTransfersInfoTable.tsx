@@ -6,7 +6,7 @@ import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from ".
 import ERC20CollectionTransfersType from "../utils/types/ERC20CollectionTransfersType";
 
 // Custom ERC20 Collection Transfers Info Table Component
-export default function ERC20collectionOwnersInfoTable(props: { address: string } ) {
+export default function ERC20collectionOwnersInfoTable(props: { address: string }) {
     const { address } = props;
 
     // Make API call upon loading the custom component

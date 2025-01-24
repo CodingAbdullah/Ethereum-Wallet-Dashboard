@@ -7,11 +7,11 @@ import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from ".
 import ERC721TokenPictureSection from "./ERC721TokenPictureSection";
 
 // Custom ERC721 Opensea Token Lookup Info Table Component
-export default function ERC721OpenseaTokenLookupInfoTable(props: { address: string, network: string, tokenID: string } ) {
+export default function ERC721OpenseaTokenLookupInfoTable(props: { address: string, network: string, tokenID: string }) {
     const { address, network, tokenID } = props;
 
     // Make API call upon loading the custom component
-    const {data, error, isLoading } = useSWR(['/api/erc721-lookup-opensea-information', { address, network, id: tokenID }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error, isLoading } = useSWR(['/api/erc721-lookup-opensea-information', { address, network, id: tokenID }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
     
     // Conditionally render the Info Table 
     if (isLoading) {

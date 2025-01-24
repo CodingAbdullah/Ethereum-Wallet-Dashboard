@@ -6,11 +6,11 @@ import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from ".
 import ERC721SalesLookupInfoType from "../utils/types/ERC721SalesLookupInfoType";
 
 // Custom ERC721 Sales Lookups Info Table Component
-export default function ERC721SalesLookupsInfoTable(props: { address: string, tokenID: string, network: string } ) {
+export default function ERC721SalesLookupsInfoTable(props: { address: string, tokenID: string, network: string }) {
     const { address, tokenID } = props;
 
     // Make API call upon loading the custom component
-    const {data, error, isLoading } = useSWR(['/api/erc721-sales-by-id', { address, id: tokenID }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error, isLoading } = useSWR(['/api/erc721-sales-by-id', { address, id: tokenID }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
     
     // Conditionally render the Info Table 
     if (isLoading) {

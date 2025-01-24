@@ -4,7 +4,7 @@ import ERC20HoldingsType from "../utils/types/ERC20HoldingsType";
 import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from "./ui/table";
 
 // Custom ERC20 Holdings Info Table Component
-export default function ERC20HoldingsInfoTable(props: { data: ERC20HoldingsType[] } ) {
+export default function ERC20HoldingsInfoTable(props: { data: ERC20HoldingsType[] }) {
     const { data } = props;
 
     // Render ERC20 Holdings Info Table Component

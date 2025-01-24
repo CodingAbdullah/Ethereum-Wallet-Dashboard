@@ -8,7 +8,7 @@ import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from ".
 // ERC721 Collection Sales Info Table Custom Component
 export default function ERC721CollectionSalesInfoTable(props : { address: string }){
     const { address } = props;
-    const {data, error, isLoading } = useSWR(['/api/erc721-collection-sales', { address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error, isLoading } = useSWR(['/api/erc721-collection-sales', { address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
     // Conditionally render component
     if (isLoading) {

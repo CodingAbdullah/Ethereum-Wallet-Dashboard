@@ -1,5 +1,5 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
-import InternalTransactionsActivtyType from "../utils/types/InternalTransactionsActivityType";
+import InternalTransactionsActivityType from "../utils/types/InternalTransactionsActivityType";
 
 // Internal Transaction Activity Table Custom Component
 export default async function InternalTransactionsActivityTable( props : { address: string }) {
@@ -16,7 +16,7 @@ export default async function InternalTransactionsActivityTable( props : { addre
     // Conditionally render data table
     if (response.ok) {
         const data = await response.json();
-        const tableData: InternalTransactionsActivtyType[] = data.result;
+        const tableData: InternalTransactionsActivityType[] = data.result;
 
         // Render Account Internal Transactions Activity
         return (
