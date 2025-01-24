@@ -25,7 +25,9 @@ export default function TrendingCollectionsPageError({
         <AlertCircle className="mx-auto h-12 w-12 text-gray-400 mb-4" />
         <h1 className="text-3xl font-bold text-gray-100 mb-4">Invalid Collection</h1>
         <p className="text-xl text-gray-400 mb-8">
-          We are having trouble retrieving the data of this particular NFT collection. This could be due to network issues or an invalid collection ID.
+          We are having trouble retrieving the data of this particular NFT collection. This could be due to network issues or an invalid collection ID. 
+          <br />
+          <b>If a collection is not deployed on Ethereum, we cannot provide information for it at this time.</b>
         </p>
         <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
           <Button 

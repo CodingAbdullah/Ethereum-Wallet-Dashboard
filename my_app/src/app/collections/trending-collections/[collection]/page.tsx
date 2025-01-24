@@ -4,7 +4,7 @@ import ERC721CollectionExtraDataInfoTable from "@/app/components/ERC721Collectio
 import ERC721CollectionFloorPriceInfoTable from "@/app/components/ERC721CollectionFloorPriceInfoTable";
 import ERC721CollectionSalesInfoTable from "@/app/components/ERC721CollectionSalesInfoTable";
 import ERC721CollectionTransfersInfoTable from "@/app/components/ERC721CollectionTransfersInfoTable";
-import addressValidator from "@/app/utils/functions/addressValidator";
+import { collectionValidator } from "@/app/utils/functions/collectionValidator";
 
 // Displaying historical price information of a particular coin
 export default async function TrendingCollectionsPage({ params }: { params: { collection: string }}) {
@@ -12,26 +12,26 @@ export default async function TrendingCollectionsPage({ params }: { params: { co
     const collection = parameters.collection;
 
     // Check validity of this coin by running a custom function validating if it exists within the Coin Gecko coin list
-    const validateCollection = await addressValidator(collection);
+    const validateCollection = await collectionValidator(collection);
 
-    if (validateCollection) {
+    if (validateCollection !== '') {
         // Render the Generic Chart Page componen if the coin ID is valid
         return (
             <div className="min-h-screen bg-gray-800 text-gray-300 py-10 px-4 sm:px-6 lg:px-8 shadow-lg">
-                <h1 className="text-5xl font-bold mb-6 text-center">
+                <h4 className="text-5xl font-bold mb-6 text-center">
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-gray-400 to-gray-100">
                         Trending Collection Data
                     </span>
-                </h1>
+                </h4>
                 <p className="text-xl text-gray-400 mb-12 text-center">
-                    <i>{collection}</i>
+                    <i>{collection.toUpperCase()} - {validateCollection}</i>
                 </p>
-                <ERC721CollectionDataInfoTable address={collection} />
-                <ERC721CollectionFloorPriceInfoTable address={collection} />
-                <ERC721CollectionExtraDataInfoTable address={collection} />
-                <ERC721CollectionAttributeSummaryInfoTable address={collection} />
-                <ERC721CollectionTransfersInfoTable address={collection} />
-                <ERC721CollectionSalesInfoTable address={collection} />
+                <ERC721CollectionDataInfoTable address={validateCollection} />
+                <ERC721CollectionFloorPriceInfoTable address={validateCollection} />
+                <ERC721CollectionExtraDataInfoTable address={validateCollection} />
+                <ERC721CollectionAttributeSummaryInfoTable address={validateCollection} />
+                <ERC721CollectionTransfersInfoTable address={validateCollection} />
+                <ERC721CollectionSalesInfoTable address={validateCollection} />
             </div>
         )
     }   
