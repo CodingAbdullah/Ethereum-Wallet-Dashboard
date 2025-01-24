@@ -3,8 +3,8 @@
 import useSWR from "swr";
 import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from "./ui/table";
 import PostFetcher from "../utils/functions/PostFetcher";
-import WalletPnLInfoType from "../utils/types/WalletPnLInfoType";
 import WalletPnLBreakdownInfoType from "../utils/types/WalletPnLBreakdownInfoType";
+import Image from "next/image";
 
 // Custom Wallet PnL Breakdown Info Table Component
 export default function WalletPnLBreakdownInfoTable(props: { address: string } ) {
@@ -39,11 +39,16 @@ export default function WalletPnLBreakdownInfoTable(props: { address: string } )
                     </TableHeader>
                     <TableBody>
                         {
-                            walletPnLBreakdownData.result.map(pnl => {
+                            walletPnLBreakdownData.result.map((pnl, index:number) => {
                                 return (
-                                    <TableRow className="border-b border-gray-800">
+                                    <TableRow key={index} className="border-b border-gray-800">
                                         <TableCell className="text-gray-300">{pnl.name}</TableCell>
-                                        <TableCell className="text-gray-300"></TableCell>
+                                        <TableCell className="text-gray-300">
+                                            <div className="flex items-center space-x-2">
+                                                <Image alt={`${pnl.symbol} logo`} height={15} width={15} src={pnl.logo} />
+                                                <span>{pnl.symbol}</span>
+                                            </div>
+                                        </TableCell>                                        
                                         <TableCell className="text-gray-300">{pnl.token_address}</TableCell>
                                         <TableCell className="text-gray-300">{"$" + Number(pnl.total_usd_invested).toFixed(2)}</TableCell>
                                         <TableCell className="text-gray-300">{'$' + Number(pnl.total_sold_usd).toFixed(2)}</TableCell>
