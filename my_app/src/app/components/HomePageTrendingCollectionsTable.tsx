@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
 import WalletFetcher from "@/app/utils/functions/GenericFetcher";
 import TrendingCollectionsType from "../utils/types/TrendingCollectionsType";
+import Link from "next/link";
 
 // Trending Collections Table Custom Component
 export default function HomePageTrendingCollectionsTable() {
@@ -36,7 +37,11 @@ export default function HomePageTrendingCollectionsTable() {
                     <TableBody>
                         {trendingCollectionData.map(collection => (
                             <TableRow key={collection.id} className="border-b border-gray-800">
-                                <TableCell className="font-medium text-gray-100">{collection.name}</TableCell>
+                                <TableCell className="font-medium text-gray-100">
+                                    <Link href={'/collections/trending-collections/' + collection.id}>
+                                        <u>{collection.name}</u>
+                                    </Link>
+                                </TableCell> 
                                 <TableCell className="text-gray-300">
                                     <div className="flex items-center space-x-2">
                                         <Image unoptimized alt={`${collection.symbol} logo`} height={15} width={15} src={collection.thumb} />
