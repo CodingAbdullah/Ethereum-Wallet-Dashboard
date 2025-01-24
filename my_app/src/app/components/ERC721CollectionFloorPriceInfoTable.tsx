@@ -36,7 +36,7 @@ export default function ERC721CollectionFloorPriceInfoTable(props : { address: s
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {Object.keys(floorPriceData).map((marketplace, index: number) => {
+                        { Object.keys(floorPriceData).map((marketplace, index: number) => {
                             return (
                                 <TableRow key={index} className="border-b border-gray-800">
                                     <TableCell className="text-gray-300">{marketplace}</TableCell>
@@ -44,7 +44,7 @@ export default function ERC721CollectionFloorPriceInfoTable(props : { address: s
                                     <TableCell className="text-gray-300">{floorPriceData[marketplace].priceCurrency}</TableCell>
                                     <TableCell className="text-gray-300">{floorPriceData[marketplace].retrievedAt.split('.')[0]}</TableCell>
                                     <TableCell className="text-gray-300">
-                                        <Link href={ marketplace === 'opensea' ? 'https://opensea.io/assets/ethereum/' + address : 'https://looksrare.org/collections/' + address }>
+                                        <Link target="_blank" href={ marketplace === 'opensea' ? 'https://opensea.io/assets/ethereum/' + address : 'https://looksrare.org/collections/' + address }>
                                             <u>Market Place Link</u>
                                         </Link>
                                     </TableCell>
