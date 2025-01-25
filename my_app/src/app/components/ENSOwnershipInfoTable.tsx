@@ -8,8 +8,7 @@ import ENSOwnershipType from "../utils/types/ENSOwnershipType";
 // ENS Ownership Info Table Component
 export default function ENSOwnershipInfoTable(props: { data: string }) {
     const { data } = props;
-    const ensOwnershipInfo = useSWR(['/api/ens-ownership-information', { address: data }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
-    const { data: ensOwnershipData, error, isLoading } = ensOwnershipInfo;
+    const { data: ensOwnershipData, error, isLoading } = useSWR<{ results: ENSOwnershipType[] }>(['/api/ens-ownership-information', { address: data }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
     // Conditionally render ENS Ownership data
     if (isLoading) {
@@ -19,7 +18,6 @@ export default function ENSOwnershipInfoTable(props: { data: string }) {
         throw new Error();
     }
     else {
-        const ensOwnershipTableData: ENSOwnershipType[] = ensOwnershipData.results;
     
         // Render the ENS Ownership Info Table Component
         return (
@@ -40,7 +38,7 @@ export default function ENSOwnershipInfoTable(props: { data: string }) {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {ensOwnershipTableData.map(ens => (
+                        {ensOwnershipData?.results.map(ens => (
                             <TableRow key={ens.ens_name} className="border-b border-gray-800">
                                 <TableCell className="font-medium text-gray-100">{ens.ens_name}</TableCell>
                                 <TableCell className="font-medium text-gray-100">{ens.registration_timestamp.split("T")[0]}</TableCell>

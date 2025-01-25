@@ -15,14 +15,14 @@ import ERC721RarityLookupsInfoTable from './ERC721RarityLookupsInfoTable';
 
 // ERC721 Lookups Form Custom Component
 export default function ERC721LookupsForm() {
-    const [tokenAddress, updateTokenAddress] = useState("");
-    const [setTokenAddress, updateSetTokenAddress] = useState("");
-    const [tokenID, updateTokenID] = useState("");
-    const [setTokenID, updateSetTokenID] = useState("");
-    const [network, updateNetwork] = useState("eth");
-    const [setNetwork, updateSetNetwork] = useState('eth');
-    const [showAlert, setShowAlert] = useState(false);
-    const [tableStatus, updateTableStatus] = useState(false);
+    const [tokenAddress, updateTokenAddress] = useState<string>("");
+    const [setTokenAddress, updateSetTokenAddress] = useState<string>("");
+    const [tokenID, updateTokenID] = useState<string>("");
+    const [setTokenID, updateSetTokenID] = useState<string>("");
+    const [network, updateNetwork] = useState<string>("eth");
+    const [setNetwork, updateSetNetwork] = useState<string>('eth');
+    const [showAlert, setShowAlert] = useState<boolean>(false);
+    const [tableStatus, updateTableStatus] = useState<boolean>(false);
 
     // Handle form submissions here
     const handleSubmit = async (e: React.FormEvent) => {

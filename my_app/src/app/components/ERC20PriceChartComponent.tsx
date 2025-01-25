@@ -12,7 +12,7 @@ import ERC20TokenInformationSectionType from '../utils/types/ERC20TokenInformati
 // ERC20 Price Chart Custom Component
 export default function ERC20PriceChartComponent(props: { data: ERC20TokenInformationSectionType, address: string }) {
     const { address, data } = props;
-    const [interval, setInterval] = useState('7');
+    const [interval, setInterval] = useState<string>('7');
 
     // Fetch data for chart display
     const { data: erc20ChartData, error: erc20ChartError, isLoading: erc20ChartDataLoading }  = useSWR(['/api/ERC20-coin-price-duration', { contract: address, interval }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });

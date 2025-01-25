@@ -16,11 +16,11 @@ import ERC721TransfersInfoTable from './ERC721TransfersInfoTable';
 
 // ERC721 Holdings Form Custom Component
 export default function ERC721HoldingsForm() {
-    const [walletAddress, updateWalletAddress] = useState("");
-    const [setWalletAddress, updateSetWalletAddress] = useState("");
-    const [network, updateNetwork] = useState("eth");
-    const [setNetwork, updateSetNetwork] = useState('eth');
-    const [showAlert, setShowAlert] = useState(false);
+    const [walletAddress, updateWalletAddress] = useState<string>("");
+    const [setWalletAddress, updateSetWalletAddress] = useState<string>("");
+    const [network, updateNetwork] = useState<string>("eth");
+    const [setNetwork, updateSetNetwork] = useState<string>('eth');
+    const [showAlert, setShowAlert] = useState<boolean>(false);
     const [erc721Collections, updateERC721Collections] = useState<ERC721CollectionsHoldingsType[]>();
     const [erc721Holdings, updateERC721Holdings] = useState<ERC721HoldingsType[]>();
     const [erc721Transfers, updateERC721Transfers] = useState<ERC721TransfersType[]>();

@@ -8,7 +8,7 @@ import TopERC721CollectionsType from "../utils/types/TopERC721CollectionsType";
 
 // Top ERC721 Collections Info Table Custom Component
 export default function TopERC721CollectionsInfoTable() {
-    const { data: collections, error: collectionsError, isLoading: loadingCollections } = useSWR('/api/erc721-top-trending-collections', GenericFetcher, { refreshInterval: 50000 });
+    const { data: collections, error: collectionsError, isLoading: loadingCollections } = useSWR<{ topCollections: TopERC721CollectionsType[] }>('/api/erc721-top-trending-collections', GenericFetcher, { refreshInterval: 50000 });
     
     // Conditionally render this component
     if (collectionsError){
@@ -18,9 +18,6 @@ export default function TopERC721CollectionsInfoTable() {
         return <div className="text-gray-300 p-4">Loading Top Collections Data...</div>
     }
     else {
-        // Retrieve data for losing coin prices data table
-        const collectionsData: TopERC721CollectionsType[] = collections.topCollections;
-        
         // Render component using the information provided
         return (
             <div className="p-4 bg-gray-900 mt-10 mt-10 shadow-lg">
@@ -37,7 +34,7 @@ export default function TopERC721CollectionsInfoTable() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {collectionsData.map((collection, index: number) => (
+                        {collections?.topCollections.map((collection, index: number) => (
                             <TableRow key={index} className="border-b border-gray-800">
                                 <TableCell className="font-medium text-gray-100">{collection.collection_title}</TableCell>
                                 <TableCell className="text-gray-300">

@@ -12,7 +12,7 @@ import ENSTransferByIDInfoTable from "./ENSTransferByIDInfoTable";
 export default function ENSTransferByIDForm() {
     const [tokenID, updateTokenID] = useState<string>("")
     const [setTokenID, updateSetTokenID] = useState<string>("");
-    const [showAlert, setShowAlert] = useState(false)
+    const [showAlert, setShowAlert] = useState<boolean>(false)
     const [transferInformation, updateTransferInformation] = useState<ENSTransfersByIDType[]>();
 
     const handleSubmit = async (e: React.FormEvent) => {

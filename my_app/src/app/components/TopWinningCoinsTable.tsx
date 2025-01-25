@@ -9,7 +9,7 @@ import TopWinningCoinsType from "../utils/types/TopWinningCoinsType";
 
 // Top Winning Coins Table Custom Component
 export default function TopWinningCoinsTable() {
-    const { data: coins, error: coinsError, isLoading: loadingCoins } = useSWR('/api/top-bottom-coin-prices', GenericFetcher, { refreshInterval: 50000 });
+    const { data: coins, error: coinsError, isLoading: loadingCoins } = useSWR<{top_gainers: TopWinningCoinsType[]}>('/api/top-bottom-coin-prices', GenericFetcher, { refreshInterval: 50000 });
     
     // Conditionally render this component
     if (coinsError){
@@ -19,9 +19,6 @@ export default function TopWinningCoinsTable() {
         return <div className="text-gray-300 p-4">Loading Winning Coins Data Table...</div>
     }
     else {
-        // Retrieve data for winning coin prices data table
-        const coinsData: TopWinningCoinsType[] = coins.top_gainers;
-
         // Render component using the information provided
         return (
             <div className="p-4 bg-gray-900 mt-5 mt-10 shadow-lg">
@@ -37,14 +34,14 @@ export default function TopWinningCoinsTable() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {coinsData.splice(0, 5).map(coin => (
+                        {coins?.top_gainers.splice(0, 5).map(coin => (
                             <TableRow key={coin.name} className="border-b border-gray-800">
                                 <TableCell className="font-medium text-gray-100">
                                     <Link href={'/prices/' + coin.id}><u>{coin.name}</u></Link>
                                 </TableCell>
                                 <TableCell className="text-gray-300">
                                     <div className="flex items-center space-x-2">
-                                        <Image unoptimized alt={`${coin.symbol} logo`} height={20} width={20} src={coin.image} />
+                                        <Image alt={`${coin.symbol} logo`} height={20} width={20} src={coin.image} />
                                         <span>{String(coin.symbol).toUpperCase()}</span>
                                     </div>
                                 </TableCell>

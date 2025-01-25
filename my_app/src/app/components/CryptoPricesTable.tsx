@@ -11,8 +11,8 @@ import CoinPricesType from "../utils/types/CoinPricesType";
 
 // Trending Coins Table Custom Component
 export default function CryptoPriceTable() {
-    const [filter, setFilter] = useState("");
-    const { data: coins, error: coinsError, isLoading: loadingCoins } = useSWR('/api/coin-prices', GenericFetcher, { refreshInterval: 100000 });
+    const [filter, setFilter] = useState<string>("");
+    const { data: coins, error: coinsError, isLoading: loadingCoins } = useSWR<CoinPricesType[]>('/api/coin-prices', GenericFetcher, { refreshInterval: 100000 });
     
     // Conditionally render this component
     if (coinsError){
@@ -22,11 +22,8 @@ export default function CryptoPriceTable() {
         return <div className="text-gray-300 p-4">Loading Coins Data Table...</div>
     }
     else {
-        // Retrieve data for crypto prices data table
-        const coinsData: CoinPricesType[] = coins;
-
         // Filter data table rows based on input request
-        const filteredCoinsData = coinsData.filter(
+        const filteredCoinsData = coins?.filter(
             (coin) =>
               coin.name.toLowerCase().includes(filter) ||
               coin.symbol.toLowerCase().includes(filter)
@@ -57,7 +54,7 @@ export default function CryptoPriceTable() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {filteredCoinsData.map(coin => (
+                        {filteredCoinsData?.map(coin => (
                             <TableRow key={coin.name} className="border-b border-gray-800">
                                 <TableCell className="font-medium text-gray-100">
                                     <Link href={'/prices/' + coin.id}><u>{coin.name}</u></Link>

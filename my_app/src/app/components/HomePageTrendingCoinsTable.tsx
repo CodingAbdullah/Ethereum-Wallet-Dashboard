@@ -9,7 +9,7 @@ import GenericFetcher from "../utils/functions/GenericFetcher";
 
 // Trending Coins Table Custom Component
 export default function HomePageTrendingCoinsTable() {
-    const { data: trendsData, error: trendingCoinsDataError, isLoading: loadingTrendingCoins } = useSWR('/api/trending-coin-data', GenericFetcher, { refreshInterval: 50000 });
+    const { data: trendsData, error: trendingCoinsDataError, isLoading: loadingTrendingCoins } = useSWR<{ trendingCoinData: { coins: TrendingCoinsType[] }}>('/api/trending-coin-data', GenericFetcher, { refreshInterval: 50000 });
     
     // Conditionally render this component
     if (trendingCoinsDataError){
@@ -20,7 +20,6 @@ export default function HomePageTrendingCoinsTable() {
     }
     else {
         // Utilize coin data for Table display
-        const trendingCoinData: TrendingCoinsType[] = trendsData.trendingCoinData.coins;
         return (
             <div className="p-4 bg-gray-900 mt-10 shadow-lg">
                 <h3 className="text-2xl font-bold mb-4 text-gray-100">Top 7 Trending Coins</h3>
@@ -36,7 +35,7 @@ export default function HomePageTrendingCoinsTable() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {trendingCoinData.splice(0, 7).map(coin => (
+                        {trendsData?.trendingCoinData.coins.splice(0, 7).map(coin => (
                             <TableRow key={coin.item.id} className="border-b border-gray-800">
                                 <TableCell className="font-medium text-gray-100">
                                     <Link href={'/prices/' + coin.item.id}><u>{coin.item.name}</u></Link>

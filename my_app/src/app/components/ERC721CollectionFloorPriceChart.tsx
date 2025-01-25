@@ -11,7 +11,7 @@ import ERC721CollectionExtraDataType from '../utils/types/ERC721CollectionExtraD
 // ERC721 Collection Floor Price Chart Custom Component
 export default function ERC721CollectionFloorPriceChart(props: { data: ERC721CollectionExtraDataType , address: string }) {
     const { address, data } = props;
-    const [interval, setInterval] = useState('14');
+    const [interval, setInterval] = useState<string>('14');
 
     // Fetch data for chart display
     const { data: erc721FloorPriceData, error: erc721ChartError, isLoading: erc721ChartLoading } = useSWR(['/api/erc721-collection-chart-data', { address, interval }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });

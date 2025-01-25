@@ -11,7 +11,7 @@ import CoinChartInfoType from '../utils/types/CoinChartInfoType';
 // Generic Chart Page Custom Component
 export default function GenericChartPage(props: { data: CoinChartInfoType }) {
     const { data } = props;
-    const [interval, setInterval] = useState('7');
+    const [interval, setInterval] = useState<string>('7');
 
     // Fetch data for chart display
     const { data: coinChartData, error: coinChartError, isLoading: coinChartDataLoading }  = useSWR(['/api/coin-prices-by-day', { coin: data.id, interval }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 50000 });

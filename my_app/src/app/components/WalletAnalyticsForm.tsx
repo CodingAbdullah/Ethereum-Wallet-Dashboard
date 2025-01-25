@@ -13,10 +13,10 @@ import WalletPnLInfoTable from './WalletPnLInfoTable';
 
 // Wallet Analytics Form Custom Component
 export default function WalletAnalyticsForm() {
-    const [walletAddress, updateWalletAddress] = useState("");
-    const [setWalletAddress, updateSetWalletAddress] = useState("");
-    const [showAlert, setShowAlert] = useState(false);
-    const [tableStatus, updateTableStatus] = useState(false);
+    const [walletAddress, updateWalletAddress] = useState<string>("");
+    const [setWalletAddress, updateSetWalletAddress] = useState<string>("");
+    const [showAlert, setShowAlert] = useState<boolean>(false);
+    const [tableStatus, updateTableStatus] = useState<boolean>(false);
 
     // Validate wallet address and proceed to presenting information
     const handleSubmit = (e: React.FormEvent) => {

@@ -10,7 +10,7 @@ export default function ERC20collectionOwnersInfoTable(props: { address: string 
     const { address } = props;
 
     // Make API call upon loading the custom component
-    const { data, error, isLoading } = useSWR(['/api/erc20-transfer', { contract: address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error, isLoading } = useSWR<{ result: ERC20CollectionTransfersType[] }>(['/api/erc20-transfer', { contract: address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
     
     // Conditionally render the info table 
     if (isLoading) {
@@ -20,7 +20,6 @@ export default function ERC20collectionOwnersInfoTable(props: { address: string 
         throw new Error();
     }
     else {
-        const erc20CollectionTransfersData: ERC20CollectionTransfersType[] = data.result;
 
         // Render ERC20 Collection Transfers Info Table Component
         return (
@@ -37,7 +36,7 @@ export default function ERC20collectionOwnersInfoTable(props: { address: string 
                     </TableHeader>
                     <TableBody>
                     {
-                        erc20CollectionTransfersData.map((transfer, index: number) => (
+                        data?.result.map((transfer, index: number) => (
                             <TableRow key={index} className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">{String(transfer.block_timestamp).split(".")[0]}</TableCell>
                                 <TableCell className="text-gray-300">{transfer.from_address}</TableCell>

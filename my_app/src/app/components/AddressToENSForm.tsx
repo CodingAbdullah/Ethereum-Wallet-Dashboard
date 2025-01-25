@@ -15,7 +15,7 @@ import ENSResolverInfoTable from "./ENSResolverInfoTable";
 export default function AddressToENSForm() {
     const [walletAddress, updateWalletAddress] = useState<string>("");
     const [setWalletAddress, updateSetWalletAddress] = useState<string>("");
-    const [showAlert, setShowAlert] = useState(false);
+    const [showAlert, setShowAlert] = useState<boolean>(false);
     const [accountInformation, setAccountInformation] = useState<AccountInformationType>();
 
     const handleSubmit = async (e: React.FormEvent) => {

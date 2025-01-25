@@ -10,7 +10,7 @@ export default function ERC721TransferLookupsInfoTable(props: { address: string,
     const { address, tokenID, network } = props;
 
     // Make API call upon loading the custom component
-    const { data, error, isLoading } = useSWR(['/api/erc721-lookup-transfer-by-id', { address, id: tokenID, network }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error, isLoading } = useSWR<{ information: { result: ERC721TransfersType[] }}>(['/api/erc721-lookup-transfer-by-id', { address, id: tokenID, network }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
     
     // Conditionally render the info table 
     if (isLoading) {
@@ -20,7 +20,6 @@ export default function ERC721TransferLookupsInfoTable(props: { address: string,
         throw new Error();
     }
     else {
-        const erc721TransferData: ERC721TransfersType[] = data.information.result;
 
         // Render ERC721 Token Transfers Lookup Info Table Component
         return (
@@ -35,7 +34,7 @@ export default function ERC721TransferLookupsInfoTable(props: { address: string,
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {erc721TransferData.map((transfer, index: number) => (
+                        {data?.information.result.map((transfer, index: number) => (
                             <TableRow key={index} className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">{String(transfer.block_timestamp).split(".")[0]}</TableCell>
                                 <TableCell className="text-gray-300">{transfer.from_address}</TableCell>

@@ -7,7 +7,7 @@ import { NavbarLinks } from '../utils/constants/NavbarLinks';
 
 // Navbar Custom Component
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
 
   const toggleDropdown = (name: string) => {

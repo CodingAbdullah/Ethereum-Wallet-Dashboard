@@ -9,7 +9,7 @@ import TopLosingCoinsType from "../utils/types/TopLosingCoinsType";
 
 // Top Losing Coins Table Custom Component
 export default function TopLosingCoinsTable() {
-    const { data: coins, error: coinsError, isLoading: loadingCoins } = useSWR('/api/top-bottom-coin-prices', GenericFetcher, { refreshInterval: 50000 });
+    const { data: coins, error: coinsError, isLoading: loadingCoins } = useSWR<{top_losers: TopLosingCoinsType[]}>('/api/top-bottom-coin-prices', GenericFetcher, { refreshInterval: 50000 });
     
     // Conditionally render this component
     if (coinsError){
@@ -19,9 +19,6 @@ export default function TopLosingCoinsTable() {
         return <div className="text-gray-300 p-4">Loading Losing Coins Data Table...</div>
     }
     else {
-        // Retrieve data for losing coin prices data table
-        const coinsData: TopLosingCoinsType[] = coins.top_losers;
-
         // Render component using the information provided
         return (
             <div className="p-4 bg-gray-900 mt-10 mt-10 shadow-lg">
@@ -37,7 +34,7 @@ export default function TopLosingCoinsTable() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {coinsData.splice(0, 5).map(coin => (
+                        {coins?.top_losers.splice(0, 5).map(coin => (
                             <TableRow key={coin.name} className="border-b border-gray-800">
                                 <TableCell className="font-medium text-gray-100">
                                     <Link href={'/prices/' + coin.id}><u>{coin.name}</u></Link>

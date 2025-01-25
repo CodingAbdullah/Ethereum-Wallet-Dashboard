@@ -14,11 +14,11 @@ import ERC20TransfersType from "../utils/types/ERC20TransfersType";
 
 // ERC20 Holdings Form Custom Component
 export default function ERC20HoldingsForm() {
-    const [walletAddress, updateWalletAddress] = useState("");
-    const [setWalletAddress, updateSetWalletAddress] = useState("");
-    const [network, updateNetwork] = useState("eth");
-    const [setNetwork, updateSetNetwork] = useState('eth');
-    const [showAlert, setShowAlert] = useState(false);
+    const [walletAddress, updateWalletAddress] = useState<string>("");
+    const [setWalletAddress, updateSetWalletAddress] = useState<string>("");
+    const [network, updateNetwork] = useState<string>("eth");
+    const [setNetwork, updateSetNetwork] = useState<string>('eth');
+    const [showAlert, setShowAlert] = useState<boolean>(false);
     const [erc20Holdings, updateERC20Holdings] = useState<ERC20HoldingsType[]>();
     const [erc20Transfers, updateERC20Transfers] = useState<ERC20TransfersType[]>();
 

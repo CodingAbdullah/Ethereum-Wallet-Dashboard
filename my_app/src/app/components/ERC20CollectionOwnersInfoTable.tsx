@@ -10,7 +10,7 @@ export default function ERC20collectionOwnersInfoTable(props: { address: string 
     const { address } = props;
 
     // Make API call upon loading the custom component
-    const { data, error, isLoading } = useSWR(['/api/erc20-owners', { contract: address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error, isLoading } = useSWR<{ result: ERC20CollectionOwnersType[] }>(['/api/erc20-owners', { contract: address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
     
     // Conditionally render the info table 
     if (isLoading) {
@@ -20,8 +20,6 @@ export default function ERC20collectionOwnersInfoTable(props: { address: string 
         throw new Error();
     }
     else {
-        const erc20CollectionOwnersData: ERC20CollectionOwnersType[] = data.result;
-
         // Render ERC721 Token Rarity Lookup Info Table Component
         return (
             <div className="p-4 bg-gray-900 mt-10 shadow-lg">
@@ -37,7 +35,7 @@ export default function ERC20collectionOwnersInfoTable(props: { address: string 
                     </TableHeader>
                     <TableBody>
                     {
-                        erc20CollectionOwnersData.map((owner, index: number) => (
+                        data?.result.map((owner, index: number) => (
                             <TableRow key={index} className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">{owner.owner_address}</TableCell>
                                 <TableCell className="text-gray-300">{owner.balance}</TableCell>

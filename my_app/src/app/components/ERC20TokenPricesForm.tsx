@@ -10,10 +10,10 @@ import ERC20TokenInformationSection from "./ERC20TokenInformationSection";
 
 // ERC20 Token Prices Form Custom Component
 export default function ERC20TokenPricesForm() {
-    const [tokenAddress, updateTokenAddress] = useState("");
-    const [setTokenAddress, updateSetTokenAddress] = useState('');
-    const [showAlert, setShowAlert] = useState(false);
-    const [tableStatus, updateTableStatus] = useState(false);
+    const [tokenAddress, updateTokenAddress] = useState<string>("");
+    const [setTokenAddress, updateSetTokenAddress] = useState<string>('');
+    const [showAlert, setShowAlert] = useState<boolean>(false);
+    const [tableStatus, updateTableStatus] = useState<boolean>(false);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

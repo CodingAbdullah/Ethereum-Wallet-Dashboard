@@ -9,7 +9,7 @@ import Link from "next/link";
 
 // Trending Collections Table Custom Component
 export default function HomePageTrendingCollectionsTable() {
-    const { data: trendsData, error: trendingCoinsDataError, isLoading: loadingTrendingCoins } = useSWR('/api/trending-coin-data', WalletFetcher, { refreshInterval: 50000 });
+    const { data: trendsData, error: trendingCoinsDataError, isLoading: loadingTrendingCoins } = useSWR<{ trendingCoinData : { nfts: TrendingCollectionsType[] }}>('/api/trending-coin-data', WalletFetcher, { refreshInterval: 50000 });
     
     // Conditionally render this component
     if (trendingCoinsDataError){
@@ -20,7 +20,6 @@ export default function HomePageTrendingCollectionsTable() {
     }
     else {
         // Utilize collection data for Table display
-        const trendingCollectionData: TrendingCollectionsType[] = trendsData.trendingCoinData.nfts;
         return (
             <div className="p-4 bg-gray-900 mt-10 shadow-lg">
                 <h3 className="text-2xl font-bold mb-4 text-gray-100">Top 7 Trending Collections</h3>
@@ -35,7 +34,7 @@ export default function HomePageTrendingCollectionsTable() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {trendingCollectionData.map(collection => (
+                        {trendsData?.trendingCoinData.nfts.map(collection => (
                             <TableRow key={collection.id} className="border-b border-gray-800">
                                 <TableCell className="font-medium text-gray-100">
                                     <Link href={'/collections/erc721-collection/trending-collection/' + collection.id}>

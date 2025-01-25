@@ -10,7 +10,7 @@ export default function ERC721RarityLookupsInfoTable(props: { address: string, t
     const { address, tokenID, network } = props;
 
     // Make API call upon loading the custom component
-    const { data, error, isLoading } = useSWR(['/api/erc721-lookup-rarity-by-id', { address, id: tokenID, network }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error, isLoading } = useSWR<{ information: { data : ERC721RarityLookupType[] }}>(['/api/erc721-lookup-rarity-by-id', { address, id: tokenID, network }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
     
     // Conditionally render the info table 
     if (isLoading) {
@@ -20,7 +20,6 @@ export default function ERC721RarityLookupsInfoTable(props: { address: string, t
         throw new Error();
     }
     else {
-        const rarityData: ERC721RarityLookupType[] = data.information.data;
         
         // Render ERC721 Token Rarity Lookup Info Table Component
         return (
@@ -35,7 +34,7 @@ export default function ERC721RarityLookupsInfoTable(props: { address: string, t
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {rarityData.map((trait, index: number) => (
+                        {data?.information?.data.map((trait, index: number) => (
                             <TableRow key={index} className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">{trait.value}</TableCell>
                                 <TableCell className="text-gray-300">{trait.trait_type}</TableCell>

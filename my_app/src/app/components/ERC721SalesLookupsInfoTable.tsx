@@ -10,7 +10,7 @@ export default function ERC721SalesLookupsInfoTable(props: { address: string, to
     const { address, tokenID } = props;
 
     // Make API call upon loading the custom component
-    const { data, error, isLoading } = useSWR(['/api/erc721-sales-by-id', { address, id: tokenID }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error, isLoading } = useSWR<{ information: { results: ERC721SalesLookupInfoType[] }}>(['/api/erc721-sales-by-id', { address, id: tokenID }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
     
     // Conditionally render the Info Table 
     if (isLoading) {
@@ -20,7 +20,6 @@ export default function ERC721SalesLookupsInfoTable(props: { address: string, to
         throw new Error();
     }
     else {
-        const salesData: ERC721SalesLookupInfoType[] = data.information.results;
 
         // Render ERC721 Sales Lookup Info Table Component
         return (
@@ -38,7 +37,7 @@ export default function ERC721SalesLookupsInfoTable(props: { address: string, to
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {salesData.map((transfer, index: number) => (
+                        {data?.information.results.map((transfer, index: number) => (
                             <TableRow key={index} className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">{String(transfer.timestamp).split("T")[0]}</TableCell>
                                 <TableCell className="text-gray-300">{transfer.exchange_name + '-' + transfer.contract_version}</TableCell>

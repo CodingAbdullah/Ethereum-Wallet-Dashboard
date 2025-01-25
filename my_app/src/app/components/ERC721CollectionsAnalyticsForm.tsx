@@ -16,10 +16,10 @@ import ERC721CollectionFloorPriceInfoTable from './ERC721CollectionFloorPriceInf
 
 // ERC721 Collections Analytics Form Custom Component
 export default function ERC721CollectionsAnalyticsForm() {
-    const [showAlert, setShowAlert] = useState(false);
-    const [collectionAddress, updateCollectionAddress] = useState('');
-    const [setCollectionAddress, updateSetCollectionAddress] = useState('');
-    const [tableStatus, updateTableStatus] = useState(false);
+    const [showAlert, setShowAlert] = useState<boolean>(false);
+    const [collectionAddress, updateCollectionAddress] = useState<string>('');
+    const [setCollectionAddress, updateSetCollectionAddress] = useState<string>('');
+    const [tableStatus, updateTableStatus] = useState<boolean>(false);
 
     // Handle Submit Function
     const handleSubmit = async (e: React.FormEvent) => {

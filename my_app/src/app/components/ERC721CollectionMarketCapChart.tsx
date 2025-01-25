@@ -4,14 +4,14 @@ import { useState } from 'react';
 import useSWR from 'swr';
 import PostFetcher from '../utils/functions/PostFetcher';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader } from "../components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import ERC721CollectionExtraDataType from '../utils/types/ERC721CollectionExtraDataType';
 
 // ERC721 Collection Market Cap Chart Custom Component
 export default function ERC721CollectionMarketCapChart(props: { data: ERC721CollectionExtraDataType, address: string }) {
     const { address, data } = props;
-    const [interval, setInterval] = useState('14');
+    const [interval, setInterval] = useState<string>('14');
 
     // Fetch data for chart display
     const { data: erc721CollectionMarketCapData, error: erc721CollectionMarketCapError, isLoading: erc721CollectionMarketCapLoading } = useSWR(['/api/erc721-collection-chart-data', { address, interval }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });

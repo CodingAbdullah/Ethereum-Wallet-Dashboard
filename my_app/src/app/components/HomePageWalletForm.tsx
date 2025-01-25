@@ -3,12 +3,14 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import addressValidator from '../utils/functions/addressValidator';
+import { Input } from './ui/input';
+import { Button } from './ui/button';
 
 // Custom Component for working with the Home Page Wallet Form
 export default function HomePageWalletForm() {
-    const [walletAddress, updateWalletAddress] = useState('');
-    const [setWalletAddress, updateSetWalletAddress] = useState('');
-    const [error, setError] = useState('');
+    const [walletAddress, updateWalletAddress] = useState<string>('');
+    const [setWalletAddress, updateSetWalletAddress] = useState<string>('');
+    const [error, setError] = useState<string>('');
     const router = useRouter();
 
     // Function for handling form submissions
@@ -28,23 +30,21 @@ export default function HomePageWalletForm() {
     return (
         <form className="mt-8" onSubmit={handleSubmit}>
             <div className="flex flex-col sm:flex-row gap-4">
-                <input 
-                    className="flex-grow bg-gray-700 text-white rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-500"
-                    type="search"
-                    placeholder="Enter wallet address"
-                    maxLength={42}
-                    minLength={42}
-                    aria-label="Search"
-                    required 
+                <Input
+                    placeholder="Enter Wallet Address"
                     value={walletAddress}
-                    onChange={(e) => updateWalletAddress(e.target.value)}
+                    onChange={e => updateWalletAddress(e.target.value)}
+                    className="flex-grow bg-gray-700 text-white rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                    required
+                    max={42}
+                    min={42}
                 />
-                <button 
-                    className="bg-gradient-to-r from-gray-600 to-gray-400 text-white py-2 px-6 rounded-md hover:from-gray-500 hover:to-gray-300 transition-all duration-300 transform hover:scale-105"
+                <Button 
                     type="submit"
+                    className="bg-gradient-to-r from-gray-600 to-gray-400 text-white py-2 px-6 rounded-md hover:from-gray-500 hover:to-gray-300 transition-all duration-300 transform hover:scale-105 font-medium"
                 >
-                Search! &raquo;
-                </button>
+                    Search! &raquo;
+                </Button>
             </div>
         {error && <p className="text-red-500 mt-2">{error}</p>}
         </form>

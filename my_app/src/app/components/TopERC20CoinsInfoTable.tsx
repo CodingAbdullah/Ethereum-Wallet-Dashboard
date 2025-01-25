@@ -8,7 +8,7 @@ import TopERC20CoinsType from "../utils/types/TopERC20CoinsType";
 
 // Top ERC20 Coins Table Custom Component
 export default function TopERC20CoinsInfoTable() {
-    const { data: coins, error: coinsError, isLoading: loadingCoins } = useSWR('/api/top-erc20-tokens', GenericFetcher, { refreshInterval: 50000 });
+    const { data: coins, error: coinsError, isLoading: loadingCoins } = useSWR<TopERC20CoinsType[]>('/api/top-erc20-tokens', GenericFetcher, { refreshInterval: 50000 });
     
     // Conditionally render this component
     if (coinsError){
@@ -18,9 +18,6 @@ export default function TopERC20CoinsInfoTable() {
         return <div className="text-gray-300 p-4">Loading Top ERC20 Coins Data...</div>
     }
     else {
-        // Retrieve data for losing coin prices data table
-        const coinsData: TopERC20CoinsType[] = coins;
-        
         // Render component using the information provided
         return (
             <div className="p-4 bg-gray-900 mt-10 mt-10 shadow-lg">
@@ -36,12 +33,12 @@ export default function TopERC20CoinsInfoTable() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {coinsData.map((coin, index: number) => (
+                        {coins?.map((coin, index: number) => (
                             <TableRow key={index} className="border-b border-gray-800">
                                 <TableCell className="font-medium text-gray-100">{coin.token_name}</TableCell>
                                 <TableCell className="text-gray-300">
                                     <div className="flex items-center space-x-2">
-                                        <Image unoptimized alt={`${coin.token_logo} logo`} height={20} width={20} src={coin.token_logo} />
+                                        <Image alt={`${coin.token_logo} logo`} height={20} width={20} src={coin.token_logo} />
                                         <span>{String(coin.token_symbol).toUpperCase()}</span>
                                     </div>
                                 </TableCell>

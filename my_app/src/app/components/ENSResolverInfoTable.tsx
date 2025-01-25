@@ -8,8 +8,7 @@ import ENSResolverType from "../utils/types/ENSResolverType";
 // ENS Resolver Info Table Component
 export default function ENSResolverInfoTable(props: { data: string }) {
     const { data } = props;
-    const ensResolverInfo = useSWR(['/api/ens-resolver-information', { address: data }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
-    const { data: ensResolverData, error, isLoading } = ensResolverInfo;
+    const { data: ensResolverData, error, isLoading } = useSWR<{ results: ENSResolverType[] }>(['/api/ens-resolver-information', { address: data }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
     // Conditionally render ENS Resolver data
     if (isLoading) {
@@ -19,8 +18,6 @@ export default function ENSResolverInfoTable(props: { data: string }) {
         throw new Error();
     }
     else {
-        const ensOwnershipTableData: ENSResolverType[] = ensResolverData.results;
-    
         // Render the ENS Resolver Info Table Component
         return (
             <div className="p-4 bg-gray-900 mt-10 shadow-lg">
@@ -40,7 +37,7 @@ export default function ENSResolverInfoTable(props: { data: string }) {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {ensOwnershipTableData.map(ens => (
+                        {ensResolverData?.results.map(ens => (
                             <TableRow key={ens.ens_name} className="border-b border-gray-800">
                                 <TableCell className="font-medium text-gray-100">{ens.ens_name}</TableCell>
                                 <TableCell className="font-medium text-gray-100">{ens.registration_timestamp.split("T")[0]}</TableCell>
