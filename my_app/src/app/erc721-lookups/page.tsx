@@ -13,7 +13,7 @@ export default function ERC721LookupsPage() {
                     </span>
                 </h1>
                 <p className="text-xl text-gray-400 mb-12 text-center">
-                    Analyze an ERC721 token from a collection
+                    Analyze a token from a collection
                 </p>
             </div>
             <ERC721LookupsForm />

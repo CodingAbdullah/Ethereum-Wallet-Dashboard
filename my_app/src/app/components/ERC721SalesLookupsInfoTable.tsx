@@ -25,7 +25,7 @@ export default function ERC721SalesLookupsInfoTable(props: { address: string, to
         // Render ERC721 Sales Lookup Info Table Component
         return (
             <div className="p-4 bg-gray-900 mt-10 shadow-lg">
-                <h2 className="text-2xl font-bold mb-4 text-gray-100">ERC721 Token Sales History</h2>
+                <h2 className="text-2xl font-bold mb-4 text-gray-100">Token Sales History</h2>
                 <Table>
                     <TableHeader>
                         <TableRow>

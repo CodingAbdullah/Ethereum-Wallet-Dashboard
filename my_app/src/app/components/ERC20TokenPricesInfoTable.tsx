@@ -10,7 +10,7 @@ export default function ERC20TokenPricesInfoTable(props: { data: ERC20TokenInfor
     // Render ERC20 Holdings Info Table Component
     return (
         <div className="p-4 bg-gray-900 mt-10 shadow-lg">
-            <h2 className="text-2xl font-bold mb-4 text-gray-100">ERC20 Token Pricing Data</h2>
+            <h2 className="text-2xl font-bold mb-4 text-gray-100">Pricing Data</h2>
             <Table>
                 <TableHeader>
                     <TableRow>

@@ -12,10 +12,10 @@ export default function TopERC721CollectionsInfoTable() {
     
     // Conditionally render this component
     if (collectionsError){
-        return <div className="text-red-500 p-4">Error Loading Top ERC721 Collections Data...</div>
+        return <div className="text-red-500 p-4">Error Loading Top Collections Data...</div>
     }
     else if (loadingCollections) {
-        return <div className="text-gray-300 p-4">Loading Top ERC721 Collections Data...</div>
+        return <div className="text-gray-300 p-4">Loading Top Collections Data...</div>
     }
     else {
         // Retrieve data for losing coin prices data table
@@ -24,7 +24,7 @@ export default function TopERC721CollectionsInfoTable() {
         // Render component using the information provided
         return (
             <div className="p-4 bg-gray-900 mt-10 mt-10 shadow-lg">
-                <h4 className="text-2xl font-bold mb-4 text-gray-100">Top ERC721 Collections</h4>
+                <h4 className="text-2xl font-bold mb-4 text-gray-100">Top Collections</h4>
                 <Table>
                     <TableHeader>
                         <TableRow>

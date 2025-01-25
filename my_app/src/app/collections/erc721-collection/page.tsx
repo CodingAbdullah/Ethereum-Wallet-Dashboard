@@ -12,7 +12,7 @@ export default function ERC721CollectionAnalyticsPage() {
                 </span>
             </h1>
             <p className="text-xl text-gray-400 mb-12 text-center">
-                Dive deep into ERC721 collection performance metrics
+                Dive deep into collection metrics
             </p>
             <ERC721CollectionsAnalyticsForm />
         </div>

@@ -12,7 +12,7 @@ export default function ERC721HoldingsPage() {
                 </span>
             </h1>
             <p className="text-xl text-gray-400 mb-12 text-center">
-                Dive deep into wallet ERC721 Holdings
+                Dive deep into wallet Holdings
             </p>
             <ERC721HoldingsForm />
         </div>

@@ -11,7 +11,7 @@ export default function ERC721HoldingsInfoTable(props: { data: ERC721HoldingsTyp
     // Render ERC721 Holdings Info Table Component
     return (
         <div className="p-4 bg-gray-900 mt-10 shadow-lg">
-            <h2 className="text-2xl font-bold mb-4 text-gray-100">ERC721 Holdings</h2>
+            <h2 className="text-2xl font-bold mb-4 text-gray-100">Holdings</h2>
             <Table>
                 <TableHeader>
                     <TableRow>

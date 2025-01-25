@@ -85,7 +85,7 @@ export default function ERC20HoldingsForm() {
             )}
             <Card className="bg-gray-900 border-gray-800 shadow-xl mt-10 w-full">
                 <CardHeader className="border-b border-gray-800 pb-6">
-                    <CardTitle className="text-3xl font-bold text-gray-100">Analyze ERC20 Holdings</CardTitle>
+                    <CardTitle className="text-3xl font-bold text-gray-100">Analyze Holdings</CardTitle>
                     <CardDescription className="text-gray-400 text-lg font-light">
                         Enter wallet address for in-depth analysis
                     </CardDescription>

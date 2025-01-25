@@ -12,7 +12,7 @@ export default function ERC20CollectionAnalyticsPage() {
                 </span>
             </h1>
             <p className="text-xl text-gray-400 mb-12 text-center">
-                Dive deep into ERC20 collection performance metrics
+                Dive deep into collection metrics
             </p>
             <ERC20CollectionsAnalyticsForm />
         </div>

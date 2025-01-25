@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
+import { Alert, AlertDescription } from "../components/ui/alert";
 import addressValidator from '../utils/functions/addressValidator';
 import ERC20TokenInformationSection from '../components/ERC20TokenInformationSection';
 
@@ -37,11 +37,10 @@ export default function ERC20TokenPricesPage() {
                 </span>
             </h1>
             <p className="text-xl text-gray-400 mb-12 text-center">
-                Dive deep into the price of an ERC20 token
+                Dive deep into the price of a token
             </p>
             {showAlert && (
                 <Alert variant="destructive" className="mb-6">
-                    <AlertTitle>Error</AlertTitle>
                     <AlertDescription>
                         There was an error processing your request. Please try again.
                     </AlertDescription>

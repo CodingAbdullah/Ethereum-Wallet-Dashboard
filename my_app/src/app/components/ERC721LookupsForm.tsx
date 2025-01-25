@@ -60,7 +60,7 @@ export default function ERC721LookupsForm() {
             )}
             <Card className="bg-gray-900 border-gray-800 shadow-xl w-full">
                 <CardHeader className="border-b border-gray-800 pb-6">
-                    <CardTitle className="text-3xl font-bold text-gray-100">Analyze ERC721 Token</CardTitle>
+                    <CardTitle className="text-3xl font-bold text-gray-100">Lookup Token Information</CardTitle>
                     <CardDescription className="text-gray-400 text-lg font-light">
                         Enter collection address and token ID for in-depth analysis
                     </CardDescription>

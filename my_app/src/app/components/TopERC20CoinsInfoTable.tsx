@@ -24,7 +24,7 @@ export default function TopERC20CoinsInfoTable() {
         // Render component using the information provided
         return (
             <div className="p-4 bg-gray-900 mt-10 mt-10 shadow-lg">
-                <h4 className="text-2xl font-bold mb-4 text-gray-100">Top ERC20 Coins</h4>
+                <h4 className="text-2xl font-bold mb-4 text-gray-100">Top Coins</h4>
                 <Table>
                     <TableHeader>
                         <TableRow>

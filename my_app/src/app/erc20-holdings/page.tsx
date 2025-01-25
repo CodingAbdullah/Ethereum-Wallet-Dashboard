@@ -13,7 +13,7 @@ export default function ERC20HoldingsPage() {
                     </span>
                 </h1>
                 <p className="text-xl text-gray-400 mb-12 text-center">
-                    Dive deep into wallet ERC20 holdings
+                    Dive deep into wallet holdings
                 </p>
             </div>
             <ERC20HoldingsForm />
