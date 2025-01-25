@@ -2,6 +2,13 @@ import { AboutPageCardList } from "../utils/constants/AboutPageCardList"
 import type AboutPageCardType from "../utils/types/AboutPageCardType"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Link from "next/link"
+import type { Metadata } from "next"
+
+// Custom Metadata
+export const metadata: Metadata = {
+  title: "About Page",
+  description: "About Page for the Ethereum Dashboard web application"
+}
 
 // Custom About Page Component
 export default function AboutPage() {

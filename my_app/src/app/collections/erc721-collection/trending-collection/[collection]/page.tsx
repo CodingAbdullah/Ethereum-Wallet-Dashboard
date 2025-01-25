@@ -5,7 +5,13 @@ import ERC721CollectionFloorPriceInfoTable from "@/app/components/ERC721Collecti
 import ERC721CollectionSalesInfoTable from "@/app/components/ERC721CollectionSalesInfoTable";
 import ERC721CollectionTransfersInfoTable from "@/app/components/ERC721CollectionTransfersInfoTable";
 import { collectionValidator } from "@/app/utils/functions/collectionValidator";
+import type { Metadata } from "next"
 
+// Custom Metadata for SEO
+export const metadata: Metadata = {
+    title: "Ethereum Trending Collection Analytics",
+    description: "Lookup and analyze a trending Ethereum ERC721 collection"
+}
 // Displaying historical price information of a particular coin
 export default async function TrendingCollectionsPage({ params }: { params: { collection: string }}) {
     const parameters = await params;

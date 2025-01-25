@@ -1,4 +1,11 @@
 import ERC20HoldingsForm from "../components/ERC20HoldingsForm";
+import type { Metadata } from "next"
+
+// Custom Metadata for SEO
+export const metadata: Metadata = {
+  title: "Ethereum ERC20 Holdings",
+  description: "Analyze an Ethereum wallet and its ERC20 token holdings"
+}
 
 // ERC20 Holdings Custom Component
 export default function ERC20HoldingsPage() {    

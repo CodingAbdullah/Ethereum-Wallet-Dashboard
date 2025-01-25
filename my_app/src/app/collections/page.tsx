@@ -5,7 +5,13 @@ import { useRouter } from 'next/navigation'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import type { Metadata } from "next"
 
+// Custom Metadata for SEO
+export const metadata: Metadata = {
+    title: "Ethereum Collections Analytics",
+    description: "Lookup and analyze Ethereum collections"
+}
 // Collections Page Custom Component
 export default function CollectionsPage() {
     const router = useRouter();

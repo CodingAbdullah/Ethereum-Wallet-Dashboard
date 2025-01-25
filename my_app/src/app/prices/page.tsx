@@ -1,6 +1,13 @@
 import CryptoPricesTable from "@/app/components/CryptoPricesTable";
 import TopWinningCoinsTable from "../components/TopWinningCoinsTable";
 import TopLosingCoinsTable from "../components/TopLosingCoinsTable";
+import type { Metadata } from "next"
+
+// Custom Metadata for SEO
+export const metadata: Metadata = {
+    title: "Cryptocurrency Prices",
+    description: "Analyze the top winning and losing cryptocurrencies in the market"
+}
 
 // Cryptocurrency Prices Page
 export default function CryptoCurrencyPricesPage() {

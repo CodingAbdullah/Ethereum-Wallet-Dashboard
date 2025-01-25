@@ -1,6 +1,13 @@
 import GenericChartPage from "@/app/components/GenericChartPage";
 import { coinValidator } from "@/app/utils/functions/coinValidator";
 import CoinChartInfoType from "@/app/utils/types/CoinChartInfoType";
+import type { Metadata } from "next"
+
+// Custom Metadata for SEO
+export const metadata: Metadata = {
+    title: "Cryptocurrency Price",
+    description: "Analyze a cryptocurrency based on recent market data"
+}
 
 // Displaying historical price information of a particular coin
 export default async function CoinPriceInformationPage({ params }: { params: { coin: string }}) {

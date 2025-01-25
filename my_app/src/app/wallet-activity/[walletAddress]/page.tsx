@@ -3,6 +3,13 @@ import OpenseaAccountInfoTable from "@/app/components/OpenseaAccountInfoTable";
 import TransactionActivityTable from "@/app/components/TransactionActivityTable";
 import TransactionsAccountInfoTable from "@/app/components/TransactionsAccountInfoTable";
 import addressValidator from "@/app/utils/functions/addressValidator";
+import type { Metadata } from "next"
+
+// Custom Metadata for SEO
+export const metadata: Metadata = {
+    title: "Ethereum Wallet Activity",
+    description: "Analyze Ethereum wallets and evaluate wallet activity"
+}
 
 // Custom Transactions Page Component
 export default async function WalletActivityPage({ params }: { params: { walletAddress: string } }) {

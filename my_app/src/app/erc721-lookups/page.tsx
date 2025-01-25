@@ -1,4 +1,11 @@
 import ERC721LookupsForm from '../components/ERC721LookupsForm';
+import type { Metadata } from "next"
+
+// Custom Metadata for SEO
+export const metadata: Metadata = {
+    title: "Ethereum ERC721 Lookups",
+    description: "Lookup Ethereum ERC721 tokens and analyze their key features"
+}
 
 // ERC721 Lookups Page Custom Component
 export default function ERC721LookupsPage() {

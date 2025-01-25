@@ -1,4 +1,11 @@
 import ERC721CollectionsAnalyticsForm from '@/app/components/ERC721CollectionsAnalyticsForm';
+import type { Metadata } from "next"
+
+// Custom Metadata for SEO
+export const metadata: Metadata = {
+    title: "Ethereum ERC721 Collection Analytics",
+    description: "Lookup and analyze an Ethereum ERC721 collection"
+}
 
 // ERC721 Collection Analytics Page
 export default function ERC721CollectionAnalyticsPage() {

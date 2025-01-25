@@ -1,5 +1,12 @@
 import GenericGasMetricsInfoTable from "../components/GenericGasMetricsInfoTable";
 import GasBlockInfoTable from "../components/GasBlockInfoTable";
+import type { Metadata } from "next"
+
+// Custom Metadata for SEO
+export const metadata: Metadata = {
+    title: "Ethereum Gas",
+    description: "Analyze Ethereum Gas metrics and block data"
+}
 
 // Gas Tracker Page
 export default function GasTrackerPage() {

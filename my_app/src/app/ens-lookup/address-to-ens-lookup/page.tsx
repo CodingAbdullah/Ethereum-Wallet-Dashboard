@@ -1,4 +1,11 @@
 import AddressToENSForm from '@/app/components/AddressToENSForm';
+import type { Metadata } from "next"
+
+// Custom Metadata for SEO
+export const metadata: Metadata = {
+    title: "Ethereum Address To ENS Lookup",
+    description: "Lookup and analyze an Ethereum address by retrieving its ENS domains"
+}
 
 // Address To ENS Lookup Custom Component
 export default function AddressToENSLookupPage() {

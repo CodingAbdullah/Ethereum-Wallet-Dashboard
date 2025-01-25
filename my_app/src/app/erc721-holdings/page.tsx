@@ -1,4 +1,11 @@
 import ERC721HoldingsForm from "../components/ERC721HoldingsForm";
+import type { Metadata } from "next"
+
+// Custom Metadata for SEO
+export const metadata: Metadata = {
+    title: "Ethereum ERC721 Holdings",
+    description: "Analyze Ethereum wallet ERC721 token holdings"
+}
 
 // ERC721 Holdings Custom Component
 export default function ERC721HoldingsPage() {

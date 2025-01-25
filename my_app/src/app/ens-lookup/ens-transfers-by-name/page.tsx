@@ -1,4 +1,11 @@
 import ENSTransferByNameForm from '@/app/components/ENSTransferByNameForm';
+import type { Metadata } from "next"
+
+// Custom Metadata for SEO
+export const metadata: Metadata = {
+    title: "Ethereum ENS Transfers By Name",
+    description: "Lookup and analyze ENS transfers by name"
+}
 
 // ENS Transfers By Name Custom Component
 export default function ENSTransfersByNamePage() {

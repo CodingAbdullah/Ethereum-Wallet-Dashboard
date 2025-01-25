@@ -1,4 +1,11 @@
 import ENSTransfersByIDForm from '@/app/components/ENSTransferByIDForm';
+import type { Metadata } from "next"
+
+// Custom Metadata for SEO
+export const metadata: Metadata = {
+    title: "Ethereum ENS Transfers By ID",
+    description: "Lookup and analyze ENS transfers by ID"
+}
 
 // ENS Transfers By ID Custom Component
 export default function ENSTransfersByIDPage() {

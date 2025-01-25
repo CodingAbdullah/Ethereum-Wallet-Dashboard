@@ -1,4 +1,11 @@
 import WalletAnalyticsForm from "../components/WalletAnalyticsForm";
+import type { Metadata } from "next"
+
+// Custom Metadata for SEO
+export const metadata: Metadata = {
+    title: "Ethereum Wallet Analytics",
+    description: "Analyze Ethereum wallets and evaluate performance"
+}
 
 // Wallet Analytics Custom Component
 export default function WalletAnalyticsPage() {

@@ -1,4 +1,11 @@
 import ERC20CollectionsAnalyticsForm from "@/app/components/ERC20CollectionsAnalyticsForm";
+import type { Metadata } from "next"
+
+// Custom Metadata for SEO
+export const metadata: Metadata = {
+    title: "Ethereum ERC20 Collection Analytics",
+    description: "Lookup and analyze an Ethereum ERC20 collection"
+}
 
 // ERC20 Collection Analytics Page
 export default function ERC20CollectionAnalyticsPage() {

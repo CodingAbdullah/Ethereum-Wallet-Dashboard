@@ -7,6 +7,13 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../co
 import { Alert, AlertDescription } from "../components/ui/alert";
 import addressValidator from '../utils/functions/addressValidator';
 import ERC20TokenInformationSection from '../components/ERC20TokenInformationSection';
+import type { Metadata } from "next"
+
+// Custom Metadata for SEO
+export const metadata: Metadata = {
+    title: "Ethereum ERC20 Token Prices",
+    description: "Analyze an ERC20 token based on recent market data"
+}
 
 // ERC20 Token Prices Page Custom Component
 export default function ERC20TokenPricesPage() {
