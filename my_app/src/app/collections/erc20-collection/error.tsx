@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect } from 'react'
-import Link from 'next/link'
-import { AlertCircle, Home } from 'lucide-react'
-import { Button } from "../../components/ui/button"
+import { useEffect } from 'react';
+import Link from 'next/link';
+import { AlertCircle, Home } from 'lucide-react';
+import { Button } from "../../components/ui/button";
 
-// Custom Error Page for Coin Price Lookup Error Page
-export default function CoinPriceLookupErrorPage({
+// Custom Error Page for the ERC20 Collections Pages
+export default function ERC20CollectionsErrorPage({
   error,
   reset,
 }: {
@@ -18,14 +18,15 @@ export default function CoinPriceLookupErrorPage({
     console.error(error)
   }, [error])
 
-  // Render Coin Price Lookup Error Page
+  // Render Custom Error Page for ERC20 Collections
   return (
     <div className="bg-gray-800 text-gray-300 py-10 px-4 sm:px-6 lg:px-8 shadow-lg">
       <div className="text-center">
         <AlertCircle className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-        <h3 className="text-3xl font-bold text-gray-100 mb-4">Error Loading Coin Data</h3>
+        <h3 className="text-3xl font-bold text-gray-100 mb-4">Error Loading ERC20 Collection</h3>
         <p className="text-xl text-gray-400 mb-8">
-          We are having trouble retrieving the price data of this particular cryptocurrency. This could be due to network issues or an invalid coin ID.
+          We are having trouble retrieving the data of this particular ERC20 collection. This could be due to network issues or an invalid collection ID. 
+          <br />
         </p>
         <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
           <Button 

@@ -3,10 +3,10 @@
 import { useEffect } from 'react'
 import Link from 'next/link'
 import { AlertCircle, Home } from 'lucide-react'
-import { Button } from "../../components/ui/button"
+import { Button } from "../components/ui/button"
 
-// Custom Error Page for ENS to Address Lookup
-export default function ENSToAddressLookupPageError({
+// Custom Error Page for ERC20 Holdings Error Page
+export default function ERC20HoldingsErrorPage({
   error,
   reset,
 }: {
@@ -18,14 +18,14 @@ export default function ENSToAddressLookupPageError({
     console.error(error)
   }, [error])
 
-  // Render Custom Error Page for Address to ENS Lookup Page
+  // Render ERC20 Holdings Error Page
   return (
     <div className="bg-gray-800 text-gray-300 py-10 px-4 sm:px-6 lg:px-8 shadow-lg">
       <div className="text-center">
         <AlertCircle className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-        <h1 className="text-3xl font-bold text-gray-100 mb-4">Unable to Fetch Address</h1>
+        <h3 className="text-3xl font-bold text-gray-100 mb-4">Error Loading ERC20 Holdings Data</h3>
         <p className="text-xl text-gray-400 mb-8">
-          We are having trouble retrieving the address associated with the ENS domain. This could be due to network issues or an invalid ENS domain.
+          We are having trouble retrieving ERC20 holdings data. This could be due to network issues or an invalid contract address.
         </p>
         <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
           <Button 

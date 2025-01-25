@@ -23,7 +23,7 @@ export default function TrendingCollectionsPageError({
     <div className="bg-gray-800 text-gray-300 py-10 px-4 sm:px-6 lg:px-8 shadow-lg">
       <div className="text-center">
         <AlertCircle className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-        <h1 className="text-3xl font-bold text-gray-100 mb-4">Invalid Collection</h1>
+        <h3 className="text-3xl font-bold text-gray-100 mb-4">Error Loading Trending Collection</h3>
         <p className="text-xl text-gray-400 mb-8">
           We are having trouble retrieving the data of this particular NFT collection. This could be due to network issues or an invalid collection ID. 
           <br />
