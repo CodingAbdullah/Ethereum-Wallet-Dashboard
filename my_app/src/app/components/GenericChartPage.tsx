@@ -7,6 +7,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import CoinChartInfoType from '../utils/types/CoinChartInfoType';
+import priceFormatValidator from '../utils/functions/priceFormatValidator';
 
 // Generic Chart Page Custom Component
 export default function GenericChartPage(props: { data: CoinChartInfoType }) {
@@ -32,7 +33,8 @@ export default function GenericChartPage(props: { data: CoinChartInfoType }) {
         const min = Math.min(...prices);
         const max = Math.max(...prices);
         const buffer = (max - min) * 0.1; // 10% buffer
-
+        const current_price = !priceFormatValidator(data.market_data.current_price.usd) ? " $" + data.market_data.current_price.usd : " $" + Number(data.market_data.current_price.usd).toFixed(2);
+        
         // Render data based on market information
         return (
             <div className="bg-gray-800 text-gray-300 py-10 px-4 sm:px-6 lg:px-8 shadow-lg">
@@ -45,7 +47,7 @@ export default function GenericChartPage(props: { data: CoinChartInfoType }) {
                     <CardHeader>
                         <CardTitle className="text-xl text-gray-100">{ data.name }</CardTitle>
                         <CardDescription className="text-gray-100">
-                            Current Price:<b>{' $' + Number(data.market_data.current_price.usd).toFixed(2)}</b>
+                            Current Price:<b>{current_price}</b>
                         </CardDescription>
                         <div className="flex items-center space-x-2">
                             <CardDescription className='text-gray-100'>

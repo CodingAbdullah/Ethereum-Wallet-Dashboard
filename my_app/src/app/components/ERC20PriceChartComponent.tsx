@@ -13,6 +13,7 @@ import ERC20TokenInformationSectionType from '../utils/types/ERC20TokenInformati
 export default function ERC20PriceChartComponent(props: { data: ERC20TokenInformationSectionType, address: string }) {
     const { address, data } = props;
     const [interval, setInterval] = useState<string>('7');
+    const current_price = !priceFormatValidator(data.market_data.current_price.usd) ? " $" + data.market_data.current_price.usd : " $" + Number(data.market_data.current_price.usd).toFixed(2);
 
     // Fetch data for chart display
     const { data: erc20ChartData, error: erc20ChartError, isLoading: erc20ChartDataLoading }  = useSWR(['/api/ERC20-coin-price-duration', { contract: address, interval }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
@@ -46,7 +47,7 @@ export default function ERC20PriceChartComponent(props: { data: ERC20TokenInform
                     <CardHeader>
                         <CardTitle className="text-xl text-gray-100">{ data.name }</CardTitle>
                         <CardDescription className="text-gray-100">
-                            Current Price:<b>{" "}{priceFormatValidator(Number(data.market_data.current_price.usd)) ? ' $' + Number(data.market_data.current_price.usd) : ' $' + Number(data.market_data.current_price.usd).toFixed(2)}</b>
+                            Current Price:<b>{current_price}</b>
                         </CardDescription>
                         <div className="flex items-center space-x-2">
                             <CardDescription className='text-gray-100'>
