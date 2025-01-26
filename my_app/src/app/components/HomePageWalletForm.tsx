@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import addressValidator from '../utils/functions/addressValidator';
 import { Input } from './ui/input';
@@ -8,18 +8,15 @@ import { Button } from './ui/button';
 
 // Custom Component for working with the Home Page Wallet Form
 export default function HomePageWalletForm() {
-    const [walletAddress, updateWalletAddress] = useState<string>('');
-    const [setWalletAddress, updateSetWalletAddress] = useState<string>('');
+    const walletAddressRef = useRef<HTMLInputElement>(null)
     const [error, setError] = useState<string>('');
     const router = useRouter();
 
     // Function for handling form submissions
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
-        if (addressValidator(walletAddress.trim())) {
-            updateSetWalletAddress(walletAddress.trim());
-            router.push(`/wallet-activity/${setWalletAddress}`);
+        if (addressValidator(walletAddressRef.current!.value.trim())) {
+            router.push(`/wallet-activity/${walletAddressRef.current!.value.trim()}`);
         } 
         else {
             setError('Invalid wallet address. Please check and try again.');
@@ -32,8 +29,7 @@ export default function HomePageWalletForm() {
             <div className="flex flex-col sm:flex-row gap-4">
                 <Input
                     placeholder="Enter Wallet Address"
-                    value={walletAddress}
-                    onChange={e => updateWalletAddress(e.target.value)}
+                    ref={walletAddressRef}
                     className="flex-grow bg-gray-700 text-white rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-500"
                     required
                     max={42}

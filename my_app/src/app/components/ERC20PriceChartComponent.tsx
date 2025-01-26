@@ -108,7 +108,7 @@ export default function ERC20PriceChartComponent(props: { data: ERC20TokenInform
                                     stroke="#ff4136" 
                                     strokeWidth={2}
                                     dot={true}
-                                    name="Price"
+                                    name="Price (USD)"
                                 />
                                 </LineChart>
                             </ResponsiveContainer>

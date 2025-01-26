@@ -22,7 +22,7 @@ export default function CryptoCurrencyPricesPage() {
                 </span>
             </h1>
             <p className="text-xl text-gray-400 mb-12 text-center">
-                Dive deep into coin price metrics
+                Dive deep into market prices
             </p>
             <hr className='mt-5' />
             <TopWinningCoinsTable />

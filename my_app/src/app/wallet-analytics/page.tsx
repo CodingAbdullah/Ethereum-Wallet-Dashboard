@@ -19,7 +19,7 @@ export default function WalletAnalyticsPage() {
                 </span>
             </h1>
             <p className="text-xl text-gray-400 mb-12 text-center">
-                Dive deep into wallet performance and analytics
+                Dive deep into wallet performance
             </p>
             <WalletAnalyticsForm />
         </div>

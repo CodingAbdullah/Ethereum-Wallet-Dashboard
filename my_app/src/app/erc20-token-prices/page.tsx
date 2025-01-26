@@ -19,7 +19,7 @@ export default function ERC20TokenPricesPage() {
                 </span>
             </h1>
             <p className="text-xl text-gray-400 mb-12 text-center">
-                Dive deep into the price of a token
+                Dive deep into token market metrics
             </p>
             <ERC20TokenPricesForm />
         </div>
