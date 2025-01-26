@@ -35,7 +35,7 @@ export default function ERC20collectionOwnersInfoTable(props: { address: string 
                     </TableHeader>
                     <TableBody>
                     {
-                        data?.result.map((owner, index: number) => (
+                        data?.result?.map((owner, index: number) => (
                             <TableRow key={index} className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">{owner.owner_address}</TableCell>
                                 <TableCell className="text-gray-300">{owner.balance}</TableCell>

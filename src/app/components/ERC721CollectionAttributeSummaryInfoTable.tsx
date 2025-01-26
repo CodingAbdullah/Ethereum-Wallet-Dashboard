@@ -35,7 +35,7 @@ export default function ERC721CollectionAttributeSummaryInfoTable(props: { addre
                     </TableHeader>
                     <TableBody>
                         {
-                            attributes.map((attribute, index) => {
+                            attributes?.map((attribute, index) => {
                                 return (
                                     <TableRow key={index} className="border-b border-gray-800">
                                         <TableCell className="text-gray-300">{attribute}</TableCell>

@@ -31,15 +31,15 @@ export default function MetricsNavbar() {
                             <span className="ping-animation w-2 h-2 bg-green-500 rounded-full"></span>
                             <span className="text-green-500 text-xs font-semibold">Live</span>
                         </div>                        
-                            <span>ETH Price: <span>${ Number(ethereum.usd).toFixed(2) }</span></span>
+                            <span>ETH Price: <span>${ Number(ethereum?.usd).toFixed(2) }</span></span>
                         <span>
                             24-Hr % Chg: 
-                            <span className={ethereum.usd_24h_change >= 0 ? 'text-green-500' : 'text-red-500'}>
-                                { ethereum.usd_24h_change > 0 ? ' +' : ' ' }
-                                { ethereum.usd_24h_change.toFixed(2) }%
+                            <span className={ethereum?.usd_24h_change >= 0 ? 'text-green-500' : 'text-red-500'}>
+                                { ethereum?.usd_24h_change > 0 ? ' +' : ' ' }
+                                { ethereum?.usd_24h_change.toFixed(2) }%
                             </span>
                         </span>
-                        <span>Gas Price: <span className="font-bold">{ String(gasData.maxPrice) } Gwei</span></span>
+                        <span>Gas Price: <span className="font-bold">{ String(gasData?.maxPrice) } Gwei</span></span>
                     </div>
                 </div>
             </nav>

@@ -35,11 +35,11 @@ export default function WalletStatsInfoTable(props: { address: string }) {
                     </TableHeader>
                     <TableBody>
                         <TableRow className="border-b border-gray-800">
-                            <TableCell className="text-gray-300">{walletStatsData.nfts}</TableCell>
-                            <TableCell className="text-gray-300">{walletStatsData.collections}</TableCell>
-                            <TableCell className="text-gray-300">{walletStatsData.transactions.total}</TableCell>
-                            <TableCell className="text-gray-300">{walletStatsData.nft_transfers.total}</TableCell>
-                            <TableCell className="text-gray-300">{walletStatsData.token_transfers.total}</TableCell>
+                            <TableCell className="text-gray-300">{walletStatsData?.nfts}</TableCell>
+                            <TableCell className="text-gray-300">{walletStatsData?.collections}</TableCell>
+                            <TableCell className="text-gray-300">{walletStatsData?.transactions.total}</TableCell>
+                            <TableCell className="text-gray-300">{walletStatsData?.nft_transfers.total}</TableCell>
+                            <TableCell className="text-gray-300">{walletStatsData?.token_transfers.total}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>

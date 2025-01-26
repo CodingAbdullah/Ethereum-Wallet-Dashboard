@@ -37,10 +37,10 @@ export default function TransactionBalanceInfoTable(props: { address: string, ne
                     </TableHeader>
                     <TableBody>
                         <TableRow className="border-b border-gray-800">
-                            <TableCell className="text-gray-300">{walletBalanceData.chains[0].native_balance_formatted + ' ETH'}</TableCell>
-                            <TableCell className="text-gray-300">{"$" + walletBalanceData.chains[0].native_balance_usd}</TableCell>
-                            <TableCell className="text-gray-300">{"$" + walletBalanceData.chains[0].token_balance_usd}</TableCell>
-                            <TableCell className="text-gray-300">{"$" + walletBalanceData.total_networth_usd}</TableCell>
+                            <TableCell className="text-gray-300">{walletBalanceData?.chains[0]?.native_balance_formatted + ' ETH'}</TableCell>
+                            <TableCell className="text-gray-300">{"$" + walletBalanceData?.chains[0]?.native_balance_usd}</TableCell>
+                            <TableCell className="text-gray-300">{"$" + walletBalanceData?.chains[0]?.token_balance_usd}</TableCell>
+                            <TableCell className="text-gray-300">{"$" + walletBalanceData?.total_networth_usd}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>

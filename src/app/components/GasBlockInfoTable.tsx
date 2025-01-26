@@ -19,6 +19,7 @@ export default function GasBlockInfoTable() {
     }
     else {
         const gasBlockData: GasBlockInfoType[] = data.blockPrices[0].estimatedPrices;
+        
         // Render the Gas Block Info Table Component
         return (
             <div className="p-4 bg-gray-900 mt-10 shadow-lg">
@@ -34,7 +35,7 @@ export default function GasBlockInfoTable() {
                     </TableHeader>
                     <TableBody>
                         {
-                            gasBlockData.map(block => (
+                            gasBlockData?.map(block => (
                             <TableRow key={block.confidence} className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">{block.confidence}</TableCell>
                                 <TableCell className="text-gray-300">{block.price}</TableCell>

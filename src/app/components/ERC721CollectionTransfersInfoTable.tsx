@@ -34,7 +34,7 @@ export default function ERC721CollectionTransfersInfoTable(props : { address: st
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {erc721CollectionTransfersData.map((transfer, index: number) => {
+                        {erc721CollectionTransfersData?.map((transfer, index: number) => {
                             return (
                                 <TableRow key={index} className="border-b border-gray-800">
                                     <TableCell className="text-gray-300">{transfer.block_timestamp.split(".")[0]}</TableCell>

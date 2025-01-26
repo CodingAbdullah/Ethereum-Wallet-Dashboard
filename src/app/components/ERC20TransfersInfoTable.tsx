@@ -22,7 +22,7 @@ export default function ERC20TransfersInfoTable(props: { data: ERC20TransfersTyp
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {data.map((transfer, index: number) => (
+                    {data?.map((transfer, index: number) => (
                         <TableRow key={index} className="border-b border-gray-800">
                             <TableCell className="text-gray-300">{String(transfer.block_timestamp).split("T")[0]}</TableCell>
                             <TableCell className="text-gray-300">{transfer.from_address}</TableCell>

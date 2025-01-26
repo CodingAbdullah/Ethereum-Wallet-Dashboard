@@ -34,7 +34,7 @@ export default function HomePageTrendingCollectionsTable() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {trendsData?.trendingCoinData.nfts.map(collection => (
+                        {trendsData?.trendingCoinData?.nfts.map(collection => (
                             <TableRow key={collection.id} className="border-b border-gray-800">
                                 <TableCell className="font-medium text-gray-100">
                                     <Link href={'/collections/erc721-collection/trending-collection/' + collection.id}>

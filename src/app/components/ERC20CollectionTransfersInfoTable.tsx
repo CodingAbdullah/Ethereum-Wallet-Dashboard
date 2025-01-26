@@ -36,7 +36,7 @@ export default function ERC20collectionOwnersInfoTable(props: { address: string 
                     </TableHeader>
                     <TableBody>
                     {
-                        data?.result.map((transfer, index: number) => (
+                        data?.result?.map((transfer, index: number) => (
                             <TableRow key={index} className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">{String(transfer.block_timestamp).split(".")[0]}</TableCell>
                                 <TableCell className="text-gray-300">{transfer.from_address}</TableCell>

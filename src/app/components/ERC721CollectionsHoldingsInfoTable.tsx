@@ -22,7 +22,7 @@ export default function ERC721CollectionsHoldingsInfoTable(props: { data: ERC721
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {data.map((collectionHolding, index: number) => (
+                    {data?.map((collectionHolding, index: number) => (
                         <TableRow key={index} className="border-b border-gray-800">
                             <TableCell className="text-gray-300">{collectionHolding.name}</TableCell>
                             <TableCell className="text-gray-300">{collectionHolding.symbol}</TableCell>

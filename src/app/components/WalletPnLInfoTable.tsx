@@ -34,39 +34,39 @@ export default function WalletPnLInfoTable(props: { address: string }) {
                     <TableBody>
                         <TableRow className="border-b border-gray-800">
                             <TableCell className="text-gray-300">Total Trade Count</TableCell>
-                            <TableCell className="text-gray-300">{walletPnLData.total_count_of_trades}</TableCell>
+                            <TableCell className="text-gray-300">{walletPnLData?.total_count_of_trades}</TableCell>
                         </TableRow>
                         <TableRow className="border-b border-gray-800">
                             <TableCell className="text-gray-300">Total Trade Volume</TableCell>
-                            <TableCell className="text-gray-300">{"$" + walletPnLData.total_trade_volume}</TableCell>
+                            <TableCell className="text-gray-300">{"$" + walletPnLData?.total_trade_volume}</TableCell>
                         </TableRow>
                         <TableRow className="border-b border-gray-800">
                             <TableCell className="text-gray-300">Total Realized Profit (USD)</TableCell>
-                            <TableCell className={Number(walletPnLData.total_realized_profit_usd) < 0 ? 'text-red-500' : 'text-green-500'}>
-                                {Number(walletPnLData.total_realized_profit_usd) < 0 ? '-$' : '+$'}{Math.abs(Number(walletPnLData.total_realized_profit_usd)).toFixed(2)}
+                            <TableCell className={Number(walletPnLData?.total_realized_profit_usd) < 0 ? 'text-red-500' : 'text-green-500'}>
+                                {Number(walletPnLData?.total_realized_profit_usd) < 0 ? '-$' : '+$'}{Math.abs(Number(walletPnLData?.total_realized_profit_usd)).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow className="border-b border-gray-800">
                             <TableCell className="text-gray-300">Total Realized Profit Percentage</TableCell>
-                            <TableCell className={Number(walletPnLData.total_realized_profit_percentage) < 0 ? 'text-red-500' : 'text-green-500'}>
-                                {Number(walletPnLData.total_realized_profit_percentage) < 0 ? '' : '+'}{Number(walletPnLData.total_realized_profit_percentage).toFixed(2) + "%"}
+                            <TableCell className={Number(walletPnLData?.total_realized_profit_percentage) < 0 ? 'text-red-500' : 'text-green-500'}>
+                                {Number(walletPnLData?.total_realized_profit_percentage) < 0 ? '' : '+'}{Number(walletPnLData?.total_realized_profit_percentage).toFixed(2) + "%"}
                             </TableCell>
                         </TableRow>
                         <TableRow className="border-b border-gray-800">
                             <TableCell className="text-gray-300">Total Buys</TableCell>
-                            <TableCell className="text-gray-300">{walletPnLData.total_buys}</TableCell>
+                            <TableCell className="text-gray-300">{walletPnLData?.total_buys}</TableCell>
                         </TableRow>
                         <TableRow className="border-b border-gray-800">
                             <TableCell className="text-gray-300">Total Sells</TableCell>
-                            <TableCell className="text-gray-300">{walletPnLData.total_sells}</TableCell>
+                            <TableCell className="text-gray-300">{walletPnLData?.total_sells}</TableCell>
                         </TableRow>
                         <TableRow className="border-b border-gray-800">
                             <TableCell className="text-gray-300">Total Sold Volume (USD)</TableCell>
-                            <TableCell className="text-gray-300">{"$" + Number(walletPnLData.total_sold_volume_usd).toFixed(2)}</TableCell>
+                            <TableCell className="text-gray-300">{"$" + Number(walletPnLData?.total_sold_volume_usd).toFixed(2)}</TableCell>
                         </TableRow>
                         <TableRow className="border-b border-gray-800">
                             <TableCell className="text-gray-300">Total Bought Volume (USD)</TableCell>
-                            <TableCell className="text-gray-300">{"$" + Number(walletPnLData.total_bought_volume_usd).toFixed(2)}</TableCell>
+                            <TableCell className="text-gray-300">{"$" + Number(walletPnLData?.total_bought_volume_usd).toFixed(2)}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>

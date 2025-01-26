@@ -32,20 +32,20 @@ export default function HomePageMarketDataSection() {
                         </CardHeader>
                         <CardContent className="text-gray-300">
                             <div className="space-y-2">
-                                <p>Active Currencies: <span className="text-gray-100">{marketTableData.active_cryptocurrencies}</span></p>
-                                <p>Number of Exchanges: <span className="text-gray-100">{marketTableData.markets}</span></p>
-                                <p>Total Market Cap: <span className="text-gray-100">{"$" + Number(marketTableData.total_market_cap.usd).toFixed(2)}</span></p>
+                                <p>Active Currencies: <span className="text-gray-100">{marketTableData?.active_cryptocurrencies}</span></p>
+                                <p>Number of Exchanges: <span className="text-gray-100">{marketTableData?.markets}</span></p>
+                                <p>Total Market Cap: <span className="text-gray-100">{"$" + Number(marketTableData?.total_market_cap?.usd).toFixed(2)}</span></p>
                                 <p>Market Dominance: 
-                                    <span className="text-gray-100"> BTC {Number(marketTableData.market_cap_percentage.btc).toFixed(2) + '%'} | ETH {Number(marketTableData.market_cap_percentage.eth).toFixed(2) + '%'}</span>
+                                    <span className="text-gray-100"> BTC {Number(marketTableData?.market_cap_percentage?.btc).toFixed(2) + '%'} | ETH {Number(marketTableData?.market_cap_percentage?.eth).toFixed(2) + '%'}</span>
                                 </p>
                                 {
-                                    marketTableData.market_cap_change_percentage_24h_usd < 0 ? 
+                                    marketTableData?.market_cap_change_percentage_24h_usd < 0 ? 
                                         <p>24 Hour Market Cap % Change: 
-                                            <span className="text-red-400">{" " + Number(marketTableData.market_cap_change_percentage_24h_usd).toFixed(2) + '%'}</span>
+                                            <span className="text-red-400">{" " + Number(marketTableData?.market_cap_change_percentage_24h_usd).toFixed(2) + '%'}</span>
                                         </p>
                                         :
                                         <p>24 Hour Market Cap % Change: 
-                                            <span className="text-green-400">{" +" + Number(marketTableData.market_cap_change_percentage_24h_usd).toFixed(2) + '%'}</span>
+                                            <span className="text-green-400">{" +" + Number(marketTableData?.market_cap_change_percentage_24h_usd).toFixed(2) + '%'}</span>
                                         </p>
                                 }
                             </div>
@@ -57,11 +57,11 @@ export default function HomePageMarketDataSection() {
                         </CardHeader>
                         <CardContent className="text-gray-300">
                             <div className="space-y-2">
-                                <p>DeFi Market Cap: <span className="text-gray-100">{"$" + Number(data.defi_market_cap).toFixed(2)}</span></p>
-                                <p>ETH Market Cap: <span className="text-gray-100">{"$" + Number(data.eth_market_cap).toFixed(2)}</span></p>
-                                <p>Trading Volume: <span className="text-gray-100">{"$" + Number(data.trading_volume_24h).toFixed(2)}</span></p>
-                                <p>Top Coin Name: <span className="text-gray-100">{data.top_coin_name}</span></p>
-                                <p>Top Coin DeFi Dominance: <span className="text-gray-100">{Number(data.top_coin_defi_dominance).toFixed(2) + '%'}</span></p>
+                                <p>DeFi Market Cap: <span className="text-gray-100">{"$" + Number(data?.defi_market_cap).toFixed(2)}</span></p>
+                                <p>ETH Market Cap: <span className="text-gray-100">{"$" + Number(data?.eth_market_cap).toFixed(2)}</span></p>
+                                <p>Trading Volume: <span className="text-gray-100">{"$" + Number(data?.trading_volume_24h).toFixed(2)}</span></p>
+                                <p>Top Coin Name: <span className="text-gray-100">{data?.top_coin_name}</span></p>
+                                <p>Top Coin DeFi Dominance: <span className="text-gray-100">{Number(data?.top_coin_defi_dominance).toFixed(2) + '%'}</span></p>
                             </div>
                         </CardContent>
                     </Card>

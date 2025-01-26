@@ -37,8 +37,8 @@ export default function ERC721LookupsInfoTable(props: { address: string, network
                     </TableHeader>
                     <TableBody>
                         <TableRow className="border-b border-gray-800">
-                            <TableCell className="text-gray-300">{erc721LookupsData.name}</TableCell>
-                            <TableCell className="text-gray-300">{erc721LookupsData.token_id}</TableCell>
+                            <TableCell className="text-gray-300">{erc721LookupsData?.name}</TableCell>
+                            <TableCell className="text-gray-300">{erc721LookupsData?.token_id}</TableCell>
                             <TableCell className="text-gray-300">
                                 <Link href={'https://opensea.io/assets/ethereum/' + address + '/' + tokenID } target="_blank">
                                     <u>Opensea Link</u>

@@ -20,11 +20,11 @@ export default function AccountToENSInfoTable(props: { data: AccountInformationT
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    <TableRow key={data.name} className="border-b border-gray-800">
-                        <TableCell className="font-medium text-gray-100">{data.name}</TableCell>
+                    <TableRow key={data?.name} className="border-b border-gray-800">
+                        <TableCell className="font-medium text-gray-100">{data?.name}</TableCell>
                         <TableCell className="text-gray-300">
-                            <Link target="_blank" href={'https://' + data.name + '.xyz/'}>
-                                <u>{'https://' + data.name + '.xyz/'}</u>
+                            <Link target="_blank" href={'https://' + data?.name + '.xyz/'}>
+                                <u>{'https://' + data?.name + '.xyz/'}</u>
                             </Link>
                         </TableCell>
                     </TableRow>

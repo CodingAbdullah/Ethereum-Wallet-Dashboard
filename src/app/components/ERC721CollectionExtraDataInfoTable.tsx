@@ -39,84 +39,84 @@ export default function ERC721CollectionExtraDataInfoTable(props : { address: st
                         <TableBody>
                             <TableRow className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">Contract Address</TableCell>
-                                <TableCell className="text-gray-300">{erc721CollectionExtraData.contract_address}</TableCell>
+                                <TableCell className="text-gray-300">{erc721CollectionExtraData?.contract_address}</TableCell>
                             </TableRow>
                             <TableRow className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">Image</TableCell>
                                 <TableCell className="text-gray-300">
-                                    <Image src={erc721CollectionExtraData.image.small} alt="ERC721 Collection Image.png" width={50} height={50} />
+                                    <Image src={erc721CollectionExtraData?.image?.small} alt="ERC721 Collection Image.png" width={50} height={50} />
                                 </TableCell>
                             </TableRow>
                             <TableRow className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">Market Cap</TableCell>
-                                <TableCell className="text-gray-300">{"$" + erc721CollectionExtraData.market_cap.usd}</TableCell>
+                                <TableCell className="text-gray-300">{"$" + erc721CollectionExtraData?.market_cap?.usd}</TableCell>
                             </TableRow>
                             <TableRow className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">Market Cap 24 Hour % Change</TableCell>
-                                <TableCell className={erc721CollectionExtraData.market_cap_24h_percentage_change.usd < 0 ? 'text-red-500' : 'text-green-500'}>
-                                    {erc721CollectionExtraData.market_cap_24h_percentage_change.usd >= 0 ? '+' : ''}{erc721CollectionExtraData.market_cap_24h_percentage_change.usd.toFixed(2) + '%'}
+                                <TableCell className={erc721CollectionExtraData?.market_cap_24h_percentage_change?.usd < 0 ? 'text-red-500' : 'text-green-500'}>
+                                    {erc721CollectionExtraData?.market_cap_24h_percentage_change?.usd >= 0 ? '+' : ''}{erc721CollectionExtraData?.market_cap_24h_percentage_change?.usd.toFixed(2) + '%'}
                                 </TableCell>
                             </TableRow>
                             <TableRow className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">Volume</TableCell>
-                                <TableCell className="text-gray-300">{"$" + erc721CollectionExtraData.volume_24h.usd}</TableCell>
+                                <TableCell className="text-gray-300">{"$" + erc721CollectionExtraData?.volume_24h?.usd}</TableCell>
                             </TableRow>
                             <TableRow className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">Volume 24 Hour % Change</TableCell>
-                                <TableCell className={erc721CollectionExtraData.volume_24h_percentage_change.usd < 0 ? 'text-red-500' : 'text-green-500'}>
-                                    {erc721CollectionExtraData.volume_24h_percentage_change.usd >= 0 ? '+' : ''}{erc721CollectionExtraData.volume_24h_percentage_change.usd.toFixed(2) + '%'}
+                                <TableCell className={erc721CollectionExtraData?.volume_24h_percentage_change?.usd < 0 ? 'text-red-500' : 'text-green-500'}>
+                                    {erc721CollectionExtraData?.volume_24h_percentage_change?.usd >= 0 ? '+' : ''}{erc721CollectionExtraData?.volume_24h_percentage_change?.usd.toFixed(2) + '%'}
                                 </TableCell>
                             </TableRow>
                             <TableRow className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">Floor Price</TableCell>
-                                <TableCell className="text-gray-300">{"$" + erc721CollectionExtraData.floor_price.usd}</TableCell>
+                                <TableCell className="text-gray-300">{"$" + erc721CollectionExtraData?.floor_price?.usd}</TableCell>
                             </TableRow>
                             <TableRow className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">Floor Price 24 % Change</TableCell>
-                                <TableCell className={erc721CollectionExtraData.floor_price_24h_percentage_change.usd < 0 ? 'text-red-500' : 'text-green-500'}>
-                                    {erc721CollectionExtraData.floor_price_24h_percentage_change.usd >= 0 ? '+' : ''}{erc721CollectionExtraData.floor_price_24h_percentage_change.usd.toFixed(2) + '%'}
+                                <TableCell className={erc721CollectionExtraData?.floor_price_24h_percentage_change?.usd < 0 ? 'text-red-500' : 'text-green-500'}>
+                                    {erc721CollectionExtraData?.floor_price_24h_percentage_change?.usd >= 0 ? '+' : ''}{erc721CollectionExtraData?.floor_price_24h_percentage_change?.usd.toFixed(2) + '%'}
                                 </TableCell>
                             </TableRow>
                             <TableRow className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">Floor Price 7 Day % Change</TableCell>
-                                <TableCell className={erc721CollectionExtraData.floor_price_7d_percentage_change.usd < 0 ? 'text-red-500' : 'text-green-500'}>
-                                    {erc721CollectionExtraData.floor_price_7d_percentage_change.usd >= 0 ? '+' : ''}{erc721CollectionExtraData.floor_price_7d_percentage_change.usd.toFixed(2) + '%'}
+                                <TableCell className={erc721CollectionExtraData?.floor_price_7d_percentage_change?.usd < 0 ? 'text-red-500' : 'text-green-500'}>
+                                    {erc721CollectionExtraData?.floor_price_7d_percentage_change?.usd >= 0 ? '+' : ''}{erc721CollectionExtraData?.floor_price_7d_percentage_change?.usd.toFixed(2) + '%'}
                                 </TableCell>
                             </TableRow>
                             <TableRow className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">Floor Price 14 Day % Change</TableCell>
-                                <TableCell className={erc721CollectionExtraData.floor_price_14d_percentage_change.usd < 0 ? 'text-red-500' : 'text-green-500'}>
-                                    {erc721CollectionExtraData.floor_price_14d_percentage_change.usd >= 0 ? '+' : ''}{erc721CollectionExtraData.floor_price_14d_percentage_change.usd.toFixed(2) + '%'}
+                                <TableCell className={erc721CollectionExtraData?.floor_price_14d_percentage_change?.usd < 0 ? 'text-red-500' : 'text-green-500'}>
+                                    {erc721CollectionExtraData?.floor_price_14d_percentage_change?.usd >= 0 ? '+' : ''}{erc721CollectionExtraData?.floor_price_14d_percentage_change?.usd.toFixed(2) + '%'}
                                 </TableCell>
                             </TableRow>
                             <TableRow className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">Floor Price 30 Day % Change</TableCell>
-                                <TableCell className={erc721CollectionExtraData.floor_price_30d_percentage_change.usd < 0 ? 'text-red-500' : 'text-green-500'}>
-                                    {erc721CollectionExtraData.floor_price_30d_percentage_change.usd >= 0 ? '+' : ''}{erc721CollectionExtraData.floor_price_30d_percentage_change.usd.toFixed(2) + '%'}
+                                <TableCell className={erc721CollectionExtraData?.floor_price_30d_percentage_change?.usd < 0 ? 'text-red-500' : 'text-green-500'}>
+                                    {erc721CollectionExtraData?.floor_price_30d_percentage_change?.usd >= 0 ? '+' : ''}{erc721CollectionExtraData?.floor_price_30d_percentage_change?.usd.toFixed(2) + '%'}
                                 </TableCell>
                             </TableRow>
                             <TableRow className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">Floor Price 60 Day % Change</TableCell>
-                                <TableCell className={erc721CollectionExtraData.floor_price_60d_percentage_change.usd < 0 ? 'text-red-500' : 'text-green-500'}>
-                                    {erc721CollectionExtraData.floor_price_60d_percentage_change.usd >= 0 ? '+' : ''}{erc721CollectionExtraData.floor_price_60d_percentage_change.usd.toFixed(2) + '%'}
+                                <TableCell className={erc721CollectionExtraData?.floor_price_60d_percentage_change?.usd < 0 ? 'text-red-500' : 'text-green-500'}>
+                                    {erc721CollectionExtraData?.floor_price_60d_percentage_change?.usd >= 0 ? '+' : ''}{erc721CollectionExtraData?.floor_price_60d_percentage_change?.usd.toFixed(2) + '%'}
                                 </TableCell>
                             </TableRow>
                             <TableRow className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">Total Supply</TableCell>
                                 <TableCell className='text-gray-300'>
-                                    {erc721CollectionExtraData.total_supply}
+                                    {erc721CollectionExtraData?.total_supply}
                                 </TableCell>
                             </TableRow>
                             <TableRow className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">One Day Sales</TableCell>
                                 <TableCell className='text-gray-300'>
-                                    {erc721CollectionExtraData.one_day_sales}
+                                    {erc721CollectionExtraData?.one_day_sales}
                                 </TableCell>
                             </TableRow>
                             <TableRow className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">One Day Average Sale Price</TableCell>
                                 <TableCell className="text-gray-300">
-                                    {erc721CollectionExtraData.one_day_average_sale_price + ' ETH'}
+                                    {erc721CollectionExtraData?.one_day_average_sale_price + ' ETH'}
                                 </TableCell>
                             </TableRow>
                         </TableBody>

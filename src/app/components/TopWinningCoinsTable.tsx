@@ -34,7 +34,7 @@ export default function TopWinningCoinsTable() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {coins?.top_gainers.splice(0, 5).map(coin => (
+                        {coins?.top_gainers?.splice(0, 5).map(coin => (
                             <TableRow key={coin.name} className="border-b border-gray-800">
                                 <TableCell className="font-medium text-gray-100">
                                     <Link href={'/prices/' + coin.id}><u>{coin.name}</u></Link>

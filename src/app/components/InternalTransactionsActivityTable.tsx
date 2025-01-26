@@ -34,7 +34,7 @@ export default async function InternalTransactionsActivityTable( props : { addre
                     </TableHeader>
                     <TableBody>
                     {
-                        tableData.splice(0, 100).map((transaction, index: number) => { 
+                        tableData?.splice(0, 100).map((transaction, index: number) => { 
                             return (
                                 <TableRow key={index} className="border-b border-gray-800">
                                     <TableCell className="text-gray-100">{new Date(Number(transaction.timeStamp)*1000).toISOString().split("T")[0] + ' ' + new Date(Number(transaction.timeStamp)*1000).toISOString().split("T")[1].split('.')[0]}</TableCell>

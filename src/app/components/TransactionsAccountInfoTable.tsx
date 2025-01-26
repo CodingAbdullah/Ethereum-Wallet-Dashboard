@@ -32,9 +32,9 @@ export default async function TransactionsAccountInfoTable( props : { address: s
                     </TableHeader>
                     <TableBody>
                         <TableRow className="border-b border-gray-800">
-                            <TableCell className="text-gray-100">{tableData.ethPrice}</TableCell>
-                            <TableCell className="text-gray-300">{tableData.ethBalance}</TableCell>
-                            <TableCell className="text-gray-300">{tableData.usdValue}</TableCell>
+                            <TableCell className="text-gray-100">{tableData?.ethPrice}</TableCell>
+                            <TableCell className="text-gray-300">{tableData?.ethBalance}</TableCell>
+                            <TableCell className="text-gray-300">{tableData?.usdValue}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>

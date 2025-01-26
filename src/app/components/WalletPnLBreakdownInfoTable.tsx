@@ -39,7 +39,7 @@ export default function WalletPnLBreakdownInfoTable(props: { address: string }) 
                     </TableHeader>
                     <TableBody>
                         {
-                            walletPnLBreakdownData.result.map((pnl, index:number) => {
+                            walletPnLBreakdownData?.result?.map((pnl, index:number) => {
                                 return (
                                     <TableRow key={index} className="border-b border-gray-800">
                                         <TableCell className="text-gray-300">{pnl.name}</TableCell>

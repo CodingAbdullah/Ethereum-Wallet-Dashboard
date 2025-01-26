@@ -19,13 +19,13 @@ export default function ENSToAddressInfoTable(props: { data: { name: string, add
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    <TableRow key={data.name} className="border-b border-gray-800">
+                    <TableRow key={data?.name} className="border-b border-gray-800">
                         <TableCell className="font-medium text-gray-100">
-                            <Link target="_blank" href={'https://' + data.name + '.xyz/'}>
-                                <u>{'https://' + data.name + '.xyz/'}</u>
+                            <Link target="_blank" href={'https://' + data?.name + '.xyz/'}>
+                                <u>{'https://' + data?.name + '.xyz/'}</u>
                             </Link>
                         </TableCell>
-                        <TableCell className="text-gray-300">{ data.address }</TableCell>
+                        <TableCell className="text-gray-300">{ data?.address }</TableCell>
                     </TableRow>
                 </TableBody>
             </Table>

@@ -38,7 +38,7 @@ export default function ENSOwnershipInfoTable(props: { data: string }) {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {ensOwnershipData?.results.map(ens => (
+                        {ensOwnershipData?.results?.map(ens => (
                             <TableRow key={ens.ens_name} className="border-b border-gray-800">
                                 <TableCell className="font-medium text-gray-100">{ens.ens_name}</TableCell>
                                 <TableCell className="font-medium text-gray-100">{ens.registration_timestamp.split("T")[0]}</TableCell>

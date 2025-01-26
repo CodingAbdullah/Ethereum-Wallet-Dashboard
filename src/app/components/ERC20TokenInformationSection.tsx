@@ -29,15 +29,15 @@ export default function ERC20TokenInformationSection(props: { address: string })
                 <Card style={{ marginLeft: 'auto', marginRight: 'auto', width: '75%' }} className="bg-gray-900 border-gray-800 mt-10 shadow-xl w-full">
                     <CardHeader className="border-b border-gray-800 pb-6 ">
                         <CardTitle className="mx-auto text-3xl font-bold text-gray-100">
-                            {erc20TokenInformation.name}
+                            {erc20TokenInformation?.name}
                         </CardTitle>
                         <CardDescription className="mx-auto text-gray-400 text-lg font-light">
                             <i>{address}</i>
                         </CardDescription>
-                        <Image className="mx-auto" alt="ERC20_Token_Image.png" src={erc20TokenInformation.image.thumb} width={50} height={50} />
+                        <Image className="mx-auto" alt="ERC20_Token_Image.png" src={erc20TokenInformation?.image?.thumb} width={50} height={50} />
                         <div className="pt-2">
                             <CardDescription className="mx-auto text-gray-400 text-lg font-light">
-                                <i>{erc20TokenInformation.description.en}</i>
+                                <i>{erc20TokenInformation?.description?.en}</i>
                             </CardDescription>
                         </div>
                     </CardHeader>

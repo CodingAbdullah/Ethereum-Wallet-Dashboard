@@ -21,7 +21,7 @@ export default function ERC721HoldingsInfoTable(props: { data: ERC721HoldingsTyp
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {data.map((tokenHolding, index: number) => (
+                    {data?.map((tokenHolding, index: number) => (
                         <TableRow key={index} className="border-b border-gray-800">
                             <TableCell className="text-gray-300">{tokenHolding.name}</TableCell>
                             <TableCell className="text-gray-300">{tokenHolding.contract_type}</TableCell>

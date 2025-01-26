@@ -35,7 +35,7 @@ export default function ERC721CollectionSalesInfoTable(props : { address: string
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {erc721CollectionSalesData.map((sale, index: number) => {
+                        {erc721CollectionSalesData?.map((sale, index: number) => {
                            return (
                                 <TableRow key={index} className="border-b border-gray-800">
                                     <TableCell className="text-gray-300">{sale.block_timestamp.split(".")[0]}</TableCell>

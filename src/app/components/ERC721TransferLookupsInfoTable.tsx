@@ -34,7 +34,7 @@ export default function ERC721TransferLookupsInfoTable(props: { address: string,
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {data?.information.result.map((transfer, index: number) => (
+                        {data?.information?.result.map((transfer, index: number) => (
                             <TableRow key={index} className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">{String(transfer.block_timestamp).split(".")[0]}</TableCell>
                                 <TableCell className="text-gray-300">{transfer.from_address}</TableCell>

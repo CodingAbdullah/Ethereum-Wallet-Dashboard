@@ -37,7 +37,7 @@ export default function ERC721SalesLookupsInfoTable(props: { address: string, to
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {data?.information.results.map((transfer, index: number) => (
+                        {data?.information?.results.map((transfer, index: number) => (
                             <TableRow key={index} className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">{String(transfer.timestamp).split("T")[0]}</TableCell>
                                 <TableCell className="text-gray-300">{transfer.exchange_name + '-' + transfer.contract_version}</TableCell>

@@ -23,7 +23,7 @@ export default function ERC721TransfersInfoTable(props: { data: ERC721TransfersT
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {data.map((tokenTransfer, index: number) => (
+                    {data?.map((tokenTransfer, index: number) => (
                         <TableRow key={index} className="border-b border-gray-800">
                             <TableCell className="text-gray-300">{tokenTransfer.block_timestamp.split("T")[0]}</TableCell>
                             <TableCell className="text-gray-300">{tokenTransfer.token_address}</TableCell>

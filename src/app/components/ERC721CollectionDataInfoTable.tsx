@@ -36,11 +36,11 @@ export default function ERC721CollectionDataInfoTable(props: { address: string }
                     </TableHeader>
                     <TableBody>
                         <TableRow className="border-b border-gray-800">
-                            <TableCell className="text-gray-300">{erc721CollectionData.name}</TableCell>
-                            <TableCell className="text-gray-300">{erc721CollectionData.symbol}</TableCell>
-                            <TableCell className="text-gray-300">{erc721CollectionData.contract_type}</TableCell>
-                            <TableCell className="text-gray-300">{erc721CollectionData.token_address}</TableCell>
-                            <TableCell className="text-gray-300">{erc721CollectionData.verified_collection ? "YES" : "NO"}</TableCell>
+                            <TableCell className="text-gray-300">{erc721CollectionData?.name}</TableCell>
+                            <TableCell className="text-gray-300">{erc721CollectionData?.symbol}</TableCell>
+                            <TableCell className="text-gray-300">{erc721CollectionData?.contract_type}</TableCell>
+                            <TableCell className="text-gray-300">{erc721CollectionData?.token_address}</TableCell>
+                            <TableCell className="text-gray-300">{erc721CollectionData?.verified_collection ? "YES" : "NO"}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>

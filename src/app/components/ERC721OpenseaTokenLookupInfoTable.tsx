@@ -27,7 +27,7 @@ export default function ERC721OpenseaTokenLookupInfoTable(props: { address: stri
         return (
             <div className="p-4 bg-gray-900 mt-10 shadow-lg">
                 <h2 className="text-2xl font-bold mb-4 text-gray-100">Opensea Token Information</h2>
-                <ERC721TokenPictureSection url={openseaInformation.image_url} name={openseaInformation.name} />
+                <ERC721TokenPictureSection url={openseaInformation?.image_url} name={openseaInformation?.name} />
                 <Table>
                     <TableHeader>
                         <TableRow>
@@ -38,31 +38,31 @@ export default function ERC721OpenseaTokenLookupInfoTable(props: { address: stri
                     <TableBody>
                         <TableRow className="border-b border-gray-800">
                             <TableCell className="text-gray-300">Name</TableCell>
-                            <TableCell className="text-gray-300">{openseaInformation.name}</TableCell>
+                            <TableCell className="text-gray-300">{openseaInformation?.name}</TableCell>
                         </TableRow>
                         <TableRow className="border-b border-gray-800">
                             <TableCell className="text-gray-300">Token Standard</TableCell>
-                            <TableCell className="text-gray-300">{openseaInformation.token_standard.toUpperCase()}</TableCell>
+                            <TableCell className="text-gray-300">{openseaInformation?.token_standard.toUpperCase()}</TableCell>
                         </TableRow>
                         <TableRow className="border-b border-gray-800">
                             <TableCell className="text-gray-300">Creator Address</TableCell>
-                            <TableCell className="text-gray-300">{openseaInformation.creator}</TableCell>
+                            <TableCell className="text-gray-300">{openseaInformation?.creator}</TableCell>
                         </TableRow>
                         <TableRow className="border-b border-gray-800">
                             <TableCell className="text-gray-300">Owner Address</TableCell>
-                            <TableCell className="text-gray-300">{openseaInformation.owners[0].address}</TableCell>
+                            <TableCell className="text-gray-300">{openseaInformation?.owners[0]?.address}</TableCell>
                         </TableRow>
                         <TableRow className="border-b border-gray-800">
                             <TableCell className="text-gray-300">Rarity Rank</TableCell>
-                            <TableCell className="text-gray-300">{openseaInformation.rarity.rank}</TableCell>
+                            <TableCell className="text-gray-300">{openseaInformation?.rarity?.rank}</TableCell>
                         </TableRow>
                         <TableRow className="border-b border-gray-800">
                             <TableCell className="text-gray-300">Suspicious?</TableCell>
-                            <TableCell className="text-gray-300">{openseaInformation.is_suspicious ? "YES" : "NO"}</TableCell>
+                            <TableCell className="text-gray-300">{openseaInformation?.is_suspicious ? "YES" : "NO"}</TableCell>
                         </TableRow>
                         <TableRow className="border-b border-gray-800">
                             <TableCell className="text-gray-300">Updated At</TableCell>
-                            <TableCell className="text-gray-300">{openseaInformation.updated_at.split(".")[0]}</TableCell>
+                            <TableCell className="text-gray-300">{openseaInformation?.updated_at.split(".")[0]}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>

@@ -34,12 +34,12 @@ export default function TopERC721CollectionsInfoTable() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {collections?.topCollections.map((collection, index: number) => (
+                        {collections?.topCollections?.map((collection, index: number) => (
                             <TableRow key={index} className="border-b border-gray-800">
                                 <TableCell className="font-medium text-gray-100">{collection.collection_title}</TableCell>
                                 <TableCell className="text-gray-300">
                                     <div className="flex items-center space-x-2">
-                                        <Image unoptimized alt={`${collection.collection_image} logo`} height={20} width={20} src={collection.collection_image} />
+                                        <Image alt={`${collection.collection_image} logo`} height={20} width={20} src={collection.collection_image} />
                                     </div>
                                 </TableCell>
                                 <TableCell className="text-gray-300">{"$" + collection.floor_price_usd}</TableCell>

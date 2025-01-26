@@ -28,16 +28,16 @@ export default async function OpenseaAccountInfoTable(props: { address: string }
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow key={metric.username} className="border-b border-gray-800">
+                        <TableRow key={metric?.username} className="border-b border-gray-800">
                             <TableCell className="font-medium text-gray-100">Username</TableCell>
-                            <TableCell className="text-gray-300">{metric.username}</TableCell>
+                            <TableCell className="text-gray-300">{metric?.username}</TableCell>
                         </TableRow>
-                        <TableRow key={metric.website} className="border-b border-gray-800">
+                        <TableRow key={metric?.website} className="border-b border-gray-800">
                             <TableCell className="font-medium text-gray-100">Website</TableCell>
-                            <TableCell className="text-gray-300">{metric.website ? metric.website : 'N/A'}</TableCell>
+                            <TableCell className="text-gray-300">{metric?.website ? metric?.website : 'N/A'}</TableCell>
                         </TableRow>
                         {
-                            metric.social_media_accounts.map(account => {
+                            metric?.social_media_accounts?.map(account => {
                                 return (
                                     <TableRow key={account.platform} className="border-b border-gray-800">
                                         <TableCell className="font-medium text-gray-100">{account.platform}</TableCell>
@@ -46,13 +46,13 @@ export default async function OpenseaAccountInfoTable(props: { address: string }
                                 )
                             })
                         }
-                        <TableRow key={metric.bio} className="border-b border-gray-800">
+                        <TableRow key={metric?.bio} className="border-b border-gray-800">
                             <TableCell className="font-medium text-gray-100">Bio</TableCell>
-                            <TableCell className="text-gray-300">{metric.bio ? metric.bio : 'N/A'}</TableCell>
+                            <TableCell className="text-gray-300">{metric?.bio ? metric?.bio : 'N/A'}</TableCell>
                         </TableRow>
-                        <TableRow key={metric.joined_date} className="border-b border-gray-800">
+                        <TableRow key={metric?.joined_date} className="border-b border-gray-800">
                             <TableCell className="font-medium text-gray-100">Join Date</TableCell>
-                            <TableCell className="text-gray-300">{metric.joined_date}</TableCell>
+                            <TableCell className="text-gray-300">{metric?.joined_date}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>

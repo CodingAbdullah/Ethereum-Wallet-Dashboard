@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import { Input } from "./../components/ui/input";
 import { Button } from "./../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./../components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "./../components/ui/alert";
+import { Alert, AlertDescription } from "./../components/ui/alert";
 import addressValidator from '../utils/functions/addressValidator';
 import TopERC721CollectionsInfoTable from './TopERC721CollectionsInfoTable';
 import ERC721CollectionDataInfoTable from './ERC721CollectionDataInfoTable';

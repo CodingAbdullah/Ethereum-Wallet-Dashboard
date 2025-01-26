@@ -34,14 +34,14 @@ export default function TopLosingCoinsTable() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {coins?.top_losers.splice(0, 5).map(coin => (
+                        {coins?.top_losers?.splice(0, 5).map(coin => (
                             <TableRow key={coin.name} className="border-b border-gray-800">
                                 <TableCell className="font-medium text-gray-100">
                                     <Link href={'/prices/' + coin.id}><u>{coin.name}</u></Link>
                                 </TableCell>                                
                                 <TableCell className="text-gray-300">
                                     <div className="flex items-center space-x-2">
-                                        <Image unoptimized alt={`${coin.symbol} logo`} height={20} width={20} src={coin.image} />
+                                        <Image alt={`${coin.symbol} logo`} height={20} width={20} src={coin.image} />
                                         <span>{String(coin.symbol).toUpperCase()}</span>
                                     </div>
                                 </TableCell>

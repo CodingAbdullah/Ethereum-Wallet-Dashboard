@@ -34,7 +34,7 @@ export default function ERC721RarityLookupsInfoTable(props: { address: string, t
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {data?.information?.data.map((trait, index: number) => (
+                        {data?.information?.data?.map((trait, index: number) => (
                             <TableRow key={index} className="border-b border-gray-800">
                                 <TableCell className="text-gray-300">{trait.value}</TableCell>
                                 <TableCell className="text-gray-300">{trait.trait_type}</TableCell>

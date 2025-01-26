@@ -35,14 +35,14 @@ export default function HomePageTrendingCoinsTable() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {trendsData?.trendingCoinData.coins.splice(0, 7).map(coin => (
+                        {trendsData?.trendingCoinData?.coins.splice(0, 7).map(coin => (
                             <TableRow key={coin.item.id} className="border-b border-gray-800">
                                 <TableCell className="font-medium text-gray-100">
                                     <Link href={'/prices/' + coin.item.id}><u>{coin.item.name}</u></Link>
                                 </TableCell>                                
                                 <TableCell className="text-gray-300">
                                     <div className="flex items-center space-x-2">
-                                        <Image unoptimized alt={`${coin.item.symbol} logo`} height={15} width={15} src={coin.item.small} />
+                                        <Image alt={`${coin.item.symbol} logo`} height={15} width={15} src={coin.item.small} />
                                         <span>{coin.item.symbol}</span>
                                     </div>
                                 </TableCell>
