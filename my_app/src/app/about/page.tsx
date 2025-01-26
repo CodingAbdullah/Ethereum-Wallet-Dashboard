@@ -1,6 +1,5 @@
 import { AboutPageCardList } from "../utils/constants/AboutPageCardList"
 import type AboutPageCardType from "../utils/types/AboutPageCardType"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Link from "next/link"
 import type { Metadata } from "next"
 
@@ -43,7 +42,6 @@ export default function AboutPage() {
               >
                 <div className="p-8 flex flex-col items-center text-center h-full justify-between">
                   <div>
-                    <FontAwesomeIcon icon={feature.icon} className="text-4xl text-gray-400 mb-6" />
                     <h3 className="text-2xl font-semibold mb-4">{feature.title}</h3>
                     <p className="text-gray-400 mb-6">{feature.description}</p>
                   </div>
