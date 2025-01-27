@@ -3,6 +3,6 @@ import { Links } from "./Links";
 
 // Footer Links Constant
 export const FooterLinks: FooterLinksObject = {
-    ecosystem: Links.filter((_, index) => index <= 6),
-    social: Links.filter((_, index) => index > 6 && index <= 8)
+    ecosystem: Links.filter((_, index) => index <= 7),
+    social: Links.filter((_, index) => index > 7 && index <= 9)
 }

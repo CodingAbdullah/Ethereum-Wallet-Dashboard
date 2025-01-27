@@ -7,7 +7,7 @@ export const NavbarLinks: NavbarLinkObject[] = [
         dropdown: [
             { name: 'EIP Protocols', href: '/eip-protocols' },
             { name: 'Market Insights', href: '/market-insights' },
-            { name: 'Staking/Validators', href: '/staking-validators' },
+            { name: 'Staking/Validators', href: '/staking' },
             { name: 'Token Analytics', href: '/collections' },
             { name: 'Wallet Analytics', href: '/wallet-analytics' }
         ]
