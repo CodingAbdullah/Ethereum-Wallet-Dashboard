@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { AlertCircle, Home } from 'lucide-react';
 import { Button } from "../components/ui/button";
 
-// Custom Error Page for the EIP Protocols Page
-export default function EIPProtocolsErrorPage({
+// Custom Error Page for the Staking Page
+export default function StakingErrorPage({
   error,
   reset,
 }: {
@@ -18,14 +18,14 @@ export default function EIPProtocolsErrorPage({
     console.error(error)
   }, [error])
 
-  // Render Custom Error Page for EIP Protocols
+  // Render Custom Error Page for Staking
   return (
     <div className="bg-gray-800 text-gray-300 py-10 px-4 sm:px-6 lg:px-8 shadow-lg">
       <div className="text-center">
         <AlertCircle className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-        <h3 className="text-3xl font-bold text-gray-100 mb-4">Error Loading EIP Protocols Page</h3>
+        <h3 className="text-3xl font-bold text-gray-100 mb-4">Error Loading Staking Page</h3>
         <p className="text-xl text-gray-400 mb-8">
-          We are having trouble retrieving the EIP Protocols page. This could likely be due to network issues. 
+          We are having trouble retrieving the Staking page. This could likely be due to network issues. 
           <br />
         </p>
         <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">

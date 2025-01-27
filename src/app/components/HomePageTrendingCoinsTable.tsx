@@ -46,7 +46,7 @@ export default function HomePageTrendingCoinsTable() {
                                         <span>{coin.item.symbol}</span>
                                     </div>
                                 </TableCell>
-                                <TableCell className="text-gray-300">{"$" + Number(coin.item.data.price).toFixed(2)}</TableCell>
+                                <TableCell className="text-gray-300">{Number(coin.item.data.price) < 0.01 ? '<$0.01' : "$" + Number(coin.item.data.price).toFixed(2)}</TableCell>
                                 <TableCell className={Number(coin.item.data.price_change_percentage_24h.usd) >= 0 ? 'text-green-500' : 'text-red-500'}>
                                     {Number(coin.item.data.price_change_percentage_24h.usd) > 0 ? '+' + Number(coin.item.data.price_change_percentage_24h.usd).toFixed(2) : Number(coin.item.data.price_change_percentage_24h.usd).toFixed(2)}%
                                 </TableCell>
