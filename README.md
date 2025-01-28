@@ -76,7 +76,7 @@ Explore your Ethereum wallet with an all-in-one dashboard built using **Next.js*
 
 ### Prerequisites  
 - **Node.js** and **npm** installed.  
-- API keys for Alchemy, CoinGecko, Transpose, Moralis, Opensea, BlockNative, and Etherscan.  
+- API keys for Alchemy, BeaconChain, CoinGecko, Transpose, Moralis, Opensea, BlockNative, and Etherscan.  
 
 ### Installation  
 1. Clone the repository and run <code>npm install</code> to add in the necessary dependencies:  
