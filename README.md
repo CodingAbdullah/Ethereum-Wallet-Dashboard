@@ -89,6 +89,7 @@ Explore your Ethereum wallet with an all-in-one dashboard built using **Next.js*
     ETHERSCAN_API_KEY=''
     MORALIS_API_KEY=''
     BLK_API_KEY=''
+    BEACON_CHAIN_API_KEY=''
     ALCHEMY_API_KEY=''
     COINGECKO_API_KEY=''
     OPENSEA_API_KEY=''
