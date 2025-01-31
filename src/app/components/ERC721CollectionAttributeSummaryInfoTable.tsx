@@ -19,10 +19,10 @@ export default function ERC721CollectionAttributeSummaryInfoTable(props: { addre
         throw new Error();
     }
     else {
-        const erc721CollectionAttributeData = data.information.data.summary;
+        const erc721CollectionAttributeData = data.information.summary;
 
         // Spread out, in an array, the attributes of the particular collection
-        const attributes = [...Object.keys(data.information.data.summary)]; 
+        const attributes = [...Object.keys(data.information.summary)]; 
 
         // Render Attributes Summary Info Table Component
         return (

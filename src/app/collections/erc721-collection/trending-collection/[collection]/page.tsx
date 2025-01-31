@@ -1,5 +1,3 @@
-"use client";
-
 import ERC721CollectionAttributeSummaryInfoTable from "@/app/components/ERC721CollectionAttributeSummaryInfoTable";
 import ERC721CollectionDataInfoTable from "@/app/components/ERC721CollectionDataInfoTable";
 import ERC721CollectionExtraDataInfoTable from "@/app/components/ERC721CollectionExtraDataInfoTable";
@@ -7,15 +5,19 @@ import ERC721CollectionFloorPriceInfoTable from "@/app/components/ERC721Collecti
 import ERC721CollectionSalesInfoTable from "@/app/components/ERC721CollectionSalesInfoTable";
 import ERC721CollectionTransfersInfoTable from "@/app/components/ERC721CollectionTransfersInfoTable";
 import { collectionValidator } from "@/app/utils/functions/collectionValidator";
-import { useRouter } from "next/router";
+import type { Metadata } from "next"
 
+// Custom Metadata for SEO
+export const metadata: Metadata = {
+    title: "Ethereum Trending Collection Analytics",
+    description: "Lookup and analyze a trending Ethereum ERC721 collection"
+}
 // Displaying historical price information of a particular coin
-export default async function TrendingCollectionsPage() {
-    const router = useRouter();
-    const collection = String(router.query.collection);
+export default async function TrendingCollectionsPage({ params }: { params: Promise<{ collection: string }>}) {
+    const collectionAddress = (await params).collection
 
     // Check validity of this coin by running a custom function validating if it exists within the Coin Gecko coin list
-    const validateCollection = await collectionValidator(collection);
+    const validateCollection = await collectionValidator(collectionAddress);
 
     if (validateCollection !== '') {
         // Render the Generic Chart Page componen if the coin ID is valid
@@ -27,14 +29,14 @@ export default async function TrendingCollectionsPage() {
                     </span>
                 </h4>
                 <p className="text-xl text-gray-400 mb-12 text-center">
-                    <i>{collection.toUpperCase()} - {validateCollection}</i>
+                    <i>{collectionAddress.toUpperCase()} - {validateCollection.trim()}</i>
                 </p>
-                <ERC721CollectionDataInfoTable address={validateCollection} />
-                <ERC721CollectionFloorPriceInfoTable address={validateCollection} />
-                <ERC721CollectionExtraDataInfoTable address={validateCollection} />
-                <ERC721CollectionAttributeSummaryInfoTable address={validateCollection} />
-                <ERC721CollectionTransfersInfoTable address={validateCollection} />
-                <ERC721CollectionSalesInfoTable address={validateCollection} />
+                <ERC721CollectionDataInfoTable address={validateCollection.trim()} />
+                <ERC721CollectionFloorPriceInfoTable address={validateCollection.trim()} />
+                <ERC721CollectionExtraDataInfoTable address={validateCollection.trim()} />
+                <ERC721CollectionAttributeSummaryInfoTable address={validateCollection.trim()} />
+                <ERC721CollectionTransfersInfoTable address={validateCollection.trim()} />
+                <ERC721CollectionSalesInfoTable address={validateCollection.trim()} />
             </div>
         )
     }   

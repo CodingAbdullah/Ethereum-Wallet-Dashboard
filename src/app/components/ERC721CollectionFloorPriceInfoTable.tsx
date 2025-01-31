@@ -21,7 +21,7 @@ export default function ERC721CollectionFloorPriceInfoTable(props : { address: s
         throw new Error();
     }
     else {
-        const floorPriceData: ERC721CollectionFloorPriceInfoType = data.information.data;
+        const floorPriceData: ERC721CollectionFloorPriceInfoType = data.information;
 
         // Render the ERC721 Collection Floor Price Info Table Component
         return (
