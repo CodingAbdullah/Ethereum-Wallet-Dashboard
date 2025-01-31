@@ -6,22 +6,18 @@ import ERC721CollectionSalesInfoTable from "@/app/components/ERC721CollectionSal
 import ERC721CollectionTransfersInfoTable from "@/app/components/ERC721CollectionTransfersInfoTable";
 import { collectionValidator } from "@/app/utils/functions/collectionValidator";
 import type { Metadata } from "next"
+import { useRouter } from "next/router";
 
 // Custom Metadata for SEO
 export const metadata: Metadata = {
     title: "Ethereum Trending Collection Analytics",
     description: "Lookup and analyze a trending Ethereum ERC721 collection"
 }
-
-type PageProps = {
-    params: {
-      collection: string
-    }
-  }
-  
+ 
 // Displaying historical price information of a particular coin
-export default async function TrendingCollectionsPage({ params }: PageProps ) {
-    const collection = params.collection;
+export default async function TrendingCollectionsPage() {
+    const router = useRouter();
+    const collection = String(router.query.collection);
 
     // Check validity of this coin by running a custom function validating if it exists within the Coin Gecko coin list
     const validateCollection = await collectionValidator(collection);
