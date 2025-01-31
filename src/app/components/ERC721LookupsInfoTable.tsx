@@ -4,6 +4,7 @@ import useSWR from "swr";
 import PostFetcher from "../utils/functions/PostFetcher";
 import ERC721LookupsInfoType from "../utils/types/ERC721LookupsInfoType";
 import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from "./ui/table";
+import PostFetcherArgumentsType from '../utils/types/PostFetcherArgumentsType';
 import Link from "next/link";
 
 // Custom ERC721 Lookups Info Table Component
@@ -11,7 +12,8 @@ export default function ERC721LookupsInfoTable(props: { address: string, network
     const { address, network, tokenID } = props;
 
     // Make API call upon loading the custom component
-    const { data, error, isLoading } = useSWR(['/api/erc721-lookup-by-id', { address, network, id: tokenID }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error, isLoading } = 
+    useSWR(['/api/erc721-lookup-by-id', { address, network, id: tokenID }], ([url, body]: [string, PostFetcherArgumentsType]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
     
     // Conditionally render ERC721 Lookups Info Table component
     if (isLoading) {

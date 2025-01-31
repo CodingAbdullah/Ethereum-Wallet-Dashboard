@@ -3,11 +3,13 @@
 import useSWR from "swr";
 import PostFetcher from "../utils/functions/PostFetcher";
 import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from "./ui/table";
+import PostFetcherArgumentsType from '../utils/types/PostFetcherArgumentsType';
 
 // ERC721 Collection Attribute Summary Info Table Custom Component
 export default function ERC721CollectionAttributeSummaryInfoTable(props: { address: string }){
     const { address } = props;
-    const { data, error, isLoading } = useSWR(['/api/erc721-collection-attributes', { address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 1000000000 });
+    const { data, error, isLoading } = 
+    useSWR(['/api/erc721-collection-attributes', { address }], ([url, body]: [string, PostFetcherArgumentsType]) => PostFetcher(url, { arg: body }), { refreshInterval: 1000000000 });
 
     // Conditionally render component
     if (isLoading) {

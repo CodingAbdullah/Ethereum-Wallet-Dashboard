@@ -4,13 +4,15 @@ import useSWR from "swr";
 import PostFetcher from "../utils/functions/PostFetcher";
 import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from "./ui/table";
 import ERC721RarityLookupType from "../utils/types/ERC721RarityLookupType";
+import PostFetcherArgumentsType from '../utils/types/PostFetcherArgumentsType';
 
 // Custom ERC721 Rarity Lookups Info Table Component
 export default function ERC721RarityLookupsInfoTable(props: { address: string, tokenID: string, network: string }) {
     const { address, tokenID, network } = props;
 
     // Make API call upon loading the custom component
-    const { data, error, isLoading } = useSWR<{ information: { data : ERC721RarityLookupType[] }}>(['/api/erc721-lookup-rarity-by-id', { address, id: tokenID, network }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error, isLoading } = 
+    useSWR<{ information: { data : ERC721RarityLookupType[] }}>(['/api/erc721-lookup-rarity-by-id', { address, id: tokenID, network }], ([url, body]: [string, PostFetcherArgumentsType]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
     
     // Conditionally render the info table 
     if (isLoading) {

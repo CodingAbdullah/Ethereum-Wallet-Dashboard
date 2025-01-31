@@ -5,11 +5,13 @@ import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from ".
 import PostFetcher from "../utils/functions/PostFetcher";
 import WalletPnLBreakdownInfoType from "../utils/types/WalletPnLBreakdownInfoType";
 import Image from "next/image";
+import PostFetcherArgumentsType from '../utils/types/PostFetcherArgumentsType';
 
 // Custom Wallet PnL Breakdown Info Table Component
 export default function WalletPnLBreakdownInfoTable(props: { address: string }) {
     const { address } = props;
-    const { data, error: walletPnLBreakdownError, isLoading: loadingWalletPnLBreakdownData } = useSWR(['/api/wallet-pnl-breakdown-data', { address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error: walletPnLBreakdownError, isLoading: loadingWalletPnLBreakdownData } = 
+    useSWR(['/api/wallet-pnl-breakdown-data', { address }], ([url, body]: [string, PostFetcherArgumentsType]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
     // Conditionally render Wallet PnL Breakdown Info Table Component
     if (loadingWalletPnLBreakdownData) {

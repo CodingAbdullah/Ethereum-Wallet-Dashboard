@@ -5,11 +5,13 @@ import PostFetcher from "../utils/functions/PostFetcher";
 import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from "./ui/table";
 import ERC721CollectionFloorPriceInfoType from "../utils/types/ERC721CollectionFloorPriceInfoType";
 import Link from "next/link";
+import PostFetcherArgumentsType from '../utils/types/PostFetcherArgumentsType';
 
 // ERC721 Collection Floor Price Info Table Custom Component
 export default function ERC721CollectionFloorPriceInfoTable(props : { address: string }){
     const { address } = props;
-    const { data, error, isLoading } = useSWR(['/api/erc721-collection-floor-price', { address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error, isLoading } = 
+    useSWR(['/api/erc721-collection-floor-price', { address }], ([url, body]: [string, PostFetcherArgumentsType]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
     // Conditionally render component
     if (isLoading) {

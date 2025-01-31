@@ -8,11 +8,13 @@ import ERC721CollectionExtraDataType from "../utils/types/ERC721CollectionExtraD
 import ERC721CollectionFloorPriceChart from "./ERC721CollectionFloorPriceChart";
 import ERC721CollectionMarketCapChart from "./ERC721CollectionMarketCapChart";
 import ERC721CollectionVolumeChart from "./ERC721CollectionVolumeChart";
+import PostFetcherArgumentsType from '../utils/types/PostFetcherArgumentsType';
 
 // ERC721 Collection Extra Data Info Table Custom Component
 export default function ERC721CollectionExtraDataInfoTable(props : { address: string }){
     const { address } = props;
-    const { data, error, isLoading } = useSWR(['/api/erc721-collection-extra-data', { address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error, isLoading } = 
+    useSWR(['/api/erc721-collection-extra-data', { address }], ([url, body]: [string, PostFetcherArgumentsType]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
     // Conditionally render component
     if (isLoading) {

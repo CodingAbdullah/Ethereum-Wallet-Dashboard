@@ -4,11 +4,13 @@ import useSWR from "swr";
 import PostFetcher from "@/app/utils/functions/PostFetcher";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
 import ENSResolverType from "../utils/types/ENSResolverType";
+import PostFetcherArgumentsType from '../utils/types/PostFetcherArgumentsType';
 
 // ENS Resolver Info Table Component
 export default function ENSResolverInfoTable(props: { data: string }) {
     const { data } = props;
-    const { data: ensResolverData, error, isLoading } = useSWR<{ results: ENSResolverType[] }>(['/api/ens-resolver-information', { address: data }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data: ensResolverData, error, isLoading } = 
+    useSWR<{ results: ENSResolverType[] }>(['/api/ens-resolver-information', { address: data }], ([url, body]: [string, PostFetcherArgumentsType]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
     // Conditionally render ENS Resolver data
     if (isLoading) {

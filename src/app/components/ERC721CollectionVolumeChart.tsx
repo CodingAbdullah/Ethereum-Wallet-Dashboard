@@ -7,6 +7,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { Card, CardContent, CardDescription, CardHeader } from "../components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import ERC721CollectionExtraDataType from '../utils/types/ERC721CollectionExtraDataType';
+import PostFetcherArgumentsType from '../utils/types/PostFetcherArgumentsType';
 
 // ERC721 Collection Volume Chart Custom Component
 export default function ERC721CollectionVolumeChart(props: { data: ERC721CollectionExtraDataType, address: string }) {
@@ -14,7 +15,8 @@ export default function ERC721CollectionVolumeChart(props: { data: ERC721Collect
     const [interval, setInterval] = useState<string>('14');
 
     // Fetch data for chart display
-    const { data: erc721CollectionVolumeData, error: erc721CollectionVolumeError, isLoading: erc721CollectionVolumeLoading } = useSWR(['/api/erc721-collection-chart-data', { address, interval }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data: erc721CollectionVolumeData, error: erc721CollectionVolumeError, isLoading: erc721CollectionVolumeLoading } = 
+    useSWR(['/api/erc721-collection-chart-data', { address, interval }], ([url, body]: [string, PostFetcherArgumentsType]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
     // Conditionally render data
     if (erc721CollectionVolumeError) {
