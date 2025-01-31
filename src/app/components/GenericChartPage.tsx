@@ -29,7 +29,7 @@ export default function GenericChartPage(props: { data: CoinChartInfoType }) {
         const chartData = coinChartData.coinPrices;
 
         // Modifying the y-axis domain for appropriate ranges
-        const prices = coinChartData.coinPrices.map((item: any) => item.price);
+        const prices = coinChartData.coinPrices.map((item: { price: string }) => item.price);
         const min = Math.min(...prices);
         const max = Math.max(...prices);
         const buffer = (max - min) * 0.1; // 10% buffer

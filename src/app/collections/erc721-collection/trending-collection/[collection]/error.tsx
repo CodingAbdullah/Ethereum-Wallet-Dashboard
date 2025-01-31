@@ -7,8 +7,7 @@ import { Button } from "../../../../components/ui/button";
 
 // Custom Error Page for the Trending Collections Pages
 export default function TrendingCollectionsPageError({
-  error,
-  reset,
+  error
 }: {
   error: Error & { digest?: string }
   reset: () => void

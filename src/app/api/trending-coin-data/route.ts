@@ -5,10 +5,9 @@ const PRO_COINGECKO_URL = "https://pro-api.coingecko.com/api/v3"; // Pro CoinGec
 // Custom Route Handler function
 export async function GET(){
     const TRENDINGCOINS_ENDPOINT = '/search/trending'; // Trending coins in the market
-    let trendingCoinData = "";
     
     // Setting options for authenticated API call
-    let options = {
+    const options = {
         method: "GET",
         headers : {
             'content-type' : 'application/json',

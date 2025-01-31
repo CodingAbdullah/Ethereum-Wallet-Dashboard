@@ -20,7 +20,7 @@ export async function POST(request: Request){
         } as HeadersInit
     }
 
-    let coinInfo = [];
+    const coinInfo = [];
 
     // Fetch current coin price information using the coin ID provided by user
     const response = await fetch(PRO_COINGECKO_URL + CURRENCY_ENDPOINT + QUERY_STRING, options); // Fetch current coin price
@@ -30,12 +30,12 @@ export async function POST(request: Request){
         const information = await response.json();
         coinInfo.push(information);
 
-        NextResponse.json({
+        return NextResponse.json({
             coinInfoData: coinInfo
         });
     }
     else {
-        NextResponse.json({
+        return NextResponse.json({
             message: "Could not retrieve data"
         }, { status: 400 });
     }

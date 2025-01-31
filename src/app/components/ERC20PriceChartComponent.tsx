@@ -30,7 +30,7 @@ export default function ERC20PriceChartComponent(props: { data: ERC20TokenInform
         const chartData = erc20ChartData.coinPrices;
 
         // Modifying the y-axis domain for appropriate ranges
-        const prices = erc20ChartData.coinPrices.map((item: any) => item.price);
+        const prices = erc20ChartData.coinPrices.map((item: { price: string }) => item.price);
         const min = Math.min(...prices);
         const max = Math.max(...prices);
         const buffer = (max - min) * 0.1; // 10% buffer

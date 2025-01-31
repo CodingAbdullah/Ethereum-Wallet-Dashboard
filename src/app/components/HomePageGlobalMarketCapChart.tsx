@@ -21,7 +21,7 @@ export default function HomePageGlobalMarketCapChart() {
         const chartData = marketChartData.capValues;
 
         // Adjusting the y-axis for display
-        const chart = marketChartData.capValues.map((item: any) => item.price);
+        const chart = marketChartData.capValues.map((item: { price: string }) => item.price);
         const min = Math.min(...chart);
         const max = Math.max(...chart);
         const buffer = (max - min) * 0.1; // 10% buffer

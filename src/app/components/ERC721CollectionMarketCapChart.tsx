@@ -28,7 +28,7 @@ export default function ERC721CollectionMarketCapChart(props: { data: ERC721Coll
         const chartData = erc721CollectionMarketCapData.marketCaps;
 
         // Modifying the y-axis domain for appropriate ranges
-        const prices = erc721CollectionMarketCapData.marketCaps.map((item: any) => item.price);
+        const prices = erc721CollectionMarketCapData.marketCaps.map((item: { price: string }) => item.price);
         const min = Math.min(...prices);
         const max = Math.max(...prices);
         const buffer = (max - min) * 0.1; // 10% buffer

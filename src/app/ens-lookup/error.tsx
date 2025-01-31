@@ -7,8 +7,7 @@ import { Button } from "../components/ui/button"
 
 // Custom Error Page for ENS Error Page
 export default function ENSErrorPage({
-  error,
-  reset,
+  error
 }: {
   error: Error & { digest?: string }
   reset: () => void

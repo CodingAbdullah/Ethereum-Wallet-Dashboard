@@ -4,7 +4,7 @@ import { useState } from 'react';
 import useSWR from 'swr';
 import PostFetcher from '../utils/functions/PostFetcher';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader } from "../components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import ERC721CollectionExtraDataType from '../utils/types/ERC721CollectionExtraDataType';
 
@@ -28,7 +28,7 @@ export default function ERC721CollectionVolumeChart(props: { data: ERC721Collect
         const chartData = erc721CollectionVolumeData.volumes;
 
         // Modifying the y-axis domain for appropriate ranges
-        const prices = erc721CollectionVolumeData.volumes.map((item: any) => item.price);
+        const prices = erc721CollectionVolumeData.volumes.map((item: { price: string }) => item.price);
         const min = Math.min(...prices);
         const max = Math.max(...prices);
         const buffer = (max - min) * 0.1; // 10% buffer
