@@ -1,3 +1,5 @@
+"use client";
+
 import ERC721CollectionAttributeSummaryInfoTable from "@/app/components/ERC721CollectionAttributeSummaryInfoTable";
 import ERC721CollectionDataInfoTable from "@/app/components/ERC721CollectionDataInfoTable";
 import ERC721CollectionExtraDataInfoTable from "@/app/components/ERC721CollectionExtraDataInfoTable";
@@ -13,7 +15,7 @@ export const metadata: Metadata = {
     title: "Ethereum Trending Collection Analytics",
     description: "Lookup and analyze a trending Ethereum ERC721 collection"
 }
- 
+
 // Displaying historical price information of a particular coin
 export default async function TrendingCollectionsPage() {
     const router = useRouter();
