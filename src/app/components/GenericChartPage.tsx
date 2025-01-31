@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../co
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import CoinChartInfoType from '../utils/types/CoinChartInfoType';
 import priceFormatValidator from '../utils/functions/priceFormatValidator';
+import PostFetcherArgumentsType from '../utils/types/PostFetcherArgumentsType';
 
 // Generic Chart Page Custom Component
 export default function GenericChartPage(props: { data: CoinChartInfoType }) {
@@ -15,7 +16,8 @@ export default function GenericChartPage(props: { data: CoinChartInfoType }) {
     const [interval, setInterval] = useState<string>('7');
 
     // Fetch data for chart display
-    const { data: coinChartData, error: coinChartError, isLoading: coinChartDataLoading }  = useSWR(['/api/coin-prices-by-day', { coin: data.id, interval }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 50000 });
+    const { data: coinChartData, error: coinChartError, isLoading: coinChartDataLoading } = 
+    useSWR(['/api/coin-prices-by-day', { coin: data.id, interval }], ([url, body]: [string, PostFetcherArgumentsType]) => PostFetcher(url, { arg: body }), { refreshInterval: 50000 });
 
     // Conditionally render data
     if (coinChartError) {
@@ -29,7 +31,7 @@ export default function GenericChartPage(props: { data: CoinChartInfoType }) {
         const chartData = coinChartData.coinPrices;
 
         // Modifying the y-axis domain for appropriate ranges
-        const prices = coinChartData.coinPrices.map((item: any) => item.price);
+        const prices = coinChartData.coinPrices.map((item: { price: string }) => item.price);
         const min = Math.min(...prices);
         const max = Math.max(...prices);
         const buffer = (max - min) * 0.1; // 10% buffer

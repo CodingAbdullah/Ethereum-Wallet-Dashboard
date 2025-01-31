@@ -10,7 +10,7 @@ export async function POST(request: Request){
     const ERC20_PRICE_ENDPOINT = '/simple/token_price/ethereum?contract_addresses=' + body.contract + '&vs_currencies=usd';
 
     // Setting options for authenticated API call
-    let options = {
+    const options = {
         method: "GET",
         headers : {
             'content-type' : 'application/json',

@@ -7,8 +7,7 @@ import { Button } from "../../components/ui/button";
 
 // Custom Error Page for the ERC721 Collections Page
 export default function ERC721CollectionsErrorPage({
-  error,
-  reset,
+  error
 }: {
   error: Error & { digest?: string }
   reset: () => void

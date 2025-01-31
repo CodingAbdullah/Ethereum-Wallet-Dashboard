@@ -7,8 +7,7 @@ import { Button } from "../components/ui/button";
 
 // Custom Error Page for Wallet Analytics Error Page
 export default function WalletAnalyticsErrorPage({
-  error,
-  reset,
+  error
 }: {
   error: Error & { digest?: string }
   reset: () => void

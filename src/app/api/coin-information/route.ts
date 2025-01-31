@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     const CURRENCY_ENDPOINT = '/coins/' + body.coin;
 
     // Setting options for authenticated API call
-    let options = {
+    const options = {
         method: "GET",
         headers : {
             'content-type' : 'application/json',
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
         } as HeadersInit
     }
 
-    let coinInfo = [];
+    const coinInfo = [];
 
     // Fetch coin information using the coin ID provided by the user
     const response = await fetch(PRO_COINGECKO_URL + CURRENCY_ENDPOINT, options); // Fetch coin information   

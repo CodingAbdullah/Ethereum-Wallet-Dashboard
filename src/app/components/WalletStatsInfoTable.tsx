@@ -4,11 +4,13 @@ import useSWR from "swr";
 import WalletStatsType from "../utils/types/WalletStatsInfoType";
 import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from "./ui/table";
 import PostFetcher from "../utils/functions/PostFetcher";
+import PostFetcherArgumentsType from '../utils/types/PostFetcherArgumentsType';
 
 // Custom Wallet Stats Info Table Component
 export default function WalletStatsInfoTable(props: { address: string }) {
     const { address } = props;
-    const { data, error: walletStatsError, isLoading: loadingWalletStats } = useSWR(['/api/wallet-stats-data', { address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error: walletStatsError, isLoading: loadingWalletStats } = 
+    useSWR(['/api/wallet-stats-data', { address }], ([url, body]: [string, PostFetcherArgumentsType]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
     if (loadingWalletStats) {
         return <div>Loading Wallet Statistics Info Table Component...</div>

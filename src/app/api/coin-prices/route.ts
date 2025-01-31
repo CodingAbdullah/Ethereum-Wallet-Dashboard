@@ -9,7 +9,7 @@ export async function GET(){
     const COIN_PRICES_ENDPOINT = "/coins/markets?vs_currency=usd&order=market_cap_desc";
 
     // Setting headers to pass in COINGECKO API KEY (x-cg-pro-api-key)
-    let options = {
+    const options = {
         method: "GET",
         headers : {
             'content-type' : 'application/json',

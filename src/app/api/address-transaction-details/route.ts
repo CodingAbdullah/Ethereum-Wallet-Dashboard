@@ -4,8 +4,6 @@ import { NETWORK_MAPPER } from "@/app/utils/constants/NETWORK_MAPPER";
 // Set MORALIS URL for request
 const MORALIS_URL = 'https://deep-index.moralis.io/api/v2/';
 const mod = "account";
-const action = "balance";
-const tag = "latest";
 const startBlock = 0;
 const endBlock = 99999999;
 const page = 1;

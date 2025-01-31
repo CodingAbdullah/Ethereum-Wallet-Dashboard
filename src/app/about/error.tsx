@@ -7,8 +7,7 @@ import { Button } from "../components/ui/button";
 
 // Custom Error Page for the About Page
 export default function AboutErrorPage({
-  error,
-  reset,
+  error
 }: {
   error: Error & { digest?: string }
   reset: () => void

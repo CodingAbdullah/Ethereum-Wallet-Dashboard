@@ -30,7 +30,7 @@ export async function GET() {
         const data = await fetchEthereumGas();
         return NextResponse.json(data);
     } 
-    catch (error) {
+    catch {
         return NextResponse.json({ error: 'Failed to fetch Ethereum price' }, { status: 500 });
     }
 }

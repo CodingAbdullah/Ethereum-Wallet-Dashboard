@@ -7,8 +7,7 @@ import { Button } from "../components/ui/button";
 
 // Custom Error Page for Prices Error Page
 export default function PricesErrorPage({
-  error,
-  reset,
+  error
 }: {
   error: Error & { digest?: string }
   reset: () => void

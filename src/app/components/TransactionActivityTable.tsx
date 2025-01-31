@@ -1,23 +1,27 @@
+"use client";
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
 import TransactionActivityType from "../utils/types/TransactionActivityType";
+import useSWR from "swr";
+import PostFetcher from "../utils/functions/PostFetcher";
+import PostFetcherArgumentsType from '../utils/types/PostFetcherArgumentsType';
 
 // Transaction Activity Table Custom Component
-export default async function TransactionActivityTable( props : { address: string }) {
+export default function TransactionActivityTable( props : { address: string }) {
     const { address } = props;
 
-    const response = await fetch('/api/address-transaction-history', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ address })
-    });
+    // useSWR hook for enabling API request call
+    const { data: transactionActivityData, error: transactionActivityError, isLoading: loadingTransactionActivity } = 
+    useSWR<{ result: TransactionActivityType[] }>(['/api/address-transaction-history', { address }], ([url, body]: [string, PostFetcherArgumentsType]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
-    // Conditionally render data table
-    if (response.ok) {
-        const data = await response.json();
-        const tableData: TransactionActivityType[] = data.result;
-
+    // Conditionally render component
+    if (loadingTransactionActivity) {
+        return <div>Loading Transaction Activity Table...</div>
+    }
+    else if (transactionActivityError) {
+        throw new Error();
+    }
+    else {
         // Render Account Transactions Activity
         return (
             <div className="p-4 bg-gray-900 mt-10 shadow-lg">
@@ -34,7 +38,7 @@ export default async function TransactionActivityTable( props : { address: strin
                     </TableHeader>
                     <TableBody>
                     {
-                        tableData?.splice(0, 100).map((transaction, index: number) => { 
+                        transactionActivityData?.result?.splice(0, 100).map((transaction, index: number) => { 
                             return (
                                 <TableRow key={index} className="border-b border-gray-800">
                                     <TableCell className="text-gray-100">{new Date(Number(transaction.timeStamp)*1000).toISOString().split("T")[0] + ' ' + new Date(Number(transaction.timeStamp)*1000).toISOString().split("T")[1].split('.')[0]}</TableCell>
@@ -52,8 +56,5 @@ export default async function TransactionActivityTable( props : { address: strin
                 </Table>
             </div>
         )
-    }
-    else {
-        throw new Error();
     }
 }

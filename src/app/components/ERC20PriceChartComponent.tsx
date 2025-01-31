@@ -8,6 +8,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import ERC20TokenInformationSectionType from '../utils/types/ERC20TokenInformationType';
+import PostFetcherArgumentsType from '../utils/types/PostFetcherArgumentsType';
 
 // ERC20 Price Chart Custom Component
 export default function ERC20PriceChartComponent(props: { data: ERC20TokenInformationSectionType, address: string }) {
@@ -16,7 +17,8 @@ export default function ERC20PriceChartComponent(props: { data: ERC20TokenInform
     const current_price = !priceFormatValidator(data.market_data.current_price.usd) ? " $" + data.market_data.current_price.usd : " $" + Number(data.market_data.current_price.usd).toFixed(2);
 
     // Fetch data for chart display
-    const { data: erc20ChartData, error: erc20ChartError, isLoading: erc20ChartDataLoading }  = useSWR(['/api/ERC20-coin-price-duration', { contract: address, interval }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data: erc20ChartData, error: erc20ChartError, isLoading: erc20ChartDataLoading } =
+    useSWR(['/api/ERC20-coin-price-duration', { contract: address, interval }], ([url, body]: [string, PostFetcherArgumentsType]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
     // Conditionally render data
     if (erc20ChartError) {
@@ -30,7 +32,7 @@ export default function ERC20PriceChartComponent(props: { data: ERC20TokenInform
         const chartData = erc20ChartData.coinPrices;
 
         // Modifying the y-axis domain for appropriate ranges
-        const prices = erc20ChartData.coinPrices.map((item: any) => item.price);
+        const prices = erc20ChartData.coinPrices.map((item: { price: string }) => item.price);
         const min = Math.min(...prices);
         const max = Math.max(...prices);
         const buffer = (max - min) * 0.1; // 10% buffer

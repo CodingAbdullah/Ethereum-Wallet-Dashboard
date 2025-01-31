@@ -2,6 +2,6 @@ import LinkType from './LinkType';
 
 // Custom Navbar Link Object Type
 export default interface NavbarLinkObject {
-    name: String,
+    name: string,
     dropdown: LinkType[];
 };

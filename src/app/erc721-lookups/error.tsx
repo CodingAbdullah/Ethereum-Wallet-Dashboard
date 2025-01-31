@@ -7,8 +7,7 @@ import { Button } from "../components/ui/button"
 
 // Custom Error Page for ERC721 Lookups
 export default function ERC721LookupsErrorPage({
-  error,
-  reset,
+  error
 }: {
   error: Error & { digest?: string }
   reset: () => void

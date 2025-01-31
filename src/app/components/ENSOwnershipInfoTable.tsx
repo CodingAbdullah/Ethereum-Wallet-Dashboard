@@ -4,11 +4,13 @@ import useSWR from "swr";
 import PostFetcher from "@/app/utils/functions/PostFetcher";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
 import ENSOwnershipType from "../utils/types/ENSOwnershipType";
+import PostFetcherArgumentsType from "../utils/types/PostFetcherArgumentsType";
 
 // ENS Ownership Info Table Component
 export default function ENSOwnershipInfoTable(props: { data: string }) {
     const { data } = props;
-    const { data: ensOwnershipData, error, isLoading } = useSWR<{ results: ENSOwnershipType[] }>(['/api/ens-ownership-information', { address: data }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data: ensOwnershipData, error, isLoading } = 
+    useSWR<{ results: ENSOwnershipType[] }>(['/api/ens-ownership-information', { address: data }], ([url, body]: [string, PostFetcherArgumentsType]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
     // Conditionally render ENS Ownership data
     if (isLoading) {

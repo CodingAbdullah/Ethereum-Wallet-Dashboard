@@ -7,8 +7,7 @@ import { Button } from "../components/ui/button";
 
 // Custom Error Page for the Staking Page
 export default function StakingErrorPage({
-  error,
-  reset,
+  error
 }: {
   error: Error & { digest?: string }
   reset: () => void
