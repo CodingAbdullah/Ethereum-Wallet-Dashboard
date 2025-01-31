@@ -1,23 +1,27 @@
+"use client";
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
 import TransactionsAccountInformationType from "../utils/types/TransactionsAccountInformationType";
+import PostFetcherArgumentsType from '../utils/types/PostFetcherArgumentsType';
+import PostFetcher from "../utils/functions/PostFetcher";
+import useSWR from "swr";
 
 // Transactions Account Information Table Custom Component
-export default async function TransactionsAccountInfoTable( props : { address: string }) {
+export default function TransactionsAccountInfoTable( props : { address: string }) {
     const { address } = props;
-    
-    const response = await fetch('/api/address-transaction-amount', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ address })
-    });
 
-    // Conditionally render data table
-    if (response.ok) {
-        const data = await response.json();
-        const tableData: TransactionsAccountInformationType = data;
+    // useSWR hook for enabling API request call
+    const { data, error: transactionAccountError, isLoading: loadingAccountTransactions } = 
+    useSWR<TransactionsAccountInformationType>(['/api/address-transaction-amount', { address }], ([url, body]: [string, PostFetcherArgumentsType]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
+    // Conditionally render component
+    if (loadingAccountTransactions) {
+        return <div>Loading Account Transactions Table...</div>
+    }
+    else if (transactionAccountError) {
+        throw new Error();
+    }
+    else {
         // Render Account Transactions Activity
         return (
             <div className="p-4 bg-gray-900 mt-10 shadow-lg">
@@ -32,16 +36,13 @@ export default async function TransactionsAccountInfoTable( props : { address: s
                     </TableHeader>
                     <TableBody>
                         <TableRow className="border-b border-gray-800">
-                            <TableCell className="text-gray-100">{tableData?.ethPrice}</TableCell>
-                            <TableCell className="text-gray-300">{tableData?.ethBalance}</TableCell>
-                            <TableCell className="text-gray-300">{tableData?.usdValue}</TableCell>
+                            <TableCell className="text-gray-100">{data?.ethPrice}</TableCell>
+                            <TableCell className="text-gray-300">{data?.ethBalance}</TableCell>
+                            <TableCell className="text-gray-300">{data?.usdValue}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>
             </div>
         )
-    }
-    else {
-        throw new Error();
     }
 }
