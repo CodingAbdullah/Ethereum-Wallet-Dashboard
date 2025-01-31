@@ -47,6 +47,7 @@ Explore your Ethereum wallet with an all-in-one dashboard built using **Next.js*
 - **Opensea:** Insights into trending NFT collections, metadata, and floor prices.  
 
 ### Utility APIs  
+- **Beaconchain** Insights into Ethereum staking and validators.
 - **BlockNative:** Real-time Ethereum gas price monitoring.  
 - **Etherscan:** Transaction details and blockchain explorer integration.  
 
@@ -56,9 +57,9 @@ Explore your Ethereum wallet with an all-in-one dashboard built using **Next.js*
 
 - **Next.js:** Next-generation React.js framework for seamless server-side rendering and static site generation.  
 - **Shadcn/UI:** Component library for rapid development.
-- **Lucide-React/Font-Awesome**: Icon Libraries for rapid development.
-- **V0.dev** - AI-powered application for rapidly prototyping and building Next.js applications.
-- **Vercel AI SDK**: NPM package used for powering AI-generated market insights.
+- **Lucide-React/Font-Awesome:** Icon Libraries for rapid development.
+- **V0.dev:** AI-powered application for rapidly prototyping and building Next.js applications.
+- **Vercel AI SDK:** NPM package used for powering AI-generated market insights.
 - **Tailwind CSS:** For modern, responsive UI designs.
 - **Node.js:** Backend integrations with APIs.
 - **Vercel Hosting:** Application is deployed cost-free using Vercel.
