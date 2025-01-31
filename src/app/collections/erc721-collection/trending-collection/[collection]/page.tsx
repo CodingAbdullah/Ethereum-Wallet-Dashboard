@@ -14,8 +14,7 @@ export const metadata: Metadata = {
 }
 // Displaying historical price information of a particular coin
 export default async function TrendingCollectionsPage({ params }: { params: { collection: string }}) {
-    const parameters = await params;
-    const collection = parameters.collection;
+    const collection = params.collection;
 
     // Check validity of this coin by running a custom function validating if it exists within the Coin Gecko coin list
     const validateCollection = await collectionValidator(collection);
