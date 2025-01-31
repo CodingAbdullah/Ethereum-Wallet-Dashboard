@@ -1,6 +1,13 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./../components/ui/card"
 import Link from "next/link";
 import { protocolsList } from "../utils/constants/EIPProtocolsList";
+import type { Metadata } from "next"
+
+// Custom Metadata for SEO
+export const metadata: Metadata = {
+    title: "EIP Protocols Section",
+    description: "Lookup and analyze EIP protocols within the Ethereum ecosystem"
+}
 
 // EIP Protocols Custom Page Component
 export default function EIPProtocols() {

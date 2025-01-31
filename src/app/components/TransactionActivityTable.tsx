@@ -5,7 +5,7 @@ import TransactionActivityType from "../utils/types/TransactionActivityType";
 export default async function TransactionActivityTable( props : { address: string }) {
     const { address } = props;
 
-    const response = await fetch('http://localhost:3000/api/address-transaction-history', {
+    const response = await fetch('/api/address-transaction-history', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

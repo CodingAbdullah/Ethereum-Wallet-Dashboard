@@ -3,7 +3,7 @@ import OpenseaAccountInfoType from "../utils/types/OpenseaAccountInfoType";
 
 // Opensea Account Information Custom Component
 export default async function OpenseaAccountInfoTable(props: { address: string }) {
-    const response = await fetch('http://localhost:3000/api/opensea-account-information', {
+    const response = await fetch('/api/opensea-account-information', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -5,7 +5,7 @@ import TransactionsAccountInformationType from "../utils/types/TransactionsAccou
 export default async function TransactionsAccountInfoTable( props : { address: string }) {
     const { address } = props;
     
-    const response = await fetch('http://localhost:3000/api/address-transaction-amount', {
+    const response = await fetch('/api/address-transaction-amount', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

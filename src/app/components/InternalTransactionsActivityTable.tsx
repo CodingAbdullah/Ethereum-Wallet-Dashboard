@@ -5,7 +5,7 @@ import InternalTransactionsActivityType from "../utils/types/InternalTransaction
 export default async function InternalTransactionsActivityTable( props : { address: string }) {
     const { address } = props;
 
-    const response = await fetch('http://localhost:3000/api/address-internal-transaction-history', {
+    const response = await fetch('/api/address-internal-transaction-history', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

@@ -1,4 +1,11 @@
-import MarketInsightsSection from "../components/MarketInsightsSection"
+import MarketInsightsSection from "../components/MarketInsightsSection";
+import type { Metadata } from "next"
+
+// Custom Metadata for SEO
+export const metadata: Metadata = {
+    title: "Market Insights",
+    description: "Get a quick glance at the latest market conditions"
+}
 
 // Render the Market Insights Page containing the Market Insights Section Custom Component
 export default function MarketInsightsPage() {

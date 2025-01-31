@@ -2,6 +2,13 @@ import RocketPoolStatsInfoTable from "../components/RocketPoolStatsInfoTable";
 import StakingWebsiteSection from "../components/StakingWebsitesSection";
 import ValidatorLeaderboardInfoTable from "../components/ValidatorLeaderboardInfoTable";
 import ValidatorQueueInfoTable from "../components/ValidatorQueueInfoTable";
+import type { Metadata } from "next"
+
+// Custom Metadata for SEO
+export const metadata: Metadata = {
+    title: "Ethereum Staking and Validators",
+    description: "Lookup and analyze Ethereum validators and staking metrics"
+}
 
 // Staking Page Custom Page Component
 export default function StakingPage() {
