@@ -12,8 +12,15 @@ export const metadata: Metadata = {
     title: "Ethereum Trending Collection Analytics",
     description: "Lookup and analyze a trending Ethereum ERC721 collection"
 }
+
+type PageProps = {
+    params: {
+      collection: string
+    }
+  }
+  
 // Displaying historical price information of a particular coin
-export default async function TrendingCollectionsPage({ params }: { params: { collection: string }}) {
+export default async function TrendingCollectionsPage({ params }: PageProps ) {
     const collection = params.collection;
 
     // Check validity of this coin by running a custom function validating if it exists within the Coin Gecko coin list
