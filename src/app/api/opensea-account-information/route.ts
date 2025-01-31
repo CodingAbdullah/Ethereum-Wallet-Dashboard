@@ -10,7 +10,7 @@ export async function POST(request: Request){
     const body = await request.json();
 
     // Set options for making authenticated API calls
-    let options = {
+    const options = {
         method: 'GET',
         headers: {
             'content-type': 'application/json',

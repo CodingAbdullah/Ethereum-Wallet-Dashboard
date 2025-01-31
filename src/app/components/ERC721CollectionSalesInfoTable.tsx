@@ -4,11 +4,13 @@ import useSWR from "swr";
 import PostFetcher from "../utils/functions/PostFetcher";
 import ERC721CollectionSalesInfoType from "../utils/types/ERC721CollectionSalesInfoType";
 import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from "./ui/table";
+import PostFetcherArgumentsType from '../utils/types/PostFetcherArgumentsType';
 
 // ERC721 Collection Sales Info Table Custom Component
 export default function ERC721CollectionSalesInfoTable(props : { address: string }){
     const { address } = props;
-    const { data, error, isLoading } = useSWR(['/api/erc721-collection-sales', { address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error, isLoading } = 
+    useSWR(['/api/erc721-collection-sales', { address }], ([url, body]: [string, PostFetcherArgumentsType]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
     // Conditionally render component
     if (isLoading) {

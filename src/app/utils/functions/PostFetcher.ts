@@ -1,5 +1,7 @@
-// Modified custom Post Fetcher function
-export default async function PostFetcher(url: string, { arg }: { arg: any }) {
+import PostFetcherArgumentsType from "../types/PostFetcherArgumentsType";
+
+// Modified Custom Post Fetcher function
+export default async function PostFetcher(url: string, { arg }: { arg: PostFetcherArgumentsType }) {
     const response = await fetch(url, {
         method: 'POST',
         headers: {

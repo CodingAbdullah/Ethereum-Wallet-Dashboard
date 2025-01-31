@@ -7,8 +7,7 @@ import { Button } from "../../components/ui/button"
 
 // Custom Error Page for Coin Price Lookup Error Page
 export default function CoinPriceLookupErrorPage({
-  error,
-  reset,
+  error
 }: {
   error: Error & { digest?: string }
   reset: () => void

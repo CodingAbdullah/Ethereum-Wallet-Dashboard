@@ -10,12 +10,11 @@ export const metadata: Metadata = {
 }
 
 // Displaying historical price information of a particular coin
-export default async function CoinPriceInformationPage({ params }: { params: { coin: string }}) {
-    const parameters = await params;
-    const coin = parameters.coin;
+export default async function CoinPriceInformationPage({ params }: { params: Promise<{ coin: string }>}) {
+    const coinID = (await params).coin;
 
     // Check validity of this coin by running a custom function validating if it exists within the Coin Gecko coin list
-    const validateCoin: CoinChartInfoType = await coinValidator(coin);
+    const validateCoin: CoinChartInfoType = await coinValidator(coinID);
 
     if (validateCoin) {
         // Render the Generic Chart Page componen if the coin ID is valid
@@ -23,7 +22,7 @@ export default async function CoinPriceInformationPage({ params }: { params: { c
             <div className="p-4 bg-gray-900 shadow-lg">
                 <GenericChartPage 
                     data={{
-                        id: coin,
+                        id: coinID,
                         name: validateCoin.name, 
                         symbol: validateCoin.symbol.toUpperCase(), 
                         market_data: {

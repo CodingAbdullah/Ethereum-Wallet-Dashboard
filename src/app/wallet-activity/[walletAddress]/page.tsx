@@ -12,12 +12,11 @@ export const metadata: Metadata = {
 }
 
 // Custom Transactions Page Component
-export default async function WalletActivityPage({ params }: { params: { walletAddress: string } }) {
-    const parameters = await params;
-    const walletAddress = parameters.walletAddress;
+export default async function WalletActivityPage({ params }: { params: Promise<{ walletAddress: string }> }) {
+    const address = (await params).walletAddress;
     
     // Dynamically render this page based on wallet address validity
-    if (!addressValidator(walletAddress)) {
+    if (!addressValidator(address.trim())) {
         throw new Error();
     }
     else {
@@ -32,10 +31,10 @@ export default async function WalletActivityPage({ params }: { params: { walletA
                     <p className="text-xl text-gray-400 mb-12 text-center">
                         Get detailed activity of a particular wallet 
                     </p>
-                    <TransactionsAccountInfoTable address={walletAddress} />
-                    <OpenseaAccountInfoTable address={walletAddress} />
-                    <TransactionActivityTable address={walletAddress} />
-                    <InternalTransactionsActivityTable address={walletAddress} />
+                    <TransactionsAccountInfoTable address={address.trim()} />
+                    <OpenseaAccountInfoTable address={address.trim()} />
+                    <TransactionActivityTable address={address.trim()} />
+                    <InternalTransactionsActivityTable address={address.trim()} />
                 </div>
             </>
         )

@@ -7,11 +7,13 @@ import { Card, CardHeader, CardTitle, CardDescription } from "./../components/ui
 import Image from "next/image";
 import ERC20TokenPricesInfoTable from "./ERC20TokenPricesInfoTable";
 import ERC20PriceChartComponent from "./ERC20PriceChartComponent";
+import PostFetcherArgumentsType from '../utils/types/PostFetcherArgumentsType';
 
 // ERC20 Token Information Section Custom Component
 export default function ERC20TokenInformationSection(props: { address: string }) {
     const { address } = props;
-    const { data, error, isLoading } = useSWR(['/api/ERC20-coin-information', { contract: address }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error, isLoading } = 
+    useSWR(['/api/ERC20-coin-information', { contract: address }], ([url, body]: [string, PostFetcherArgumentsType]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
 
     // Conditionally render component
     if (isLoading) {

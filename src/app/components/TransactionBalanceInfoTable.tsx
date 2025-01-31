@@ -4,13 +4,15 @@ import useSWR from "swr";
 import PostFetcher from "../utils/functions/PostFetcher";
 import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from "./ui/table";
 import WalletBalanceInfoType from "../utils/types/WalletBalanceInfoType";
+import PostFetcherArgumentsType from '../utils/types/PostFetcherArgumentsType';
 
 // Custom Transaction Balance Info Table Component
 export default function TransactionBalanceInfoTable(props: { address: string, network: string }) {
     const { address, network } = props;
 
     // Make API call upon loading the custom component
-    const { data, error: walletBalanceError, isLoading: loadingWalletBalance } = useSWR(['/api/address-net-worth', { address, network }], ([url, body]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
+    const { data, error: walletBalanceError, isLoading: loadingWalletBalance } = 
+    useSWR(['/api/address-net-worth', { address, network }], ([url, body]: [string, PostFetcherArgumentsType]) => PostFetcher(url, { arg: body }), { refreshInterval: 100000 });
     
     // Conditionally render the info table 
     if (loadingWalletBalance) {
