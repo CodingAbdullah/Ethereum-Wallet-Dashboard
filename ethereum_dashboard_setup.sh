@@ -20,7 +20,7 @@ git init
 npx create-next-app@latest .
 
 # Install the necessary NPM packages
-npm install ai api dayjs lucide-react react react-dom react-hook-form recharts swr zod
+npm install @ai-sdk/openai @ai-sdk/anthropic ai api dayjs lucide-react react react-dom react-hook-form recharts swr zod
 
 # Add the .env file to the .gitignore file
 echo '# Hiding environment variables' >> .gitignore

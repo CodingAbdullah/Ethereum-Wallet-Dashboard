@@ -93,6 +93,7 @@ Explore your Ethereum wallet with an all-in-one dashboard built using **Next.js*
     BEACON_CHAIN_API_KEY=''
     ALCHEMY_API_KEY=''
     COINGECKO_API_KEY=''
+    ANTHROPIC_API_KEY=''
     OPENSEA_API_KEY=''
     TRANSPOSE_API_KEY=''
     PORT=''

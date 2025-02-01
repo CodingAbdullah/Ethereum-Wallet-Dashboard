@@ -21,7 +21,7 @@ Write-Host 'Setting up and Installing Next.js'
 npx create-next-app@latest .
 
 # Install the necessary NPM packages
-npm install ai api dayjs lucide-react react react-dom react-hook-form recharts swr zod
+npm install @ai-sdk/openai @ai-sdk/anthropic ai api dayjs lucide-react react react-dom react-hook-form recharts swr zod
 
 # Install npm packages for frontend apps
 npm install axios popper.js react-router react-router-dom redux redux-thunk validator
