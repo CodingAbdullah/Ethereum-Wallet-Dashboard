@@ -1,10 +1,8 @@
 // Firecrawl API fetches data from this Cryptocurrency website (coingecko.com)
 // LLM Data processed from website, ensure it conforms to standards (key components of the data), marked using Zod
 // Schema/Structured data passed as a tool to the AI SDK using the Open AI model
-
 import FirecrawlApp from "@mendable/firecrawl-js";
-import { anthropic } from '@ai-sdk/anthropic';
-import { openai } from "@ai-sdk/openai"
+import { groq } from '@ai-sdk/groq';
 import { NextResponse } from "next/server";
 import { generateObject } from 'ai';
 import marketSchema from "@/app/utils/constants/MarketSchema";
@@ -36,7 +34,7 @@ export async function GET() {
         // Generate an object containing valuable market information
         // Utilize the Firecrawl API data to generate content and the AI Text Generated Schema
         const { object } = await generateObject({
-            model: anthropic("claude-3-5-sonnet-20241022"),
+            model: groq('llama-3.3-70b-versatile'),
             schema: AITextGeneratedSchema,
             prompt: `Analyze the following cryptocurrency market data and provide insights:
               ${JSON.stringify(scrapeResult.json, null, 2)}
