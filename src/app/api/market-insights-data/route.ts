@@ -3,6 +3,7 @@
 // Schema/Structured data passed as a tool to the AI SDK using the Open AI model
 
 import FirecrawlApp from "@mendable/firecrawl-js";
+import { anthropic } from '@ai-sdk/anthropic';
 import { openai } from "@ai-sdk/openai"
 import { NextResponse } from "next/server";
 import { generateObject } from 'ai';
@@ -35,7 +36,7 @@ export async function GET() {
         // Generate an object containing valuable market information
         // Utilize the Firecrawl API data to generate content and the AI Text Generated Schema
         const { object } = await generateObject({
-            model: openai("gpt-4o"),
+            model: anthropic("claude-3-5-sonnet-20241022"),
             schema: AITextGeneratedSchema,
             prompt: `Analyze the following cryptocurrency market data and provide insights:
               ${JSON.stringify(scrapeResult.json, null, 2)}
