@@ -23,7 +23,8 @@ export async function GET() {
     // Utilize the Market Schema created using Zod for guidance
     const scrapeResult = await app.scrapeUrl("https://coingecko.com/", {
         formats: ["json"],
-        jsonOptions: { schema: marketSchema }
+        jsonOptions: { schema: marketSchema },
+        timeout: 50000
     });
 
     // Conditionally return data from the Firecrawl API call
