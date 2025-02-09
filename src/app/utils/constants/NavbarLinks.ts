@@ -22,7 +22,7 @@ export const NavbarLinks: NavbarLinkObject[] = [
         name: 'Layer Two Dashboards',
         dropdown: [
             { name: 'Polygon', href: 'https://aws.d2n4l9is533l0n.amplifyapp.com/' },
-            { name: 'Arbitrum', href: 'https://arbitrum-aws.d1pqf6famiyi96.amplifyapp.com' },
+            { name: 'Arbitrum', href: 'https://arbdashboard.xyz' },
             { name: 'Optimism', href: 'https://optimism-aws.d22w7ozmz21la.amplifyapp.com/' }
         ]
     },
