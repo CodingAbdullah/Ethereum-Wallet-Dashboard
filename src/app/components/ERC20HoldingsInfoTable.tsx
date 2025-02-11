@@ -2,6 +2,7 @@
 
 import ERC20HoldingsType from "../utils/types/ERC20HoldingsType";
 import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from "./ui/table";
+import Link from "next/link";
 
 // Custom ERC20 Holdings Info Table Component
 export default function ERC20HoldingsInfoTable(props: { data: ERC20HoldingsType[] }) {
@@ -18,6 +19,7 @@ export default function ERC20HoldingsInfoTable(props: { data: ERC20HoldingsType[
                         <TableHead className="text-gray-300">Token Address</TableHead>
                         <TableHead className="text-gray-300">Symbol</TableHead>
                         <TableHead className="text-gray-300">Balance</TableHead>
+                        <TableHead className="text-gray-300">Link</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -27,6 +29,11 @@ export default function ERC20HoldingsInfoTable(props: { data: ERC20HoldingsType[
                             <TableCell className="text-gray-300">{transfer.token_address}</TableCell>
                             <TableCell className="text-gray-300">{transfer.symbol}</TableCell>
                             <TableCell className="text-gray-300">{transfer.balance}</TableCell>
+                            <TableCell className="text-gray-300">
+                                <Link target="_blank" href={ 'https://etherscan.io/token/' + transfer.token_address }>
+                                    <u>Etherscan Link</u>
+                                </Link>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

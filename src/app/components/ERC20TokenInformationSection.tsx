@@ -5,6 +5,7 @@ import ERC20TokenInformationType from "../utils/types/ERC20TokenInformationType"
 import PostFetcher from "../utils/functions/PostFetcher";
 import { Card, CardHeader, CardTitle, CardDescription } from "./../components/ui/card";
 import Image from "next/image";
+import EtherscanInfoTable from "./EtherscanInfoTable";
 import ERC20TokenPricesInfoTable from "./ERC20TokenPricesInfoTable";
 import ERC20PriceChartComponent from "./ERC20PriceChartComponent";
 import PostFetcherArgumentsType from '../utils/types/PostFetcherArgumentsType';
@@ -44,6 +45,7 @@ export default function ERC20TokenInformationSection(props: { address: string })
                         </div>
                     </CardHeader>
                 </Card>
+                <EtherscanInfoTable address={address} />
                 <ERC20TokenPricesInfoTable data={erc20TokenInformation} />
                 <ERC20PriceChartComponent address={address} data={erc20TokenInformation} />
             </>
