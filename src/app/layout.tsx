@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from "next";
 import MetricsNavbar from "./components/MetricsNavbar";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -34,6 +35,7 @@ export default function RootLayout({
         <Navbar />
         <MetricsNavbar />
         { children }
+        <Analytics mode='production' />
         <Footer />
       </body>
     </html>
