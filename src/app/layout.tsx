@@ -5,6 +5,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,9 +34,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Navbar />
-        <MetricsNavbar />
-        { children }
-        <Analytics mode='production' />
+          <MetricsNavbar />
+          { children }
+          <Analytics mode='production' />
+          <Script defer 
+            src={process.env.UMAMI_URL}
+            data-website-id={process.env.UMAMI_DATA_WEBSITE_ID}>
+          </Script>
         <Footer />
       </body>
     </html>
