@@ -37,7 +37,7 @@ export default function RootLayout({
           <MetricsNavbar />
           { children }
           <Analytics mode='production' />
-          <Script defer 
+          <Script id="umami-analytics-scripts" 
             src={process.env.UMAMI_URL}
             data-website-id={process.env.UMAMI_DATA_WEBSITE_ID}>
           </Script>
