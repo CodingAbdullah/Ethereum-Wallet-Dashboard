@@ -51,17 +51,17 @@ export default function HomePageGlobalMarketCapChart() {
                                 tick={{fill: '#888'}}
                                 tickFormatter={(value) => value.slice(5, 10)}
                             />
-                            <YAxis 
-                                stroke="#888" 
+                            <YAxis
+                                stroke="#888"
                                 dataKey="price"
                                 tick={{fill: '#888'}}
                                 domain={[Math.max(0, min - buffer), max + buffer]}
-                                tickFormatter={(value) => `$${(value / 1e12).toFixed(2)}B`}                            />
-                            <Tooltip 
+                                tickFormatter={(value) => `$${(value / 1e12).toFixed(2)}T`}                            />
+                            <Tooltip
                                 contentStyle={{backgroundColor: '#333', border: 'none'}}
                                 labelStyle={{color: '#888'}}
                                 itemStyle={{color: '#fff'}}
-                                formatter={(value: number) => [`$${(value / 1e12).toFixed(2)}B`, 'Price']}
+                                formatter={(value: number) => [`$${(value / 1e12).toFixed(2)}T`, 'Price']}
                             />
                             <Legend />
                             <Line 

@@ -34,7 +34,7 @@ export default function HomePageMarketDataSection() {
                             <div className="space-y-2">
                                 <p>Active Currencies: <span className="text-gray-100">{marketTableData?.active_cryptocurrencies}</span></p>
                                 <p>Number of Exchanges: <span className="text-gray-100">{marketTableData?.markets}</span></p>
-                                <p>Total Market Cap: <span className="text-gray-100">{"$" + Number(marketTableData?.total_market_cap?.usd).toFixed(2)}</span></p>
+                                <p>Total Market Cap: <span className="text-gray-100">{"$" + (Number(marketTableData?.total_market_cap?.usd) / 1e12).toFixed(2) + "T"}</span></p>
                                 <p>Market Dominance: 
                                     <span className="text-gray-100"> BTC {Number(marketTableData?.market_cap_percentage?.btc).toFixed(2) + '%'} | ETH {Number(marketTableData?.market_cap_percentage?.eth).toFixed(2) + '%'}</span>
                                 </p>
