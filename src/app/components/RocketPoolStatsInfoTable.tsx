@@ -12,7 +12,7 @@ export default function RocketPoolStatsInfoTable() {
 
     // Conditionally render the Rocket Pool Stats Info Table Component
     if (error) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load Rocket Pool statistics.</div>;
     }
     else if (isLoading){
         return <div>Loading data...</div>

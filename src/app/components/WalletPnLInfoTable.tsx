@@ -17,7 +17,7 @@ export default function WalletPnLInfoTable(props: { address: string }) {
         return <div>Loading Wallet PnL Info Table Component...</div>
     }
     else if (walletPnLError) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load wallet P&L summary.</div>;
     }
     else {
         const walletPnLData: WalletPnLInfoType = data;

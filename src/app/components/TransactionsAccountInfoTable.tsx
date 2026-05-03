@@ -19,7 +19,7 @@ export default function TransactionsAccountInfoTable( props : { address: string 
         return <div>Loading Account Transactions Table...</div>
     }
     else if (transactionAccountError) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load account transactions.</div>;
     }
     else {
         // Render Account Transactions Activity

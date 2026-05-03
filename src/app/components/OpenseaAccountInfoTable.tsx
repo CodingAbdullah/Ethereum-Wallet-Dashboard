@@ -19,7 +19,7 @@ export default function OpenseaAccountInfoTable(props: { address: string }) {
         return <div>Loading Opensea Account Table...</div>
     }
     else if (openseaAccountError) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Could not load OpenSea account information.</div>;
     }
     else {
         // After a successful request, render table with data        

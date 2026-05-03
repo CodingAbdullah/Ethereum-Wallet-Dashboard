@@ -15,7 +15,7 @@ export default function GasBlockInfoTable() {
         return <div>Loading Gas Block Data...</div>
     }
     else if (error) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load gas block data.</div>;
     }
     else {
         const gasBlockData: GasBlockInfoType[] = data.blockPrices[0].estimatedPrices;

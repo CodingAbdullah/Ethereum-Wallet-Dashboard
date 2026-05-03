@@ -19,7 +19,7 @@ export default function TransactionActivityTable( props : { address: string }) {
         return <div>Loading Transaction Activity Table...</div>
     }
     else if (transactionActivityError) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load transaction activity.</div>;
     }
     else {
         // Render Account Transactions Activity

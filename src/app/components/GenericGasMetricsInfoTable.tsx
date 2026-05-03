@@ -11,13 +11,13 @@ export default function GenericGasMetricsInfoTable() {
 
     // Conditionally render the Generic Gas Metrics Info Table Component
     if (error) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load gas metrics.</div>;
     }
     else if (isLoading){
         return <div>Loading data...</div>
     }
     else {
-        
+
         // Render the Gas Tracker Page Component using the generic gas data and gas block data
         const { currentBlockNumber, maxPrice, msSinceLastBlock, network, system, unit } = data;
         

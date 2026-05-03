@@ -18,7 +18,7 @@ export default function WalletPnLBreakdownInfoTable(props: { address: string }) 
         return <div>Loading Wallet PnL Breakdown Info Table Component...</div>
     }
     else if (walletPnLBreakdownError) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load wallet P&L breakdown.</div>;
     }
     else {
         const walletPnLBreakdownData: WalletPnLBreakdownInfoType = data;

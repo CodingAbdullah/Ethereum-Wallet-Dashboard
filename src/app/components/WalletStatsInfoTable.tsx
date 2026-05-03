@@ -16,7 +16,7 @@ export default function WalletStatsInfoTable(props: { address: string }) {
         return <div>Loading Wallet Statistics Info Table Component...</div>
     }
     else if (walletStatsError) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load wallet statistics.</div>;
     }
     else {
         const walletStatsData: WalletStatsType = data;

@@ -8,14 +8,14 @@ import ValidatorLeaderboardType from "../utils/types/ValidatorLeaderboardType";
 // Validator Leaderboard Info Table Component
 export default function ValidatorLeaderboardInfoTable() {
     const validatorLeaderboardData = useSWR<{ information: { data : ValidatorLeaderboardType[] }}>('/api/validator-leaderboard-data', GenericFetcher, { refreshInterval: 50000 });
-    const { data: validatorData, error, isLoading } = validatorLeaderboardData;
+    const { data: validatorData, error, isLoading, isValidating } = validatorLeaderboardData;
 
     // Conditionally render the Validator Leaderboard Info Table Component
-    if (error) {
-        throw new Error();
-    }
-    else if (isLoading){
+    if (isLoading || (isValidating && !validatorData)) {
         return <div>Loading data...</div>
+    }
+    else if (error) {
+        return <div className="p-4 text-red-400">Failed to load validator leaderboard.</div>;
     }
     else {
         // Render the Validator Leaderboard Info Table Component

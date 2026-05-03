@@ -19,7 +19,7 @@ export default function TransactionBalanceInfoTable(props: { address: string, ne
         return <div>Loading Transaction Balance Info Table Component</div>
     }
     else if (walletBalanceError) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load transaction balance.</div>;
     }
     else {
         const walletBalanceData: WalletBalanceInfoType = data;

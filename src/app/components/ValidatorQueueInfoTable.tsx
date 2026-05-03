@@ -8,14 +8,14 @@ import ValidatorQueueType from "../utils/types/ValidatorQueueType";
 // Validator Queue Info Table Component
 export default function ValidatorQueueInfoTable() {
     const validatorQueueData = useSWR<{ information: { data : ValidatorQueueType }}>('/api/validator-queue-data', GenericFetcher, { refreshInterval: 50000 });
-    const { data: validatorData, error, isLoading } = validatorQueueData;
+    const { data: validatorData, error, isLoading, isValidating } = validatorQueueData;
 
     // Conditionally render the Validator Queue Info Table Component
-    if (error) {
-        throw new Error();
-    }
-    else if (isLoading){
+    if (isLoading || (isValidating && !validatorData)) {
         return <div>Loading data...</div>
+    }
+    else if (error) {
+        return <div className="p-4 text-red-400">Failed to load validator queue data.</div>;
     }
     else {
         // Render the Validator Queue Info Table Component

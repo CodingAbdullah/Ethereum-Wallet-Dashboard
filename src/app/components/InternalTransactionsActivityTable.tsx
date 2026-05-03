@@ -19,15 +19,19 @@ export default function InternalTransactionsActivityTable( props : { address: st
         return <div>Loading Internal Transactions Table...</div>
     }
     else if (internalTransactionsError) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Could not load internal transactions.</div>;
     }
     else {
+        const transactions = internalTransactionsData?.result ?? [];
+
         // Conditionally render data table
         // Render Account Internal Transactions Activity
         return (
             <div className="p-4 bg-gray-900 mt-10 shadow-lg">
                 <h2 className="text-2xl font-bold mb-4 text-gray-100">Internal Transactions History</h2>
-                <Table>
+                {transactions.length === 0
+                    ? <p className="text-gray-400">No internal transactions found for this address.</p>
+                    : <Table>
                     <TableHeader>
                         <TableRow>
                             <TableHead className="text-gray-300">Time Stamp</TableHead>
@@ -39,7 +43,7 @@ export default function InternalTransactionsActivityTable( props : { address: st
                     </TableHeader>
                     <TableBody>
                     {
-                        internalTransactionsData?.result?.splice(0, 100).map((transaction, index: number) => { 
+                        transactions.slice(0, 100).map((transaction, index: number) => {
                             return (
                                 <TableRow key={index} className="border-b border-gray-800">
                                     <TableCell className="text-gray-100">{new Date(Number(transaction.timeStamp)*1000).toISOString().split("T")[0] + ' ' + new Date(Number(transaction.timeStamp)*1000).toISOString().split("T")[1].split('.')[0]}</TableCell>
@@ -54,7 +58,7 @@ export default function InternalTransactionsActivityTable( props : { address: st
                         })
                     }
                     </TableBody>
-                </Table>
+                </Table>}
             </div>
         )
     }

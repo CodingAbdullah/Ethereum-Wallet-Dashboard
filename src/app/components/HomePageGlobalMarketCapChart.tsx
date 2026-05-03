@@ -61,7 +61,7 @@ export default function HomePageGlobalMarketCapChart() {
                                 contentStyle={{backgroundColor: '#333', border: 'none'}}
                                 labelStyle={{color: '#888'}}
                                 itemStyle={{color: '#fff'}}
-                                formatter={(value: number) => [`$${(value / 1e12).toFixed(2)}T`, 'Price']}
+                                formatter={(value) => [`$${((Number(value) || 0) / 1e12).toFixed(2)}T`, 'Price']}
                             />
                             <Legend />
                             <Line 
