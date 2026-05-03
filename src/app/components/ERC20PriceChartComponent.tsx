@@ -22,7 +22,7 @@ export default function ERC20PriceChartComponent(props: { data: ERC20TokenInform
 
     // Conditionally render data
     if (erc20ChartError) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load ERC20 price chart.</div>;
     }
     else if (erc20ChartDataLoading) {
         return <div><p className='text-white-100'>Loading Market Cap Chart Data...</p></div>

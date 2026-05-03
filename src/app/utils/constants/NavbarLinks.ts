@@ -20,11 +20,16 @@ export const NavbarLinks: NavbarLinkObject[] = [
         }]
     },
     {
-        name: 'Layer Two Dashboards',
+        name: 'Layer Two Chains',
         dropdown: [
-            { name: 'Arbitrum', href: 'https://arbdashboard.xyz' },
-            { name: 'Optimism', href: 'https://optimismdashboard.xyz' },
-            { name: 'Polygon', href: 'https://polygondashboard.xyz' }
+            { name: 'Arbitrum', href: 'https://arbitrum.io', target: '_blank' },
+            { name: 'Base', href: 'https://base.org', target: '_blank' },
+            { name: 'Blast', href: 'https://blast.io', target: '_blank' },
+            { name: 'Linea', href: 'https://linea.build', target: '_blank' },
+            { name: 'Optimism', href: 'https://optimism.io', target: '_blank' },
+            { name: 'Polygon', href: 'https://polygon.technology', target: '_blank' },
+            { name: 'Starknet', href: 'https://starknet.io', target: '_blank' },
+            { name: 'ZkSync Era', href: 'https://zksync.io', target: '_blank' }
         ]
     },
     {

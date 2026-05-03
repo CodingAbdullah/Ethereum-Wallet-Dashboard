@@ -20,7 +20,7 @@ export default function ERC721CollectionFloorPriceChart(props: { data: ERC721Col
 
     // Conditionally render data
     if (erc721ChartError) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load floor price chart.</div>;
     }
     else if (erc721ChartLoading) {
         return <div><p className='text-white-100'>Loading Floor Price Chart Data...</p></div>

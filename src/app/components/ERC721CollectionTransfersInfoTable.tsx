@@ -17,7 +17,7 @@ export default function ERC721CollectionTransfersInfoTable(props : { address: st
         return <div>Loading ERC721 Collection Transfers Info Table...</div>
     }
     else if (error) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load collection transfers.</div>;
     }
     else {
         const erc721CollectionTransfersData: ERC721CollectionTransfersInfoType[] = data.information.result;

@@ -19,10 +19,10 @@ export default function ERC721RarityLookupsInfoTable(props: { address: string, t
         return <div>Loading ERC721 Rarity Lookups Info Table Component</div>
     }
     else if (error) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load ERC721 rarity data.</div>;
     }
     else {
-        
+
         // Render ERC721 Token Rarity Lookup Info Table Component
         return (
             <div className="p-4 bg-gray-900 mt-10 shadow-lg">

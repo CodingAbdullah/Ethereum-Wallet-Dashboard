@@ -1,7 +1,7 @@
 "use client";
 
 import useSWR from "swr";
-import Image from "next/image";
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
 import GenericFetcher from "../utils/functions/GenericFetcher";
 import TopERC721CollectionsType from "../utils/types/TopERC721CollectionsType";
@@ -39,7 +39,9 @@ export default function TopERC721CollectionsInfoTable() {
                                 <TableCell className="font-medium text-gray-100">{collection.collection_title}</TableCell>
                                 <TableCell className="text-gray-300">
                                     <div className="flex items-center space-x-2">
-                                        <Image alt={`${collection.collection_image} logo`} height={20} width={20} src={collection.collection_image} />
+                                        {collection.collection_image?.startsWith('https://')
+                                            ? <img alt={`${collection.collection_title} logo`} height={20} width={20} src={collection.collection_image} className="h-5 w-5 object-contain" />
+                                            : <span className="text-gray-500">—</span>}
                                     </div>
                                 </TableCell>
                                 <TableCell className="text-gray-300">{"$" + collection.floor_price_usd}</TableCell>

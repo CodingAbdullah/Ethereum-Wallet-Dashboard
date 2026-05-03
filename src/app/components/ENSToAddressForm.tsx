@@ -36,10 +36,14 @@ export default function ENSToAddressForm() {
             // Check condition of FETCH request
             if (res.ok) {
                 const data = await res.json();
-                updateAddressInformation(data.results[0].owner);
+                if (data.results?.[0]?.owner) {
+                    updateAddressInformation(data.results[0].owner);
+                } else {
+                    setShowAlert(true);
+                }
             }
             else {
-                throw new Error();
+                setShowAlert(true);
             }
         }
     }

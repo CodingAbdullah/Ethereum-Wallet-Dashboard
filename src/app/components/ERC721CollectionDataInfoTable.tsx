@@ -17,7 +17,7 @@ export default function ERC721CollectionDataInfoTable(props: { address: string }
         return <div>Loading ERC721 Collection Data Info Table...</div>
     }
     else if (error) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load collection data.</div>;
     }
     else {
         const erc721CollectionData: ERC721CollectionDataType = data.information.result[0];

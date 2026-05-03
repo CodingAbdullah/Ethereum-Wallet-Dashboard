@@ -50,7 +50,7 @@ export default function ERC20HoldingsForm() {
                 updateERC20Holdings(erc20HoldingsResponse);
             }
             else {
-                throw new Error();
+                setShowAlert(true); return;
             }
 
             // Check the status of ERC20 Transfers Data
@@ -59,7 +59,7 @@ export default function ERC20HoldingsForm() {
                 updateERC20Transfers(erc20TransfersResponse.result);
             }
             else {
-                throw new Error();
+                setShowAlert(true); return;
             }
         }
     }

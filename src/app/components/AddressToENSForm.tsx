@@ -42,7 +42,7 @@ export default function AddressToENSForm() {
                 setAccountInformation(data);
             }
             else {
-                throw new Error();
+                setShowAlert(true); return;
             }
         }
     }

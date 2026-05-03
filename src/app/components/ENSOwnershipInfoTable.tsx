@@ -17,10 +17,10 @@ export default function ENSOwnershipInfoTable(props: { data: string }) {
         return <div>Loading ENS Ownership Data...</div>
     }
     else if (error) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load ENS ownership data.</div>;
     }
     else {
-    
+
         // Render the ENS Ownership Info Table Component
         return (
             <div className="p-4 bg-gray-900 mt-10 shadow-lg">

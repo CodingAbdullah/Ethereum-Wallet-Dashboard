@@ -20,7 +20,7 @@ export default function ERC721LookupsInfoTable(props: { address: string, network
         return <div>Loading ERC721 Lookups Info Table Component</div>
     }
     else if (error) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load ERC721 token data.</div>;
     }
     else {
         const erc721LookupsData: ERC721LookupsInfoType = data.information;

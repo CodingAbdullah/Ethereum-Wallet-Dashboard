@@ -21,7 +21,7 @@ export default function ERC20TokenInformationSection(props: { address: string })
         return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>Loading ERC20 Token Information Section Component...</div>
     }
     else if (error) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load ERC20 token information.</div>;
     }
     else {
         const erc20TokenInformation: ERC20TokenInformationType = data.information;

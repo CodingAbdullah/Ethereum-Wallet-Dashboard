@@ -38,7 +38,7 @@ export default function ENSTransferByNameForm()  {
                 updateAddressInformation(data.results);
             }
             else {
-                throw new Error();
+                setShowAlert(true); return;
             }
         }
     }

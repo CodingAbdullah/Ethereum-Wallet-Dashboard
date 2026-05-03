@@ -42,6 +42,8 @@ export default function Navbar() {
                           <Link
                             key={dropdownItem.name}
                             href={dropdownItem.href}
+                            target={dropdownItem.target}
+                            rel={dropdownItem.target === '_blank' ? 'noopener noreferrer' : undefined}
                             className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white"
                             role="menuitem"
                           >
@@ -89,6 +91,8 @@ export default function Navbar() {
                       <Link
                         key={dropdownItem.name}
                         href={dropdownItem.href}
+                        target={dropdownItem.target}
+                        rel={dropdownItem.target === '_blank' ? 'noopener noreferrer' : undefined}
                         className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
                         onClick={() => setIsOpen(false)}
                       >

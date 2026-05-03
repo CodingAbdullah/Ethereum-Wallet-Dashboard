@@ -19,7 +19,7 @@ export default function ERC20collectionOwnersInfoTable(props: { address: string 
         return <div>Loading ERC20 Collection Owners Info Table Component</div>
     }
     else if (error) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load ERC20 token owners.</div>;
     }
     else {
         // Render ERC721 Token Rarity Lookup Info Table Component

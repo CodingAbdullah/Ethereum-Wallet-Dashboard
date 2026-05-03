@@ -19,7 +19,7 @@ export default function ERC721TransferLookupsInfoTable(props: { address: string,
         return <div>Loading ERC721 Token Transfers Lookup Info Table Component</div>
     }
     else if (error) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load ERC721 transfer data.</div>;
     }
     else {
 

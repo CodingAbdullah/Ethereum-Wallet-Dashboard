@@ -20,7 +20,7 @@ export default function ERC721OpenseaTokenLookupInfoTable(props: { address: stri
         return <div>Loading ERC721 Opensea Token Lookup Info Table Component</div>
     }
     else if (error) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load OpenSea token data.</div>;
     }
     else {
         const openseaInformation: ERC721OpenseaTokenLookupInfoType = data.information.nft;

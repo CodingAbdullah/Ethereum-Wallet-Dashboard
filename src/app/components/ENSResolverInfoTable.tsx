@@ -17,7 +17,7 @@ export default function ENSResolverInfoTable(props: { data: string }) {
         return <div>Loading ENS Resolver Data...</div>
     }
     else if (error) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load ENS resolver data.</div>;
     }
     else {
         // Render the ENS Resolver Info Table Component

@@ -36,8 +36,8 @@ export default function ENSTransferByIDForm() {
                 updateTransferInformation(data.results);
             }
             else {
-                throw new Error();
-            } 
+                setShowAlert(true); return;
+            }
         }
     }
 

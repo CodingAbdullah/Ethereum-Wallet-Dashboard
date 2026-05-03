@@ -19,7 +19,7 @@ export default function ERC20collectionOwnersInfoTable(props: { address: string 
         return <div>Loading ERC20 Collection Transfers Info Table Component</div>
     }
     else if (error) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load ERC20 transfer data.</div>;
     }
     else {
 

@@ -18,7 +18,7 @@ export default function ERC721CollectionFloorPriceInfoTable(props : { address: s
         return <div>Loading ERC721 Collection Floor Price Info Table...</div>
     }
     else if (error) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load collection floor price.</div>;
     }
     else {
         const floorPriceData: ERC721CollectionFloorPriceInfoType = data.information;

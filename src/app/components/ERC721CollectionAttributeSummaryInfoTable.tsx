@@ -16,7 +16,7 @@ export default function ERC721CollectionAttributeSummaryInfoTable(props: { addre
         return <div>Loading ERC721 Collection Attribute Summary Info Table...</div>
     }
     else if (error) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load collection attributes.</div>;
     }
     else {
         const erc721CollectionAttributeData = data.information.summary;

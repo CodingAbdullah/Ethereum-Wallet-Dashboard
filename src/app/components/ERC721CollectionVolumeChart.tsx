@@ -20,7 +20,7 @@ export default function ERC721CollectionVolumeChart(props: { data: ERC721Collect
 
     // Conditionally render data
     if (erc721CollectionVolumeError) {
-        throw new Error();
+        return <div className="p-4 text-red-400">Failed to load collection volume chart.</div>;
     }
     else if (erc721CollectionVolumeLoading) {
         return <div><p className='text-white-100'>Loading ERC721 Collection Volume Chart Data...</p></div>

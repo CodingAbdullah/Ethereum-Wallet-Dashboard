@@ -59,7 +59,7 @@ export default function ERC721HoldingsForm() {
                 updateERC721Holdings(erc721HoldingsResponse.result);
             }
             else {
-                throw new Error();
+                setShowAlert(true); return;
             }
 
             // Check the status of ERC721 Transfers Data
@@ -68,7 +68,7 @@ export default function ERC721HoldingsForm() {
                 updateERC721Transfers(erc721TransfersResponse.result);
             }
             else {
-                throw new Error();
+                setShowAlert(true); return;
             }
 
             // Check the status of ERC721 Collections Data
@@ -77,7 +77,7 @@ export default function ERC721HoldingsForm() {
                 updateERC721Collections(erc721CollectionsResponse.result);
             }
             else {
-                throw new Error();
+                setShowAlert(true); return;
             }
         }
     }
