@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:docs.beaconcha.in)",
+      "WebFetch(domain:docs.coingecko.com)",
+      "WebFetch(domain:docs.moralis.com)",
+      "WebFetch(domain:www.alchemy.com)",
+      "WebFetch(domain:beaconcha.in)",
+      "WebFetch(domain:www.coingecko.com)",
+      "WebFetch(domain:docs.moralis.io)",
+      "WebFetch(domain:docs.opensea.io)"
+    ]
+  }
+}
