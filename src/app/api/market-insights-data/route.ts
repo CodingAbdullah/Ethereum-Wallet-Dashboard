@@ -22,23 +22,21 @@ export async function GET() {
 
         // Retrieve the web scraping result from the Coin Gecko webpage
         // Utilize the Market Schema created using Zod for guidance
-        const scrapeResult = await app.scrapeUrl("https://coingecko.com/", {
+        const scrapeResult = await app.scrape("https://coingecko.com/", {
             formats: ["json"],
             jsonOptions: { schema: marketSchema },
             timeout: 30000
         });
 
-        // Conditionally return data from the Firecrawl API call
-        if (!scrapeResult.success) {
+        if (!scrapeResult.json) {
             return NextResponse.json({ error: 'Failed to fetch market insights' }, { status: 500 });
         }
 
-        // Stream AI-generated market insights
         const result = streamText({
             model: groq('llama-3.3-70b-versatile'),
             prompt: `Analyze the following cryptocurrency market data and provide comprehensive insights:
               ${JSON.stringify(scrapeResult.json, null, 2)}
-              
+
               ${MARKET_INSIGHTS_PROMPT}`
         });
 

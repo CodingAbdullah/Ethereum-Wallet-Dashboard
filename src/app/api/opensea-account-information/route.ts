@@ -22,11 +22,14 @@ export async function POST(request: Request){
     // Gather data about Opensea account
     const response = await fetch(OPENSEA_URL + 'accounts/' + body.address, options);
     
-    // Fetch data using the Ethereum data endpoints
-    if (!response.ok) 
-        return NextResponse.json({ error: 'Failed to fetch Ethereum price' }, { status: 500 });
-    else {
-        const data = await response.json();
-        return NextResponse.json(data);
+    if (!response.ok) {
+        const errorBody = await response.json().catch(() => null);
+        return NextResponse.json(
+            { error: 'OpenSea API error', status: response.status, detail: errorBody },
+            { status: response.status }
+        );
     }
+
+    const data = await response.json();
+    return NextResponse.json(data);
 }

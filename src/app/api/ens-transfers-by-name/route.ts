@@ -1,33 +1,53 @@
 import { NextResponse } from "next/server";
+import { keccak256 } from "ethereum-cryptography/keccak";
+import { utf8ToBytes } from "ethereum-cryptography/utils";
+
+const ENS_CONTRACT = '0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85';
+const MORALIS_URL = 'https://deep-index.moralis.io/api/v2.2/';
+
+const options = {
+    method: 'GET',
+    headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+        'X-API-KEY': process.env.MORALIS_API_KEY ?? ''
+    } as HeadersInit
+};
+
+function ensNameToTokenId(ensName: string): string {
+    const label = ensName.split('.')[0];
+    const hash = keccak256(utf8ToBytes(label));
+    return BigInt('0x' + Buffer.from(hash).toString('hex')).toString(10);
+}
+
+function inferCategory(fromAddress: string): string {
+    if (!fromAddress || fromAddress === '0x0000000000000000000000000000000000000000') return 'mint';
+    return 'transfer';
+}
 
 // Custom Route Handler function
 export async function POST(request: Request) {
-    // JSON format the body
     const body = await request.json();
+    const tokenId = ensNameToTokenId(body.address);
 
-    // Set parameters for request
-    const params = {
-        chain_id : 'ethereum',
-        ens_name: body.address
+    const response = await fetch(
+        MORALIS_URL + 'nft/' + ENS_CONTRACT + '/' + tokenId + '/transfers?chain=eth&format=decimal',
+        options
+    );
+
+    if (!response.ok) {
+        const errorBody = await response.json().catch(() => null);
+        return NextResponse.json({ error: 'Moralis NFT transfers error', status: response.status, detail: errorBody }, { status: response.status });
     }
 
-    // Set options for request
-    const options = {
-        headers: {
-            'content-type': 'application/json',
-            'accept' : 'application/json',
-            'X-API-KEY' : process.env.TRANSPOSE_API_KEY_1
-        } as HeadersInit
-    }
+    const data = await response.json();
 
-    // Fetch data based on options
-    const response = await fetch('https://api.transpose.io/ens/ens-transfers-by-name?' + new URLSearchParams(params), options);
+    const results = (data.result ?? []).map((t: any) => ({
+        timestamp: t.block_timestamp,
+        category: inferCategory(t.from_address),
+        from: t.from_address ?? null,
+        to: t.to_address ?? null
+    }));
 
-    // Fetch data using the Ethereum data endpoints
-    if (!response.ok) 
-        return NextResponse.json({ error: 'Failed to fetch Ethereum price' }, { status: 500 });
-    else {
-        const data = await response.json();
-        return NextResponse.json(data);
-    }
+    return NextResponse.json({ results });
 }

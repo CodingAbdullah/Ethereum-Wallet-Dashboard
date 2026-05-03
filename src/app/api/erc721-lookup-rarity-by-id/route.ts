@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 // ALCHEMY URL endpoint
-const ALCHEMY_URL = 'https://eth-mainnet.g.alchemy.com/nft/v2';
+const ALCHEMY_URL = 'https://eth-mainnet.g.alchemy.com/nft/v3';
 
 // Custom Route Handler function
 export async function POST(request: Request){
@@ -30,7 +30,7 @@ export async function POST(request: Request){
         if (response.ok) {
             const information = await response.json();
             return NextResponse.json({
-                information : { data: information }
+                information : { data: information.rarities }
             });
         }
         else {

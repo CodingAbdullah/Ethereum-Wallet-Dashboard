@@ -7,7 +7,7 @@ export async function GET(){
         method: 'GET',
         headers: {
             'content-type' : 'application/json',
-            'X-API-Key' : process.env.MORALIS_API_KEY_2
+            'X-API-KEY' : process.env.MORALIS_API_KEY_2
         } as HeadersInit
     }
 

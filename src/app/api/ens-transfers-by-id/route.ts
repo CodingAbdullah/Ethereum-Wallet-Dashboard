@@ -1,34 +1,45 @@
 import { NextResponse } from "next/server";
 
+const ENS_CONTRACT = '0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85';
+const MORALIS_URL = 'https://deep-index.moralis.io/api/v2.2/';
+
+const options = {
+    method: 'GET',
+    headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+        'X-API-KEY': process.env.MORALIS_API_KEY ?? ''
+    } as HeadersInit
+};
+
+function inferCategory(fromAddress: string): string {
+    if (!fromAddress || fromAddress === '0x0000000000000000000000000000000000000000') return 'mint';
+    return 'transfer';
+}
+
 // Custom Route Handler function
 export async function POST(request: Request) {
-    // JSON format the body
     const body = await request.json();
 
-    // Set parameters for request
-    const params = {
-        chain_id : 'ethereum',
-        token_id: body.id
-    }
+    const response = await fetch(
+        MORALIS_URL + 'nft/' + ENS_CONTRACT + '/' + encodeURIComponent(body.id) + '/transfers?chain=eth&format=decimal',
+        options
+    );
 
-    // Set options for request
-    const options = {
-        headers: {
-            'content-type': 'application/json',
-            'accept' : 'application/json',
-            'X-API-KEY' : process.env.TRANSPOSE_API_KEY_1
-        } as HeadersInit
-    }
-
-    // Fetch data based on options
-    const response = await fetch('https://api.transpose.io/ens/ens-transfers-by-token-id?' + new URLSearchParams(params), options)
-
-    // Fetch data using the Ethereum data endpoints
     if (!response.ok) {
-        return NextResponse.json({ error: 'Failed to fetch Ethereum price' }, { status: 500 });
+        const errorBody = await response.json().catch(() => null);
+        return NextResponse.json({ error: 'Moralis NFT transfers error', status: response.status, detail: errorBody }, { status: response.status });
     }
-    else {
-        const data = await response.json();
-        return NextResponse.json(data);
-    }
+
+    const data = await response.json();
+
+    // Map Moralis response fields to the shape the frontend expects
+    const results = (data.result ?? []).map((t: any) => ({
+        timestamp: t.block_timestamp,
+        category: inferCategory(t.from_address),
+        from: t.from_address ?? null,
+        to: t.to_address ?? null
+    }));
+
+    return NextResponse.json({ results });
 }

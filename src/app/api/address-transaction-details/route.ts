@@ -2,10 +2,10 @@ import { NextResponse } from "next/server";
 import { NETWORK_MAPPER } from "@/app/utils/constants/NETWORK_MAPPER";
 
 // Set MORALIS URL for request
-const MORALIS_URL = 'https://deep-index.moralis.io/api/v2/';
+const MORALIS_URL = 'https://deep-index.moralis.io/api/v2.2/';
 const mod = "account";
 const startBlock = 0;
-const endBlock = 99999999;
+const endBlock = 999999999;
 const page = 1;
 const sort = 'desc';
 
@@ -18,7 +18,7 @@ export async function POST(request: Request){
         const network: keyof typeof NETWORK_MAPPER = body.network; // Type assertion for network
         
         // Transactions of a particular account, if the address of the particular one entered is valid
-        const response = await fetch(NETWORK_MAPPER[network] + '?module=' + mod + "&action=txlist&address=" + body.address + "&startblock=" + startBlock 
+        const response = await fetch(NETWORK_MAPPER[network] + '&module=' + mod + "&action=txlist&address=" + body.address + "&startblock=" + startBlock
         + '&endblock=' + endBlock + "&page=" + page + "&offset=" + 1000 + "&sort=" + sort + "&apikey=" + process.env.ETHERSCAN_API_KEY)
         
         // Fetch data using the Ethereum data endpoints

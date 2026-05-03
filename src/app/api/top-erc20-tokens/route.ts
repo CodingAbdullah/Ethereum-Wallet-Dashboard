@@ -1,26 +1,36 @@
 import { NextResponse } from "next/server";
 
+const COINGECKO_URL = 'https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false';
+
 // Custom Route Handler function
 export async function GET(){
 
-    // Set options for request
     const options = {
         method: 'GET',
         headers: {
-            'content-type': 'application/json',
-            'accept' : 'application/json',
-            'X-API-KEY' : process.env.MORALIS_API_KEY
+            'accept': 'application/json',
+            'x-cg-pro-api-key': process.env.COINGECKO_GENERIC_API_KEY
         } as HeadersInit
     }
 
-    // Retrieve top ERC20 tokens by market cap
-    const response = await fetch('https://deep-index.moralis.io/api/v2.2/market-data/erc20s/top-tokens', options);
+    const response = await fetch(COINGECKO_URL, options);
 
-    // Fetch data using the Ethereum data endpoints
-    if (!response.ok) 
-        return NextResponse.json({ error: 'Failed to fetch Ethereum price' }, { status: 500 });
-    else {
-        const data = await response.json();
-        return NextResponse.json(data);
+    if (!response.ok) {
+        const errorBody = await response.json().catch(() => null);
+        return NextResponse.json({ error: 'CoinGecko error', status: response.status, detail: errorBody }, { status: response.status });
     }
+
+    const raw = await response.json();
+
+    // Map CoinGecko response to the shape the frontend expects
+    const data = raw.map((token: any) => ({
+        token_name: token.name ?? '',
+        token_symbol: token.symbol ?? '',
+        token_logo: token.image ?? '',
+        price_usd: String(token.current_price ?? 0),
+        market_cap_usd: String(token.market_cap ?? 0),
+        price_24h_percent_change: String(token.price_change_percentage_24h ?? 0)
+    }));
+
+    return NextResponse.json(data);
 }

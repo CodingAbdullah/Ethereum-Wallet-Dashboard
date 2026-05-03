@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 // Set MORALIS URL and endpoint for request
-const MORALIS_URL = 'https://deep-index.moralis.io/api/v2/';
+const MORALIS_URL = 'https://deep-index.moralis.io/api/v2.2/';
 const erc20Endpoint = 'erc20/';
 
 // Custom Route Handler function
