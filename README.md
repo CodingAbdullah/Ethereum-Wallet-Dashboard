@@ -402,7 +402,7 @@ Approvals, DeFi positions and the activity feed load separately from the portfol
 | `/defi` ✅ | DefiLlama open API | TVL by protocol and chain, TVL history, stablecoin supply, DEX volume, fees, and yields (the yields section hides itself if DefiLlama keeps that endpoint on its paid plan) |
 | `/eth-supply` ✅ | RPC + Beacon API + CoinGecko | ETH burnt over the last ~24h (measured from fee history, incl. blob fees) vs. estimated issuance, net change and yearly rate |
 | `/blobs` ✅ | RPC | Blob usage, blob base fee and fees burnt over ~24h, and which rollups posted blobs in the latest blocks (no Blobscan needed) |
-| `/staking` (expanded) | Beacon API, on-chain reads, Lido API | More LSTs, restaking, staking ratio |
+| `/staking` ✅ (expanded) | Beacon API, CoinGecko, DefiLlama, on-chain reads, Lido API | Staking ratio, base reward rate and validator count; liquid staking and (liquid) restaking protocols ranked by value on Ethereum; plus the existing stETH/rETH/cbETH, Rocket Pool and validator queue tables |
 | `/derivatives` ✅ | Deribit / OKX / Bybit public APIs | ETH perpetual funding (8h and annualized), open interest and volume per exchange; Deribit options open interest, volume, put/call ratio and largest expiries. Exchanges that block the server's region show as unavailable |
 | `/mev` ✅ | Relay data API (Flashbots, Ultra Sound, Agnostic, Titan, Aestus) | Share of blocks via MEV-Boost, relay and builder share, payments to proposers, recent MEV-Boost blocks |
 | `/governance` ✅ | Snapshot | Active and recently closed votes for ~20 major DAOs, with leading choice and quorum (Tally's on-chain votes need a key; not added) |
@@ -415,7 +415,7 @@ ETH ETF flow data has no reliable free API at the moment, so it is left out.
 **2.4 Explorer pages (done)**
 - [x] `/tx/[hash]`, `/block/[number]` (and `/block/latest`), `/address/[address]`, `/token/[address]`, server-rendered from free public RPCs so search engines can index them. Add `?chain=base` (or arbitrum, optimism, polygon, linea) for other networks.
 - [x] Transactions decode ERC20, ERC721 and ERC1155 transfers and approvals, with token symbols and decimals read on-chain; blocks show gas use, base fee and burnt ETH; addresses show balance, type and (for wallets) activity, approvals and DeFi positions; tokens show supply, plus price, holders and transfers on Ethereum.
-- [ ] Address labels come with the open label datasets in 2.3.
+- [x] Address labels from the curated list in 2.3 show on explorer pages.
 
 **2.5 Homepage redesign (done)**
 - [x] Stat row: ETH price, gas, 24h supply change, share of ETH staked.

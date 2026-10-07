@@ -55,7 +55,7 @@ export function summarizeSupply(blocks: FeeBlock[], gasLimit: number, maxBlobGas
     };
 }
 
-async function stakedEth(): Promise<number | null> {
+export async function stakedEth(): Promise<number | null> {
     try {
         const queue = await getValidatorQueue();
         return queue.information.data.validatorscount * STAKED_ETH_PER_VALIDATOR;
@@ -65,7 +65,7 @@ async function stakedEth(): Promise<number | null> {
     }
 }
 
-async function circulatingSupply(): Promise<number | null> {
+export async function circulatingSupply(): Promise<number | null> {
     try {
         const eth = (await getTopMarkets()).find(c => c.id === 'ethereum');
         return eth?.circulating_supply ?? null;
