@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Panel from "@/app/components/DashboardPanel";
+import ExplainButton from "@/app/components/agent/ExplainButton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/app/components/ui/table";
 import { AddressLink, BlockLink, DetailList, ExplorerPage, RpcError, trimNumber, when } from "@/app/components/explorer/ExplorerParts";
 import { explorerChain, type TxDetails } from "@/lib/explorer";
@@ -32,7 +33,8 @@ export default async function TxPage({ params, searchParams }: Props) {
     const otherEvents = tx.logs.length - tokenEvents.length;
 
     return (
-        <ExplorerPage title="Transaction" subtitle={<span className="font-mono text-sm">{tx.hash}</span>} chain={chain} path={`/tx/${hash}`}>
+        <ExplorerPage title="Transaction" subtitle={<span className="font-mono text-sm">{tx.hash}</span>} chain={chain} path={`/tx/${hash}`}
+            action={<ExplainButton label="Explain this transaction" prompt={`Explain transaction ${tx.hash} on ${chainInfo(chain).name} (chain "${chain}") in plain English: what happened, who was involved, what it cost, and anything unusual.`} />}>
             {tx.status === 'pending' && <TxLiveStatus hash={tx.hash} chain={chain} />}
             <Panel title="Overview">
                 <DetailList rows={[

@@ -70,7 +70,8 @@ export const SITE_PAGES: PageGroup[] = [
         pages: [
             { name: 'About', href: '/about' },
             { name: 'Feedback', href: '/feedback', keywords: 'contact suggestions bug' },
-            { name: 'N8N Workflows', href: '/n8n-workflows', keywords: 'automation alerts workflows subscribe' }
+            { name: 'N8N Workflows', href: '/n8n-workflows', keywords: 'automation alerts workflows subscribe' },
+            { name: 'MCP Server', href: '/mcp', keywords: 'mcp claude cursor ai api key connector model context protocol' }
         ]
     }
 ];

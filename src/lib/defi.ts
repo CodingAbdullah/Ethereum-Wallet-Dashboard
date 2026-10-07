@@ -141,9 +141,9 @@ const cached = <T>(key: string, revalidate: number, load: () => Promise<T>) => u
 export const getChains = cached('chains', HOUR / 2, async () => toChains(await defillama('api', '/v2/chains')));
 const getProtocols = cached('protocols', HOUR / 2, async () => toProtocols(await defillama('api', '/protocols')));
 const getTvlHistory = cached('tvl-history', HOUR, async () => toTvlHistory(await defillama('api', '/v2/historicalChainTvl')));
-const getDexVolume = cached('dexs', HOUR / 2, async () => toVolumeOverview(await defillama('api', '/overview/dexs?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true')));
+export const getDexVolume = cached('dexs', HOUR / 2, async () => toVolumeOverview(await defillama('api', '/overview/dexs?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true')));
 const getFees = cached('fees', HOUR / 2, async () => toVolumeOverview(await defillama('api', '/overview/fees?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true&dataType=dailyFees')));
-const getStablecoins = cached('stablecoins', HOUR, async () => toStablecoins(await defillama('stablecoins', '/stablecoins?includePrices=true')));
+export const getStablecoins = cached('stablecoins', HOUR, async () => toStablecoins(await defillama('stablecoins', '/stablecoins?includePrices=true')));
 const getYields = cached('yields', HOUR, async () => toYields(await defillama('yields', '/pools')));
 
 export async function getDefiOverview() {

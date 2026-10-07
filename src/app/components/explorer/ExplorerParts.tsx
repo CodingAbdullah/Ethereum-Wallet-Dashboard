@@ -26,13 +26,14 @@ export function BlockLink({ number, chain }: { number: number; chain: ExplorerCh
     return <Link href={`/block/${number}${q(chain)}`} className="text-gray-200 underline tabular-nums">{number.toLocaleString('en-US')}</Link>;
 }
 
-export function ExplorerPage({ title, subtitle, chain, path, children }: { title: string; subtitle: React.ReactNode; chain: ExplorerChain; path: string; children: React.ReactNode }) {
+export function ExplorerPage({ title, subtitle, chain, path, action, children }: { title: string; subtitle: React.ReactNode; chain: ExplorerChain; path: string; action?: React.ReactNode; children: React.ReactNode }) {
     return (
         <div className="min-h-screen bg-gray-800 text-gray-300 py-10 px-4 sm:px-6 lg:px-8 shadow-lg">
             <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-center break-words">
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-gray-400 to-gray-100">{title}</span>
             </h1>
             <div className="text-gray-400 mb-6 text-center break-all">{subtitle}</div>
+            {action && <div className="mb-6 flex justify-center">{action}</div>}
             <nav aria-label="Network" className="mb-10 flex flex-wrap justify-center gap-2">
                 {EXPLORER_CHAINS.map(key => (
                     <Link

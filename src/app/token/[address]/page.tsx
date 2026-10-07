@@ -1,12 +1,14 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Panel from "@/app/components/DashboardPanel";
+import ExplainButton from "@/app/components/agent/ExplainButton";
 import ERC20TokenInformationSection from "@/app/components/ERC20TokenInformationSection";
 import ERC20CollectionTransfersInfoTable from "@/app/components/ERC20CollectionTransfersInfoTable";
 import ERC20CollectionOwnersInfoTable from "@/app/components/ERC20CollectionOwnersInfoTable";
 import { AddressLink, DetailList, ExplorerPage, RpcError, trimNumber } from "@/app/components/explorer/ExplorerParts";
 import { explorerChain, type TokenDetails } from "@/lib/explorer";
 import { cachedToken } from "@/lib/explorerCache";
+import { chainInfo } from "@/lib/chains";
 import { TokenRiskDetails } from "@/app/components/TokenRiskBadge";
 
 type Props = { params: Promise<{ address: string }>; searchParams: Promise<{ chain?: string }> };
@@ -27,7 +29,8 @@ export default async function TokenPage({ params, searchParams }: Props) {
     if (!token) notFound();
 
     return (
-        <ExplorerPage title={`${token.name ?? token.symbol} (${token.symbol})`} subtitle={<span className="font-mono text-sm">{token.address}</span>} chain={chain} path={`/token/${token.address}`}>
+        <ExplorerPage title={`${token.name ?? token.symbol} (${token.symbol})`} subtitle={<span className="font-mono text-sm">{token.address}</span>} chain={chain} path={`/token/${token.address}`}
+            action={<ExplainButton label="Explain this token" prompt={`Explain the token ${token.address} on ${chainInfo(chain).name} (chain "${chain}"): what it is, its price if known, and whether its contract has any security risks.`} />}>
             <Panel title="Overview">
                 <DetailList rows={[
                     ['Contract', <AddressLink key="a" address={token.address} chain={chain} />],
