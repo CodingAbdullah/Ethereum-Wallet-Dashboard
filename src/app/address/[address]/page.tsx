@@ -42,6 +42,7 @@ export default async function AddressPage({ params, searchParams }: Props) {
                     ['Transactions sent', details.txCount.toLocaleString('en-US')],
                     ...(details.token ? [['Token', <Link key="t" href={`/token/${details.address}${query}`} className="underline">{details.token.symbol} token page</Link>] as [string, React.ReactNode]] : []),
                     ['Explorer', <a key="e" href={explorerAddress(chain, details.address)} target="_blank" rel="noopener noreferrer" className="underline">{new URL(chainInfo(chain).explorer).hostname}</a>],
+                    ...(details.isContract ? [['Interact', <Link key="c" href={`/contract?address=${details.address}&chain=${chain}`} className="underline">Read & write this contract</Link>] as [string, React.ReactNode]] : []),
                 ]} />
             </Panel>
             {!details.isContract && <WalletInsightsSection source={{ kind: 'wallet', address: details.address, network: chain }} />}
