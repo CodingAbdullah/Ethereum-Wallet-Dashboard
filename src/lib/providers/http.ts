@@ -23,12 +23,13 @@ export interface ProviderFetchOptions {
     body?: string;
     revalidate?: number | false; // Seconds to cache the response in the Next.js data cache, false = no cache
     timeoutMs?: number;
+    text?: boolean;          // return the body as text instead of parsing JSON
 }
 
 const RETRYABLE_STATUS = new Set([429, 500, 502, 503, 504]);
 
 export async function providerFetch<T>(provider: string, url: string, options: ProviderFetchOptions = {}): Promise<T> {
-    const { headers = {}, method = 'GET', body, revalidate = 60, timeoutMs = 15000 } = options;
+    const { headers = {}, method = 'GET', body, revalidate = 60, timeoutMs = 15000, text = false } = options;
 
     // Drop headers whose value is undefined (e.g. optional API keys)
     const cleanHeaders: Record<string, string> = { accept: 'application/json' };
@@ -55,7 +56,7 @@ export async function providerFetch<T>(provider: string, url: string, options: P
             throw new ProviderError(provider, 504, `${provider} request failed: ${(err as Error).message}`);
         }
 
-        if (response.ok) return response.json() as Promise<T>;
+        if (response.ok) return (text ? response.text() : response.json()) as Promise<T>;
 
         if (attempt === 0 && RETRYABLE_STATUS.has(response.status)) {
             await new Promise(resolve => setTimeout(resolve, 750));

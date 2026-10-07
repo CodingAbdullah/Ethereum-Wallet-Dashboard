@@ -401,7 +401,7 @@ Approvals, DeFi positions and the activity feed load separately from the portfol
 | `/governance` ✅ | Snapshot | Active and recently closed votes for ~20 major DAOs, with leading choice and quorum (Tally's on-chain votes need a key; not added) |
 | Risk badges ✅ | GoPlus (keyless) | Danger / caution flags (honeypots, unsellable tokens, owner powers, taxes) on `/me` holdings, ERC20 holdings, token pages and DEX pools |
 | Address labels ✅ | Curated list (`src/lib/labels.ts`) | Names for well-known mainnet addresses on explorer pages, approvals and blob posters |
-| `/eip-protocols` (rebuilt) | GitHub `ethereum/EIPs` | Live EIP status and upcoming-upgrade tracker |
+| `/eip-protocols` ✅ (rebuilt) | GitHub `ethereum/EIPs` + `ethereum/ERCs` | Live status on each standard, plus an upgrade tracker read from the meta EIPs (Glamsterdam EIP-7773, Fusaka EIP-7607): EIPs scheduled, considered or included, and the mainnet activation date |
 
 ETH ETF flow data has no reliable free API at the moment, so it is left out.
 
@@ -592,7 +592,7 @@ DISCORD_WEBHOOK_URL=''
 |---|---|---|
 | 0: Foundation | 1 week | Done |
 | 1: Wallet connection & accounts | 1–2 weeks | Done |
-| 2: Data & chain expansion | 2–3 weeks | In progress (2.1, 2.2, 2.4 and `/defi` done) |
+| 2: Data & chain expansion | 2–3 weeks | In progress (2.1–2.4 done; 2.5 next) |
 | 3: Real-time & n8n automations | 2 weeks | Planned |
 | 4: AI layer (MCP + agent) | 2 weeks | Planned |
 | 5: On-chain actions | 2–3 weeks | Planned |
