@@ -7,6 +7,7 @@ import ERC20CollectionOwnersInfoTable from "@/app/components/ERC20CollectionOwne
 import { AddressLink, DetailList, ExplorerPage, RpcError, trimNumber } from "@/app/components/explorer/ExplorerParts";
 import { explorerChain, type TokenDetails } from "@/lib/explorer";
 import { cachedToken } from "@/lib/explorerCache";
+import { TokenRiskDetails } from "@/app/components/TokenRiskBadge";
 
 type Props = { params: Promise<{ address: string }>; searchParams: Promise<{ chain?: string }> };
 
@@ -34,6 +35,9 @@ export default async function TokenPage({ params, searchParams }: Props) {
                     ['Decimals', String(token.decimals)],
                     ['Total supply', token.totalSupply ? `${trimNumber(token.totalSupply, 2)} ${token.symbol}` : '—'],
                 ]} />
+            </Panel>
+            <Panel title="Security Check" description="Common scam and rug-pull patterns, checked by GoPlus.">
+                <TokenRiskDetails chain={chain} address={token.address} />
             </Panel>
             {chain === 'eth' ? (
                 <>

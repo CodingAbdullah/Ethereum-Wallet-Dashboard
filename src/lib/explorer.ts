@@ -1,4 +1,4 @@
-import { decodeEventLog, erc20Abi, formatEther, formatGwei, formatUnits, getAddress, isAddress, isHash, parseAbi, type Hash, type PublicClient } from "viem";
+import { BaseError, HttpRequestError, TimeoutError, decodeEventLog, erc20Abi, formatEther, formatGwei, formatUnits, getAddress, isAddress, isHash, parseAbi, type Hash, type PublicClient } from "viem";
 import { CHAINS, chainInfo } from "./chains";
 
 // Block explorer data for /tx, /block, /address and /token, read straight from free public RPCs.
@@ -51,12 +51,21 @@ export interface TxDetails {
     logs: DecodedLog[];
 }
 
-// Reads symbol, decimals and name for each token contract (failures become null)
+export function isNetworkError(err: unknown): boolean {
+    return err instanceof BaseError && !!err.walk(e => e instanceof HttpRequestError || e instanceof TimeoutError);
+}
+
+// Reads symbol, decimals and name for each token contract (reverts become null)
 async function tokenMeta(client: Client, addresses: string[]): Promise<Map<string, TokenMeta>> {
     const unique = [...new Set(addresses.map(a => a.toLowerCase()))].slice(0, 25);
     const read = async (address: string, functionName: 'symbol' | 'decimals' | 'name') => {
         try { return await client.readContract({ address: address as `0x${string}`, abi: erc20Abi, functionName }); }
-        catch { return null; }
+        catch (err) {
+            // A revert or empty result just means "not a token"; a node that can't be reached is an outage,
+            // so it's rethrown (otherwise the page would show "not found" and cache it)
+            if (isNetworkError(err)) throw err;
+            return null;
+        }
     };
     const entries = await Promise.all(unique.map(async address => {
         const [symbol, decimals, name] = await Promise.all([read(address, 'symbol'), read(address, 'decimals'), read(address, 'name')]);

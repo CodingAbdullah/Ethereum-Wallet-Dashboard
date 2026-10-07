@@ -19,6 +19,7 @@ export default function ERC20HoldingsForm() {
     usePrefillAddress(walletAddressRef);
     const [submittedWalletAddress, setSubmittedWalletAddress] = useState<string>('');
     const [network, updateNetwork] = useState<string>("eth");
+    const [submittedNetwork, setSubmittedNetwork] = useState<string>("eth");
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [erc20Holdings, updateERC20Holdings] = useState<ERC20HoldingsType[]>();
     const [erc20Transfers, updateERC20Transfers] = useState<ERC20TransfersType[]>();
@@ -27,6 +28,7 @@ export default function ERC20HoldingsForm() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setSubmittedWalletAddress(walletAddressRef.current!.value.trim());
+        setSubmittedNetwork(network);
 
         // Handle form submission logic here
         if (!addressValidator(walletAddressRef.current!.value.trim())){
@@ -113,7 +115,7 @@ export default function ERC20HoldingsForm() {
                     </CardContent>
                 </Card>
             </div>
-            { erc20Holdings ? <ERC20HoldingsInfoTable data={erc20Holdings} /> : null }
+            { erc20Holdings ? <ERC20HoldingsInfoTable data={erc20Holdings} network={submittedNetwork} /> : null }
             { erc20Transfers ? <ERC20TransfersInfoTable data={erc20Transfers} address={submittedWalletAddress} /> : null }
         </>
     )

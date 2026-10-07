@@ -79,6 +79,11 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 | **DefiLlama** | Open API | No | `/defi` and `/l2`: value locked, DEX volume, fees, stablecoins, yields |
 | **L2BEAT** | Public (unofficial) | No | `/l2`: rollup type, risk stage, total value secured |
 | **Public L2 RPCs** | Free | No | Live block and gas on `/l2/[chain]`; sign-in checks for L2 smart wallets |
+| **GoPlus Security** | Free | No | Token risk checks |
+| **GeckoTerminal** | Free | No | Trending and new DEX pools |
+| **MEV-Boost relays** | Public data API | No | `/mev` |
+| **Deribit / OKX / Bybit** | Public market data | No | `/derivatives` |
+| **Snapshot** | Public GraphQL | No | `/governance` |
 | **Groq** | Free tier | Free key | AI market insights (Llama 3.3 70B) |
 | **Resend** | Free (3,000 emails/month) | Free key | Feedback form emails |
 | **Umami** | Free / self-hosted | Optional | Privacy-friendly site analytics |
@@ -372,7 +377,7 @@ Shipped in three parts. Each part works on its own; 1.1 needs no database.
 | Moralis | Wallet DeFi positions | DeFi positions on `/me` and wallet pages | Done |
 | Moralis | Token approvals | Approval checker on `/me` and wallet pages, riskiest first (revoke comes in Phase 5) | Done |
 | Moralis | Decoded wallet history | Readable activity feed ("Swapped 1 ETH for 3,200 USDC") on `/me` and wallet pages | Done |
-| CoinGecko Demo | On-chain (GeckoTerminal) | DEX pools, new pairs, trending pools | Planned |
+| GeckoTerminal | Public API (keyless, separate from the CoinGecko cap) | `/dex-pools`: trending and new pools on Ethereum and L2s, with risk badges | Done |
 | Ethereum RPC | Blocks, transactions, logs | Transaction and block detail pages | Done |
 | Etherscan V2 | `chainid` parameter | Multi-chain support | Done |
 
@@ -394,7 +399,7 @@ Approvals, DeFi positions and the activity feed load separately from the portfol
 | `/derivatives` ✅ | Deribit / OKX / Bybit public APIs | ETH perpetual funding (8h and annualized), open interest and volume per exchange; Deribit options open interest, volume, put/call ratio and largest expiries. Exchanges that block the server's region show as unavailable |
 | `/mev` ✅ | Relay data API (Flashbots, Ultra Sound, Agnostic, Titan, Aestus) | Share of blocks via MEV-Boost, relay and builder share, payments to proposers, recent MEV-Boost blocks |
 | `/governance` ✅ | Snapshot | Active and recently closed votes for ~20 major DAOs, with leading choice and quorum (Tally's on-chain votes need a key; not added) |
-| Risk badges (site-wide) | GoPlus | Honeypot and scam-token flags on holdings and lookups |
+| Risk badges ✅ | GoPlus (keyless) | Danger / caution flags (honeypots, unsellable tokens, owner powers, taxes) on `/me` holdings, ERC20 holdings, token pages and DEX pools |
 | Address labels ✅ | Curated list (`src/lib/labels.ts`) | Names for well-known mainnet addresses on explorer pages, approvals and blob posters |
 | `/eip-protocols` (rebuilt) | GitHub `ethereum/EIPs` | Live EIP status and upcoming-upgrade tracker |
 

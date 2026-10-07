@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { encodeAbiParameters, encodeEventTopics, erc20Abi, parseAbi, parseEther, parseGwei, type PublicClient } from "viem";
+import { HttpRequestError, encodeAbiParameters, encodeEventTopics, erc20Abi, parseAbi, parseEther, parseGwei, type PublicClient } from "viem";
 import { decodeLog, explorerChain, getAddressDetails, getBlockDetails, getTokenDetails, getTxDetails, parseBlockParam } from "./explorer";
 
 const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
@@ -105,6 +105,12 @@ describe("getAddressDetails / getTokenDetails", () => {
         expect(await getAddressDetails(fakeClient(), 'eth', ALICE)).toMatchObject({ balance: '1.25', isContract: false, txCount: 12, token: null, native: 'ETH' });
         expect(await getAddressDetails(fakeClient(), 'polygon', USDC)).toMatchObject({ isContract: true, codeSize: 4, token: { symbol: 'USDC', decimals: 6 }, native: 'POL' });
         expect(await getAddressDetails(fakeClient(), 'eth', 'nope')).toBeNull();
+    });
+
+    it("treats an unreachable node as an error, not as 'not a token'", async () => {
+        const down = fakeClient({ readContract: async () => { throw new HttpRequestError({ url: 'http://node', details: 'fetch failed' }); } });
+        await expect(getTokenDetails(down, 'eth', USDC)).rejects.toThrow();
+        await expect(getAddressDetails(down, 'eth', USDC)).rejects.toThrow();
     });
 
     it("reads token metadata and supply, and returns null for non-tokens", async () => {

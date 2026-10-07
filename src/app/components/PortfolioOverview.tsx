@@ -4,6 +4,7 @@ import useSWR from 'swr';
 import Link from 'next/link';
 import { Download, AlertTriangle } from 'lucide-react';
 import ValueLineChart from './ValueLineChart';
+import { RiskBadge, riskKey, useTokenRisks } from './TokenRiskBadge';
 import Panel from './DashboardPanel';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { shortAddress } from './ConnectWalletButton';
@@ -37,6 +38,7 @@ export default function PortfolioOverview() {
     // The readable activity feed (WalletInsightsSection) replaces this list; it's only shown if that feed fails
     const { data: insights, error: insightsError } = useSWR<WalletInsights>('/api/portfolio/insights', null);
     const showRawActivity = !!insightsError || (!!insights && insights.activity.items.length === 0 && insights.activity.failed.length > 0);
+    const { data: risks } = useTokenRisks((data?.holdings ?? []).slice(0, 25).map(t => ({ chain: t.chain, address: t.tokenAddress })));
 
     if (isLoading) return <Panel title="Portfolio"><p className="text-gray-400">Loading your wallets… this can take a few seconds.</p></Panel>;
     if (error || !data) return <Panel title="Portfolio"><p className="text-red-400">{error?.message ?? 'Could not load your portfolio'}</p></Panel>;
@@ -128,6 +130,7 @@ export default function PortfolioOverview() {
                                         <span className="font-medium">{token.symbol}</span> <span className="text-gray-500">{token.name}</span>
                                         {token.chain !== 'eth' && <span className="ml-2 text-xs text-gray-500">on {chainInfo(token.chain).name}</span>}
                                         {token.wallets > 1 && <span className="ml-2 text-xs text-gray-500">({token.wallets} wallets)</span>}
+                                        <span className="ml-2"><RiskBadge risk={risks?.[riskKey(token.chain, token.tokenAddress)]} compact /></span>
                                     </TableCell>
                                     <TableCell className="text-gray-300 text-right tabular-nums">{amount(token.balance)}</TableCell>
                                     <TableCell className="text-gray-300 text-right tabular-nums">{token.usdPrice === null ? '—' : usd(token.usdPrice)}</TableCell>
