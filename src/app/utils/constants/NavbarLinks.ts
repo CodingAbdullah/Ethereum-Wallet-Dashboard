@@ -25,14 +25,12 @@ export const NavbarLinks: NavbarLinkObject[] = [
     {
         name: 'Layer Two Chains',
         dropdown: [
-            { name: 'Arbitrum', href: 'https://arbitrum.io', target: '_blank' },
-            { name: 'Base', href: 'https://base.org', target: '_blank' },
-            { name: 'Blast', href: 'https://blast.io', target: '_blank' },
-            { name: 'Linea', href: 'https://linea.build', target: '_blank' },
-            { name: 'Optimism', href: 'https://optimism.io', target: '_blank' },
-            { name: 'Polygon', href: 'https://polygon.technology', target: '_blank' },
-            { name: 'Starknet', href: 'https://starknet.io', target: '_blank' },
-            { name: 'ZkSync Era', href: 'https://zksync.io', target: '_blank' }
+            { name: 'Compare L2s', href: '/l2' },
+            { name: 'Arbitrum One', href: '/l2/arbitrum' },
+            { name: 'Base', href: '/l2/base' },
+            { name: 'Linea', href: '/l2/linea' },
+            { name: 'OP Mainnet', href: '/l2/optimism' },
+            { name: 'Polygon PoS', href: '/l2/polygon' }
         ]
     },
     {

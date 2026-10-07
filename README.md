@@ -57,8 +57,9 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 - **n8n Workflows:** Roadmap section for automated workflows (not live yet, see [Phase 3](#phase-3--real-time--n8n-automations-2-weeks)).
 
 ### Networks
-- **Ethereum Mainnet**, **Sepolia** and **Hoodi** testnets for wallet lookups.
-- The "Layer Two Chains" menu currently links out to each L2's website. Native L2 dashboards are planned in [Phase 2](#phase-2--data--chain-expansion-23-weeks).
+- **Ethereum**, **Base**, **Arbitrum One**, **OP Mainnet**, **Polygon PoS** and **Linea**, plus the **Sepolia** and **Hoodi** testnets, for wallet holdings, NFTs, portfolio, approvals and DeFi positions. One registry (`src/lib/chains.ts`) holds each chain's IDs, provider names, explorer and public RPC.
+- **`/l2`** compares layer 2s (DefiLlama value locked, L2BEAT type and risk stage), and **`/l2/[chain]`** has a page per supported network: value locked over time, top protocols, live block and gas price.
+- Etherscan's free plan no longer covers Base or OP Mainnet, so Etherscan-only features (raw transaction lists) aren't offered there; Moralis covers holdings and activity on those chains.
 
 ---
 
@@ -68,13 +69,16 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 |---|---|---|---|
 | **CoinGecko** | Demo (free) | Free key | Coin & token prices, price history, global market data, trending coins/NFTs, NFT collection data |
 | **Moralis** | Free (40k compute units/day) | Free key | Wallet ERC20/NFT holdings and transfers, NFT metadata/transfers/sales, wallet net worth, stats and PnL, ENS holdings |
-| **Etherscan V2** | Free (5 calls/s, 100k/day) | Free key | ETH balance, normal and internal transaction history |
+| **Etherscan V2** | Free (5 calls/s, 100k/day) | Free key | ETH balance, normal and internal transaction history (Ethereum, Arbitrum, Polygon, Linea and testnets; Base and OP Mainnet need a paid plan) |
 | **OpenSea v2** | Free | Free key | NFT floor price, collection stats, trait counts, token rarity, top collections, account and token data |
 | **Ethplorer** | Free | Optional (`freekey` by default) | ERC20 top holders |
 | **Ethereum RPC** (PublicNode by default) | Free | No | Gas estimates, ENS resolution, Rocket Pool and liquid staking contract reads |
 | **Beacon API** (PublicNode by default) | Free | No | Validator entry/exit queues and active validator count |
 | **Coinbase Exchange** | Public | No | ETH/USD price and 24h change (CoinGecko is the fallback) |
 | **Lido API** | Public | No | stETH APR |
+| **DefiLlama** | Open API | No | `/defi` and `/l2`: value locked, DEX volume, fees, stablecoins, yields |
+| **L2BEAT** | Public (unofficial) | No | `/l2`: rollup type, risk stage, total value secured |
+| **Public L2 RPCs** | Free | No | Live block and gas on `/l2/[chain]`; sign-in checks for L2 smart wallets |
 | **Groq** | Free tier | Free key | AI market insights (Llama 3.3 70B) |
 | **Resend** | Free (3,000 emails/month) | Free key | Feedback form emails |
 | **Umami** | Free / self-hosted | Optional | Privacy-friendly site analytics |
@@ -278,7 +282,7 @@ export const POST = withErrorHandling(async (request: Request) => {
 | **n8n workflows** | Placeholder page only. |
 | **MCP server / AI agent** | None. The only AI feature is the hourly market summary. |
 | **Real-time data** | None. Data refreshes by polling. |
-| **Layer 2 support** | Menu links to external websites only. |
+| **Layer 2 support** | Done in Phase 2.2: Base, Arbitrum, OP Mainnet, Polygon and Linea, plus `/l2` pages. |
 | **End-to-end tests** | Unit tests cover the API layer; no browser-level tests yet. |
 
 ### Free endpoints available but unused
@@ -375,9 +379,10 @@ Shipped in three parts. Each part works on its own; 1.1 needs no database.
 Approvals, DeFi positions and the activity feed load separately from the portfolio numbers on `/me` (`/api/portfolio/insights`), and any wallet page uses `/api/wallet-insights`. Each list notes wallets that failed to load instead of hiding them. If the readable feed fails, `/me` falls back to the Etherscan transaction list.
 
 **2.2 Real Layer 2 support**
-- [ ] Replace the external links in the "Layer Two Chains" menu with chain-aware pages.
-- [ ] Add a `ChainSelector` (Ethereum, Arbitrum, Base, Optimism, Polygon, Linea, zkSync, Scroll) that sets the `chain` / `chainid` parameter for Moralis and Etherscan V2, and picks a public RPC per chain.
-- [ ] `/l2`: comparison page using **L2BEAT** (TVS, activity, risk stage) and **DefiLlama** (TVL, bridges).
+- [x] Replace the external links in the "Layer Two Chains" menu with chain-aware pages (`/l2/[chain]`).
+- [x] Network selector for Ethereum, Base, Arbitrum, OP Mainnet, Polygon and Linea, driving Moralis's `chain`, Etherscan V2's `chainid`, OpenSea's chain slug and a public RPC per chain. zkSync Era and Scroll are left out because Moralis doesn't cover them; they still appear on `/l2`.
+- [x] `/l2`: comparison page using **L2BEAT** (type, risk stage, total value secured) and **DefiLlama** (value locked). L2BEAT's API is unofficial, so its columns hide themselves if it changes or is down.
+- [x] Portfolio, snapshots, approvals, DeFi positions and Sign-In with Ethereum work on every supported chain.
 
 **2.3 New pages on free providers**
 | Page | Provider | Content |
@@ -580,7 +585,7 @@ DISCORD_WEBHOOK_URL=''
 |---|---|---|
 | 0: Foundation | 1 week | Done |
 | 1: Wallet connection & accounts | 1–2 weeks | Done |
-| 2: Data & chain expansion | 2–3 weeks | In progress (2.1 and `/defi` done) |
+| 2: Data & chain expansion | 2–3 weeks | In progress (2.1, 2.2 and `/defi` done) |
 | 3: Real-time & n8n automations | 2 weeks | Planned |
 | 4: AI layer (MCP + agent) | 2 weeks | Planned |
 | 5: On-chain actions | 2–3 weeks | Planned |

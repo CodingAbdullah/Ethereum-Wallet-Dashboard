@@ -138,7 +138,7 @@ async function section<T>(load: () => Promise<T>): Promise<Section<T>> {
 const HOUR = 3600;
 const cached = <T>(key: string, revalidate: number, load: () => Promise<T>) => unstable_cache(load, ['defi', key], { revalidate });
 
-const getChains = cached('chains', HOUR / 2, async () => toChains(await defillama('api', '/v2/chains')));
+export const getChains = cached('chains', HOUR / 2, async () => toChains(await defillama('api', '/v2/chains')));
 const getProtocols = cached('protocols', HOUR / 2, async () => toProtocols(await defillama('api', '/protocols')));
 const getTvlHistory = cached('tvl-history', HOUR, async () => toTvlHistory(await defillama('api', '/v2/historicalChainTvl')));
 const getDexVolume = cached('dexs', HOUR / 2, async () => toVolumeOverview(await defillama('api', '/overview/dexs?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true')));
