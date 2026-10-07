@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Menu, X, ChevronDown } from 'lucide-react'
 import { NavbarLinks } from '../utils/constants/NavbarLinks';
 import ConnectWalletButton from './ConnectWalletButton';
+import { SearchButton, openSearch } from './SearchPalette';
 
 // Navbar Custom Component
 export default function Navbar() {
@@ -56,12 +57,14 @@ export default function Navbar() {
                   )}
                 </div>
               ))}
-              <div className="ml-2">
+              <div className="ml-2 flex items-center gap-2">
+                <SearchButton labelClassName="hidden 2xl:inline" />
                 <ConnectWalletButton labelClassName="hidden 2xl:inline" />
               </div>
             </div>
           </div>
           <div className="xl:hidden flex items-center gap-2">
+            <span className="max-[359px]:hidden"><SearchButton labelClassName="hidden md:inline" /></span>
             <ConnectWalletButton labelClassName="hidden sm:inline" />
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -81,6 +84,12 @@ export default function Navbar() {
       {isOpen && (
         <div className="xl:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <button
+              onClick={() => { setIsOpen(false); openSearch(); }}
+              className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium w-full text-left min-[360px]:hidden"
+            >
+              Search
+            </button>
             {NavbarLinks.map((item, index) => (
               <div key={index} className="relative">
                 <button

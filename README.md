@@ -21,7 +21,7 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 9. [Roadmap](#️-roadmap)
    - [Phase 0: Foundation](#phase-0--foundation-done)
    - [Phase 1: Wallet Connection & Accounts](#phase-1--wallet-connection--accounts-done)
-   - [Phase 2: Data & Chain Expansion](#phase-2--data--chain-expansion-23-weeks)
+   - [Phase 2: Data & Chain Expansion](#phase-2--data--chain-expansion-done)
    - [Phase 3: Real-Time & n8n Automations](#phase-3--real-time--n8n-automations-2-weeks)
    - [Phase 4: AI Layer (MCP Server + Agent)](#phase-4--ai-layer-mcp-server--agent-2-weeks)
    - [Phase 5: On-Chain Actions](#phase-5--on-chain-actions-23-weeks)
@@ -40,6 +40,8 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 - **ERC20/721 Collection Analytics:** Holders, transfers, sales, floor price, traits and volume stats for token and NFT collections.
 - **Transactions:** Normal and internal transaction history for any wallet.
 - **Wallet Analytics:** Net worth, profit & loss (PnL), PnL breakdown and wallet stats.
+- **My Dashboard (`/me`):** Connect and sign in with a wallet, save wallets, and see a combined portfolio with value over time, readable activity, token approvals and DeFi positions.
+- **Token risk badges:** GoPlus security checks on holdings, token pages and DEX pools.
 
 ### Market Data & Pricing
 - **Coin Prices & ERC20 Prices:** Live and historical prices for coins and tokens.
@@ -47,13 +49,18 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 - **Trending Coins/Collections:** Trending coins and top NFT collections by volume.
 - **Top Movers:** Top 24-hour gainers and losers among the top 250 coins.
 - **AI Market Insights:** Hourly AI-generated market commentary.
+- **DeFi, DEX Pools & Derivatives:** TVL by chain and protocol, stablecoins, yields, trending and new pools, funding rates, open interest and options.
 
 ### Ethereum Tools
 - **ENS:** Address ↔ ENS resolution (on-chain), owned names with expiry and grace periods, and transfer history.
 - **Gas Tracker:** Gas estimates at five confidence levels, computed from recent blocks.
 - **Staking/Validators:** Validator entry/exit queues, liquid staking tokens (stETH, rETH, cbETH) and Rocket Pool stats.
 - **ERC721 Lookups:** Token metadata, trait rarity, transfers, sales and OpenSea data by token ID.
-- **EIP Info:** Notable Ethereum Improvement Proposals.
+- **EIP Info:** Key standards with live status, and a tracker for the EIPs in upcoming network upgrades.
+- **Explorer:** Transaction, block, address and token pages (`/tx`, `/block`, `/address`, `/token`) on Ethereum and five L2s, with decoded token transfers and address labels.
+- **ETH Supply & Blobs:** ETH burnt vs. issued over the last day, and blob usage, fees and posters.
+- **MEV & Governance:** MEV-Boost relay and builder share; active Snapshot votes for major DAOs.
+- **Global search:** Cmd+K (or Ctrl+K) from any page.
 - **n8n Workflows:** Roadmap section for automated workflows (not live yet, see [Phase 3](#phase-3--real-time--n8n-automations-2-weeks)).
 
 ### Networks
@@ -369,7 +376,7 @@ Shipped in three parts. Each part works on its own; 1.1 needs no database.
 
 ---
 
-### Phase 2: Data & Chain Expansion (2–3 weeks)
+### Phase 2: Data & Chain Expansion (done)
 
 **2.1 Use free endpoints already available**
 | Provider | Endpoint | Feature | Status |
@@ -410,12 +417,13 @@ ETH ETF flow data has no reliable free API at the moment, so it is left out.
 - [x] Transactions decode ERC20, ERC721 and ERC1155 transfers and approvals, with token symbols and decimals read on-chain; blocks show gas use, base fee and burnt ETH; addresses show balance, type and (for wallets) activity, approvals and DeFi positions; tokens show supply, plus price, holders and transfers on Ethereum.
 - [ ] Address labels come with the open label datasets in 2.3.
 
-**2.5 Homepage redesign**
-- [ ] Stat row: ETH price, gas, supply change, staking ratio.
-- [ ] Market, DeFi and L2 summary cards, plus a trending section.
-- [ ] **Cmd+K global search** that detects an address, ENS name, transaction hash, block number or token.
+**2.5 Homepage redesign (done)**
+- [x] Stat row: ETH price, gas, 24h supply change, share of ETH staked.
+- [x] DeFi, layer 2 and Ethereum summary cards linking to their pages; the market overview, chart and trending sections stay below.
+- [x] **Cmd+K global search** (also a navbar button and the homepage search box): detects an address, ENS name (resolved on-chain), transaction hash or block number, and finds pages by keyword and coins by name.
+- [x] Navbar regrouped into Markets, Ethereum, Layer 2s, Wallets, Tokens & NFTs and More (`src/app/utils/constants/SitePages.ts` feeds both the menus and search).
 
-**Done when:** each new page is live with caching, and wallet pages work on at least 5 chains.
+**Done when:** each new page is live with caching, and wallet pages work on at least 5 chains. ✅ (Ethereum plus 5 networks)
 
 ---
 
@@ -592,8 +600,8 @@ DISCORD_WEBHOOK_URL=''
 |---|---|---|
 | 0: Foundation | 1 week | Done |
 | 1: Wallet connection & accounts | 1–2 weeks | Done |
-| 2: Data & chain expansion | 2–3 weeks | In progress (2.1–2.4 done; 2.5 next) |
-| 3: Real-time & n8n automations | 2 weeks | Planned |
+| 2: Data & chain expansion | 2–3 weeks | Done |
+| 3: Real-time & n8n automations | 2 weeks | Next |
 | 4: AI layer (MCP + agent) | 2 weeks | Planned |
 | 5: On-chain actions | 2–3 weeks | Planned |
 | 6: Polish & growth | Ongoing | Planned |
