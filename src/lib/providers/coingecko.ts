@@ -35,6 +35,7 @@ export interface CoinMarket {
     market_cap_rank: number;
     total_volume: number;
     price_change_percentage_24h: number | null;
+    circulating_supply?: number | null;
 }
 
 export function getTopMarkets(): Promise<CoinMarket[]> {

@@ -11,7 +11,8 @@ describe("toApprovals", () => {
         const approvals = toApprovals(fixture.approvals);
         expect(approvals.map(a => a.tokenSymbol)).toEqual(['USDC', 'USDT']);
         expect(approvals[0]).toMatchObject({ unlimited: true, amount: 'Unlimited', usdAtRisk: 1500.25, spenderLabel: 'Uniswap V2: Router 2', tokenAddress: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' });
-        expect(approvals[1]).toMatchObject({ unlimited: false, amount: '5', spenderLabel: null });
+        // Moralis gave no label for this spender; the curated list names it
+        expect(approvals[1]).toMatchObject({ unlimited: false, amount: '5', spenderLabel: '1inch v5: Aggregation Router' });
     });
 
     it("tolerates missing or malformed data", () => {

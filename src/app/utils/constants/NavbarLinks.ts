@@ -18,9 +18,11 @@ export const NavbarLinks: NavbarLinkObject[] = [
     },
     {
         name: 'Gas Info',
-        dropdown: [{
-            name: 'Gas Information', href: '/gas-tracker'
-        }]
+        dropdown: [
+            { name: 'Gas Information', href: '/gas-tracker' },
+            { name: 'ETH Supply & Burn', href: '/eth-supply' },
+            { name: 'Blobs', href: '/blobs' }
+        ]
     },
     {
         name: 'Layer Two Chains',

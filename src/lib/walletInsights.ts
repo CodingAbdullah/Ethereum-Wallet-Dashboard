@@ -1,6 +1,7 @@
 import { moralis, moralisChain } from "./providers/moralis";
 import type { Network } from "./validation";
 import { hasMarketValue } from "./chains";
+import { labelFor } from "./labels";
 
 // Extra wallet data from Moralis's free Wallet API: token approvals, DeFi positions and a
 // human-readable activity feed. Responses are read defensively: unknown or missing fields
@@ -68,7 +69,7 @@ export function toApprovals(data: unknown): TokenApproval[] {
                 tokenName: str(token.name) ?? str(token.symbol) ?? 'Unknown token',
                 tokenLogo: str(token.logo),
                 spender: str(spender.address) ?? '',
-                spenderLabel: str(spender.address_label) ?? str(spender.entity),
+                spenderLabel: str(spender.address_label) ?? str(spender.entity) ?? labelFor(str(spender.address))?.name ?? null,
                 amount: unlimited ? 'Unlimited' : formatted,
                 unlimited,
                 usdAtRisk: num(token.usd_at_risk),

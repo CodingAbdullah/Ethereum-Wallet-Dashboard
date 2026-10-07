@@ -388,14 +388,14 @@ Approvals, DeFi positions and the activity feed load separately from the portfol
 | Page | Provider | Content |
 |---|---|---|
 | `/defi` ✅ | DefiLlama open API | TVL by protocol and chain, TVL history, stablecoin supply, DEX volume, fees, and yields (the yields section hides itself if DefiLlama keeps that endpoint on its paid plan) |
-| `/eth-supply` | RPC + Beacon API | Issuance vs. burn, supply change, blob fees |
-| `/blobs` | Blobscan | Blob usage, fees, which rollups post them |
+| `/eth-supply` ✅ | RPC + Beacon API + CoinGecko | ETH burnt over the last ~24h (measured from fee history, incl. blob fees) vs. estimated issuance, net change and yearly rate |
+| `/blobs` ✅ | RPC | Blob usage, blob base fee and fees burnt over ~24h, and which rollups posted blobs in the latest blocks (no Blobscan needed) |
 | `/staking` (expanded) | Beacon API, on-chain reads, Lido API | More LSTs, restaking, staking ratio |
 | `/derivatives` | Deribit / OKX / Bybit public APIs | ETH funding rates, open interest, options volume |
 | `/mev` | Flashbots relay data API | Relay and builder share, MEV-boost payloads |
 | `/governance` | Snapshot, Tally | Active proposals for major protocols |
 | Risk badges (site-wide) | GoPlus | Honeypot and scam-token flags on holdings and lookups |
-| Address labels (site-wide) | Open label datasets | Entity names next to addresses |
+| Address labels ✅ | Curated list (`src/lib/labels.ts`) | Names for well-known mainnet addresses on explorer pages, approvals and blob posters |
 | `/eip-protocols` (rebuilt) | GitHub `ethereum/EIPs` | Live EIP status and upcoming-upgrade tracker |
 
 ETH ETF flow data has no reliable free API at the moment, so it is left out.

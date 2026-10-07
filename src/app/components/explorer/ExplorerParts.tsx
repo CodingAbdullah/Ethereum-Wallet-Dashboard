@@ -1,15 +1,19 @@
 import Link from 'next/link';
 import { CHAINS } from '@/lib/chains';
 import { EXPLORER_CHAINS, type ExplorerChain } from '@/lib/explorer';
+import { labelFor } from '@/lib/labels';
 
 // Server-rendered building blocks shared by /tx, /block, /address and /token
 
 const q = (chain: ExplorerChain) => chain === 'eth' ? '' : '?chain=' + chain;
 
+// Labels (src/lib/labels.ts) are Ethereum mainnet addresses, so they're only shown there
 export function AddressLink({ address, chain, short = false }: { address: string; chain: ExplorerChain; short?: boolean }) {
+    const label = chain === 'eth' ? labelFor(address) : null;
+    const text = short ? address.slice(0, 6) + '…' + address.slice(-4) : address;
     return (
-        <Link href={`/address/${address}${q(chain)}`} className="font-mono text-gray-200 underline break-all">
-            {short ? address.slice(0, 6) + '…' + address.slice(-4) : address}
+        <Link href={`/address/${address}${q(chain)}`} title={address} className="text-gray-200 underline break-all">
+            {label ? <>{label.name}{!short && <span className="ml-2 font-mono text-xs text-gray-400">{text}</span>}</> : <span className="font-mono">{text}</span>}
         </Link>
     );
 }

@@ -7,6 +7,7 @@ import { DetailList, ExplorerPage, RpcError, trimNumber } from "@/app/components
 import { explorerChain, type AddressDetails } from "@/lib/explorer";
 import { cachedAddress } from "@/lib/explorerCache";
 import { chainInfo, explorerAddress } from "@/lib/chains";
+import { labelFor } from "@/lib/labels";
 
 type Props = { params: Promise<{ address: string }>; searchParams: Promise<{ chain?: string }> };
 
@@ -26,10 +27,12 @@ export default async function AddressPage({ params, searchParams }: Props) {
     if (!details) notFound();
 
     const query = chain === 'eth' ? '' : '?chain=' + chain;
+    const label = chain === 'eth' ? labelFor(details.address) : null;
     return (
         <ExplorerPage title={details.token ? `${details.token.name ?? details.token.symbol} (${details.token.symbol})` : details.isContract ? 'Contract' : 'Address'} subtitle={<span className="font-mono text-sm">{details.address}</span>} chain={chain} path={`/address/${details.address}`}>
             <Panel title="Overview">
                 <DetailList rows={[
+                    ...(label ? [['Name', label.name] as [string, string]] : []),
                     ['Balance', `${trimNumber(details.balance, 8)} ${details.native}`],
                     ['Type', details.isContract ? `Contract (${details.codeSize.toLocaleString('en-US')} bytes)` : 'Wallet'],
                     ['Transactions sent', details.txCount.toLocaleString('en-US')],
