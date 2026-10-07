@@ -1,19 +1,17 @@
 'use client';
 
-import { useRef, useState, useSyncExternalStore } from 'react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 import useSWR, { useSWRConfig } from 'swr';
-import { useAccount } from 'wagmi';
 import { Trash2 } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Alert, AlertDescription } from './ui/alert';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import NetworkSelector from './NetworkSelector';
-import ConnectWalletButton, { shortAddress } from './ConnectWalletButton';
+import { shortAddress } from './ConnectWalletButton';
+import SignInGate, { buttonClass, Panel } from './SignInGate';
 import addressValidator from '../utils/functions/addressValidator';
 import { usePrefillAddress } from '../hooks/useConnectedAddress';
-import { useSession } from '../hooks/useSession';
 import { chainInfo } from '@/lib/chains';
 import PortfolioOverview from './PortfolioOverview';
 import WalletInsightsSection from './WalletInsightsSection';
@@ -26,8 +24,6 @@ interface SavedWallet {
 }
 
 const MAX_WALLETS = 5;
-const buttonClass = "bg-gradient-to-r from-gray-600 to-gray-400 text-white py-2 px-6 rounded-md hover:from-gray-500 hover:to-gray-300 transition-all duration-300 font-medium";
-const noopSubscribe = () => () => {};
 
 async function fetchWallets(url: string): Promise<SavedWallet[]> {
     const response = await fetch(url);
@@ -35,56 +31,15 @@ async function fetchWallets(url: string): Promise<SavedWallet[]> {
     return response.json();
 }
 
-function Panel({ title, description, children }: { title: string; description: string; children?: React.ReactNode }) {
-    return (
-        <Card className="bg-gray-900 border-gray-800 shadow-xl w-full">
-            <CardHeader className="border-b border-gray-800 pb-6">
-                <CardTitle className="text-3xl font-bold text-gray-100">{title}</CardTitle>
-                <CardDescription className="text-gray-400 text-lg font-light">{description}</CardDescription>
-            </CardHeader>
-            {children && <CardContent className="space-y-6 pt-6">{children}</CardContent>}
-        </Card>
-    );
-}
-
 // My Dashboard: sign in with the connected wallet, then save and remove the wallets you follow
 export default function MyDashboardSection() {
-    const mounted = useSyncExternalStore(noopSubscribe, () => true, () => false);
-    const { isConnected } = useAccount();
-    const { session, isSignedIn, isLoading, signingIn, error: signInError, signIn } = useSession();
-
-    if (!mounted || isLoading) {
-        return <div className="container mx-auto px-4 w-full max-w-3xl"><Panel title="Loading…" description="Checking your session" /></div>;
-    }
-
-    let content: React.ReactNode;
-    if (session && !session.accountsEnabled) {
-        content = <Panel title="Accounts are not set up" description="This server needs AUTH_SECRET and DATABASE_URL to save wallets." />;
-    }
-    else if (!isConnected && !isSignedIn) {
-        content = (
-            <Panel title="Connect your wallet" description="Connect a wallet, then sign a message to prove it's yours. Signing is free and sends no transaction.">
-                <div className="flex justify-center"><ConnectWalletButton /></div>
-            </Panel>
-        );
-    }
-    else if (!isSignedIn) {
-        content = (
-            <Panel title="Sign in" description="Sign a one-time message with your wallet. It's free and sends no transaction.">
-                {signInError && <Alert variant="destructive"><AlertDescription>{signInError}</AlertDescription></Alert>}
-                <div className="flex justify-center">
-                    <Button className={buttonClass} disabled={signingIn} onClick={signIn}>
-                        {signingIn ? 'Check your wallet…' : 'Sign in with Ethereum'}
-                    </Button>
-                </div>
-            </Panel>
-        );
-    }
-    else {
-        content = <SavedWallets />;
-    }
-
-    return <div className="container mx-auto px-4 w-full max-w-5xl space-y-8">{content}</div>;
+    return (
+        <div className="container mx-auto px-4 w-full max-w-5xl space-y-8">
+            <SignInGate notConfigured="This server needs AUTH_SECRET and DATABASE_URL to save wallets.">
+                <SavedWallets />
+            </SignInGate>
+        </div>
+    );
 }
 
 function SavedWallets() {

@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { eq } from "drizzle-orm";
-import { createTestDb } from "@/test/db";
+import { setupTestDb } from "@/test/db";
 import type { Database } from "../db";
 import { alertEvents, alertSubscriptions, notificationChannels, users } from "../db/schema";
 import { runCheck } from "./engine";
@@ -27,8 +27,9 @@ async function subscribe(params: Record<string, unknown>, channel: { verified?: 
     return s;
 }
 
+const testDb = setupTestDb();
 beforeEach(async () => {
-    db = await createTestDb();
+    db = testDb();
     await db.insert(users).values({ address: USER });
     sent = [];
     fee = 8;

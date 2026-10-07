@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { createTestDb } from "@/test/db";
+import { setupTestDb } from "@/test/db";
 import type { Database } from "../db";
 import { notificationChannels, users } from "../db/schema";
 import { handleTelegramUpdate, telegramLink } from "./telegram";
@@ -8,8 +8,9 @@ const USER = '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045';
 let db: Database;
 const msg = (text: string, id = 777) => ({ message: { chat: { id }, text } });
 
+const testDb = setupTestDb();
 beforeEach(async () => {
-    db = await createTestDb();
+    db = testDb();
     await db.insert(users).values({ address: USER });
     await db.insert(notificationChannels).values({ userAddress: USER, kind: 'telegram', verifyToken: 'tok123' });
 });

@@ -19,13 +19,13 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 7. [Free-Plan Limits](#-free-plan-limits)
 8. [Audit: Current State & Gaps](#-audit-current-state--gaps)
 9. [Roadmap](#️-roadmap)
-   - [Phase 0: Foundation](#phase-0--foundation-done)
-   - [Phase 1: Wallet Connection & Accounts](#phase-1--wallet-connection--accounts-done)
-   - [Phase 2: Data & Chain Expansion](#phase-2--data--chain-expansion-done)
-   - [Phase 3: Real-Time & n8n Automations](#phase-3--real-time--n8n-automations-2-weeks)
-   - [Phase 4: AI Layer (MCP Server + Agent)](#phase-4--ai-layer-mcp-server--agent-2-weeks)
-   - [Phase 5: On-Chain Actions](#phase-5--on-chain-actions-23-weeks)
-   - [Phase 6: Polish & Growth](#phase-6--polish--growth-ongoing)
+   - [Phase 0: Foundation](#phase-0-foundation-done)
+   - [Phase 1: Wallet Connection & Accounts](#phase-1-wallet-connection--accounts-done)
+   - [Phase 2: Data & Chain Expansion](#phase-2-data--chain-expansion-done)
+   - [Phase 3: Real-Time & n8n Automations](#phase-3-real-time--n8n-automations-done)
+   - [Phase 4: AI Layer (MCP Server + Agent)](#phase-4-ai-layer--mcp-server--agent-2-weeks)
+   - [Phase 5: On-Chain Actions](#phase-5-on-chain-actions-23-weeks)
+   - [Phase 6: Polish & Growth](#phase-6-polish--growth-ongoing)
 10. [Target Architecture](#️-target-architecture)
 11. [Environment Variables](#-environment-variables)
 12. [Timeline](#️-timeline)
@@ -61,7 +61,9 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 - **ETH Supply & Blobs:** ETH burnt vs. issued over the last day, and blob usage, fees and posters.
 - **MEV & Governance:** MEV-Boost relay and builder share; active Snapshot votes for major DAOs.
 - **Global search:** Cmd+K (or Ctrl+K) from any page.
-- **n8n Workflows:** Roadmap section for automated workflows (not live yet, see [Phase 3](#phase-3--real-time--n8n-automations-2-weeks)).
+- **Alerts (`/alerts`):** Ten alert types (wallet activity, gas, prices, validators, risky approvals, NFT floors, ENS expiry, depegs, governance and a daily market digest) sent to Telegram, Discord or email, with alert history. Scheduled by n8n; wallet alerts can arrive within a block through Moralis Streams.
+- **n8n Workflows:** Every live alert workflow with a Subscribe button; the workflow exports live in [`/n8n`](n8n/README.md).
+- **Live block ticker:** Block number, age, base fee and fullness in the metrics bar, streamed from the server; pending transactions update when mined.
 
 ### Networks
 - **Ethereum**, **Base**, **Arbitrum One**, **OP Mainnet**, **Polygon PoS** and **Linea**, plus the **Sepolia** and **Hoodi** testnets, for wallet holdings, NFTs, portfolio, approvals and DeFi positions. One registry (`src/lib/chains.ts`) holds each chain's IDs, provider names, explorer and public RPC.
@@ -92,7 +94,11 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 | **Deribit / OKX / Bybit** | Public market data | No | `/derivatives` |
 | **Snapshot** | Public GraphQL | No | `/governance` |
 | **Groq** | Free tier | Free key | AI market insights (Llama 3.3 70B) |
-| **Resend** | Free (3,000 emails/month) | Free key | Feedback form emails |
+| **Resend** | Free (3,000 emails/month) | Free key | Feedback form emails, email alerts |
+| **Moralis Streams** | Free plan | Same Moralis key (optional) | Real-time wallet activity and approval alerts |
+| **Telegram Bot API** | Free | Free bot token | Telegram alerts |
+| **Discord webhooks** | Free | No (users paste their own) | Discord alerts |
+| **n8n** | Community Edition (free, self-hosted) | No | Alert scheduling and delivery |
 | **Umami** | Free / self-hosted | Optional | Privacy-friendly site analytics |
 
 ### Replaced providers and endpoints
@@ -289,11 +295,11 @@ export const POST = withErrorHandling(async (request: Request) => {
 | Area | Status |
 |---|---|
 | **Wallet connection** | Done in Phase 1: connect, sign in, saved wallets, combined portfolio on `/me`. |
-| **User accounts / persistence** | Users, saved wallets and daily portfolio snapshots (Neon). No watchlists or alert settings yet. |
+| **User accounts / persistence** | Users, saved wallets, daily portfolio snapshots, alert channels, alerts and alert history (Neon). |
 | **Smart contract writes** | None. Reads exist (staking), but no approvals, swaps or transfers. |
-| **n8n workflows** | Placeholder page only. |
+| **n8n workflows** | Done in Phase 3: ten live alert workflows (`/alerts`, `/n8n`). |
 | **MCP server / AI agent** | None. The only AI feature is the hourly market summary. |
-| **Real-time data** | None. Data refreshes by polling. |
+| **Real-time data** | Done in Phase 3.1: live block ticker over Server-Sent Events, live pending transactions. |
 | **Layer 2 support** | Done in Phase 2.2: Base, Arbitrum, OP Mainnet, Polygon and Linea, plus `/l2` pages. |
 | **End-to-end tests** | Unit tests cover the API layer; no browser-level tests yet. |
 
@@ -427,45 +433,50 @@ ETH ETF flow data has no reliable free API at the moment, so it is left out.
 
 ---
 
-### Phase 3: Real-Time & n8n Automations (2 weeks)
+### Phase 3: Real-Time & n8n Automations (done)
 
 **3.1 Real-time (done)**
 - [x] Live block ticker in the metrics bar (block number, age, base fee, how full) over Server-Sent Events from `/api/live`. Each server instance shares one reading every 3 seconds, so viewers don't multiply RPC calls; no WebSocket provider or Upstash needed.
 - [x] Vercel functions can't hold connections open, so each stream runs ~50 seconds and the browser's EventSource reconnects automatically.
 - [x] Pending transactions on `/tx` check their status on every new block and refresh once mined (pending results are never cached).
 
-**3.2 Event pipeline**
+**3.2 Event pipeline (done)**
 ```
-Moralis Streams / Alchemy Notify (free tiers) ──▶ /api/webhooks/* (HMAC-verified)
-Vercel cron jobs (prices, gas, validators, floors) ──▶ /api/cron/*
+Moralis Streams (free plan) ──────────▶ /api/webhooks/* (signature-verified)
+n8n scheduler (gas, prices, validators, ...) ──▶ /api/cron/alerts/*
                          │
                          ▼
             Store event (Postgres) ──▶ n8n webhook (signed)
                          │
                          ▼
-      n8n routes to Email (Resend) / Telegram / Discord / Slack
+      n8n routes to Email (Resend) / Telegram / Discord
 ```
-- [ ] Self-host n8n (the Community Edition is free) on a small VM or free-tier host.
-- [ ] Commit workflow JSON exports to `/n8n/` so they are version-controlled.
-- [ ] Sign every webhook with HMAC and reject unsigned requests.
+- [x] Tables: `notification_channels`, `alert_subscriptions` (with each checker's saved state) and `alert_events` (a unique key per alert, so a retry or Moralis's confirmed re-delivery is never sent twice). Migration `drizzle/0002_alerts.sql`.
+- [x] `/api/cron/alerts/[type]` runs one alert type for every subscriber (`CRON_SECRET`); n8n calls it on each type's interval, since Vercel Hobby cron only runs daily.
+- [x] Alerts go to n8n signed with HMAC-SHA256 and a timestamp (`N8N_WEBHOOK_URL`, `N8N_WEBHOOK_SECRET`); n8n rejects unsigned or stale requests and routes to Telegram, Discord or email. Without n8n the app delivers directly.
+- [x] Incoming webhooks are verified: Moralis Streams (`/api/webhooks/moralis`, keccak signature) and the Telegram bot (`/api/webhooks/telegram`, secret token). They skip the per-IP rate limit.
+- [x] Moralis Streams pushes wallet activity and approvals in real time; the app adds and removes watched addresses as alerts change, and polling stops when Streams is configured. Alchemy Notify was not needed.
+- [x] Workflow exports in [`/n8n`](n8n/README.md) (scheduler and router) with setup steps for self-hosting the free Community Edition.
 
-**3.3 Workflows (in shipping order)**
-1. [ ] Daily market digest (the card already on `/n8n-workflows`)
-2. [ ] Watched-wallet activity alerts (incoming/outgoing transactions, large transfers)
-3. [ ] Gas threshold alerts ("tell me when gas is under X gwei")
-4. [ ] Price alerts for ETH and watchlist tokens
-5. [ ] Validator alerts: missed attestations, slashing, balance drop (Beacon API)
-6. [ ] New risky token approval on a watched wallet
-7. [ ] NFT floor price moves
-8. [ ] ENS expiry reminders (30, 7 and 1 day)
-9. [ ] Depeg alerts for stETH/ETH and major stablecoins
-10. [ ] New governance proposals for protocols the user holds
+**3.3 Workflows (done)**
+1. [x] Daily market digest: ETH, market cap, gas and top movers
+2. [x] Watched-wallet activity alerts (incoming/outgoing transactions, optional minimum size)
+3. [x] Gas threshold alerts ("tell me when gas is under X gwei")
+4. [x] Price alerts for ETH and any top-250 coin
+5. [x] Validator alerts: missed attestations, slashing, balance drop (Beacon API)
+6. [x] New risky token approval on a watched wallet
+7. [x] NFT floor price moves
+8. [x] ENS expiry reminders (30, 7 and 1 day)
+9. [x] Depeg alerts for stETH/ETH and major stablecoins
+10. [x] New governance proposals for the Snapshot spaces the user picks
 
-**3.4 Alerts UI**
-- [ ] `/alerts`: create and manage subscriptions, view alert history.
-- [ ] Rebuild `/n8n-workflows` to list live workflows with Subscribe buttons instead of roadmap cards.
+Each type validates its own settings, keeps state between runs (so it fires once when a threshold is crossed, then waits until it clearly resets), and is tested against fake data.
 
-**Done when:** a signed-in user can set up a wallet alert and receive it on Telegram within one block.
+**3.4 Alerts UI (done)**
+- [x] `/alerts`: add Telegram (one-time link to the bot), Discord (webhook checked with a test message) or email (confirmed by link) channels; create, pause and delete alerts; see the last 50 alerts and whether each was delivered. Up to 5 channels and 20 alerts per user.
+- [x] `/n8n-workflows` lists the live workflows with Subscribe buttons that open `/alerts` with the type selected.
+
+**Done when:** a signed-in user can set up a wallet alert and receive it on Telegram within one block. ✅ (with Moralis Streams configured; otherwise within 10 minutes)
 
 ---
 
@@ -555,7 +566,7 @@ Every write action follows the same flow:
   Free tiers: GoPlus · Groq · Resend · Neon · Upstash · Sentry · Reown
 
   Neon Postgres (users, wallets, watchlists, alerts, snapshots, API keys)
-  Moralis Streams / cron ──▶ n8n ──▶ Email · Telegram · Discord · Slack
+  Moralis Streams / n8n schedule ──▶ alert engine ──▶ n8n ──▶ Email · Telegram · Discord
 ```
 
 ---
@@ -584,14 +595,12 @@ All current variables are in `.env.example`:
 | `AUTH_SECRET` | For sign-in (Phase 1) | Any random string of 32+ characters (`openssl rand -base64 32`) |
 | `CRON_SECRET` | For daily portfolio snapshots | Any random string; Vercel sends it to cron jobs |
 
-Variables later phases will add (all free tiers):
-```bash
-TALLY_API_KEY=''                 # Tally
-N8N_WEBHOOK_URL=''               # n8n
-N8N_WEBHOOK_SECRET=''
-TELEGRAM_BOT_TOKEN=''
-DISCORD_WEBHOOK_URL=''
-```
+| `TELEGRAM_BOT_TOKEN`, `TELEGRAM_BOT_USERNAME`, `TELEGRAM_WEBHOOK_SECRET` | For Telegram alerts (Phase 3) | Bot from @BotFather; any random secret |
+| `ALERTS_FROM_EMAIL` | For email alerts (Phase 3) | A sender on a domain verified in Resend |
+| `N8N_WEBHOOK_URL`, `N8N_WEBHOOK_SECRET` | No (the app delivers alerts itself without them) | Self-hosted n8n Community Edition |
+| `MORALIS_STREAM_ID`, `MORALIS_STREAMS_SECRET` | No (wallet alerts are polled without them) | Moralis Streams, free plan |
+
+Alert checks are run by n8n calling `/api/cron/alerts/<type>` with `CRON_SECRET`; see [`n8n/README.md`](n8n/README.md) for the full setup.
 
 ---
 
@@ -602,8 +611,8 @@ DISCORD_WEBHOOK_URL=''
 | 0: Foundation | 1 week | Done |
 | 1: Wallet connection & accounts | 1–2 weeks | Done |
 | 2: Data & chain expansion | 2–3 weeks | Done |
-| 3: Real-time & n8n automations | 2 weeks | Next |
-| 4: AI layer (MCP + agent) | 2 weeks | Planned |
+| 3: Real-time & n8n automations | 2 weeks | Done |
+| 4: AI layer (MCP + agent) | 2 weeks | Next |
 | 5: On-chain actions | 2–3 weeks | Planned |
 | 6: Polish & growth | Ongoing | Planned |
 
@@ -615,6 +624,7 @@ DISCORD_WEBHOOK_URL=''
 - **Hosting:** Vercel (serverless route handlers and cron jobs). Note that Vercel's free Hobby plan is for non-commercial use.
 - **Accounts setup:** set `AUTH_SECRET`, `DATABASE_URL` and `CRON_SECRET` in Vercel, then create the tables once with `DATABASE_URL=... npm run db:migrate`. Run it again after pulling new files in `drizzle/`.
 - **Cron:** `vercel.json` schedules `/api/cron/portfolio-snapshots` daily at 05:15 UTC; Vercel sends `CRON_SECRET` as a bearer token.
+- **Alerts:** run `npm run db:migrate` for the alerts tables, create the Telegram bot and register its webhook, then import the n8n workflows. Step by step in [`n8n/README.md`](n8n/README.md).
 - **Docker:** a `Dockerfile` (Node 24) is included for self-hosting:
   ```bash
   docker build -t eth-dashboard .

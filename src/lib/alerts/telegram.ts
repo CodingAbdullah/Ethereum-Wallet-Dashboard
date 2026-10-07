@@ -13,17 +13,19 @@ export function telegramLink(bot: string, token: string): string {
     return `https://t.me/${encodeURIComponent(bot)}?start=${encodeURIComponent(token)}`;
 }
 
-// Returns the bot's reply, or null to stay quiet
-export async function handleTelegramUpdate(db: Database, update: TelegramUpdate, now = new Date()): Promise<{ chatId: string; text: string } | null> {
+// Returns the bot's reply, or null to stay quiet. The database is only opened for commands,
+// so chatter in the chat never fails (Telegram retries failed deliveries).
+export async function handleTelegramUpdate(database: Database | (() => Database), update: TelegramUpdate, now = new Date()): Promise<{ chatId: string; text: string } | null> {
     const chatId = update.message?.chat?.id;
     const text = update.message?.text?.trim() ?? '';
     if (chatId === undefined || !text.startsWith('/')) return null;
     const chat = String(chatId);
     const [command, token] = text.split(/\s+/);
+    const db = () => typeof database === 'function' ? database() : database;
 
     if (command === '/start' || command.startsWith('/start@')) {
         if (!token) return { chatId: chat, text: 'Hi! To get alerts here, open ethereumdashboard.dev/alerts, add a Telegram channel and press the link it gives you.' };
-        const [linked] = await db.update(notificationChannels)
+        const [linked] = await db().update(notificationChannels)
             .set({ target: chat, verified: true, verifyToken: null })
             .where(and(
                 eq(notificationChannels.kind, 'telegram'),
@@ -40,7 +42,7 @@ export async function handleTelegramUpdate(db: Database, update: TelegramUpdate,
     }
 
     if (command === '/stop' || command.startsWith('/stop@')) {
-        const unlinked = await db.update(notificationChannels)
+        const unlinked = await db().update(notificationChannels)
             .set({ verified: false })
             .where(and(eq(notificationChannels.kind, 'telegram'), eq(notificationChannels.target, chat)))
             .returning({ id: notificationChannels.id });

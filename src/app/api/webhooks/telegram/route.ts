@@ -15,7 +15,7 @@ export const POST = withErrorHandling(async (request: Request) => {
     if (!verifyTelegramSecret(secret, request.headers.get('x-telegram-bot-api-secret-token'))) throw new HttpError(401, 'Unauthorized');
 
     const update = await request.json().catch(() => ({})) as TelegramUpdate;
-    const reply = await handleTelegramUpdate(getDb(), update);
+    const reply = await handleTelegramUpdate(getDb, update);
     if (!reply) return NextResponse.json({ ok: true });
     return NextResponse.json({ method: 'sendMessage', chat_id: reply.chatId, text: reply.text });
 });
