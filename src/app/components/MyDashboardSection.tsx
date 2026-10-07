@@ -2,7 +2,7 @@
 
 import { useRef, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import { useAccount } from 'wagmi';
 import { Trash2 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
@@ -14,6 +14,7 @@ import ConnectWalletButton, { shortAddress } from './ConnectWalletButton';
 import addressValidator from '../utils/functions/addressValidator';
 import { usePrefillAddress } from '../hooks/useConnectedAddress';
 import { useSession } from '../hooks/useSession';
+import PortfolioOverview from './PortfolioOverview';
 
 interface SavedWallet {
     id: number;
@@ -82,11 +83,14 @@ export default function MyDashboardSection() {
         content = <SavedWallets />;
     }
 
-    return <div className="container mx-auto px-4 w-full max-w-3xl space-y-8">{content}</div>;
+    return <div className="container mx-auto px-4 w-full max-w-5xl space-y-8">{content}</div>;
 }
 
 function SavedWallets() {
-    const { data: wallets, error, mutate } = useSWR('/api/wallets', fetchWallets);
+    const { data: wallets, error, mutate: mutateWallets } = useSWR('/api/wallets', fetchWallets);
+    const { mutate: mutateKey } = useSWRConfig();
+    // Saving or removing a wallet changes the portfolio too
+    const mutate = () => Promise.all([mutateWallets(), mutateKey('/api/portfolio')]);
     const addressRef = useRef<HTMLInputElement>(null);
     const labelRef = useRef<HTMLInputElement>(null);
     const [network, setNetwork] = useState('eth');
@@ -131,7 +135,9 @@ function SavedWallets() {
 
     return (
         <>
-            <Panel title="Saved Wallets" description={`Follow up to ${MAX_WALLETS} wallets. A combined portfolio view is coming next.`}>
+            {wallets && wallets.length > 0 && <PortfolioOverview />}
+
+            <Panel title="Saved Wallets" description={`Follow up to ${MAX_WALLETS} wallets.`}>
                 {error && <Alert variant="destructive"><AlertDescription>{error.message}</AlertDescription></Alert>}
                 {!wallets && !error && <p className="text-gray-400">Loading…</p>}
                 {wallets?.length === 0 && <p className="text-gray-400">No saved wallets yet. Add one below.</p>}

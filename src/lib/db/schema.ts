@@ -1,4 +1,4 @@
-import { index, pgTable, serial, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+import { date, doublePrecision, index, pgTable, serial, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
 
 // Phase 1 tables. Later phases add their own (watchlists, alert_subscriptions, notification_channels, api_keys).
 
@@ -24,3 +24,16 @@ export const watchedWallets = pgTable('watched_wallets', {
 ]);
 
 export type WatchedWallet = typeof watchedWallets.$inferSelect;
+
+// One USD value per wallet per day, for the portfolio-over-time chart. Keyed by wallet (not user),
+// so a wallet saved by several users is only fetched once. Written by the daily cron job and when /me loads.
+export const portfolioSnapshots = pgTable('portfolio_snapshots', {
+    id: serial('id').primaryKey(),
+    address: text('address').notNull(),
+    chain: text('chain').notNull(),
+    day: date('day', { mode: 'string' }).notNull(),
+    usdValue: doublePrecision('usd_value').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow()
+}, table => [
+    uniqueIndex('portfolio_snapshots_wallet_day_idx').on(table.address, table.chain, table.day)
+]);

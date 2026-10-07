@@ -15,7 +15,7 @@ import {
     DropdownMenuTrigger
 } from './ui/dropdown-menu';
 
-const buttonClass = "inline-flex items-center gap-2 rounded-md bg-gray-800 px-3 py-2 text-sm font-medium text-gray-200 ring-1 ring-gray-700 hover:bg-gray-700 hover:text-white disabled:opacity-60";
+const buttonClass = "inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-gray-800 px-3 py-2 text-sm font-medium text-gray-200 ring-1 ring-gray-700 hover:bg-gray-700 hover:text-white disabled:opacity-60";
 
 const noopSubscribe = () => () => {};
 
@@ -23,8 +23,9 @@ export function shortAddress(address: string) {
     return address.slice(0, 6) + '…' + address.slice(-4);
 }
 
-// Connect Wallet button for the navbar: lists the available wallets, then shows the connected account
-export default function ConnectWalletButton() {
+// Connect Wallet button for the navbar: lists the available wallets, then shows the connected account.
+// labelClassName lets tight layouts hide the text and show only the icon (the button keeps an accessible name).
+export default function ConnectWalletButton({ labelClassName }: { labelClassName?: string }) {
     const [copied, setCopied] = useState(false);
     const { address, isConnected, connector: activeConnector } = useAccount();
     const connectors = useConnectors();
@@ -37,7 +38,7 @@ export default function ConnectWalletButton() {
     const mounted = useSyncExternalStore(noopSubscribe, () => true, () => false);
 
     if (!mounted) {
-        return <button className={buttonClass} disabled><Wallet className="h-4 w-4" />Connect Wallet</button>;
+        return <button className={buttonClass} disabled aria-label="Connect Wallet"><Wallet className="h-4 w-4" aria-hidden="true" /><span className={labelClassName}>Connect Wallet</span></button>;
     }
 
     if (isConnected && address) {
@@ -49,9 +50,9 @@ export default function ConnectWalletButton() {
 
         return (
             <DropdownMenu>
-                <DropdownMenuTrigger className={buttonClass}>
-                    {isSignedIn ? <ShieldCheck className="h-4 w-4 text-green-400" aria-label="Signed in" /> : <Wallet className="h-4 w-4" />}
-                    {ensName ?? shortAddress(address)}
+                <DropdownMenuTrigger className={buttonClass} aria-label={'Wallet ' + (ensName ?? address) + (isSignedIn ? ' (signed in)' : '')}>
+                    {isSignedIn ? <ShieldCheck className="h-4 w-4 text-green-400" aria-hidden="true" /> : <Wallet className="h-4 w-4" aria-hidden="true" />}
+                    <span className={labelClassName}>{ensName ?? shortAddress(address)}</span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                     <DropdownMenuLabel className="font-mono text-xs break-all">{address}</DropdownMenuLabel>
@@ -95,9 +96,9 @@ export default function ConnectWalletButton() {
 
     return (
         <DropdownMenu onOpenChange={open => { if (open) reset(); }}>
-            <DropdownMenuTrigger className={buttonClass} disabled={isPending}>
-                <Wallet className="h-4 w-4" />
-                {isPending ? 'Connecting…' : 'Connect Wallet'}
+            <DropdownMenuTrigger className={buttonClass} disabled={isPending} aria-label="Connect Wallet">
+                <Wallet className="h-4 w-4" aria-hidden="true" />
+                <span className={labelClassName}>{isPending ? 'Connecting…' : 'Connect Wallet'}</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-60">
                 <DropdownMenuLabel>Choose a wallet</DropdownMenuLabel>

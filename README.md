@@ -20,7 +20,7 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 8. [Audit: Current State & Gaps](#-audit-current-state--gaps)
 9. [Roadmap](#️-roadmap)
    - [Phase 0: Foundation](#phase-0--foundation-done)
-   - [Phase 1: Wallet Connection & Accounts](#phase-1--wallet-connection--accounts-12-weeks)
+   - [Phase 1: Wallet Connection & Accounts](#phase-1--wallet-connection--accounts-done)
    - [Phase 2: Data & Chain Expansion](#phase-2--data--chain-expansion-23-weeks)
    - [Phase 3: Real-Time & n8n Automations](#phase-3--real-time--n8n-automations-2-weeks)
    - [Phase 4: AI Layer (MCP Server + Agent)](#phase-4--ai-layer-mcp-server--agent-2-weeks)
@@ -182,6 +182,9 @@ src/
 │   ├── auth/                # SIWE verification, nonces, session cookie
 │   ├── db/                  # Drizzle schema and Neon client (migrations in /drizzle)
 │   ├── accounts.ts          # Saved wallets for signed-in users
+│   ├── portfolio.ts         # Per-wallet holdings, NFTs, PnL, activity; combined portfolio
+│   ├── snapshots.ts         # Daily portfolio snapshots and value history
+│   ├── csv.ts               # CSV export helpers
 │   ├── wagmi.ts             # Wallet connection config
 │   ├── validation.ts        # Zod schemas: addresses, networks, ENS names, token IDs, intervals
 │   ├── ens.ts               # ENS resolution helpers (viem)
@@ -269,8 +272,8 @@ export const POST = withErrorHandling(async (request: Request) => {
 ### Still missing
 | Area | Status |
 |---|---|
-| **Wallet connection** | Done in Phase 1.1–1.2: connect, sign in, saved wallets. |
-| **User accounts / persistence** | Users and saved wallets (Neon). No watchlists or alert settings yet. |
+| **Wallet connection** | Done in Phase 1: connect, sign in, saved wallets, combined portfolio on `/me`. |
+| **User accounts / persistence** | Users, saved wallets and daily portfolio snapshots (Neon). No watchlists or alert settings yet. |
 | **Smart contract writes** | None. Reads exist (staking), but no approvals, swaps or transfers. |
 | **n8n workflows** | Placeholder page only. |
 | **MCP server / AI agent** | None. The only AI feature is the hourly market summary. |
@@ -325,7 +328,7 @@ Each phase builds on the previous one and ends with something shippable. Time es
 
 ---
 
-### Phase 1: Wallet Connection & Accounts (1–2 weeks)
+### Phase 1: Wallet Connection & Accounts (done)
 
 Shipped in three parts. Each part works on its own; 1.1 needs no database.
 
@@ -347,16 +350,16 @@ Shipped in three parts. Each part works on its own; 1.1 needs no database.
 - [x] Unit tests for nonce handling, SIWE verification, the session cookie and the wallets route.
 - [x] `/me` page: sign in, then save (up to 5), label and remove wallets. Routes: `/api/auth/{nonce,verify,session,logout}`, `/api/wallets`.
 
-**1.3 "My Dashboard" (`/me`) portfolio (next)**
-- [ ] One page with net worth, ETH balance, ERC20 and NFT holdings, PnL and recent activity.
-- [ ] Multiple wallets combined into one portfolio view.
-- [ ] Each section loads on its own; if Moralis PnL is outside the free plan (HTTP 503), the rest of the page still shows.
-- [ ] Portfolio value over time, using daily snapshots saved by a Vercel cron job (Hobby plan allows daily jobs).
-- [x] A cap on saved wallets per user (5 to start) so daily snapshots stay inside Moralis's 40k compute units/day.
-- [ ] CSV export (also a starting point for tax reporting).
+**1.3 "My Dashboard" (`/me`) portfolio (done)**
+- [x] Total value, value over time, a per-wallet table (value, token and NFT counts, realized PnL), combined holdings and recent activity.
+- [x] Multiple wallets combined into one portfolio view; holdings of the same token are merged across wallets.
+- [x] Each section loads on its own; if Moralis PnL is outside the free plan, or a provider is down, that cell says "Unavailable" and the rest of the page still shows. The total warns when a wallet is missing.
+- [x] Portfolio value over time from daily snapshots (`portfolio_snapshots`), saved by a daily Vercel cron job (`vercel.json`, `/api/cron/portfolio-snapshots`, protected by `CRON_SECRET`) and whenever `/me` loads. Snapshots are per wallet, so a wallet saved by several users is fetched once.
+- [x] A cap on saved wallets per user (5) and on snapshots per cron run (300), so snapshots stay inside Moralis's 40k compute units/day.
+- [x] CSV export of holdings (`/api/portfolio/export`), with spreadsheet-formula cells neutralized (token names come from arbitrary contracts).
 - Approvals and per-wallet staking positions move to Phase 2, where those data sources are added.
 
-**Done when:** a user can connect, sign in, save wallets and see one combined portfolio.
+**Done when:** a user can connect, sign in, save wallets and see one combined portfolio. ✅
 
 ---
 
@@ -559,7 +562,7 @@ All current variables are in `.env.example`:
 | `NEXT_PUBLIC_REOWN_PROJECT_ID` | For wallet connection (Phase 1) | Reown Cloud free project |
 | `DATABASE_URL` | For accounts and `/me` (Phase 1) | Neon free tier |
 | `AUTH_SECRET` | For sign-in (Phase 1) | Any random string of 32+ characters (`openssl rand -base64 32`) |
-| `CRON_SECRET` | For portfolio snapshots (Phase 1.3, not used yet) | Any random string; Vercel sends it to cron jobs |
+| `CRON_SECRET` | For daily portfolio snapshots | Any random string; Vercel sends it to cron jobs |
 
 Variables later phases will add (all free tiers):
 ```bash
@@ -577,8 +580,8 @@ DISCORD_WEBHOOK_URL=''
 | Phase | Duration | Status |
 |---|---|---|
 | 0: Foundation | 1 week | Done |
-| 1: Wallet connection & accounts | 1–2 weeks | In progress (1.1, 1.2 done) |
-| 2: Data & chain expansion | 2–3 weeks | Planned |
+| 1: Wallet connection & accounts | 1–2 weeks | Done |
+| 2: Data & chain expansion | 2–3 weeks | Next |
 | 3: Real-time & n8n automations | 2 weeks | Planned |
 | 4: AI layer (MCP + agent) | 2 weeks | Planned |
 | 5: On-chain actions | 2–3 weeks | Planned |
@@ -590,6 +593,8 @@ DISCORD_WEBHOOK_URL=''
 
 - **Domain:** [ethereumdashboard.dev](https://ethereumdashboard.dev)
 - **Hosting:** Vercel (serverless route handlers and cron jobs). Note that Vercel's free Hobby plan is for non-commercial use.
+- **Accounts setup:** set `AUTH_SECRET`, `DATABASE_URL` and `CRON_SECRET` in Vercel, then create the tables once with `DATABASE_URL=... npm run db:migrate`. Run it again after pulling new files in `drizzle/`.
+- **Cron:** `vercel.json` schedules `/api/cron/portfolio-snapshots` daily at 05:15 UTC; Vercel sends `CRON_SECRET` as a bearer token.
 - **Docker:** a `Dockerfile` (Node 24) is included for self-hosting:
   ```bash
   docker build -t eth-dashboard .
