@@ -13,11 +13,13 @@ import ENSResolverInfoTable from "./ENSResolverInfoTable";
 // ENS To Address Form Custom Component
 export default function ENSToAddressForm() {
     const walletDomainRef = useRef<HTMLInputElement>(null); 
+    const [submittedWalletDomain, setSubmittedWalletDomain] = useState<string>('');
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [addressInformation, updateAddressInformation] = useState<string>('');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setSubmittedWalletDomain(walletDomainRef.current!.value.trim());
 
         // Handle form submission logic here
         if (!ENSValidator(walletDomainRef.current!.value.trim())){
@@ -89,9 +91,9 @@ export default function ENSToAddressForm() {
             {
                 addressInformation ? 
                     <>
-                        <ENSToAddressInfoTable data={{ name: walletDomainRef.current!.value.trim(), address: addressInformation }} />
-                        <ENSOwnershipInfoTable data={walletDomainRef.current!.value.trim()} />
-                        <ENSResolverInfoTable data={walletDomainRef.current!.value.trim()} />
+                        <ENSToAddressInfoTable data={{ name: submittedWalletDomain, address: addressInformation }} />
+                        <ENSOwnershipInfoTable data={submittedWalletDomain} />
+                        <ENSResolverInfoTable data={submittedWalletDomain} />
                     </> 
                 : null 
             }

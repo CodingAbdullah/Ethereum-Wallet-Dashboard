@@ -5,9 +5,7 @@ import Image from "next/image";
 import PostFetcher from "../utils/functions/PostFetcher";
 import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from "./ui/table";
 import ERC721CollectionExtraDataType from "../utils/types/ERC721CollectionExtraDataType";
-import ERC721CollectionFloorPriceChart from "./ERC721CollectionFloorPriceChart";
-import ERC721CollectionMarketCapChart from "./ERC721CollectionMarketCapChart";
-import ERC721CollectionVolumeChart from "./ERC721CollectionVolumeChart";
+import ERC721CollectionStatsChart from "./ERC721CollectionStatsChart";
 import PostFetcherArgumentsType from '../utils/types/PostFetcherArgumentsType';
 
 // ERC721 Collection Extra Data Info Table Custom Component
@@ -124,9 +122,7 @@ export default function ERC721CollectionExtraDataInfoTable(props : { address: st
                         </TableBody>
                     </Table>
                 </div>
-                <ERC721CollectionFloorPriceChart data={erc721CollectionExtraData} address={address} />
-                <ERC721CollectionMarketCapChart data={erc721CollectionExtraData} address={address} />
-                <ERC721CollectionVolumeChart data={erc721CollectionExtraData} address={address} />
+                <ERC721CollectionStatsChart address={address} />
             </>
         )
     }

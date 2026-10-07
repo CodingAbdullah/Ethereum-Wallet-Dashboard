@@ -1,6 +1,6 @@
 import RocketPoolStatsInfoTable from "../components/RocketPoolStatsInfoTable";
 import StakingWebsiteSection from "../components/StakingWebsitesSection";
-import ValidatorLeaderboardInfoTable from "../components/ValidatorLeaderboardInfoTable";
+import LiquidStakingInfoTable from "../components/LiquidStakingInfoTable";
 import ValidatorQueueInfoTable from "../components/ValidatorQueueInfoTable";
 import type { Metadata } from "next"
 
@@ -25,7 +25,7 @@ export default function StakingPage() {
                 <i>Learn about staking and validators within the Ethereum ecosystem.</i>
             </p>
             <RocketPoolStatsInfoTable />
-            <ValidatorLeaderboardInfoTable />
+            <LiquidStakingInfoTable />
             <ValidatorQueueInfoTable />
             <hr className='mt-10 mb-10' />           
             <StakingWebsiteSection />

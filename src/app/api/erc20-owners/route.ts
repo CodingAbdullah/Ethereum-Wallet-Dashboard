@@ -1,27 +1,39 @@
 import { NextResponse } from "next/server";
+import { ethplorer } from "@/lib/providers/ethplorer";
+import { withErrorHandling, parseBody } from "@/lib/api/route";
+import { contractBody } from "@/lib/validation";
 
-// Custom Route Handler function
-export async function POST(request: Request){
-    const body = await request.json();
-
-    // Pass in API key for backend request
-    const options = {
-        method: 'GET',
-        headers: {
-            'content-type': 'application/json',
-            'accept' : 'application/json',
-            'X-API-KEY' : process.env.MORALIS_API_KEY_2
-        } as HeadersInit
-    }
-
-    // Fetch data based on request parameters
-    const response = await fetch("https://deep-index.moralis.io/api/v2.2/erc20/" + body.contract + '/owners', options) // Pass in address values for request
-    
-    // Fetch data using the Ethereum data endpoints
-    if (!response.ok) 
-        return NextResponse.json({ error: 'Failed to fetch Ethereum price' }, { status: 500 });
-    else {
-        const data = await response.json();
-        return NextResponse.json(data);
-    }
+interface EthplorerHolders {
+    holders: { address: string; balance: number; share: number }[];
 }
+
+interface EthplorerTokenInfo {
+    decimals: string;
+    price?: { rate?: number } | false;
+}
+
+// Top holders of an ERC20 token (Ethplorer free API).
+// Replaces Moralis' token owners endpoint, which is a premium (paid) endpoint.
+export const POST = withErrorHandling(async (request: Request) => {
+    const { contract } = await parseBody(request, contractBody);
+
+    const [{ holders }, token] = await Promise.all([
+        ethplorer<EthplorerHolders>('/getTopTokenHolders/' + contract + '?limit=100'),
+        ethplorer<EthplorerTokenInfo>('/getTokenInfo/' + contract)
+    ]);
+
+    const decimals = Number(token.decimals) || 0;
+    const price = token.price && token.price.rate ? token.price.rate : 0;
+
+    const result = (holders ?? []).map(holder => {
+        const balance = holder.balance / 10 ** decimals;
+        return {
+            owner_address: holder.address,
+            balance: balance.toLocaleString('en-US', { maximumFractionDigits: 4 }),
+            usd_value: String(balance * price),
+            percentage_relative_to_total_supply: holder.share
+        };
+    });
+
+    return NextResponse.json({ result });
+});

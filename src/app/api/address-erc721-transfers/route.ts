@@ -1,30 +1,11 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { moralis, moralisChain } from "@/lib/providers/moralis";
+import { withErrorHandling, parseBody } from "@/lib/api/route";
+import { addressNetworkBody } from "@/lib/validation";
 
-// Set MORALIS URL for request
-const MORALIS_URL = 'https://deep-index.moralis.io/api/v2.2/';
-
-// Custom Route Handler function
-export async function POST(request: Request){
-    const body = await request.json();
-
-    // Pass in API key for backend request
-    const options = {
-        method: 'GET',
-        headers: {
-            'content-type': 'application/json',
-            'accept' : 'application/json',
-            'X-API-KEY' : process.env.MORALIS_API_KEY
-        } as HeadersInit
-    }
-
-    // Fetch data based on request parameters
-    const response = await fetch(MORALIS_URL + body.address + '/nft/transfers?chain=' + body.network + '&format=decimal&direction=both', options) // Pass in address and chain values
-    
-    // Fetch data using the Ethereum data endpoints
-    if (!response.ok) 
-        return NextResponse.json({ error: 'Failed to fetch Ethereum price' }, { status: 500 });
-    else {
-        const data = await response.json();
-        return NextResponse.json(data);
-    }
-}
+// NFT transfers for a wallet (Moralis free plan)
+export const POST = withErrorHandling(async (request: Request) => {
+    const { address, network } = await parseBody(request, addressNetworkBody);
+    const data = await moralis('/' + address + '/nft/transfers?chain=' + moralisChain(network) + '&format=decimal&direction=both', 120);
+    return NextResponse.json(data);
+});

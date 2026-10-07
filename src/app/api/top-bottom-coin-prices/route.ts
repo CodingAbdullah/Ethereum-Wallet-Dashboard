@@ -1,29 +1,28 @@
 import { NextResponse } from "next/server";
+import { getTopMarkets, CoinMarket } from "@/lib/providers/coingecko";
+import { withErrorHandling } from "@/lib/api/route";
 
-const PRO_COINGECKO_URL = "https://pro-api.coingecko.com/api/v3"; // Pro CoinGecko API Endpoint
+const MOVERS_COUNT = 30;
+const MIN_VOLUME_USD = 50000;
 
-// Custom Route Handler function
-export async function GET(){
-    const TOP_BOTTOM_COINS_ENDPOINT = "/coins/top_gainers_losers?vs_currency=usd";
-    
-    // Setting options for authenticated API call
-    const options = {
-        method: "GET",
-        headers : {
-            'content-type' : 'application/json',
-            'access-control-allow-origin': '*',
-            'x-cg-pro-api-key' : process.env.COINGECKO_CHART_DATA_API_KEY
-        } as HeadersInit
-    }
+// Top gainers and losers over 24 hours.
+// CoinGecko's top_gainers_losers endpoint is paid-only, so this ranks the free top-250 markets query instead.
+export const GET = withErrorHandling(async () => {
+    const markets = (await getTopMarkets()).filter(coin => coin.price_change_percentage_24h !== null && coin.total_volume >= MIN_VOLUME_USD);
+    const byChange = [...markets].sort((a, b) => (b.price_change_percentage_24h ?? 0) - (a.price_change_percentage_24h ?? 0));
 
-    // Make an API call to fetch top and bottom coins
-    const response = await fetch(PRO_COINGECKO_URL + TOP_BOTTOM_COINS_ENDPOINT, options);
-    
-    // Fetch data using the Ethereum data endpoints
-    if (!response.ok)
-        return NextResponse.json({ error: 'Failed to fetch Ethereum price' }, { status: 500 });
-    else {
-        const data = await response.json();
-        return NextResponse.json(data);
-    }
-}
+    const toMover = (coin: CoinMarket) => ({
+        id: coin.id,
+        name: coin.name,
+        symbol: coin.symbol,
+        image: coin.image,
+        usd: coin.current_price,
+        market_cap_rank: coin.market_cap_rank,
+        usd_24h_change: coin.price_change_percentage_24h
+    });
+
+    return NextResponse.json({
+        top_gainers: byChange.slice(0, MOVERS_COUNT).map(toMover),
+        top_losers: byChange.slice(-MOVERS_COUNT).reverse().map(toMover)
+    });
+});

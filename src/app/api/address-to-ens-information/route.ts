@@ -1,30 +1,14 @@
 import { NextResponse } from "next/server";
-const MORALIS_URL = 'https://deep-index.moralis.io/api/v2.2/';
+import { getAddress } from "viem";
+import { lookupEnsName } from "@/lib/ens";
+import { withErrorHandling, parseBody } from "@/lib/api/route";
+import { addressBody } from "@/lib/validation";
 
-// Custom Route Handler function
-export async function POST(request: Request){
-    
-    // JSON format the body
-    const body = await request.json();
+// Primary ENS name for an address (reverse resolution over free RPC)
+export const POST = withErrorHandling(async (request: Request) => {
+    const { address } = await parseBody(request, addressBody);
+    const name = await lookupEnsName(getAddress(address));
 
-    // Set options to be used in request
-    const options = {   
-        method: 'GET', 
-        headers: { 
-            'content-type' : 'application/json', 
-            'access-control-allow-origin': '*',
-            'X-API-KEY' : process.env.MORALIS_API_KEY ?? ''
-        } as HeadersInit
-    }
-    
-    // Fetch data using data
-    const response = await fetch(MORALIS_URL + 'resolve/' + body.address + "/reverse", options)
-   
-    // Fetch data using the Ethereum data endpoints
-    if (!response.ok) 
-        return NextResponse.json({ error: 'Failed to fetch Ethereum price' }, { status: 500 });
-    else {
-        const data = await response.json();
-        return NextResponse.json(data);
-    }
-}
+    if (!name) return NextResponse.json({ error: 'No primary ENS name set for this address' }, { status: 404 });
+    return NextResponse.json({ name });
+});

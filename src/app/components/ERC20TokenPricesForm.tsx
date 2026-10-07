@@ -11,11 +11,13 @@ import ERC20TokenInformationSection from "./ERC20TokenInformationSection";
 // ERC20 Token Prices Form Custom Component
 export default function ERC20TokenPricesForm() {
     const tokenAddressRef = useRef<HTMLInputElement>(null);
+    const [submittedTokenAddress, setSubmittedTokenAddress] = useState<string>('');
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [tableStatus, updateTableStatus] = useState<boolean>(false);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        setSubmittedTokenAddress(tokenAddressRef.current!.value.trim());
 
         // Handle form submission logic here
         if (addressValidator(tokenAddressRef.current!.value.trim())){
@@ -66,7 +68,7 @@ export default function ERC20TokenPricesForm() {
                     </CardContent>
                 </Card>
             </div>
-            { tableStatus ? <ERC20TokenInformationSection address={tokenAddressRef.current!.value.trim()} /> : null }
+            { tableStatus ? <ERC20TokenInformationSection address={submittedTokenAddress} /> : null }
         </>
     )
 }

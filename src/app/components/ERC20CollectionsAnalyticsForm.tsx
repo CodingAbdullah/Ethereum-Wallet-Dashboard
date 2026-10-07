@@ -15,11 +15,13 @@ import ERC20CollectionOwnersInfoTable from './ERC20CollectionOwnersInfoTable';
 export default function ERC20CollectionsAnalyticsForm() {
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const collectionAddressRef = useRef<HTMLInputElement>(null); 
+    const [submittedCollectionAddress, setSubmittedCollectionAddress] = useState<string>('');
     const [tableStatus, updateTableStatus] = useState<boolean>(false);
 
     // Handle Submit Function
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
+        setSubmittedCollectionAddress(collectionAddressRef.current!.value.trim());
 
         // Check address validity
         // If correct, make a request call to fetch ERC20 Collection Analytics data
@@ -72,9 +74,9 @@ export default function ERC20CollectionsAnalyticsForm() {
                 </Card>
             </div>
             { tableStatus ? null : <TopERC20CoinsInfoTable /> }
-            { tableStatus ? <ERC20TokenInformationSection address={collectionAddressRef.current!.value.trim()} /> : null }
-            { tableStatus ? <ERC20CollectionTransfersInfoTable address={collectionAddressRef.current!.value.trim()} /> : null }
-            { tableStatus ? <ERC20CollectionOwnersInfoTable address={collectionAddressRef.current!.value.trim()} /> : null }
+            { tableStatus ? <ERC20TokenInformationSection address={submittedCollectionAddress} /> : null }
+            { tableStatus ? <ERC20CollectionTransfersInfoTable address={submittedCollectionAddress} /> : null }
+            { tableStatus ? <ERC20CollectionOwnersInfoTable address={submittedCollectionAddress} /> : null }
         </>
     )
 }

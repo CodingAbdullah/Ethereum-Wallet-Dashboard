@@ -14,12 +14,14 @@ import WalletPnLInfoTable from './WalletPnLInfoTable';
 // Wallet Analytics Form Custom Component
 export default function WalletAnalyticsForm() {
     const walletAddressRef = useRef<HTMLInputElement>(null)
+    const [submittedWalletAddress, setSubmittedWalletAddress] = useState<string>('');
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [tableStatus, updateTableStatus] = useState<boolean>(false);
 
     // Validate wallet address and proceed to presenting information
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
+        setSubmittedWalletAddress(walletAddressRef.current!.value.trim());
 
         if (addressValidator(walletAddressRef.current!.value.trim())) {
             setShowAlert(false);
@@ -69,10 +71,10 @@ export default function WalletAnalyticsForm() {
                     </CardContent>
                 </Card>
             </div>
-            { tableStatus ? <TransactionBalanceInfoTable address={walletAddressRef.current!.value.trim()} network="eth" /> : null }
-            { tableStatus ? <WalletStatsInfoTable address={walletAddressRef.current!.value.trim()} /> : null }
-            { tableStatus ? <WalletPnLInfoTable address={walletAddressRef.current!.value.trim()} /> : null }
-            { tableStatus ? <WalletPnLBreakdownInfoTable address={walletAddressRef.current!.value.trim()} /> : null }
+            { tableStatus ? <TransactionBalanceInfoTable address={submittedWalletAddress} network="eth" /> : null }
+            { tableStatus ? <WalletStatsInfoTable address={submittedWalletAddress} /> : null }
+            { tableStatus ? <WalletPnLInfoTable address={submittedWalletAddress} /> : null }
+            { tableStatus ? <WalletPnLBreakdownInfoTable address={submittedWalletAddress} /> : null }
         </>   
     )
 }

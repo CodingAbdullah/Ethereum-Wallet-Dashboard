@@ -1,27 +1,43 @@
 import { NextResponse } from "next/server";
+import { opensea, getCollectionStats } from "@/lib/providers/opensea";
+import { withErrorHandling } from "@/lib/api/route";
 
-// Custom Route Handler function
-export async function GET(){
-   // Setting options to fetch top collections
-   const options = {
-        method: 'GET',
-        headers: {
-            'content-type' : 'application/json',
-            'X-API-KEY' : process.env.MORALIS_API_KEY_2
-        } as HeadersInit
-    }
+const COLLECTION_COUNT = 15;
 
-    // Fetch data using the FETCH api
-    const response = await fetch("https://deep-index.moralis.io/api/v2.2/market-data/nfts/top-collections", options)
-    
-    // Conditionally return data based on data fetch
-    if (response.ok) {
-        const information = await response.json();
-        return NextResponse.json({
-            topCollections: information
-        })
-    }
-    else {
-        return NextResponse.json({}, { status: 400 });
-    }
+interface OpenSeaCollection {
+    collection: string;
+    name: string;
+    image_url: string;
 }
+
+// Top Ethereum NFT collections by 7-day volume (OpenSea free API).
+// Replaces Moralis' top-collections market data endpoint, which Moralis has shut down.
+export const GET = withErrorHandling(async () => {
+    const { collections } = await opensea<{ collections: OpenSeaCollection[] }>(
+        '/collections?chain=ethereum&order_by=seven_day_volume&limit=' + COLLECTION_COUNT,
+        900
+    );
+
+    const withStats = await Promise.allSettled(collections.map(async collection => {
+        const stats = await getCollectionStats(collection.collection);
+        const oneDay = stats.intervals.find(interval => interval.interval === 'one_day');
+        const sevenDay = stats.intervals.find(interval => interval.interval === 'seven_day');
+
+        return {
+            slug: collection.collection,
+            collection_title: collection.name,
+            collection_image: collection.image_url,
+            floor_price: stats.total.floor_price,
+            floor_price_symbol: stats.total.floor_price_symbol || 'ETH',
+            volume_24h: oneDay?.volume ?? 0,
+            volume_24h_percent_change: (oneDay?.volume_change ?? 0) * 100,
+            volume_7d: sevenDay?.volume ?? 0,
+            owners: stats.total.num_owners
+        };
+    }));
+
+    // Skip collections whose stats request failed rather than failing the whole table
+    const topCollections = withStats.flatMap(result => (result.status === 'fulfilled' ? [result.value] : []));
+
+    return NextResponse.json({ topCollections });
+});

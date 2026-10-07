@@ -1,6 +1,6 @@
 import GenericChartPage from "@/app/components/GenericChartPage";
 import { coinValidator } from "@/app/utils/functions/coinValidator";
-import CoinChartInfoType from "@/app/utils/types/CoinChartInfoType";
+import { notFound } from "next/navigation";
 import type { Metadata } from "next"
 
 // Custom Metadata for SEO
@@ -14,7 +14,7 @@ export default async function CoinPriceInformationPage({ params }: { params: Pro
     const coinID = (await params).coin;
 
     // Check validity of this coin by running a custom function validating if it exists within the Coin Gecko coin list
-    const validateCoin: CoinChartInfoType = await coinValidator(coinID);
+    const validateCoin = await coinValidator(coinID);
 
     if (validateCoin) {
         // Render the Generic Chart Page componen if the coin ID is valid
@@ -35,8 +35,8 @@ export default async function CoinPriceInformationPage({ params }: { params: Pro
         )
     }   
     else {
-        // Coin ID is not valid, therefore return the error page
-        throw new Error();
+        // Coin ID is not valid, therefore return the not found page
+        notFound();
     }
 }
 

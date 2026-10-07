@@ -17,6 +17,7 @@ import ERC721TransfersInfoTable from './ERC721TransfersInfoTable';
 // ERC721 Holdings Form Custom Component
 export default function ERC721HoldingsForm() {
     const walletAddressRef = useRef<HTMLInputElement>(null);
+    const [submittedWalletAddress, setSubmittedWalletAddress] = useState<string>('');
     const [network, updateNetwork] = useState<string>("eth");
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [erc721Collections, updateERC721Collections] = useState<ERC721CollectionsHoldingsType[]>();
@@ -26,6 +27,7 @@ export default function ERC721HoldingsForm() {
     // Handle Form Submissions here
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setSubmittedWalletAddress(walletAddressRef.current!.value.trim());
 
         // Handle Form Submission Logic here
         if (!addressValidator(walletAddressRef.current!.value.trim())){
@@ -129,7 +131,7 @@ export default function ERC721HoldingsForm() {
             </div>
             { erc721Collections ? <ERC721CollectionsHoldingsInfoTable data={erc721Collections} /> : null }
             { erc721Holdings ? <ERC721HoldingsInfoTable data={erc721Holdings} /> : null }
-            { erc721Transfers ? <ERC721TransfersInfoTable data={erc721Transfers} address={walletAddressRef.current!.value.trim()} /> : null }
+            { erc721Transfers ? <ERC721TransfersInfoTable data={erc721Transfers} address={submittedWalletAddress} /> : null }
         </>
     )
 }
