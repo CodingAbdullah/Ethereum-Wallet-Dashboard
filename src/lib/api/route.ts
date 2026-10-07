@@ -3,15 +3,19 @@ import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
 import { BaseError as ViemError } from "viem";
 import { ProviderError } from "../providers/http";
+import { HttpError } from "./errors";
 
 // Wraps a route handler so every route returns the same error format:
-// 400 for invalid input, 503 for endpoints outside a provider's free plan, 502 for provider and RPC failures
+// 400 for invalid input, HttpError's own status (401, 409, ...), 503 for endpoints outside a provider's free plan, 502 for provider and RPC failures
 export function withErrorHandling<Args extends unknown[]>(handler: (...args: Args) => Promise<Response>) {
     return async (...args: Args): Promise<Response> => {
         try {
             return await handler(...args);
         }
         catch (err) {
+            if (err instanceof HttpError) {
+                return NextResponse.json({ error: err.message }, { status: err.status });
+            }
             if (err instanceof z.ZodError) {
                 return NextResponse.json({ error: 'Invalid request', issues: err.issues.map(issue => issue.message) }, { status: 400 });
             }

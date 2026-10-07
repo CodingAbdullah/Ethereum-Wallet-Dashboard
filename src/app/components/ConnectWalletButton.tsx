@@ -3,7 +3,9 @@
 import { useState, useSyncExternalStore } from 'react';
 import { useAccount, useConnect, useConnectors, useDisconnect, useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
-import { Wallet, LogOut, Copy, Check } from 'lucide-react';
+import Link from 'next/link';
+import { Wallet, LogOut, Copy, Check, LogIn, LayoutDashboard, ShieldCheck } from 'lucide-react';
+import { useSession } from '../hooks/useSession';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -29,6 +31,7 @@ export default function ConnectWalletButton() {
     const { connect, isPending, error, reset } = useConnect();
     const { disconnect } = useDisconnect();
     const { data: ensName } = useEnsName({ address, chainId: mainnet.id, query: { enabled: !!address } });
+    const { session, isSignedIn, signingIn, error: signInError, signIn, signOut } = useSession();
 
     // The wallet state lives in the browser, so render a placeholder on the server and during hydration
     const mounted = useSyncExternalStore(noopSubscribe, () => true, () => false);
@@ -47,20 +50,32 @@ export default function ConnectWalletButton() {
         return (
             <DropdownMenu>
                 <DropdownMenuTrigger className={buttonClass}>
-                    <Wallet className="h-4 w-4" />
+                    {isSignedIn ? <ShieldCheck className="h-4 w-4 text-green-400" aria-label="Signed in" /> : <Wallet className="h-4 w-4" />}
                     {ensName ?? shortAddress(address)}
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                     <DropdownMenuLabel className="font-mono text-xs break-all">{address}</DropdownMenuLabel>
                     {activeConnector && <DropdownMenuLabel className="pt-0 text-xs font-normal text-muted-foreground">Connected with {activeConnector.name}</DropdownMenuLabel>}
                     <DropdownMenuSeparator />
+                    {isSignedIn && (
+                        <DropdownMenuItem asChild>
+                            <Link href="/me"><LayoutDashboard className="mr-2 h-4 w-4" />My Dashboard</Link>
+                        </DropdownMenuItem>
+                    )}
+                    {!isSignedIn && session?.authEnabled && (
+                        <DropdownMenuItem disabled={signingIn} onSelect={e => { e.preventDefault(); signIn(); }}>
+                            <LogIn className="mr-2 h-4 w-4" />
+                            {signingIn ? 'Check your wallet…' : 'Sign in'}
+                        </DropdownMenuItem>
+                    )}
+                    {signInError && <DropdownMenuLabel className="text-xs font-normal text-red-500" role="alert">{signInError}</DropdownMenuLabel>}
                     <DropdownMenuItem onSelect={e => { e.preventDefault(); copyAddress(); }}>
                         {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
                         {copied ? 'Copied' : 'Copy address'}
                     </DropdownMenuItem>
-                    <DropdownMenuItem onSelect={() => disconnect()}>
+                    <DropdownMenuItem onSelect={async () => { if (isSignedIn) await signOut(); disconnect(); }}>
                         <LogOut className="mr-2 h-4 w-4" />
-                        Disconnect
+                        {isSignedIn ? 'Sign out & disconnect' : 'Disconnect'}
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>

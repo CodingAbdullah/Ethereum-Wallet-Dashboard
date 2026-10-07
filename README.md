@@ -104,7 +104,9 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 - **Node.js 24 LTS**
 - **Next.js 16 / React 19:** App Router; all provider calls run in route handlers, so API keys never reach the browser.
 - **TypeScript 6** (TypeScript 7 is not supported by `typescript-eslint` yet)
-- **Viem** for RPC calls, ENS resolution and contract reads
+- **Viem** for RPC calls, ENS resolution, contract reads and Sign-In with Ethereum
+- **wagmi** + **TanStack Query** for wallet connection
+- **Neon Postgres** + **Drizzle ORM** for accounts, **jose** for the session cookie
 - **Zod** for request validation
 - **Tailwind CSS 4** + **shadcn/ui** (Radix primitives)
 - **Recharts** and **AG Grid** for charts and tables
@@ -149,6 +151,8 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
    npm run lint       # ESLint
    npm run typecheck  # TypeScript, no emit
    npm test           # Vitest unit tests
+   npm run db:generate  # create a migration after changing src/lib/db/schema.ts
+   npm run db:migrate   # apply migrations (needs DATABASE_URL in the environment)
    ```
 
 CI (`.github/workflows/ci.yml`) runs lint, typecheck, unit tests and build on every pull request.
@@ -164,6 +168,9 @@ src/
 │   │   └── navbar/          # ETH price + gas for the metrics navbar
 │   ├── components/          # Page sections, tables, charts, forms
 │   │   └── ui/              # shadcn/ui primitives
+│   ├── hooks/               # useConnectedAddress / usePrefillAddress, useSession (sign-in)
+│   ├── me/page.tsx          # My Dashboard (saved wallets)
+│   ├── providers.tsx        # wagmi + TanStack Query providers
 │   ├── utils/
 │   │   ├── constants/       # Links, lists, prompts
 │   │   ├── functions/       # Client fetchers and validators
@@ -172,6 +179,10 @@ src/
 ├── lib/
 │   ├── providers/           # One client per data provider (free plans)
 │   ├── api/route.ts         # Shared error handling and body parsing for routes
+│   ├── auth/                # SIWE verification, nonces, session cookie
+│   ├── db/                  # Drizzle schema and Neon client (migrations in /drizzle)
+│   ├── accounts.ts          # Saved wallets for signed-in users
+│   ├── wagmi.ts             # Wallet connection config
 │   ├── validation.ts        # Zod schemas: addresses, networks, ENS names, token IDs, intervals
 │   ├── ens.ts               # ENS resolution helpers (viem)
 │   ├── ensHoldings.ts       # .eth names owned by an address, with expiry details
@@ -207,10 +218,11 @@ export const POST = withErrorHandling(async (request: Request) => {
   | Status | Meaning |
   |---|---|
   | 400 | Invalid input |
+  | 401 | Not signed in, or the sign-in message was invalid |
   | 403 | Cross-site request blocked by `proxy.ts` |
   | 429 | Rate limit (120 requests/minute per IP) |
   | 502 | Provider or RPC failure |
-  | 503 | Provider rejected the key, or the endpoint is outside its free plan |
+  | 503 | Provider rejected the key, or the endpoint is outside its free plan; or accounts are not configured |
 
 - **Rate limiting:** with `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` set, every server instance shares one counter in Upstash Redis (free tier). Without them, each instance counts in memory. If Redis is unreachable, the limiter falls back to memory instead of blocking requests.
 - **Caching vs. Upstash:** API responses are cached in the Next.js data cache, which Vercel shares across all instances, so Upstash is not needed for caching on Vercel. When self-hosting with Docker, that cache lives on each container's disk.
@@ -257,8 +269,8 @@ export const POST = withErrorHandling(async (request: Request) => {
 ### Still missing
 | Area | Status |
 |---|---|
-| **Wallet connection** | None. No wagmi, Reown or Sign-In with Ethereum. Users paste an address on every page. |
-| **User accounts / persistence** | None. No database, saved wallets, watchlists or alert settings. |
+| **Wallet connection** | Done in Phase 1.1–1.2: connect, sign in, saved wallets. |
+| **User accounts / persistence** | Users and saved wallets (Neon). No watchlists or alert settings yet. |
 | **Smart contract writes** | None. Reads exist (staking), but no approvals, swaps or transfers. |
 | **n8n workflows** | Placeholder page only. |
 | **MCP server / AI agent** | None. The only AI feature is the hourly market summary. |
@@ -317,29 +329,30 @@ Each phase builds on the previous one and ends with something shippable. Time es
 
 Shipped in three parts. Each part works on its own; 1.1 needs no database.
 
-**1.1 Connect a wallet**
-- [ ] Add `wagmi`, `@tanstack/react-query` and **Reown AppKit** (free), with a Connect button in the navbar. `viem` is already installed.
-- [ ] Support MetaMask, Coinbase Wallet, WalletConnect, Rabby (any EIP-6963 injected wallet), and passkey/smart wallets.
-- [ ] Wallet providers live in one client component (`src/app/providers.tsx`) with `ssr: true` and cookie storage, so the server-rendered layout and the client agree.
-- [ ] Pre-fill the connected address into every address form through one shared `useConnectedAddress` hook.
-- [ ] Load the connect modal only when it is needed, so lookup pages stay light.
+**1.1 Connect a wallet (done)**
+- [x] `wagmi` + `@tanstack/react-query` with a Connect Wallet button in the navbar. Reown AppKit's wagmi adapter conflicts with wagmi 3's dependencies, so the button uses wagmi's own connectors; WalletConnect still uses a free Reown project ID.
+- [x] MetaMask, Rabby and other extensions (EIP-6963), Coinbase Wallet including its passkey smart wallet, and WalletConnect (when `NEXT_PUBLIC_REOWN_PROJECT_ID` is set).
+- [x] Wallet providers live in one client component (`src/app/providers.tsx`) with `ssr: true` and cookie storage; the layout stays a server component and pages stay static.
+- [x] The connected address is filled into every wallet-address form (`usePrefillAddress`).
+- [x] Wallet SDKs load only when the user picks that wallet.
 
-**1.2 Accounts**
-- [ ] **Sign-In with Ethereum (SIWE)** using viem's built-in SIWE helpers (`createSiweMessage`, `verifySiweMessage`) and a signed, httpOnly session cookie (`jose`). The address is the user ID; no passwords. Auth.js v5 is still in beta, so it is not used.
-- [ ] Single-use nonces with a short expiry (Upstash Redis when configured, in-memory otherwise); the message's domain, chain and expiry are checked on the server.
-- [ ] **Neon Postgres** (free tier) + **Drizzle ORM** with only the tables Phase 1 uses:
+**1.2 Accounts (done; needs `AUTH_SECRET` and `DATABASE_URL` in production)**
+- [x] **Sign-In with Ethereum (SIWE)** using viem's built-in SIWE helpers (`createSiweMessage`, `verifySiweMessage`) and a signed, httpOnly session cookie (`jose`). The address is the user ID; no passwords. Auth.js v5 is still in beta, so it is not used.
+- [x] Single-use nonces with a short expiry (Upstash Redis when configured, in-memory otherwise); the message's domain, chain and expiry are checked on the server.
+- [x] **Neon Postgres** (free tier) + **Drizzle ORM** with only the tables Phase 1 uses:
   - `users`
   - `watched_wallets` (with a `chain` column, ready for Phase 2)
-- [ ] Later phases add their own tables when they need them: `watchlists` (Phase 2), `alert_subscriptions` and `notification_channels` (Phase 3), `api_keys` (Phase 4).
-- [ ] The build and every existing page keep working without `DATABASE_URL`; account features return 503 until it is set.
-- [ ] Unit tests for nonce handling, SIWE verification and the session cookie.
+- Later phases add their own tables when they need them: `watchlists` (Phase 2), `alert_subscriptions` and `notification_channels` (Phase 3), `api_keys` (Phase 4).
+- [x] The build and every existing page keep working without `DATABASE_URL`; account features return 503 until it is set.
+- [x] Unit tests for nonce handling, SIWE verification, the session cookie and the wallets route.
+- [x] `/me` page: sign in, then save (up to 5), label and remove wallets. Routes: `/api/auth/{nonce,verify,session,logout}`, `/api/wallets`.
 
-**1.3 "My Dashboard" (`/me`)**
+**1.3 "My Dashboard" (`/me`) portfolio (next)**
 - [ ] One page with net worth, ETH balance, ERC20 and NFT holdings, PnL and recent activity.
 - [ ] Multiple wallets combined into one portfolio view.
 - [ ] Each section loads on its own; if Moralis PnL is outside the free plan (HTTP 503), the rest of the page still shows.
 - [ ] Portfolio value over time, using daily snapshots saved by a Vercel cron job (Hobby plan allows daily jobs).
-- [ ] A cap on saved wallets per user (5 to start) so daily snapshots stay inside Moralis's 40k compute units/day.
+- [x] A cap on saved wallets per user (5 to start) so daily snapshots stay inside Moralis's 40k compute units/day.
 - [ ] CSV export (also a starting point for tax reporting).
 - Approvals and per-wallet staking positions move to Phase 2, where those data sources are added.
 
@@ -545,8 +558,8 @@ All current variables are in `.env.example`:
 | `UMAMI_URL`, `UMAMI_DATA_WEBSITE_ID` | No | Umami |
 | `NEXT_PUBLIC_REOWN_PROJECT_ID` | For wallet connection (Phase 1) | Reown Cloud free project |
 | `DATABASE_URL` | For accounts and `/me` (Phase 1) | Neon free tier |
-| `AUTH_SECRET` | For sign-in (Phase 1) | Any random 32+ byte string (`openssl rand -base64 32`) |
-| `CRON_SECRET` | For portfolio snapshots (Phase 1) | Any random string; Vercel sends it to cron jobs |
+| `AUTH_SECRET` | For sign-in (Phase 1) | Any random string of 32+ characters (`openssl rand -base64 32`) |
+| `CRON_SECRET` | For portfolio snapshots (Phase 1.3, not used yet) | Any random string; Vercel sends it to cron jobs |
 
 Variables later phases will add (all free tiers):
 ```bash
@@ -564,7 +577,7 @@ DISCORD_WEBHOOK_URL=''
 | Phase | Duration | Status |
 |---|---|---|
 | 0: Foundation | 1 week | Done |
-| 1: Wallet connection & accounts | 1–2 weeks | Next |
+| 1: Wallet connection & accounts | 1–2 weeks | In progress (1.1, 1.2 done) |
 | 2: Data & chain expansion | 2–3 weeks | Planned |
 | 3: Real-time & n8n automations | 2 weeks | Planned |
 | 4: AI layer (MCP + agent) | 2 weeks | Planned |

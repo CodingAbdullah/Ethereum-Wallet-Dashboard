@@ -8,6 +8,7 @@ export const NavbarLinks: NavbarLinkObject[] = [
             { name: 'EIP Protocols', href: '/eip-protocols' },
             { name: 'Feedback', href: '/feedback' },
             { name: 'Market Insights', href: '/market-insights' },
+            { name: 'My Dashboard', href: '/me' },
             { name: 'N8N Workflows', href: '/n8n-workflows' },
             { name: 'Staking/Validators', href: '/staking' },
             { name: 'Token Analytics', href: '/collections' },
