@@ -209,12 +209,12 @@ export const POST = withErrorHandling(async (request: Request) => {
   | 400 | Invalid input |
   | 403 | Cross-site request blocked by `proxy.ts` |
   | 429 | Rate limit (120 requests/minute per IP) |
+  | 502 | Provider or RPC failure |
+  | 503 | Provider rejected the key, or the endpoint is outside its free plan |
 
 - **Rate limiting:** with `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` set, every server instance shares one counter in Upstash Redis (free tier). Without them, each instance counts in memory. If Redis is unreachable, the limiter falls back to memory instead of blocking requests.
 - **Caching vs. Upstash:** API responses are cached in the Next.js data cache, which Vercel shares across all instances, so Upstash is not needed for caching on Vercel. When self-hosting with Docker, that cache lives on each container's disk.
 - **Error monitoring:** with `NEXT_PUBLIC_SENTRY_DSN` set, unexpected errors (HTTP 500) are reported to Sentry, and provider or RPC failures are reported as warnings. Without a DSN, Sentry is off.
-  | 502 | Provider or RPC failure |
-  | 503 | Provider rejected the key, or the endpoint is outside its free plan |
 
 ---
 
@@ -315,26 +315,33 @@ Each phase builds on the previous one and ends with something shippable. Time es
 
 ### Phase 1: Wallet Connection & Accounts (1–2 weeks)
 
+Shipped in three parts. Each part works on its own; 1.1 needs no database.
+
 **1.1 Connect a wallet**
-- [ ] Add `wagmi`, `@tanstack/react-query` and **Reown AppKit** (free) or RainbowKit, with a Connect button in the navbar. `viem` is already installed.
-- [ ] Support MetaMask, Coinbase Wallet, WalletConnect, Rabby, and passkey/smart wallets.
-- [ ] Pre-fill the connected address into every address form.
+- [ ] Add `wagmi`, `@tanstack/react-query` and **Reown AppKit** (free), with a Connect button in the navbar. `viem` is already installed.
+- [ ] Support MetaMask, Coinbase Wallet, WalletConnect, Rabby (any EIP-6963 injected wallet), and passkey/smart wallets.
+- [ ] Wallet providers live in one client component (`src/app/providers.tsx`) with `ssr: true` and cookie storage, so the server-rendered layout and the client agree.
+- [ ] Pre-fill the connected address into every address form through one shared `useConnectedAddress` hook.
+- [ ] Load the connect modal only when it is needed, so lookup pages stay light.
 
 **1.2 Accounts**
-- [ ] **Sign-In with Ethereum (SIWE)** with **Auth.js**. The address is the user ID; no passwords.
-- [ ] **Neon Postgres** (free tier) + **Drizzle ORM** with these tables:
+- [ ] **Sign-In with Ethereum (SIWE)** using viem's built-in SIWE helpers (`createSiweMessage`, `verifySiweMessage`) and a signed, httpOnly session cookie (`jose`). The address is the user ID; no passwords. Auth.js v5 is still in beta, so it is not used.
+- [ ] Single-use nonces with a short expiry (Upstash Redis when configured, in-memory otherwise); the message's domain, chain and expiry are checked on the server.
+- [ ] **Neon Postgres** (free tier) + **Drizzle ORM** with only the tables Phase 1 uses:
   - `users`
-  - `watched_wallets`
-  - `watchlists` (tokens and NFTs)
-  - `alert_subscriptions`
-  - `notification_channels` (email, Telegram, Discord)
-  - `api_keys` (for MCP access in Phase 4)
+  - `watched_wallets` (with a `chain` column, ready for Phase 2)
+- [ ] Later phases add their own tables when they need them: `watchlists` (Phase 2), `alert_subscriptions` and `notification_channels` (Phase 3), `api_keys` (Phase 4).
+- [ ] The build and every existing page keep working without `DATABASE_URL`; account features return 503 until it is set.
+- [ ] Unit tests for nonce handling, SIWE verification and the session cookie.
 
 **1.3 "My Dashboard" (`/me`)**
-- [ ] One page with net worth, ETH balance, ERC20 and NFT holdings, PnL, recent activity, staking positions and approvals.
+- [ ] One page with net worth, ETH balance, ERC20 and NFT holdings, PnL and recent activity.
 - [ ] Multiple wallets combined into one portfolio view.
-- [ ] Portfolio value over time, using daily snapshots saved by a Vercel cron job.
+- [ ] Each section loads on its own; if Moralis PnL is outside the free plan (HTTP 503), the rest of the page still shows.
+- [ ] Portfolio value over time, using daily snapshots saved by a Vercel cron job (Hobby plan allows daily jobs).
+- [ ] A cap on saved wallets per user (5 to start) so daily snapshots stay inside Moralis's 40k compute units/day.
 - [ ] CSV export (also a starting point for tax reporting).
+- Approvals and per-wallet staking positions move to Phase 2, where those data sources are added.
 
 **Done when:** a user can connect, sign in, save wallets and see one combined portfolio.
 
@@ -346,7 +353,7 @@ Each phase builds on the previous one and ends with something shippable. Time es
 | Provider | Endpoint | Feature |
 |---|---|---|
 | Moralis | Wallet DeFi positions | DeFi tab on `/me` and wallet pages |
-| Moralis | Token approvals | Approval checker (revoke comes in Phase 5) |
+| Moralis | Token approvals | Approval checker on `/me` and wallet pages (revoke comes in Phase 5) |
 | Moralis | Decoded wallet history | Readable activity feed ("Swapped 1 ETH for 3,200 USDC on Uniswap") |
 | CoinGecko Demo | On-chain (GeckoTerminal) | DEX pools, new pairs, trending pools |
 | Ethereum RPC | Blocks, transactions, logs | Transaction and block detail pages |
@@ -536,13 +543,13 @@ All current variables are in `.env.example`:
 | `NEXT_PUBLIC_SENTRY_DSN` | Recommended in production | Sentry free Developer plan |
 | `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT` | No (source map upload only) | Sentry |
 | `UMAMI_URL`, `UMAMI_DATA_WEBSITE_ID` | No | Umami |
+| `NEXT_PUBLIC_REOWN_PROJECT_ID` | For wallet connection (Phase 1) | Reown Cloud free project |
+| `DATABASE_URL` | For accounts and `/me` (Phase 1) | Neon free tier |
+| `AUTH_SECRET` | For sign-in (Phase 1) | Any random 32+ byte string (`openssl rand -base64 32`) |
+| `CRON_SECRET` | For portfolio snapshots (Phase 1) | Any random string; Vercel sends it to cron jobs |
 
 Variables later phases will add (all free tiers):
 ```bash
-DATABASE_URL=''                  # Neon
-AUTH_SECRET=''                   # Auth.js
-CRON_SECRET=''                   # Vercel cron
-NEXT_PUBLIC_REOWN_PROJECT_ID=''  # Reown AppKit
 TALLY_API_KEY=''                 # Tally
 N8N_WEBHOOK_URL=''               # n8n
 N8N_WEBHOOK_SECRET=''
