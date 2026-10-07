@@ -373,8 +373,8 @@ Shipped in three parts. Each part works on its own; 1.1 needs no database.
 | Moralis | Token approvals | Approval checker on `/me` and wallet pages, riskiest first (revoke comes in Phase 5) | Done |
 | Moralis | Decoded wallet history | Readable activity feed ("Swapped 1 ETH for 3,200 USDC") on `/me` and wallet pages | Done |
 | CoinGecko Demo | On-chain (GeckoTerminal) | DEX pools, new pairs, trending pools | Planned |
-| Ethereum RPC | Blocks, transactions, logs | Transaction and block detail pages | Planned (2.4) |
-| Etherscan V2 | `chainid` parameter | Multi-chain support | Planned (2.2) |
+| Ethereum RPC | Blocks, transactions, logs | Transaction and block detail pages | Done |
+| Etherscan V2 | `chainid` parameter | Multi-chain support | Done |
 
 Approvals, DeFi positions and the activity feed load separately from the portfolio numbers on `/me` (`/api/portfolio/insights`), and any wallet page uses `/api/wallet-insights`. Each list notes wallets that failed to load instead of hiding them. If the readable feed fails, `/me` falls back to the Etherscan transaction list.
 
@@ -400,8 +400,10 @@ Approvals, DeFi positions and the activity feed load separately from the portfol
 
 ETH ETF flow data has no reliable free API at the moment, so it is left out.
 
-**2.4 Explorer pages**
-- [ ] `/tx/[hash]`, `/block/[number]`, `/address/[address]`, `/token/[address]` with decoded logs and address labels. This turns the app from a set of forms into something you can click through, and the pages help search traffic.
+**2.4 Explorer pages (done)**
+- [x] `/tx/[hash]`, `/block/[number]` (and `/block/latest`), `/address/[address]`, `/token/[address]`, server-rendered from free public RPCs so search engines can index them. Add `?chain=base` (or arbitrum, optimism, polygon, linea) for other networks.
+- [x] Transactions decode ERC20, ERC721 and ERC1155 transfers and approvals, with token symbols and decimals read on-chain; blocks show gas use, base fee and burnt ETH; addresses show balance, type and (for wallets) activity, approvals and DeFi positions; tokens show supply, plus price, holders and transfers on Ethereum.
+- [ ] Address labels come with the open label datasets in 2.3.
 
 **2.5 Homepage redesign**
 - [ ] Stat row: ETH price, gas, supply change, staking ratio.
@@ -585,7 +587,7 @@ DISCORD_WEBHOOK_URL=''
 |---|---|---|
 | 0: Foundation | 1 week | Done |
 | 1: Wallet connection & accounts | 1–2 weeks | Done |
-| 2: Data & chain expansion | 2–3 weeks | In progress (2.1, 2.2 and `/defi` done) |
+| 2: Data & chain expansion | 2–3 weeks | In progress (2.1, 2.2, 2.4 and `/defi` done) |
 | 3: Real-time & n8n automations | 2 weeks | Planned |
 | 4: AI layer (MCP + agent) | 2 weeks | Planned |
 | 5: On-chain actions | 2–3 weeks | Planned |
