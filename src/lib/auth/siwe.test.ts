@@ -37,41 +37,49 @@ async function signIn(overrides: Partial<Parameters<typeof createSiweMessage>[0]
 describe("verifySignIn", () => {
     it("accepts a valid signed message and returns the address", async () => {
         const { nonces, message, signature } = await signIn();
-        await expect(verifySignIn({ message, signature, host: HOST, nonces, client, now: NOW }))
+        await expect(verifySignIn({ message, signature, host: HOST, nonces, clientFor: () => client, now: NOW }))
             .resolves.toEqual({ address: account.address, chainId: 1 });
     });
 
     it("rejects a replayed message", async () => {
         const { nonces, message, signature } = await signIn();
-        await verifySignIn({ message, signature, host: HOST, nonces, client, now: NOW });
-        await expect(verifySignIn({ message, signature, host: HOST, nonces, client, now: NOW })).rejects.toThrow('expired');
+        await verifySignIn({ message, signature, host: HOST, nonces, clientFor: () => client, now: NOW });
+        await expect(verifySignIn({ message, signature, host: HOST, nonces, clientFor: () => client, now: NOW })).rejects.toThrow('expired');
     });
 
     it("rejects a message for another site", async () => {
         const { nonces, message, signature } = await signIn({ domain: 'evil.example' });
-        await expect(verifySignIn({ message, signature, host: HOST, nonces, client, now: NOW })).rejects.toThrow('different site');
+        await expect(verifySignIn({ message, signature, host: HOST, nonces, clientFor: () => client, now: NOW })).rejects.toThrow('different site');
     });
 
     it("rejects a signature from another account", async () => {
         const { nonces, message } = await signIn();
         const other = privateKeyToAccount('0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a');
         const signature = await other.signMessage({ message });
-        await expect(verifySignIn({ message, signature, host: HOST, nonces, client, now: NOW })).rejects.toThrow('Invalid signature');
+        await expect(verifySignIn({ message, signature, host: HOST, nonces, clientFor: () => client, now: NOW })).rejects.toThrow('Invalid signature');
     });
 
     it("rejects unknown nonces, old messages and unsupported chains", async () => {
         const { message, signature } = await signIn();
-        await expect(verifySignIn({ message, signature, host: HOST, nonces: createMemoryNonceStore(), client, now: NOW })).rejects.toThrow('expired');
+        await expect(verifySignIn({ message, signature, host: HOST, nonces: createMemoryNonceStore(), clientFor: () => client, now: NOW })).rejects.toThrow('expired');
 
         const old = await signIn({ issuedAt: new Date(NOW.getTime() - 60 * 60 * 1000) });
-        await expect(verifySignIn({ ...old, host: HOST, client, now: NOW })).rejects.toThrow('too old');
+        await expect(verifySignIn({ ...old, host: HOST, clientFor: () => client, now: NOW })).rejects.toThrow('too old');
 
-        const l2 = await signIn({ chainId: 8453 });
-        await expect(verifySignIn({ ...l2, host: HOST, client, now: NOW })).rejects.toThrow('Unsupported network');
+        const unknown = await signIn({ chainId: 999999 });
+        await expect(verifySignIn({ ...unknown, host: HOST, clientFor: () => client, now: NOW })).rejects.toThrow('Unsupported network');
+    });
+
+    it("accepts supported L2s and verifies on the chain the message was signed for", async () => {
+        const base = await signIn({ chainId: 8453 });
+        const asked: number[] = [];
+        await expect(verifySignIn({ ...base, host: HOST, clientFor: chainId => { asked.push(chainId); return client; }, now: NOW }))
+            .resolves.toEqual({ address: account.address, chainId: 8453 });
+        expect(asked).toEqual([8453]);
     });
 
     it("returns 401 errors", async () => {
         const { nonces, message, signature } = await signIn({ domain: 'evil.example' });
-        await expect(verifySignIn({ message, signature, host: HOST, nonces, client, now: NOW })).rejects.toMatchObject({ status: 401 });
+        await expect(verifySignIn({ message, signature, host: HOST, nonces, clientFor: () => client, now: NOW })).rejects.toMatchObject({ status: 401 });
     });
 });

@@ -14,7 +14,9 @@ import ConnectWalletButton, { shortAddress } from './ConnectWalletButton';
 import addressValidator from '../utils/functions/addressValidator';
 import { usePrefillAddress } from '../hooks/useConnectedAddress';
 import { useSession } from '../hooks/useSession';
+import { chainInfo } from '@/lib/chains';
 import PortfolioOverview from './PortfolioOverview';
+import WalletInsightsSection from './WalletInsightsSection';
 
 interface SavedWallet {
     id: number;
@@ -24,7 +26,6 @@ interface SavedWallet {
 }
 
 const MAX_WALLETS = 5;
-const NETWORK_NAMES: Record<string, string> = { eth: 'Ethereum', sepolia: 'Sepolia', hoodi: 'Hoodi' };
 const buttonClass = "bg-gradient-to-r from-gray-600 to-gray-400 text-white py-2 px-6 rounded-md hover:from-gray-500 hover:to-gray-300 transition-all duration-300 font-medium";
 const noopSubscribe = () => () => {};
 
@@ -90,7 +91,7 @@ function SavedWallets() {
     const { data: wallets, error, mutate: mutateWallets } = useSWR('/api/wallets', fetchWallets);
     const { mutate: mutateKey } = useSWRConfig();
     // Saving or removing a wallet changes the portfolio too
-    const mutate = () => Promise.all([mutateWallets(), mutateKey('/api/portfolio')]);
+    const mutate = () => Promise.all([mutateWallets(), mutateKey('/api/portfolio'), mutateKey('/api/portfolio/insights')]);
     const addressRef = useRef<HTMLInputElement>(null);
     const labelRef = useRef<HTMLInputElement>(null);
     const [network, setNetwork] = useState('eth');
@@ -136,6 +137,7 @@ function SavedWallets() {
     return (
         <>
             {wallets && wallets.length > 0 && <PortfolioOverview />}
+            {wallets && wallets.length > 0 && <WalletInsightsSection source={{ kind: 'me' }} />}
 
             <Panel title="Saved Wallets" description={`Follow up to ${MAX_WALLETS} wallets.`}>
                 {error && <Alert variant="destructive"><AlertDescription>{error.message}</AlertDescription></Alert>}
@@ -147,7 +149,7 @@ function SavedWallets() {
                             <li key={wallet.id} className="flex items-center justify-between gap-4 py-3">
                                 <div className="min-w-0">
                                     <p className="text-gray-100 font-medium truncate">{wallet.label ?? shortAddress(wallet.address)}</p>
-                                    <p className="text-gray-500 text-sm font-mono truncate">{wallet.address} · {NETWORK_NAMES[wallet.chain] ?? wallet.chain}</p>
+                                    <p className="text-gray-500 text-sm font-mono truncate">{wallet.address} · {chainInfo(wallet.chain).name}</p>
                                 </div>
                                 <div className="flex items-center gap-2 shrink-0">
                                     <Link href={`/wallet-activity/${wallet.address}`} className="text-sm text-gray-300 hover:text-white underline">View</Link>

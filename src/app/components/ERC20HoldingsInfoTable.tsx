@@ -3,10 +3,13 @@
 import ERC20HoldingsType from "../utils/types/ERC20HoldingsType";
 import { Table, TableCell, TableBody, TableHead, TableHeader, TableRow } from "./ui/table";
 import Link from "next/link";
+import { RiskBadge, riskKey, useTokenRisks } from "./TokenRiskBadge";
+import { chainInfo } from "@/lib/chains";
 
 // Custom ERC20 Holdings Info Table Component
-export default function ERC20HoldingsInfoTable(props: { data: ERC20HoldingsType[] }) {
-    const { data } = props;
+export default function ERC20HoldingsInfoTable(props: { data: ERC20HoldingsType[], network?: string }) {
+    const { data, network = 'eth' } = props;
+    const { data: risks } = useTokenRisks((data ?? []).slice(0, 30).map(t => ({ chain: network, address: t.token_address })));
 
     // Render ERC20 Holdings Info Table Component
     return (
@@ -25,13 +28,16 @@ export default function ERC20HoldingsInfoTable(props: { data: ERC20HoldingsType[
                 <TableBody>
                     {data?.map((transfer, index: number) => (
                         <TableRow key={index} className="border-b border-gray-800">
-                            <TableCell className="text-gray-300">{String(transfer.name)}</TableCell>
+                            <TableCell className="text-gray-300">{String(transfer.name)} <RiskBadge risk={risks?.[riskKey(network, transfer.token_address)]} compact /></TableCell>
                             <TableCell className="text-gray-300">{transfer.token_address}</TableCell>
                             <TableCell className="text-gray-300">{transfer.symbol}</TableCell>
                             <TableCell className="text-gray-300">{transfer.balance}</TableCell>
                             <TableCell className="text-gray-300">
-                                <Link target="_blank" href={ 'https://etherscan.io/token/' + transfer.token_address }>
-                                    <u>Etherscan Link</u>
+                                <Link href={ `/token/${transfer.token_address}${network === 'eth' ? '' : '?chain=' + network}` }>
+                                    <u>Token page</u>
+                                </Link>{' · '}
+                                <Link target="_blank" href={ chainInfo(network).explorer + '/token/' + transfer.token_address }>
+                                    <u>Explorer</u>
                                 </Link>
                             </TableCell>
                         </TableRow>

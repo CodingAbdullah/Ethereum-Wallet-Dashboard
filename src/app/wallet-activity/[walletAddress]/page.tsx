@@ -3,6 +3,7 @@ import OpenseaAccountInfoTable from "@/app/components/OpenseaAccountInfoTable";
 import TransactionActivityTable from "@/app/components/TransactionActivityTable";
 import TransactionsAccountInfoTable from "@/app/components/TransactionsAccountInfoTable";
 import addressValidator from "@/app/utils/functions/addressValidator";
+import WalletInsightsSection from "@/app/components/WalletInsightsSection";
 import type { Metadata } from "next"
 
 // Custom Metadata for SEO
@@ -32,6 +33,9 @@ export default async function WalletActivityPage({ params }: { params: Promise<{
                         Get detailed activity of a particular wallet 
                     </p>
                     <TransactionsAccountInfoTable address={address.trim()} />
+                    <div className="container mx-auto w-full max-w-6xl space-y-8 mt-10">
+                        <WalletInsightsSection source={{ kind: 'wallet', address: address.trim(), network: 'eth' }} />
+                    </div>
                     <OpenseaAccountInfoTable address={address.trim()} />
                     <TransactionActivityTable address={address.trim()} />
                     <InternalTransactionsActivityTable address={address.trim()} />

@@ -1,12 +1,14 @@
 import { z } from "zod";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";
+import { CHAIN_KEYS } from "./chains";
 
 // Shared request schemas, validated on the server before any provider is called
 
 export const addressSchema = z.string().trim().refine(value => isAddress(value, { strict: false }), 'Invalid Ethereum address');
 
-export const NETWORKS = ['eth', 'sepolia', 'hoodi'] as const;
+// Every supported network (see src/lib/chains.ts)
+export const NETWORKS = CHAIN_KEYS;
 export const networkSchema = z.enum(NETWORKS).default('eth');
 export type Network = z.infer<typeof networkSchema>;
 

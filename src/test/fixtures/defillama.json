@@ -1,0 +1,43 @@
+{
+  "chains": [
+    { "gecko_id": "ethereum", "tvl": 60000000000, "tokenSymbol": "ETH", "name": "Ethereum", "chainId": 1 },
+    { "gecko_id": "solana", "tvl": 10000000000, "tokenSymbol": "SOL", "name": "Solana" },
+    { "name": "Base", "tvl": 10000000000, "tokenSymbol": null },
+    { "name": "Dead", "tvl": 0 }
+  ],
+  "protocols": [
+    { "name": "Binance CEX", "slug": "binance-cex", "category": "CEX", "chains": ["Ethereum"], "tvl": 150000000000 },
+    { "name": "Lido", "slug": "lido", "category": "Liquid Staking", "chains": ["Ethereum", "Solana"], "tvl": 30000000000, "change_1d": 1.2, "change_7d": -3.4, "url": "https://lido.fi" },
+    { "name": "Aave V3", "slug": "aave-v3", "category": "Lending", "chains": ["Ethereum"], "tvl": 25000000000, "change_1d": null, "change_7d": 2 },
+    { "name": "Tiny", "category": "Dexs", "chains": [], "tvl": 0 }
+  ],
+  "tvlHistory": [
+    { "date": 1727654400, "tvl": 90000000000 },
+    { "date": 1727740800, "tvl": 91000000000 },
+    { "date": 1727827200, "tvl": "bad" }
+  ],
+  "dexs": {
+    "total24h": 5000000000, "total7d": 30000000000, "change_1d": 4.5,
+    "protocols": [
+      { "name": "uniswap-v3", "displayName": "Uniswap V3", "total24h": 1500000000, "change_1d": 3, "category": "Dexs" },
+      { "name": "curve", "displayName": "Curve DEX", "total24h": 300000000, "change_1d": -1 },
+      { "name": "dead", "total24h": 0 }
+    ]
+  },
+  "stablecoins": {
+    "peggedAssets": [
+      { "name": "Tether", "symbol": "USDT", "pegType": "peggedUSD", "circulating": { "peggedUSD": 120000000000 }, "price": 1.0, "chains": ["Ethereum", "Tron"] },
+      { "name": "USD Coin", "symbol": "USDC", "pegType": "peggedUSD", "circulating": { "peggedUSD": 60000000000 }, "price": 0.9999, "chains": ["Ethereum"] },
+      { "name": "Euro Coin", "symbol": "EURC", "pegType": "peggedEUR", "circulating": { "peggedEUR": 100000000 }, "price": 1.08, "chains": ["Ethereum"] }
+    ]
+  },
+  "yields": {
+    "status": "success",
+    "data": [
+      { "chain": "Ethereum", "project": "aave-v3", "symbol": "USDC", "tvlUsd": 500000000, "apy": 5.1, "apyBase": 5.1, "apyReward": null, "stablecoin": true },
+      { "chain": "Ethereum", "project": "lido", "symbol": "STETH", "tvlUsd": 30000000000, "apy": 3.2, "apyBase": 3.2, "stablecoin": false },
+      { "chain": "Base", "project": "tiny-farm", "symbol": "XYZ", "tvlUsd": 50000, "apy": 900 },
+      { "chain": "Base", "project": "big-but-crazy", "symbol": "ABC", "tvlUsd": 50000000, "apy": 4000 }
+    ]
+  }
+}

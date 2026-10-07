@@ -5,6 +5,7 @@ import useSWR from 'swr';
 import { isAddressEqual } from 'viem';
 import { createSiweMessage } from 'viem/siwe';
 import { useAccount, useSignMessage } from 'wagmi';
+import { CHAINS } from '@/lib/chains';
 
 // Sign-In with Ethereum on the client: asks the connected wallet to sign a one-time message,
 // and the server answers with an httpOnly session cookie.
@@ -15,7 +16,7 @@ export interface SessionInfo {
     accountsEnabled: boolean;
 }
 
-const SIWE_CHAIN_IDS = [1, 11155111, 560048];
+const SIWE_CHAIN_IDS: number[] = Object.values(CHAINS).map(c => c.chainId);
 
 async function fetchSession(url: string): Promise<SessionInfo> {
     const response = await fetch(url);

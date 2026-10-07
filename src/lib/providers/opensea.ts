@@ -1,4 +1,5 @@
-import { providerFetch } from "./http";
+import { providerFetch, ProviderError } from "./http";
+import { chainInfo } from "../chains";
 
 // OpenSea API v2 with a free API key (https://docs.opensea.io/reference/api-keys)
 const OPENSEA_URL = 'https://api.opensea.io/api/v2';
@@ -10,13 +11,16 @@ export function opensea<T>(path: string, revalidate: number = 300): Promise<T> {
     });
 }
 
-export function openseaChain(network: string): string {
-    return network === 'eth' ? 'ethereum' : network;
+// OpenSea chain slug, or null where OpenSea doesn't index the chain (testnets, Linea)
+export function openseaChain(network: string): string | null {
+    return chainInfo(network).opensea;
 }
 
 // Resolves an NFT contract to its OpenSea collection slug (cached for a day)
 export async function getCollectionSlug(address: string, network: string = 'eth'): Promise<string> {
-    const contract = await opensea<{ collection: string }>('/chain/' + openseaChain(network) + '/contract/' + address, 86400);
+    const chain = openseaChain(network);
+    if (!chain) throw new ProviderError('OpenSea', 404, 'OpenSea does not index this network');
+    const contract = await opensea<{ collection: string }>('/chain/' + chain + '/contract/' + address, 86400);
     return contract.collection;
 }
 

@@ -14,12 +14,13 @@ interface OpenSeaNft {
 export const POST = withErrorHandling(async (request: Request) => {
     const { address, id, network } = await parseBody(request, tokenLookupBody);
 
-    // OpenSea's mainnet API does not index testnets
-    if (network !== 'eth') return NextResponse.json({ information: { data: [] } });
+    // OpenSea doesn't index testnets or every L2
+    const chain = openseaChain(network);
+    if (!chain) return NextResponse.json({ information: { data: [] } });
 
     const slug = await getCollectionSlug(address, network);
     const [{ nft }, traits, collection] = await Promise.all([
-        opensea<OpenSeaNft>('/chain/' + openseaChain(network) + '/contract/' + address + '/nfts/' + id, 3600),
+        opensea<OpenSeaNft>('/chain/' + chain + '/contract/' + address + '/nfts/' + id, 3600),
         getCollectionTraits(slug),
         opensea<{ total_supply: number }>('/collections/' + slug, 3600)
     ]);

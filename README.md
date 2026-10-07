@@ -21,7 +21,7 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 9. [Roadmap](#️-roadmap)
    - [Phase 0: Foundation](#phase-0--foundation-done)
    - [Phase 1: Wallet Connection & Accounts](#phase-1--wallet-connection--accounts-done)
-   - [Phase 2: Data & Chain Expansion](#phase-2--data--chain-expansion-23-weeks)
+   - [Phase 2: Data & Chain Expansion](#phase-2--data--chain-expansion-done)
    - [Phase 3: Real-Time & n8n Automations](#phase-3--real-time--n8n-automations-2-weeks)
    - [Phase 4: AI Layer (MCP Server + Agent)](#phase-4--ai-layer-mcp-server--agent-2-weeks)
    - [Phase 5: On-Chain Actions](#phase-5--on-chain-actions-23-weeks)
@@ -40,6 +40,8 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 - **ERC20/721 Collection Analytics:** Holders, transfers, sales, floor price, traits and volume stats for token and NFT collections.
 - **Transactions:** Normal and internal transaction history for any wallet.
 - **Wallet Analytics:** Net worth, profit & loss (PnL), PnL breakdown and wallet stats.
+- **My Dashboard (`/me`):** Connect and sign in with a wallet, save wallets, and see a combined portfolio with value over time, readable activity, token approvals and DeFi positions.
+- **Token risk badges:** GoPlus security checks on holdings, token pages and DEX pools.
 
 ### Market Data & Pricing
 - **Coin Prices & ERC20 Prices:** Live and historical prices for coins and tokens.
@@ -47,18 +49,24 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 - **Trending Coins/Collections:** Trending coins and top NFT collections by volume.
 - **Top Movers:** Top 24-hour gainers and losers among the top 250 coins.
 - **AI Market Insights:** Hourly AI-generated market commentary.
+- **DeFi, DEX Pools & Derivatives:** TVL by chain and protocol, stablecoins, yields, trending and new pools, funding rates, open interest and options.
 
 ### Ethereum Tools
 - **ENS:** Address ↔ ENS resolution (on-chain), owned names with expiry and grace periods, and transfer history.
 - **Gas Tracker:** Gas estimates at five confidence levels, computed from recent blocks.
 - **Staking/Validators:** Validator entry/exit queues, liquid staking tokens (stETH, rETH, cbETH) and Rocket Pool stats.
 - **ERC721 Lookups:** Token metadata, trait rarity, transfers, sales and OpenSea data by token ID.
-- **EIP Info:** Notable Ethereum Improvement Proposals.
+- **EIP Info:** Key standards with live status, and a tracker for the EIPs in upcoming network upgrades.
+- **Explorer:** Transaction, block, address and token pages (`/tx`, `/block`, `/address`, `/token`) on Ethereum and five L2s, with decoded token transfers and address labels.
+- **ETH Supply & Blobs:** ETH burnt vs. issued over the last day, and blob usage, fees and posters.
+- **MEV & Governance:** MEV-Boost relay and builder share; active Snapshot votes for major DAOs.
+- **Global search:** Cmd+K (or Ctrl+K) from any page.
 - **n8n Workflows:** Roadmap section for automated workflows (not live yet, see [Phase 3](#phase-3--real-time--n8n-automations-2-weeks)).
 
 ### Networks
-- **Ethereum Mainnet**, **Sepolia** and **Hoodi** testnets for wallet lookups.
-- The "Layer Two Chains" menu currently links out to each L2's website. Native L2 dashboards are planned in [Phase 2](#phase-2--data--chain-expansion-23-weeks).
+- **Ethereum**, **Base**, **Arbitrum One**, **OP Mainnet**, **Polygon PoS** and **Linea**, plus the **Sepolia** and **Hoodi** testnets, for wallet holdings, NFTs, portfolio, approvals and DeFi positions. One registry (`src/lib/chains.ts`) holds each chain's IDs, provider names, explorer and public RPC.
+- **`/l2`** compares layer 2s (DefiLlama value locked, L2BEAT type and risk stage), and **`/l2/[chain]`** has a page per supported network: value locked over time, top protocols, live block and gas price.
+- Etherscan's free plan no longer covers Base or OP Mainnet, so Etherscan-only features (raw transaction lists) aren't offered there; Moralis covers holdings and activity on those chains.
 
 ---
 
@@ -68,13 +76,21 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 |---|---|---|---|
 | **CoinGecko** | Demo (free) | Free key | Coin & token prices, price history, global market data, trending coins/NFTs, NFT collection data |
 | **Moralis** | Free (40k compute units/day) | Free key | Wallet ERC20/NFT holdings and transfers, NFT metadata/transfers/sales, wallet net worth, stats and PnL, ENS holdings |
-| **Etherscan V2** | Free (5 calls/s, 100k/day) | Free key | ETH balance, normal and internal transaction history |
+| **Etherscan V2** | Free (5 calls/s, 100k/day) | Free key | ETH balance, normal and internal transaction history (Ethereum, Arbitrum, Polygon, Linea and testnets; Base and OP Mainnet need a paid plan) |
 | **OpenSea v2** | Free | Free key | NFT floor price, collection stats, trait counts, token rarity, top collections, account and token data |
 | **Ethplorer** | Free | Optional (`freekey` by default) | ERC20 top holders |
 | **Ethereum RPC** (PublicNode by default) | Free | No | Gas estimates, ENS resolution, Rocket Pool and liquid staking contract reads |
 | **Beacon API** (PublicNode by default) | Free | No | Validator entry/exit queues and active validator count |
 | **Coinbase Exchange** | Public | No | ETH/USD price and 24h change (CoinGecko is the fallback) |
 | **Lido API** | Public | No | stETH APR |
+| **DefiLlama** | Open API | No | `/defi` and `/l2`: value locked, DEX volume, fees, stablecoins, yields |
+| **L2BEAT** | Public (unofficial) | No | `/l2`: rollup type, risk stage, total value secured |
+| **Public L2 RPCs** | Free | No | Live block and gas on `/l2/[chain]`; sign-in checks for L2 smart wallets |
+| **GoPlus Security** | Free | No | Token risk checks |
+| **GeckoTerminal** | Free | No | Trending and new DEX pools |
+| **MEV-Boost relays** | Public data API | No | `/mev` |
+| **Deribit / OKX / Bybit** | Public market data | No | `/derivatives` |
+| **Snapshot** | Public GraphQL | No | `/governance` |
 | **Groq** | Free tier | Free key | AI market insights (Llama 3.3 70B) |
 | **Resend** | Free (3,000 emails/month) | Free key | Feedback form emails |
 | **Umami** | Free / self-hosted | Optional | Privacy-friendly site analytics |
@@ -278,15 +294,12 @@ export const POST = withErrorHandling(async (request: Request) => {
 | **n8n workflows** | Placeholder page only. |
 | **MCP server / AI agent** | None. The only AI feature is the hourly market summary. |
 | **Real-time data** | None. Data refreshes by polling. |
-| **Layer 2 support** | Menu links to external websites only. |
+| **Layer 2 support** | Done in Phase 2.2: Base, Arbitrum, OP Mainnet, Polygon and Linea, plus `/l2` pages. |
 | **End-to-end tests** | Unit tests cover the API layer; no browser-level tests yet. |
 
 ### Free endpoints available but unused
 | Provider | Endpoint | What It Enables |
 |---|---|---|
-| Moralis | Wallet DeFi positions | DeFi positions per wallet |
-| Moralis | Token approvals | Approval checker and revoke flow |
-| Moralis | Decoded wallet history | Human-readable activity feed |
 | CoinGecko Demo | On-chain (GeckoTerminal) endpoints | DEX pools, new pairs, trending pools |
 | Etherscan V2 | Other `chainid` values | Multi-chain lookups (check which chains the free plan covers) |
 | Ethereum RPC | Blocks, logs, `eth_simulateV1` | Explorer pages, ETH burn tracking, transaction previews |
@@ -363,48 +376,54 @@ Shipped in three parts. Each part works on its own; 1.1 needs no database.
 
 ---
 
-### Phase 2: Data & Chain Expansion (2–3 weeks)
+### Phase 2: Data & Chain Expansion (done)
 
 **2.1 Use free endpoints already available**
-| Provider | Endpoint | Feature |
-|---|---|---|
-| Moralis | Wallet DeFi positions | DeFi tab on `/me` and wallet pages |
-| Moralis | Token approvals | Approval checker on `/me` and wallet pages (revoke comes in Phase 5) |
-| Moralis | Decoded wallet history | Readable activity feed ("Swapped 1 ETH for 3,200 USDC on Uniswap") |
-| CoinGecko Demo | On-chain (GeckoTerminal) | DEX pools, new pairs, trending pools |
-| Ethereum RPC | Blocks, transactions, logs | Transaction and block detail pages |
-| Etherscan V2 | `chainid` parameter | Multi-chain support |
+| Provider | Endpoint | Feature | Status |
+|---|---|---|---|
+| Moralis | Wallet DeFi positions | DeFi positions on `/me` and wallet pages | Done |
+| Moralis | Token approvals | Approval checker on `/me` and wallet pages, riskiest first (revoke comes in Phase 5) | Done |
+| Moralis | Decoded wallet history | Readable activity feed ("Swapped 1 ETH for 3,200 USDC") on `/me` and wallet pages | Done |
+| GeckoTerminal | Public API (keyless, separate from the CoinGecko cap) | `/dex-pools`: trending and new pools on Ethereum and L2s, with risk badges | Done |
+| Ethereum RPC | Blocks, transactions, logs | Transaction and block detail pages | Done |
+| Etherscan V2 | `chainid` parameter | Multi-chain support | Done |
+
+Approvals, DeFi positions and the activity feed load separately from the portfolio numbers on `/me` (`/api/portfolio/insights`), and any wallet page uses `/api/wallet-insights`. Each list notes wallets that failed to load instead of hiding them. If the readable feed fails, `/me` falls back to the Etherscan transaction list.
 
 **2.2 Real Layer 2 support**
-- [ ] Replace the external links in the "Layer Two Chains" menu with chain-aware pages.
-- [ ] Add a `ChainSelector` (Ethereum, Arbitrum, Base, Optimism, Polygon, Linea, zkSync, Scroll) that sets the `chain` / `chainid` parameter for Moralis and Etherscan V2, and picks a public RPC per chain.
-- [ ] `/l2`: comparison page using **L2BEAT** (TVS, activity, risk stage) and **DefiLlama** (TVL, bridges).
+- [x] Replace the external links in the "Layer Two Chains" menu with chain-aware pages (`/l2/[chain]`).
+- [x] Network selector for Ethereum, Base, Arbitrum, OP Mainnet, Polygon and Linea, driving Moralis's `chain`, Etherscan V2's `chainid`, OpenSea's chain slug and a public RPC per chain. zkSync Era and Scroll are left out because Moralis doesn't cover them; they still appear on `/l2`.
+- [x] `/l2`: comparison page using **L2BEAT** (type, risk stage, total value secured) and **DefiLlama** (value locked). L2BEAT's API is unofficial, so its columns hide themselves if it changes or is down.
+- [x] Portfolio, snapshots, approvals, DeFi positions and Sign-In with Ethereum work on every supported chain.
 
 **2.3 New pages on free providers**
 | Page | Provider | Content |
 |---|---|---|
-| `/defi` | DefiLlama open API | TVL by protocol and chain, yields, stablecoin supply, DEX volume, fees and revenue |
-| `/eth-supply` | RPC + Beacon API | Issuance vs. burn, supply change, blob fees |
-| `/blobs` | Blobscan | Blob usage, fees, which rollups post them |
-| `/staking` (expanded) | Beacon API, on-chain reads, Lido API | More LSTs, restaking, staking ratio |
-| `/derivatives` | Deribit / OKX / Bybit public APIs | ETH funding rates, open interest, options volume |
-| `/mev` | Flashbots relay data API | Relay and builder share, MEV-boost payloads |
-| `/governance` | Snapshot, Tally | Active proposals for major protocols |
-| Risk badges (site-wide) | GoPlus | Honeypot and scam-token flags on holdings and lookups |
-| Address labels (site-wide) | Open label datasets | Entity names next to addresses |
-| `/eip-protocols` (rebuilt) | GitHub `ethereum/EIPs` | Live EIP status and upcoming-upgrade tracker |
+| `/defi` ✅ | DefiLlama open API | TVL by protocol and chain, TVL history, stablecoin supply, DEX volume, fees, and yields (the yields section hides itself if DefiLlama keeps that endpoint on its paid plan) |
+| `/eth-supply` ✅ | RPC + Beacon API + CoinGecko | ETH burnt over the last ~24h (measured from fee history, incl. blob fees) vs. estimated issuance, net change and yearly rate |
+| `/blobs` ✅ | RPC | Blob usage, blob base fee and fees burnt over ~24h, and which rollups posted blobs in the latest blocks (no Blobscan needed) |
+| `/staking` ✅ (expanded) | Beacon API, CoinGecko, DefiLlama, on-chain reads, Lido API | Staking ratio, base reward rate and validator count; liquid staking and (liquid) restaking protocols ranked by value on Ethereum; plus the existing stETH/rETH/cbETH, Rocket Pool and validator queue tables |
+| `/derivatives` ✅ | Deribit / OKX / Bybit public APIs | ETH perpetual funding (8h and annualized), open interest and volume per exchange; Deribit options open interest, volume, put/call ratio and largest expiries. Exchanges that block the server's region show as unavailable |
+| `/mev` ✅ | Relay data API (Flashbots, Ultra Sound, Agnostic, Titan, Aestus) | Share of blocks via MEV-Boost, relay and builder share, payments to proposers, recent MEV-Boost blocks |
+| `/governance` ✅ | Snapshot | Active and recently closed votes for ~20 major DAOs, with leading choice and quorum (Tally's on-chain votes need a key; not added) |
+| Risk badges ✅ | GoPlus (keyless) | Danger / caution flags (honeypots, unsellable tokens, owner powers, taxes) on `/me` holdings, ERC20 holdings, token pages and DEX pools |
+| Address labels ✅ | Curated list (`src/lib/labels.ts`) | Names for well-known mainnet addresses on explorer pages, approvals and blob posters |
+| `/eip-protocols` ✅ (rebuilt) | GitHub `ethereum/EIPs` + `ethereum/ERCs` | Live status on each standard, plus an upgrade tracker read from the meta EIPs (Glamsterdam EIP-7773, Fusaka EIP-7607): EIPs scheduled, considered or included, and the mainnet activation date |
 
 ETH ETF flow data has no reliable free API at the moment, so it is left out.
 
-**2.4 Explorer pages**
-- [ ] `/tx/[hash]`, `/block/[number]`, `/address/[address]`, `/token/[address]` with decoded logs and address labels. This turns the app from a set of forms into something you can click through, and the pages help search traffic.
+**2.4 Explorer pages (done)**
+- [x] `/tx/[hash]`, `/block/[number]` (and `/block/latest`), `/address/[address]`, `/token/[address]`, server-rendered from free public RPCs so search engines can index them. Add `?chain=base` (or arbitrum, optimism, polygon, linea) for other networks.
+- [x] Transactions decode ERC20, ERC721 and ERC1155 transfers and approvals, with token symbols and decimals read on-chain; blocks show gas use, base fee and burnt ETH; addresses show balance, type and (for wallets) activity, approvals and DeFi positions; tokens show supply, plus price, holders and transfers on Ethereum.
+- [x] Address labels from the curated list in 2.3 show on explorer pages.
 
-**2.5 Homepage redesign**
-- [ ] Stat row: ETH price, gas, supply change, staking ratio.
-- [ ] Market, DeFi and L2 summary cards, plus a trending section.
-- [ ] **Cmd+K global search** that detects an address, ENS name, transaction hash, block number or token.
+**2.5 Homepage redesign (done)**
+- [x] Stat row: ETH price, gas, 24h supply change, share of ETH staked.
+- [x] DeFi, layer 2 and Ethereum summary cards linking to their pages; the market overview, chart and trending sections stay below.
+- [x] **Cmd+K global search** (also a navbar button and the homepage search box): detects an address, ENS name (resolved on-chain), transaction hash or block number, and finds pages by keyword and coins by name.
+- [x] Navbar regrouped into Markets, Ethereum, Layer 2s, Wallets, Tokens & NFTs and More (`src/app/utils/constants/SitePages.ts` feeds both the menus and search).
 
-**Done when:** each new page is live with caching, and wallet pages work on at least 5 chains.
+**Done when:** each new page is live with caching, and wallet pages work on at least 5 chains. ✅ (Ethereum plus 5 networks)
 
 ---
 
@@ -581,8 +600,8 @@ DISCORD_WEBHOOK_URL=''
 |---|---|---|
 | 0: Foundation | 1 week | Done |
 | 1: Wallet connection & accounts | 1–2 weeks | Done |
-| 2: Data & chain expansion | 2–3 weeks | Next |
-| 3: Real-time & n8n automations | 2 weeks | Planned |
+| 2: Data & chain expansion | 2–3 weeks | Done |
+| 3: Real-time & n8n automations | 2 weeks | Next |
 | 4: AI layer (MCP + agent) | 2 weeks | Planned |
 | 5: On-chain actions | 2–3 weeks | Planned |
 | 6: Polish & growth | Ongoing | Planned |

@@ -4,7 +4,7 @@ import { parseBody, withErrorHandling } from "@/lib/api/route";
 import { AuthNotConfiguredError, SESSION_COOKIE, createSessionToken, isAuthConfigured, sessionCookieOptions } from "@/lib/auth/session";
 import { verifySignIn } from "@/lib/auth/siwe";
 import { nonceStore } from "@/lib/auth/store";
-import { rpcClient } from "@/lib/providers/rpc";
+import { rpcClientFor } from "@/lib/providers/rpc";
 import { getDb, isDatabaseConfigured } from "@/lib/db";
 import { upsertUser } from "@/lib/accounts";
 
@@ -25,7 +25,7 @@ export const POST = withErrorHandling(async (request: Request) => {
         signature,
         host: request.headers.get('host') ?? '',
         nonces: nonceStore,
-        client: rpcClient
+        clientFor: rpcClientFor
     });
 
     if (isDatabaseConfigured()) await upsertUser(getDb(), address);
