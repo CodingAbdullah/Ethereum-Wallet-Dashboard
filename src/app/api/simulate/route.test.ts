@@ -3,10 +3,12 @@ import { encodeFunctionData, erc20Abi, maxUint256 } from "viem";
 import { postRequest } from "@/test/helpers";
 
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
+const EMPTY = '0x2222222222222222222222222222222222222222';
 vi.mock("@/lib/providers/rpc", () => ({
     chainClient: vi.fn(() => ({
         simulateCalls: vi.fn(async () => ({ results: [{ status: 'success', gasUsed: BigInt(50000) }], assetChanges: [] })),
-        getGasPrice: vi.fn(async () => BigInt(2_000_000_000))
+        getGasPrice: vi.fn(async () => BigInt(2_000_000_000)),
+        getCode: vi.fn(async ({ address }: { address: string }) => address.toLowerCase() === EMPTY ? undefined : '0x6080')
     }))
 }));
 vi.mock("@/lib/providers/http", async importOriginal => ({
@@ -29,6 +31,16 @@ describe("/api/simulate", () => {
         expect(body.simulation).toMatchObject({ ok: true, gasUsed: '50000' });
         expect(body.fee).toEqual({ gasPriceGwei: 2, estimate: 0.0001, symbol: 'ETH' });
         expect(body.flags.map((f: { text: string }) => f.text).join(' ')).toMatch(/Unlimited approval[^]*flagged by GoPlus for phishing/);
+    });
+
+    it("refuses function calls to addresses with no contract", async () => {
+        const response = await POST(postRequest({ chain: 'eth', from: FROM, calls: [{ to: EMPTY, data: '0xd0e30db0', value: '1' }] }));
+        const body = await response.json();
+        expect(body.simulation.ok).toBe(false);
+        expect(body.simulation.error).toContain('There is no contract at');
+        // Plain value transfers to wallets are fine
+        const send = await (await POST(postRequest({ chain: 'eth', from: FROM, calls: [{ to: EMPTY, value: '1' }] }))).json();
+        expect(send.simulation.ok).toBe(true);
     });
 
     it("validates the request", async () => {

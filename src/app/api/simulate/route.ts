@@ -17,10 +17,18 @@ export const POST = withErrorHandling(async (request: Request) => {
     const calls = body.calls.map(toCall);
     const native = chainInfo(body.chain).native;
 
-    const [simulation, gasPrice] = await Promise.all([
+    const [simulated, gasPrice, missing] = await Promise.all([
         simulateCalls(client, body.from as Address, calls, native),
-        client.getGasPrice().catch(() => null)
+        client.getGasPrice().catch(() => null),
+        // A function call to an address with no contract "succeeds" and just loses what is sent
+        Promise.all(calls.map(c => c.data && c.data !== '0x'
+            ? client.getCode({ address: c.to }).then(code => !code || code === '0x', () => false)
+            : false))
     ]);
+    const noContract = calls.find((_, i) => missing[i]);
+    const simulation = noContract
+        ? { ...simulated, ok: false, error: `There is no contract at ${noContract.to} on ${chainInfo(body.chain).name}, so this would only lose what you send.` }
+        : simulated;
     const flags = await assessTransaction(body.chain, calls, simulation.assetChanges, body.screen);
 
     const fee = simulation.gasUsed && gasPrice !== null ? {
