@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import useSWR from 'swr';
 import { AlertTriangle, Infinity as InfinityIcon } from 'lucide-react';
 import Panel from './DashboardPanel';
@@ -79,6 +80,9 @@ export default function WalletInsightsSection({ source }: { source: InsightsSour
                     : `${approvals.items.length} contract${approvals.items.length === 1 ? '' : 's'} can spend tokens from ${multiWallet ? 'your wallets' : 'this wallet'}${unlimitedCount ? `, ${unlimitedCount} with no limit` : ''}. Remove approvals you no longer use.`}
             >
                 <Failed count={approvals.failed.length} what="approvals" />
+                {approvals.items.length > 0 && (
+                    <p className="text-sm text-gray-400">To revoke them from your connected wallet, open the <Link href="/approvals" className="underline text-gray-200">Approvals Manager</Link>.</p>
+                )}
                 {approvals.items.length === 0 ? <p className="text-gray-500">No active token approvals found.</p> : (
                     <Table>
                         <TableHeader>

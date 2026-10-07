@@ -2,8 +2,10 @@
 
 import { useCallback, useRef, useState } from 'react';
 import { useAccount, useConfig, useSendTransaction, useSwitchChain } from 'wagmi';
-import { waitForTransactionReceipt } from 'wagmi/actions';
+import { getConnectorClient, waitForTransactionReceipt } from 'wagmi/actions';
+import { waitForTransactionReceipt as waitWithClient } from 'viem/actions';
 import type { Hex } from 'viem';
+import type { Config } from 'wagmi';
 import { CHAINS, type ChainKey } from '@/lib/chains';
 import type { CallJson } from '@/lib/onchain/request';
 import type { Simulation } from '@/lib/onchain/simulate';
@@ -38,6 +40,19 @@ export function walletError(err: unknown): { rejected: boolean; message: string 
     const e = err as { name?: string; shortMessage?: string; message?: string; code?: number; cause?: { code?: number } };
     const rejected = e?.name === 'UserRejectedRequestError' || e?.code === 4001 || e?.cause?.code === 4001 || /user (rejected|denied)/i.test(e?.message ?? '');
     return { rejected, message: rejected ? 'You cancelled in your wallet.' : (e?.shortMessage || e?.message || 'The wallet returned an error').split('\n')[0] };
+}
+
+// Waits for the receipt through the connected wallet's own RPC first: it is the node that broadcast the
+// transaction, so it sees it soonest (and it is the only one that can see transactions on a local test chain).
+// Falls back to the app's public RPC for the chain.
+async function waitForReceipt(config: Config, hash: Hex, chainId: number) {
+    try {
+        const client = await getConnectorClient(config, { chainId });
+        return await waitWithClient(client, { hash, pollingInterval: 2_000, timeout: 5 * 60_000 });
+    }
+    catch {
+        return waitForTransactionReceipt(config, { hash, chainId });
+    }
 }
 
 export function useTxFlow(onDone?: (sent: SentTx[]) => void) {
@@ -79,7 +94,7 @@ export function useTxFlow(onDone?: (sent: SentTx[]) => void) {
                 const hash = await sendTransactionAsync({ to: call.to as Hex, data: call.data as Hex | undefined, value: call.value ? BigInt(call.value) : undefined, chainId: target });
                 sent.push({ hash, status: 'pending' });
                 setState({ step: 'signing', preview, index: i, sent: [...sent] });
-                const receipt = await waitForTransactionReceipt(config, { hash, chainId: target });
+                const receipt = await waitForReceipt(config, hash, target);
                 sent[i] = { hash, status: receipt.status === 'success' ? 'success' : 'reverted' };
                 if (receipt.status !== 'success') {
                     setState({ step: 'failed', preview, sent: [...sent], error: 'The transaction was mined but failed (reverted). No changes were made by it.' });

@@ -28,7 +28,9 @@ export function chainClient(key: ChainKey): PublicClient {
         const chain = CHAINS[key];
         const url = chainRpcUrl(key);
         client = createPublicClient({
-            chain: { id: chain.chainId, name: chain.name, nativeCurrency: { name: chain.native, symbol: chain.native, decimals: 18 }, rpcUrls: { default: { http: [url] } }, testnet: chain.testnet },
+            chain: { id: chain.chainId, name: chain.name, nativeCurrency: { name: chain.native, symbol: chain.native, decimals: 18 }, rpcUrls: { default: { http: [url] } }, testnet: chain.testnet,
+                // Multicall3 has the same address on every supported chain
+                contracts: { multicall3: { address: '0xcA11bde05977b3631167028862bE2a173976CA11' } } },
             transport: http(url, { timeout: 15000, retryCount: 1 })
         }) as PublicClient;
         clients.set(key, client);
