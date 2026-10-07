@@ -9,11 +9,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { shortAddress } from './ConnectWalletButton';
 import type { Portfolio, Section } from '@/lib/portfolio';
 import type { WalletInsights } from '@/lib/walletInsights';
+import { chainInfo, explorerTx } from '@/lib/chains';
 
 type PortfolioResponse = Portfolio & { history: { day: string; usdValue: number; wallets: number }[] };
 
-const NETWORK_NAMES: Record<string, string> = { eth: 'Ethereum', sepolia: 'Sepolia', hoodi: 'Hoodi' };
-const EXPLORERS: Record<string, string> = { eth: 'https://etherscan.io', sepolia: 'https://sepolia.etherscan.io', hoodi: 'https://hoodi.etherscan.io' };
 
 const usd = (value: number, compact = false) => new Intl.NumberFormat('en-US', {
     style: 'currency', currency: 'USD', notation: compact ? 'compact' : 'standard', maximumFractionDigits: compact ? 1 : 2
@@ -49,7 +48,7 @@ export default function PortfolioOverview() {
         <>
             <Panel
                 title="Portfolio"
-                description="Combined value of your saved Ethereum mainnet wallets (testnet tokens have no market value)."
+                description="Combined value of your saved wallets across Ethereum and L2s (testnet tokens have no market value)."
                 action={
                     <a href="/api/portfolio/export" download className="inline-flex items-center gap-2 rounded-md bg-gray-800 px-3 py-2 text-sm font-medium text-gray-200 ring-1 ring-gray-700 hover:bg-gray-700 hover:text-white shrink-0 self-start">
                         <Download className="h-4 w-4" aria-hidden="true" /> Export CSV
@@ -92,7 +91,7 @@ export default function PortfolioOverview() {
                                 <TableCell className="text-gray-200">
                                     <Link href={`/wallet-activity/${wallet.address}`} className="hover:underline">{wallet.label ?? shortAddress(wallet.address)}</Link>
                                 </TableCell>
-                                <TableCell className="text-gray-400">{NETWORK_NAMES[wallet.chain] ?? wallet.chain}</TableCell>
+                                <TableCell className="text-gray-400">{chainInfo(wallet.chain).name}</TableCell>
                                 <TableCell className="text-gray-200 text-right tabular-nums">{usdValue === null ? <span className="text-gray-500">Unavailable</span> : usd(usdValue)}</TableCell>
                                 <TableCell className="text-gray-300 text-right tabular-nums"><SectionNote section={tokens}>{t => t.length}</SectionNote></TableCell>
                                 <TableCell className="text-gray-300 text-right tabular-nums"><SectionNote section={nfts}>{n => n.items.length + (n.hasMore ? '+' : '')}</SectionNote></TableCell>
@@ -111,7 +110,7 @@ export default function PortfolioOverview() {
             </Panel>
 
             {data.holdings.length > 0 && (
-                <Panel title="Holdings" description="Tokens across your mainnet wallets, largest first.">
+                <Panel title="Holdings" description="Tokens across your wallets, largest first.">
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -127,6 +126,7 @@ export default function PortfolioOverview() {
                                 <TableRow key={token.chain + token.tokenAddress} className="border-b border-gray-800">
                                     <TableCell className="text-gray-200">
                                         <span className="font-medium">{token.symbol}</span> <span className="text-gray-500">{token.name}</span>
+                                        {token.chain !== 'eth' && <span className="ml-2 text-xs text-gray-500">on {chainInfo(token.chain).name}</span>}
                                         {token.wallets > 1 && <span className="ml-2 text-xs text-gray-500">({token.wallets} wallets)</span>}
                                     </TableCell>
                                     <TableCell className="text-gray-300 text-right tabular-nums">{amount(token.balance)}</TableCell>
@@ -165,7 +165,7 @@ export default function PortfolioOverview() {
                                         <TableCell className="text-gray-300">{outgoing ? 'Sent' : 'Received'}{tx.failed && <span className="ml-2 text-red-400">(failed)</span>}</TableCell>
                                         <TableCell className="text-gray-200 text-right tabular-nums">{amount(tx.valueEth)}</TableCell>
                                         <TableCell>
-                                            <a href={`${EXPLORERS[tx.chain] ?? EXPLORERS.eth}/tx/${tx.hash}`} target="_blank" rel="noopener noreferrer" className="text-gray-300 underline font-mono text-xs">{tx.hash.slice(0, 10)}…</a>
+                                            <a href={explorerTx(tx.chain, tx.hash)} target="_blank" rel="noopener noreferrer" className="text-gray-300 underline font-mono text-xs">{tx.hash.slice(0, 10)}…</a>
                                         </TableCell>
                                     </TableRow>
                                 );

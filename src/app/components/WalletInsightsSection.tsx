@@ -6,12 +6,12 @@ import Panel from './DashboardPanel';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { shortAddress } from './ConnectWalletButton';
 import type { WalletInsights } from '@/lib/walletInsights';
+import { chainInfo, explorerAddress, explorerTx } from '@/lib/chains';
 
 // Token approvals, DeFi positions and a readable activity feed.
 // On /me it loads the signed-in user's saved wallets; on a wallet page it loads one address.
 export type InsightsSource = { kind: 'me' } | { kind: 'wallet'; address: string; network: string };
 
-const EXPLORERS: Record<string, string> = { eth: 'https://etherscan.io', sepolia: 'https://sepolia.etherscan.io', hoodi: 'https://hoodi.etherscan.io' };
 
 const usd = (value: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 }).format(value);
 const when = (iso: string | null) => iso ? new Date(iso).toLocaleDateString('en-US', { dateStyle: 'medium' }) : '—';
@@ -64,7 +64,7 @@ export default function WalletInsightsSection({ source }: { source: InsightsSour
                                 <span className="text-gray-100 flex-1 break-words">{item.summary}</span>
                                 <span className="text-xs text-gray-500 shrink-0">
                                     {multiWallet && <span className="font-mono mr-2">{shortAddress(item.wallet)}</span>}
-                                    <a href={`${EXPLORERS[item.chain] ?? EXPLORERS.eth}/tx/${item.hash}`} target="_blank" rel="noopener noreferrer" className="underline">{when(item.timestamp)}</a>
+                                    <a href={explorerTx(item.chain, item.hash)} target="_blank" rel="noopener noreferrer" className="underline">{when(item.timestamp)}</a>
                                 </span>
                             </li>
                         ))}
@@ -79,7 +79,7 @@ export default function WalletInsightsSection({ source }: { source: InsightsSour
                     : `${approvals.items.length} contract${approvals.items.length === 1 ? '' : 's'} can spend tokens from ${multiWallet ? 'your wallets' : 'this wallet'}${unlimitedCount ? `, ${unlimitedCount} with no limit` : ''}. Remove approvals you no longer use.`}
             >
                 <Failed count={approvals.failed.length} what="approvals" />
-                {approvals.items.length === 0 ? <p className="text-gray-500">No active token approvals on Ethereum mainnet.</p> : (
+                {approvals.items.length === 0 ? <p className="text-gray-500">No active token approvals found.</p> : (
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -94,9 +94,12 @@ export default function WalletInsightsSection({ source }: { source: InsightsSour
                         <TableBody>
                             {approvals.items.map(a => (
                                 <TableRow key={a.wallet + a.tokenAddress + a.spender} className="border-b border-gray-800">
-                                    <TableCell className="text-gray-200"><span className="font-medium">{a.tokenSymbol}</span> <span className="text-gray-500">{a.tokenName}</span></TableCell>
+                                    <TableCell className="text-gray-200">
+                                        <span className="font-medium">{a.tokenSymbol}</span> <span className="text-gray-500">{a.tokenName}</span>
+                                        {a.chain !== 'eth' && <span className="ml-2 text-xs text-gray-500">on {chainInfo(a.chain).name}</span>}
+                                    </TableCell>
                                     <TableCell className="text-gray-300">
-                                        <a href={`https://etherscan.io/address/${a.spender}`} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                                        <a href={explorerAddress(a.chain, a.spender)} target="_blank" rel="noopener noreferrer" className="hover:underline">
                                             {a.spenderLabel ?? <span className="font-mono text-xs">{shortAddress(a.spender)}</span>}
                                         </a>
                                     </TableCell>
@@ -107,7 +110,7 @@ export default function WalletInsightsSection({ source }: { source: InsightsSour
                                     </TableCell>
                                     <TableCell className="text-gray-200 text-right tabular-nums">{a.usdAtRisk === null ? '—' : usd(a.usdAtRisk)}</TableCell>
                                     <TableCell className="text-gray-400 whitespace-nowrap">
-                                        {a.transactionHash ? <a href={`https://etherscan.io/tx/${a.transactionHash}`} target="_blank" rel="noopener noreferrer" className="underline">{when(a.approvedAt)}</a> : when(a.approvedAt)}
+                                        {a.transactionHash ? <a href={explorerTx(a.chain, a.transactionHash)} target="_blank" rel="noopener noreferrer" className="underline">{when(a.approvedAt)}</a> : when(a.approvedAt)}
                                     </TableCell>
                                     {multiWallet && <TableCell className="text-gray-400 font-mono text-xs">{shortAddress(a.wallet)}</TableCell>}
                                 </TableRow>
@@ -119,7 +122,7 @@ export default function WalletInsightsSection({ source }: { source: InsightsSour
 
             <Panel
                 title="DeFi Positions"
-                description={defi.items.length > 0 ? <>Total in DeFi: <span className="text-gray-100 font-medium">{usd(defi.totalUsd)}</span>{multiWallet && ' (shown separately from the portfolio total)'}</> : 'Liquidity, lending and staking positions on Ethereum mainnet.'}
+                description={defi.items.length > 0 ? <>Total in DeFi: <span className="text-gray-100 font-medium">{usd(defi.totalUsd)}</span>{multiWallet && ' (shown separately from the portfolio total)'}</> : 'Liquidity, lending and staking positions.'}
             >
                 <Failed count={defi.failed.length} what="DeFi positions" />
                 {defi.items.length === 0 ? <p className="text-gray-500">No DeFi positions found.</p> : (

@@ -1,14 +1,10 @@
 import { providerFetch, ProviderError } from "./http";
 import type { Network } from "../validation";
+import { CHAINS } from "../chains";
 
 // Etherscan API V2 on the free plan (5 calls/second, 100,000 calls/day)
 const ETHERSCAN_URL = 'https://api.etherscan.io/v2/api';
 
-export const CHAIN_IDS: Record<Network, number> = {
-    eth: 1,
-    sepolia: 11155111,
-    hoodi: 560048
-};
 
 interface EtherscanResponse<T> {
     status: string;
@@ -19,7 +15,11 @@ interface EtherscanResponse<T> {
 // Calls an Etherscan module/action and returns the full response ({ status, message, result })
 // "No transactions found" is returned as an empty result instead of an error
 export async function etherscan<T>(params: Record<string, string | number>, network: Network = 'eth', revalidate: number = 60): Promise<EtherscanResponse<T>> {
-    const query = new URLSearchParams({ chainid: String(CHAIN_IDS[network]) });
+    const chain = CHAINS[network];
+    // Some chains (Base, OP Mainnet) are only on Etherscan's paid plans; fail fast without spending a call
+    if (!chain.etherscanFree) throw new ProviderError('Etherscan', 402, `Etherscan's free plan does not cover ${chain.name}`);
+
+    const query = new URLSearchParams({ chainid: String(chain.chainId) });
     for (const [key, value] of Object.entries(params)) query.set(key, String(value));
     query.set('apikey', process.env.ETHERSCAN_API_KEY ?? '');
 

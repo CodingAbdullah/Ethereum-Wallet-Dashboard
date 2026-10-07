@@ -3,6 +3,7 @@ import { moralis, moralisChain } from "./providers/moralis";
 import { etherscan } from "./providers/etherscan";
 import { ProviderError } from "./providers/http";
 import type { Network } from "./validation";
+import { hasMarketValue } from "./chains";
 
 // Portfolio data for /me: holdings with USD values, NFTs, PnL and recent activity for each saved wallet,
 // plus a combined view. Each section loads on its own, so one provider failing (or PnL being outside
@@ -130,8 +131,8 @@ const num = (value: unknown): number | null => {
     return value === null || value === undefined || !Number.isFinite(n) ? null : n;
 };
 
-async function getWalletPnl(address: string): Promise<WalletPnl> {
-    const data = await moralis<Record<string, unknown>>('/wallets/' + address + '/profitability/summary', 600);
+async function getWalletPnl(address: string, chain: Network): Promise<WalletPnl> {
+    const data = await moralis<Record<string, unknown>>('/wallets/' + address + '/profitability/summary?chain=' + moralisChain(chain), 600);
     return {
         realizedProfitUsd: num(data.total_realized_profit_usd),
         realizedProfitPercent: num(data.total_realized_profit_percentage),
@@ -185,12 +186,12 @@ export async function getWalletPortfolio(wallet: PortfolioWallet): Promise<Walle
     const [tokens, nfts, pnl, activity] = await Promise.all([
         section(() => getWalletTokens(wallet.address, chain)),
         section(() => getWalletNfts(wallet.address, chain)),
-        chain === 'eth' ? section(() => getWalletPnl(wallet.address)) : Promise.resolve(null),
+        hasMarketValue(chain) ? section(() => getWalletPnl(wallet.address, chain)) : Promise.resolve(null),
         section(() => getWalletActivity(wallet.address, chain))
     ]);
 
     // Testnet tokens have no market value
-    const usdValue = 'data' in tokens ? (chain === 'eth' ? tokens.data.reduce((sum, t) => sum + t.usdValue, 0) : 0) : null;
+    const usdValue = 'data' in tokens ? (hasMarketValue(chain) ? tokens.data.reduce((sum, t) => sum + t.usdValue, 0) : 0) : null;
     return { wallet, usdValue, tokens, nfts, pnl, activity };
 }
 
@@ -198,7 +199,7 @@ export async function getWalletPortfolio(wallet: PortfolioWallet): Promise<Walle
 export function combinePortfolio(wallets: WalletPortfolio[]): Portfolio {
     const holdings = new Map<string, CombinedHolding>();
     for (const { wallet, tokens } of wallets) {
-        if (!('data' in tokens) || wallet.chain !== 'eth') continue;
+        if (!('data' in tokens) || !hasMarketValue(wallet.chain)) continue;
         for (const token of tokens.data) {
             const key = wallet.chain + ':' + token.tokenAddress;
             const existing = holdings.get(key);

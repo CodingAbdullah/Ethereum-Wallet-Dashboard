@@ -5,6 +5,7 @@ import { listWatchedWallets } from "@/lib/accounts";
 import { getPortfolio } from "@/lib/portfolio";
 import { toCsv } from "@/lib/csv";
 import { utcDay } from "@/lib/snapshots";
+import { hasMarketValue } from "@/lib/chains";
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
@@ -17,7 +18,7 @@ export const GET = withErrorHandling(async () => {
     const portfolio = await getPortfolio(await listWatchedWallets(getDb(), address));
 
     const rows = portfolio.wallets.flatMap(({ wallet, tokens }) => 'data' in tokens
-        ? tokens.data.map(t => [wallet.address, wallet.label, wallet.chain, t.symbol, t.name, t.tokenAddress, t.balance, t.usdPrice, wallet.chain === 'eth' ? t.usdValue.toFixed(2) : 0])
+        ? tokens.data.map(t => [wallet.address, wallet.label, wallet.chain, t.symbol, t.name, t.tokenAddress, t.balance, t.usdPrice, hasMarketValue(wallet.chain) ? t.usdValue.toFixed(2) : 0])
         // Keep a row for wallets whose holdings failed to load, so the export doesn't silently drop them
         : [[wallet.address, wallet.label, wallet.chain, '', 'Holdings unavailable: ' + tokens.error, '', '', '', '']]);
 

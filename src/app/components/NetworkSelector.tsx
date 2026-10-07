@@ -1,10 +1,14 @@
 'use client';
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./ui/select";
+import { CHAINS } from "@/lib/chains";
 
-// Network Selector Custom Component
-export default function NetworkSelector(props: { networkSelector: (network: string) => void }) {
-    const { networkSelector } = props;
+const MAINNETS = Object.values(CHAINS).filter(c => !c.testnet);
+const TESTNETS = Object.values(CHAINS).filter(c => c.testnet);
+
+// Network Selector Custom Component: every supported network, mainnets first (src/lib/chains.ts)
+export default function NetworkSelector(props: { networkSelector: (network: string) => void, only?: (key: string) => boolean }) {
+    const { networkSelector, only = () => true } = props;
 
     // Render the Network Selector Component
     return (
@@ -19,9 +23,14 @@ export default function NetworkSelector(props: { networkSelector: (network: stri
                     <SelectValue placeholder="Select Network" />
                 </SelectTrigger>
                 <SelectContent className="bg-gray-900 text-gray-100 border-gray-700">
-                    <SelectItem value="eth">Ethereum Mainnet</SelectItem>
-                    <SelectItem value="sepolia">Sepolia Testnet</SelectItem>
-                    <SelectItem value="hoodi">Hoodi Testnet</SelectItem>
+                    <SelectGroup>
+                        <SelectLabel className="text-gray-500">Mainnets</SelectLabel>
+                        {MAINNETS.filter(c => only(c.key)).map(c => <SelectItem key={c.key} value={c.key}>{c.name}</SelectItem>)}
+                    </SelectGroup>
+                    <SelectGroup>
+                        <SelectLabel className="text-gray-500">Testnets</SelectLabel>
+                        {TESTNETS.filter(c => only(c.key)).map(c => <SelectItem key={c.key} value={c.key}>{c.name} Testnet</SelectItem>)}
+                    </SelectGroup>
                 </SelectContent>
             </Select>
         </div>

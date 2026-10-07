@@ -1,5 +1,6 @@
 import { moralis, moralisChain } from "./providers/moralis";
 import type { Network } from "./validation";
+import { hasMarketValue } from "./chains";
 
 // Extra wallet data from Moralis's free Wallet API: token approvals, DeFi positions and a
 // human-readable activity feed. Responses are read defensively: unknown or missing fields
@@ -122,9 +123,8 @@ export async function getApprovals(address: string, chain: Network): Promise<Tok
     return toApprovals(await moralis('/wallets/' + address + '/approvals?chain=' + moralisChain(chain) + '&limit=100', 600));
 }
 
-export async function getDefiPositions(address: string): Promise<DefiPosition[]> {
-    // DeFi protocols have no testnet data, so mainnet only
-    return toDefiPositions(await moralis('/wallets/' + address + '/defi/positions?chain=eth', 600));
+export async function getDefiPositions(address: string, chain: Network): Promise<DefiPosition[]> {
+    return toDefiPositions(await moralis('/wallets/' + address + '/defi/positions?chain=' + moralisChain(chain), 600));
 }
 
 export async function getActivity(address: string, chain: Network, limit = 15): Promise<ActivityItem[]> {
@@ -139,8 +139,8 @@ export interface InsightWallet {
 // Approvals, DeFi positions and activity for one or more wallets. Each list notes which wallets
 // failed to load, so the page can say "couldn't load 1 wallet" instead of showing nothing.
 export interface WalletInsights {
-    approvals: { items: (TokenApproval & { wallet: string })[]; failed: string[] };
-    defi: { items: (DefiPosition & { wallet: string })[]; totalUsd: number; failed: string[] };
+    approvals: { items: (TokenApproval & { wallet: string; chain: string })[]; failed: string[] };
+    defi: { items: (DefiPosition & { wallet: string; chain: string })[]; totalUsd: number; failed: string[] };
     activity: { items: (ActivityItem & { wallet: string; chain: string })[]; failed: string[] };
 }
 
@@ -156,11 +156,11 @@ async function settle<T>(wallets: InsightWallet[], load: (wallet: InsightWallet)
 }
 
 export async function getWalletInsights(wallets: InsightWallet[], activityLimit = 20): Promise<WalletInsights> {
-    // Approvals and DeFi positions only matter where tokens have value
-    const mainnet = wallets.filter(w => w.chain === 'eth');
+    // Approvals and DeFi positions only matter where tokens have value (not testnets)
+    const valued = wallets.filter(w => hasMarketValue(w.chain));
     const [approvals, defi, activity] = await Promise.all([
-        settle(mainnet, w => getApprovals(w.address, 'eth')),
-        settle(mainnet, w => getDefiPositions(w.address)),
+        settle(valued, w => getApprovals(w.address, w.chain as Network)),
+        settle(valued, w => getDefiPositions(w.address, w.chain as Network)),
         settle(wallets, w => getActivity(w.address, w.chain as Network))
     ]);
 

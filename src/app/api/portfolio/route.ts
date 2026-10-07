@@ -5,6 +5,7 @@ import { getDb } from "@/lib/db";
 import { listWatchedWallets } from "@/lib/accounts";
 import { getPortfolio } from "@/lib/portfolio";
 import { portfolioHistory, saveSnapshots } from "@/lib/snapshots";
+import { hasMarketValue } from "@/lib/chains";
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
@@ -18,11 +19,10 @@ export const GET = withErrorHandling(async () => {
 
     // Record today's value right away, so the chart has a point before the first cron run
     await saveSnapshots(db, portfolio.wallets
-        .filter(w => w.wallet.chain === 'eth' && w.usdValue !== null)
-        .map(w => ({ address: w.wallet.address, chain: 'eth', usdValue: w.usdValue! })));
+        .filter(w => hasMarketValue(w.wallet.chain) && w.usdValue !== null)
+        .map(w => ({ address: w.wallet.address, chain: w.wallet.chain, usdValue: w.usdValue! })));
 
-    const mainnet = wallets.filter(w => w.chain === 'eth').map(w => w.address);
-    const history = await portfolioHistory(db, mainnet);
+    const history = await portfolioHistory(db, wallets);
 
     return NextResponse.json({ ...portfolio, history }, { headers: { 'cache-control': 'private, no-store' } });
 });
