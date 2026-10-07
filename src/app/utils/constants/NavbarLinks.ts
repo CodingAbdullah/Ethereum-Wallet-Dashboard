@@ -5,6 +5,7 @@ export const NavbarLinks: NavbarLinkObject[] = [
     {
         name: 'Extra Data',
         dropdown: [
+            { name: 'DeFi Overview', href: '/defi' },
             { name: 'EIP Protocols', href: '/eip-protocols' },
             { name: 'Feedback', href: '/feedback' },
             { name: 'Market Insights', href: '/market-insights' },

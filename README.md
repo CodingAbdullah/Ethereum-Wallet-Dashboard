@@ -382,7 +382,7 @@ Approvals, DeFi positions and the activity feed load separately from the portfol
 **2.3 New pages on free providers**
 | Page | Provider | Content |
 |---|---|---|
-| `/defi` | DefiLlama open API | TVL by protocol and chain, yields, stablecoin supply, DEX volume, fees and revenue |
+| `/defi` ✅ | DefiLlama open API | TVL by protocol and chain, TVL history, stablecoin supply, DEX volume, fees, and yields (the yields section hides itself if DefiLlama keeps that endpoint on its paid plan) |
 | `/eth-supply` | RPC + Beacon API | Issuance vs. burn, supply change, blob fees |
 | `/blobs` | Blobscan | Blob usage, fees, which rollups post them |
 | `/staking` (expanded) | Beacon API, on-chain reads, Lido API | More LSTs, restaking, staking ratio |
@@ -580,7 +580,7 @@ DISCORD_WEBHOOK_URL=''
 |---|---|---|
 | 0: Foundation | 1 week | Done |
 | 1: Wallet connection & accounts | 1–2 weeks | Done |
-| 2: Data & chain expansion | 2–3 weeks | In progress (2.1 done) |
+| 2: Data & chain expansion | 2–3 weeks | In progress (2.1 and `/defi` done) |
 | 3: Real-time & n8n automations | 2 weeks | Planned |
 | 4: AI layer (MCP + agent) | 2 weeks | Planned |
 | 5: On-chain actions | 2–3 weeks | Planned |

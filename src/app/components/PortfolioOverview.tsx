@@ -3,7 +3,7 @@
 import useSWR from 'swr';
 import Link from 'next/link';
 import { Download, AlertTriangle } from 'lucide-react';
-import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import ValueLineChart from './ValueLineChart';
 import Panel from './DashboardPanel';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { shortAddress } from './ConnectWalletButton';
@@ -19,7 +19,6 @@ const usd = (value: number, compact = false) => new Intl.NumberFormat('en-US', {
     style: 'currency', currency: 'USD', notation: compact ? 'compact' : 'standard', maximumFractionDigits: compact ? 1 : 2
 }).format(value);
 const amount = (value: number) => value.toLocaleString('en-US', { maximumFractionDigits: value < 1 ? 6 : 4 });
-const shortDay = (day: string) => new Date(day + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 
 async function fetchPortfolio(url: string): Promise<PortfolioResponse> {
     const response = await fetch(url);
@@ -70,22 +69,7 @@ export default function PortfolioOverview() {
                     {history.length < 2 ? (
                         <p className="text-gray-500 text-sm">The chart fills in as daily snapshots are saved. Check back tomorrow.</p>
                     ) : (
-                        <div className="h-64 w-full" role="img" aria-label={`Portfolio value from ${history[0].day} to ${history[history.length - 1].day}`}>
-                            <ResponsiveContainer width="100%" height="100%">
-                                <LineChart data={history} margin={{ top: 8, right: 8, bottom: 0, left: 8 }}>
-                                    <CartesianGrid stroke="#374151" strokeDasharray="3 3" vertical={false} />
-                                    <XAxis dataKey="day" tickFormatter={shortDay} stroke="#9CA3AF" tick={{ fontSize: 12 }} tickLine={false} axisLine={{ stroke: '#4B5563' }} minTickGap={24} />
-                                    <YAxis tickFormatter={v => usd(v, true)} stroke="#9CA3AF" tick={{ fontSize: 12 }} tickLine={false} axisLine={false} width={64} />
-                                    <Tooltip
-                                        cursor={{ stroke: '#6B7280' }}
-                                        contentStyle={{ background: '#111827', border: '1px solid #374151', borderRadius: 6, color: '#F3F4F6' }}
-                                        labelFormatter={label => shortDay(String(label))}
-                                        formatter={value => [usd(Number(value)), 'Value']}
-                                    />
-                                    <Line type="monotone" dataKey="usdValue" stroke="#E5E7EB" strokeWidth={2} dot={history.length <= 14 ? { r: 4, fill: '#E5E7EB', stroke: '#111827', strokeWidth: 2 } : false} activeDot={{ r: 5 }} />
-                                </LineChart>
-                            </ResponsiveContainer>
-                        </div>
+                        <ValueLineChart data={history} dataKey="usdValue" label="Value" />
                     )}
                 </div>
             </Panel>
