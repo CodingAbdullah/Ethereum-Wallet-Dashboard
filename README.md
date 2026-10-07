@@ -110,6 +110,8 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 - **Recharts** and **AG Grid** for charts and tables
 - **SWR** for client-side data fetching
 - **Vercel AI SDK** (`ai`, `@ai-sdk/groq`) for AI market insights
+- **Vitest** for unit tests
+- **Sentry** for error monitoring and **Upstash Redis** for rate limiting (both optional, free tiers)
 - **Lucide React** / **Font Awesome** icons
 - **Vercel** hosting and **Vercel Analytics**
 
@@ -146,9 +148,10 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
    npm run start      # serve the production build
    npm run lint       # ESLint
    npm run typecheck  # TypeScript, no emit
+   npm test           # Vitest unit tests
    ```
 
-CI (`.github/workflows/ci.yml`) runs lint, typecheck and build on every pull request.
+CI (`.github/workflows/ci.yml`) runs lint, typecheck, unit tests and build on every pull request.
 
 ---
 
@@ -172,8 +175,14 @@ src/
 │   ├── validation.ts        # Zod schemas: addresses, networks, ENS names, token IDs, intervals
 │   ├── ens.ts               # ENS resolution helpers (viem)
 │   ├── ensHoldings.ts       # .eth names owned by an address, with expiry details
+│   ├── rateLimit.ts         # Per-IP rate limit (Upstash Redis, or in-memory fallback)
 │   └── staking.ts           # Rocket Pool and liquid staking contract reads
+├── test/                    # Test helpers and sample provider responses
+├── instrumentation.ts         # Sentry setup for the server (no-op without a DSN)
+├── instrumentation-client.ts  # Sentry setup for the browser (no-op without a DSN)
 └── proxy.ts                 # Blocks cross-site /api calls and rate-limits per IP
+
+Unit tests (`*.test.ts`) sit next to the code they test.
 ```
 
 ---
@@ -200,6 +209,10 @@ export const POST = withErrorHandling(async (request: Request) => {
   | 400 | Invalid input |
   | 403 | Cross-site request blocked by `proxy.ts` |
   | 429 | Rate limit (120 requests/minute per IP) |
+
+- **Rate limiting:** with `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` set, every server instance shares one counter in Upstash Redis (free tier). Without them, each instance counts in memory. If Redis is unreachable, the limiter falls back to memory instead of blocking requests.
+- **Caching vs. Upstash:** API responses are cached in the Next.js data cache, which Vercel shares across all instances, so Upstash is not needed for caching on Vercel. When self-hosting with Docker, that cache lives on each container's disk.
+- **Error monitoring:** with `NEXT_PUBLIC_SENTRY_DSN` set, unexpected errors (HTTP 500) are reported to Sentry, and provider or RPC failures are reported as warnings. Without a DSN, Sentry is off.
   | 502 | Provider or RPC failure |
   | 503 | Provider rejected the key, or the endpoint is outside its free plan |
 
@@ -251,8 +264,7 @@ export const POST = withErrorHandling(async (request: Request) => {
 | **MCP server / AI agent** | None. The only AI feature is the hourly market summary. |
 | **Real-time data** | None. Data refreshes by polling. |
 | **Layer 2 support** | Menu links to external websites only. |
-| **Tests** | CI runs lint, typecheck and build; no unit or end-to-end tests yet. |
-| **Error monitoring** | None. |
+| **End-to-end tests** | Unit tests cover the API layer; no browser-level tests yet. |
 
 ### Free endpoints available but unused
 | Provider | Endpoint | What It Enables |
@@ -295,9 +307,9 @@ Each phase builds on the previous one and ends with something shippable. Time es
 - [x] `proxy.ts`: cross-site block and per-IP rate limit
 - [x] One key per provider; `.env.example`
 - [x] Working lint (ESLint flat config), `typecheck` script, GitHub Actions CI
-- [ ] Unit tests for provider clients (Vitest, recorded responses)
-- [ ] Error monitoring (Sentry free Developer plan)
-- [ ] Shared rate limit across server instances (Upstash Redis free tier)
+- [x] Unit tests (Vitest) for provider clients, validation, error handling, rate limiting, the proxy and key routes, using sample provider responses; run in CI
+- [x] Error monitoring with Sentry (free Developer plan), off until `NEXT_PUBLIC_SENTRY_DSN` is set
+- [x] Rate limit shared across server instances with Upstash Redis (free tier), with an in-memory fallback
 
 ---
 
@@ -520,15 +532,15 @@ All current variables are in `.env.example`:
 | `BEACON_API_URL` | No (defaults to PublicNode) | Any beacon node URL |
 | `GROQ_API_KEY` | For Market Insights | Groq free tier |
 | `RESEND_API_KEY`, `PERSONAL_EMAIL` | For the feedback form | Resend free tier |
+| `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | Recommended in production | Upstash Redis free tier |
+| `NEXT_PUBLIC_SENTRY_DSN` | Recommended in production | Sentry free Developer plan |
+| `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT` | No (source map upload only) | Sentry |
 | `UMAMI_URL`, `UMAMI_DATA_WEBSITE_ID` | No | Umami |
 
 Variables later phases will add (all free tiers):
 ```bash
 DATABASE_URL=''                  # Neon
 AUTH_SECRET=''                   # Auth.js
-UPSTASH_REDIS_REST_URL=''        # Upstash
-UPSTASH_REDIS_REST_TOKEN=''
-SENTRY_DSN=''                    # Sentry
 CRON_SECRET=''                   # Vercel cron
 NEXT_PUBLIC_REOWN_PROJECT_ID=''  # Reown AppKit
 TALLY_API_KEY=''                 # Tally
@@ -544,7 +556,7 @@ DISCORD_WEBHOOK_URL=''
 
 | Phase | Duration | Status |
 |---|---|---|
-| 0: Foundation | 1 week | Done (tests, Sentry and shared rate limit remaining) |
+| 0: Foundation | 1 week | Done |
 | 1: Wallet connection & accounts | 1–2 weeks | Next |
 | 2: Data & chain expansion | 2–3 weeks | Planned |
 | 3: Real-time & n8n automations | 2 weeks | Planned |

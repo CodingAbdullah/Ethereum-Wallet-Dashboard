@@ -1,0 +1,25 @@
+{
+  "result": [
+    {
+      "name": "",
+      "last_metadata_sync": "2026-09-01T00:00:00.000Z",
+      "normalized_metadata": {
+        "name": "active.eth",
+        "attributes": [
+          { "trait_type": "Created Date", "value": 1609459200000 },
+          { "trait_type": "Expiration Date", "value": 1893456000000 }
+        ]
+      }
+    },
+    {
+      "name": "grace.eth",
+      "last_metadata_sync": "2026-09-01T00:00:00.000Z",
+      "normalized_metadata": {
+        "attributes": [
+          { "trait_type": "Registration Date", "value": 1577836800 },
+          { "trait_type": "Expiration Date", "value": 1788220800 }
+        ]
+      }
+    }
+  ]
+}

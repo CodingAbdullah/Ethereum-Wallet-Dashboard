@@ -1,0 +1,7 @@
+{
+  "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
+  "name": "Dai Stablecoin",
+  "decimals": "18",
+  "symbol": "DAI",
+  "price": { "rate": 1.0, "currency": "USD" }
+}

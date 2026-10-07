@@ -1,0 +1,6 @@
+{
+  "holders": [
+    { "address": "0x47ac0fb4f2d84898e4d9e7b4dab3c24507a6d503", "balance": 2500000000000000000000000, "share": 25.0 },
+    { "address": "0xf977814e90da44bfa03b6295a0616a897441acec", "balance": 1000000000000000000000000, "share": 10.0 }
+  ]
+}
