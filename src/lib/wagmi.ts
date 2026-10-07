@@ -37,8 +37,10 @@ export function createWagmiConfig() {
         // Remembers the last wallet in a cookie so it reconnects on the next visit
         storage: createStorage({ storage: cookieStorage }),
         ssr: true,
+        // Mainnet uses the same free public node as the server (the browser can't read ETH_RPC_URL);
+        // testnets use viem's default public RPCs
         transports: {
-            [mainnet.id]: http(),
+            [mainnet.id]: http('https://ethereum-rpc.publicnode.com'),
             [sepolia.id]: http(),
             [hoodi.id]: http()
         }
