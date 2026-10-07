@@ -429,9 +429,10 @@ ETH ETF flow data has no reliable free API at the moment, so it is left out.
 
 ### Phase 3: Real-Time & n8n Automations (2 weeks)
 
-**3.1 Real-time**
-- [ ] A WebSocket RPC subscription (free-tier Alchemy/Infura, or PublicNode) feeding a live block and gas ticker, plus pending-transaction status for the user's own transactions.
-- [ ] Vercel functions can't hold WebSockets open, so use Server-Sent Events backed by Upstash (free tier), or a small worker on a free host.
+**3.1 Real-time (done)**
+- [x] Live block ticker in the metrics bar (block number, age, base fee, how full) over Server-Sent Events from `/api/live`. Each server instance shares one reading every 3 seconds, so viewers don't multiply RPC calls; no WebSocket provider or Upstash needed.
+- [x] Vercel functions can't hold connections open, so each stream runs ~50 seconds and the browser's EventSource reconnects automatically.
+- [x] Pending transactions on `/tx` check their status on every new block and refresh once mined (pending results are never cached).
 
 **3.2 Event pipeline**
 ```
