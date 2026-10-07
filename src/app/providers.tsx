@@ -5,6 +5,7 @@ import { WagmiProvider } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createWagmiConfig } from '@/lib/wagmi';
 import SearchPalette from './components/SearchPalette';
+import AgentChat from './components/agent/AgentChat';
 
 // Client-side providers for wallet connection. The layout stays a server component;
 // only this wrapper and the components that use wallet hooks run in the browser.
@@ -17,6 +18,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
             <QueryClientProvider client={queryClient}>
                 {children}
                 <SearchPalette />
+                <AgentChat />
             </QueryClientProvider>
         </WagmiProvider>
     );

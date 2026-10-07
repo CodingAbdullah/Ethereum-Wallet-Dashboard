@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Panel from "@/app/components/DashboardPanel";
+import ExplainButton from "@/app/components/agent/ExplainButton";
 import WalletInsightsSection from "@/app/components/WalletInsightsSection";
 import { DetailList, ExplorerPage, RpcError, trimNumber } from "@/app/components/explorer/ExplorerParts";
 import { explorerChain, type AddressDetails } from "@/lib/explorer";
@@ -29,7 +30,10 @@ export default async function AddressPage({ params, searchParams }: Props) {
     const query = chain === 'eth' ? '' : '?chain=' + chain;
     const label = chain === 'eth' ? labelFor(details.address) : null;
     return (
-        <ExplorerPage title={details.token ? `${details.token.name ?? details.token.symbol} (${details.token.symbol})` : details.isContract ? 'Contract' : 'Address'} subtitle={<span className="font-mono text-sm">{details.address}</span>} chain={chain} path={`/address/${details.address}`}>
+        <ExplorerPage title={details.token ? `${details.token.name ?? details.token.symbol} (${details.token.symbol})` : details.isContract ? 'Contract' : 'Address'} subtitle={<span className="font-mono text-sm">{details.address}</span>} chain={chain} path={`/address/${details.address}`}
+            action={<ExplainButton label={details.isContract ? 'Explain this contract' : 'Summarize this wallet'} prompt={details.isContract
+                ? `Explain the contract ${details.address} on ${chainInfo(chain).name} (chain "${chain}"): what it is, what it is used for, and anything a user should watch out for.`
+                : `Summarize the wallet ${details.address} on ${chainInfo(chain).name} (chain "${chain}"): holdings, recent activity and any risks such as unlimited approvals.`} />}>
             <Panel title="Overview">
                 <DetailList rows={[
                     ...(label ? [['Name', label.name] as [string, string]] : []),

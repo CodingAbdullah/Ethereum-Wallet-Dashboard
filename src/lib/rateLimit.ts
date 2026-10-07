@@ -36,17 +36,20 @@ export function createMemoryLimiter(limit = MAX_REQUESTS_PER_WINDOW, windowMs = 
     };
 }
 
-function createUpstashLimiter(url: string, token: string): RateLimiter {
+export interface LimiterOptions { limit: number; windowSeconds: number; prefix: string }
+const API_LIMIT: LimiterOptions = { limit: MAX_REQUESTS_PER_WINDOW, windowSeconds: WINDOW_SECONDS, prefix: 'eth-dashboard:api' };
+
+function createUpstashLimiter(url: string, token: string, options: LimiterOptions): RateLimiter {
     const ratelimit = new Ratelimit({
         redis: new Redis({ url, token }),
-        limiter: Ratelimit.slidingWindow(MAX_REQUESTS_PER_WINDOW, `${WINDOW_SECONDS} s`),
-        prefix: 'eth-dashboard:api',
+        limiter: Ratelimit.slidingWindow(options.limit, `${options.windowSeconds} s`),
+        prefix: options.prefix,
         // Keep a local cache of blocked IPs so repeat offenders don't cost Redis calls
         ephemeralCache: new Map()
     });
 
     // Fallback for when Redis is unreachable, so an Upstash outage doesn't take the API down
-    const fallback = createMemoryLimiter();
+    const fallback = createMemoryLimiter(options.limit, options.windowSeconds * 1000);
 
     return {
         async isLimited(key: string) {
@@ -61,8 +64,9 @@ function createUpstashLimiter(url: string, token: string): RateLimiter {
     };
 }
 
-export function createRateLimiter(env: Record<string, string | undefined> = process.env): RateLimiter {
+// The default is the per-IP limit for /api; other features (the AI agent) pass their own limit and prefix
+export function createRateLimiter(env: Record<string, string | undefined> = process.env, options: LimiterOptions = API_LIMIT): RateLimiter {
     const url = env.UPSTASH_REDIS_REST_URL;
     const token = env.UPSTASH_REDIS_REST_TOKEN;
-    return url && token ? createUpstashLimiter(url, token) : createMemoryLimiter();
+    return url && token ? createUpstashLimiter(url, token, options) : createMemoryLimiter(options.limit, options.windowSeconds * 1000);
 }
