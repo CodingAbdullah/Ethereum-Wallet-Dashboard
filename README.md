@@ -23,7 +23,7 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
    - [Phase 1: Wallet Connection & Accounts](#phase-1-wallet-connection--accounts-done)
    - [Phase 2: Data & Chain Expansion](#phase-2-data--chain-expansion-done)
    - [Phase 3: Real-Time & n8n Automations](#phase-3-real-time--n8n-automations-done)
-   - [Phase 4: AI Layer (MCP Server + Agent)](#phase-4-ai-layer--mcp-server--agent-2-weeks)
+   - [Phase 4: AI Layer (MCP Server + Agent)](#phase-4-ai-layer--mcp-server--agent-done)
    - [Phase 5: On-Chain Actions](#phase-5-on-chain-actions-23-weeks)
    - [Phase 6: Polish & Growth](#phase-6-polish--growth-ongoing)
 10. [Target Architecture](#️-target-architecture)
@@ -48,7 +48,9 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 - **Global Market Data:** Total market cap, volume, DeFi market data and the ETH market-cap chart.
 - **Trending Coins/Collections:** Trending coins and top NFT collections by volume.
 - **Top Movers:** Top 24-hour gainers and losers among the top 250 coins.
-- **AI Market Insights:** Hourly AI-generated market commentary.
+- **AI Market Insights:** Hourly AI-generated market commentary from market, DeFi, derivatives and staking data.
+- **Ask ETH Dashboard:** A chat assistant on every page that looks up live data with read-only tools and knows your connected wallet. **Explain** buttons on transaction, contract and token pages.
+- **MCP server (`/mcp`):** Use the dashboard's 20 read-only tools from Claude, Cursor or any MCP client, with a personal API key.
 - **DeFi, DEX Pools & Derivatives:** TVL by chain and protocol, stablecoins, yields, trending and new pools, funding rates, open interest and options.
 
 ### Ethereum Tools
@@ -93,7 +95,7 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 | **MEV-Boost relays** | Public data API | No | `/mev` |
 | **Deribit / OKX / Bybit** | Public market data | No | `/derivatives` |
 | **Snapshot** | Public GraphQL | No | `/governance` |
-| **Groq** | Free tier | Free key | AI market insights (Llama 3.3 70B) |
+| **Groq** | Free tier | Free key | AI market insights and the Ask ETH Dashboard assistant (Llama 3.3 70B) |
 | **Resend** | Free (3,000 emails/month) | Free key | Feedback form emails, email alerts |
 | **Moralis Streams** | Free plan | Same Moralis key (optional) | Real-time wallet activity and approval alerts |
 | **Telegram Bot API** | Free | Free bot token | Telegram alerts |
@@ -298,7 +300,7 @@ export const POST = withErrorHandling(async (request: Request) => {
 | **User accounts / persistence** | Users, saved wallets, daily portfolio snapshots, alert channels, alerts and alert history (Neon). |
 | **Smart contract writes** | None. Reads exist (staking), but no approvals, swaps or transfers. |
 | **n8n workflows** | Done in Phase 3: ten live alert workflows (`/alerts`, `/n8n`). |
-| **MCP server / AI agent** | None. The only AI feature is the hourly market summary. |
+| **MCP server / AI agent** | Done in Phase 4: MCP server with API keys (`/mcp`) and the Ask ETH Dashboard assistant. |
 | **Real-time data** | Done in Phase 3.1: live block ticker over Server-Sent Events, live pending transactions. |
 | **Layer 2 support** | Done in Phase 2.2: Base, Arbitrum, OP Mainnet, Polygon and Linea, plus `/l2` pages. |
 | **End-to-end tests** | Unit tests cover the API layer; no browser-level tests yet. |
@@ -480,31 +482,32 @@ Each type validates its own settings, keeps state between runs (so it fires once
 
 ---
 
-### Phase 4: AI Layer — MCP Server + Agent (2 weeks)
+### Phase 4: AI Layer — MCP Server + Agent (done)
 
-**4.1 MCP server (`/api/mcp`)**
-- [ ] Built with Vercel's `mcp-handler`, reusing the provider clients in `src/lib/providers/` as tools:
-  `get_wallet_portfolio`, `get_wallet_pnl`, `resolve_ens`, `get_gas`, `get_token_price`, `get_nft_collection`, `get_validator_queue`, `get_defi_tvl`, `decode_transaction`, `get_l2_stats`, and more.
-- [ ] Access through per-user API keys (`api_keys` table) with a quota per key, so free-plan provider quotas are protected.
-- [ ] Users can add the dashboard as a connector in Claude, Cursor and other MCP clients.
-- [ ] `/mcp` page with setup instructions.
+**4.1 MCP server (`/api/mcp`) (done)**
+- [x] Built with Vercel's `mcp-handler` (MCP SDK v2), serving 20 read-only tools from the shared registry:
+  `get_wallet_portfolio`, `get_wallet_pnl`, `get_wallet_activity`, `get_token_approvals`, `get_defi_positions`, `resolve_ens`, `get_gas`, `get_token_price`, `get_market_overview`, `get_nft_collection`, `get_validator_queue`, `get_staking_overview`, `get_defi_tvl`, `get_l2_stats`, `decode_transaction`, `get_address_info`, `check_token_risk`, `get_eth_supply`, `get_governance_proposals`, `get_derivatives`. Wallet tools accept an address or an ENS name.
+- [x] Access through per-user API keys (`api_keys` table, stored as SHA-256 hashes, up to 3 per user) with 200 tool calls per key per day (`api_key_usage`), so free-plan provider quotas are protected. Keys go in the `Authorization: Bearer` header, or `?key=` for clients that only take a URL.
+- [x] Works as a connector in Claude (Claude Code, Claude Desktop, claude.ai custom connectors), Cursor and other MCP clients.
+- [x] `/mcp` page: create and revoke keys, see today's usage, copy the setup for each client, and the tool list.
 
-**4.2 In-app agent ("Ask ETH Dashboard")**
-- [ ] Chat panel using AI SDK `streamText` with tool calling.
-- [ ] One shared tool registry in `src/lib/tools/` used by both the agent and the MCP server.
-- [ ] **Groq** free tier as the default model. A paid model provider can be added later behind an environment variable.
-- [ ] Knows the connected wallet. Example questions: "Explain my portfolio risk", "Why did my PnL drop this week?", "Is this token safe?", "Summarize this transaction".
-- [ ] One-click **Explain** buttons on transaction and contract pages.
+**4.2 In-app agent ("Ask ETH Dashboard") (done)**
+- [x] Chat panel on every page using AI SDK `streamText` (`/api/agent`) and `useChat`, with tool calling (up to 6 steps per answer).
+- [x] One shared tool registry in `src/lib/tools/` used by both the agent and the MCP server.
+- [x] **Groq** free tier as the default model (`llama-3.3-70b-versatile`); `AGENT_MODEL` picks another. Tool results are trimmed and each IP can ask 20 questions an hour, to stay inside the free tier.
+- [x] Knows the connected wallet: "Explain my portfolio risk", "Do I have any risky token approvals?", "Is this token safe?", "Summarize this transaction".
+- [x] One-click **Explain** buttons on transaction, address/contract and token pages.
 
-**4.3 Market Insights**
+**4.3 Market Insights (done)**
 - [x] Firecrawl scraping removed; the model gets CoinGecko data directly and the result is cached for an hour.
-- [ ] Add DefiLlama, derivatives and staking data to the prompt.
+- [x] DefiLlama (TVL by chain, DEX volume, stablecoin supply), derivatives (funding, open interest, options put/call) and staking (ratio, APR) added to the prompt. Each extra source is optional, so an outage leaves it out instead of breaking the analysis.
 
-**4.4 Guardrails**
-- [ ] The agent can only read data.
-- [ ] Any transaction it suggests goes through the Phase 5 simulate → preview → user-signs flow. The agent never signs anything.
+**4.4 Guardrails (done)**
+- [x] The agent and MCP server can only read data: every tool is read-only (a test rejects write-like tools), MCP tools carry read-only annotations, and the system prompt forbids claiming to sign or send anything.
+- [x] The agent never signs anything. It explains the steps for the user to take in their own wallet; Phase 5 adds the simulate → preview → user-signs flow for suggested transactions.
+- [x] It never asks for seed phrases or keys, treats on-chain text (token names, labels) as data rather than instructions, and gives information, not financial advice.
 
-**Done when:** Claude can query wallets through MCP, and the in-app agent answers questions about the connected wallet.
+**Done when:** Claude can query wallets through MCP, and the in-app agent answers questions about the connected wallet. ✅
 
 ---
 
@@ -584,7 +587,8 @@ All current variables are in `.env.example`:
 | `ETHPLORER_API_KEY` | No (defaults to `freekey`) | Ethplorer free key |
 | `ETH_RPC_URL` | No (defaults to PublicNode) | Any free-tier RPC URL |
 | `BEACON_API_URL` | No (defaults to PublicNode) | Any beacon node URL |
-| `GROQ_API_KEY` | For Market Insights | Groq free tier |
+| `GROQ_API_KEY` | For Market Insights and the assistant | Groq free tier |
+| `AGENT_MODEL` | No (defaults to `llama-3.3-70b-versatile`) | Any Groq model with tool calling |
 | `RESEND_API_KEY`, `PERSONAL_EMAIL` | For the feedback form | Resend free tier |
 | `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | Recommended in production | Upstash Redis free tier |
 | `NEXT_PUBLIC_SENTRY_DSN` | Recommended in production | Sentry free Developer plan |
@@ -612,8 +616,8 @@ Alert checks are run by n8n calling `/api/cron/alerts/<type>` with `CRON_SECRET`
 | 1: Wallet connection & accounts | 1–2 weeks | Done |
 | 2: Data & chain expansion | 2–3 weeks | Done |
 | 3: Real-time & n8n automations | 2 weeks | Done |
-| 4: AI layer (MCP + agent) | 2 weeks | Next |
-| 5: On-chain actions | 2–3 weeks | Planned |
+| 4: AI layer (MCP + agent) | 2 weeks | Done |
+| 5: On-chain actions | 2–3 weeks | Next |
 | 6: Polish & growth | Ongoing | Planned |
 
 ---
@@ -624,6 +628,7 @@ Alert checks are run by n8n calling `/api/cron/alerts/<type>` with `CRON_SECRET`
 - **Hosting:** Vercel (serverless route handlers and cron jobs). Note that Vercel's free Hobby plan is for non-commercial use.
 - **Accounts setup:** set `AUTH_SECRET`, `DATABASE_URL` and `CRON_SECRET` in Vercel, then create the tables once with `DATABASE_URL=... npm run db:migrate`. Run it again after pulling new files in `drizzle/`.
 - **Cron:** `vercel.json` schedules `/api/cron/portfolio-snapshots` daily at 05:15 UTC; Vercel sends `CRON_SECRET` as a bearer token.
+- **MCP keys:** `npm run db:migrate` also creates the `api_keys` tables (Phase 4).
 - **Alerts:** run `npm run db:migrate` for the alerts tables, create the Telegram bot and register its webhook, then import the n8n workflows. Step by step in [`n8n/README.md`](n8n/README.md).
 - **Docker:** a `Dockerfile` (Node 24) is included for self-hosting:
   ```bash
