@@ -1,0 +1,432 @@
+{
+  "name": "Ethereum Dashboard: alert scheduler",
+  "nodes": [
+    {
+      "id": "9e7c4f22-dfef-5e1a-8c16-a2bb92635080",
+      "name": "Every 5 minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "2a0876e4-86f3-525c-a77c-7306ff83da6e",
+      "name": "Run gas_below",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($env.APP_URL || 'https://ethereumdashboard.dev') + '/api/cron/alerts/gas_below' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "Ethereum Dashboard cron"
+        }
+      }
+    },
+    {
+      "id": "81c36dc1-d244-56cc-a236-a18aff7ff8dd",
+      "name": "Run price",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        90
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($env.APP_URL || 'https://ethereumdashboard.dev') + '/api/cron/alerts/price' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "Ethereum Dashboard cron"
+        }
+      }
+    },
+    {
+      "id": "51de9beb-b430-5e8a-acd9-02e166646ff9",
+      "name": "Every 10 minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        260
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "1421df1a-d1ce-5aae-9cd2-43f68131ba9d",
+      "name": "Run wallet_activity",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        260
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($env.APP_URL || 'https://ethereumdashboard.dev') + '/api/cron/alerts/wallet_activity' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "Ethereum Dashboard cron"
+        }
+      }
+    },
+    {
+      "id": "a36a06ab-d228-5ba5-8b7c-d09ec3a5bd49",
+      "name": "Run depeg",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        350
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($env.APP_URL || 'https://ethereumdashboard.dev') + '/api/cron/alerts/depeg' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "Ethereum Dashboard cron"
+        }
+      }
+    },
+    {
+      "id": "77d98ebb-f343-55c2-b905-707a32d95cac",
+      "name": "Every 15 minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        520
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dea8b688-231b-5bc4-9ccd-0dab5f0c071b",
+      "name": "Run validator",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        520
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($env.APP_URL || 'https://ethereumdashboard.dev') + '/api/cron/alerts/validator' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "Ethereum Dashboard cron"
+        }
+      }
+    },
+    {
+      "id": "0e0b2efa-531e-53bc-9392-6beeb8ee1469",
+      "name": "Every 30 minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        780
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "d50f498b-5b5d-5801-ba3e-976b3861269c",
+      "name": "Run risky_approval",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        780
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($env.APP_URL || 'https://ethereumdashboard.dev') + '/api/cron/alerts/risky_approval' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "Ethereum Dashboard cron"
+        }
+      }
+    },
+    {
+      "id": "f4f43c0d-9548-586a-b435-519d718cd3f4",
+      "name": "Run nft_floor",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        870
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($env.APP_URL || 'https://ethereumdashboard.dev') + '/api/cron/alerts/nft_floor' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "Ethereum Dashboard cron"
+        }
+      }
+    },
+    {
+      "id": "a4b96c69-a7fb-5aa8-b425-4cc48094311e",
+      "name": "Run governance",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        960
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($env.APP_URL || 'https://ethereumdashboard.dev') + '/api/cron/alerts/governance' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "Ethereum Dashboard cron"
+        }
+      }
+    },
+    {
+      "id": "08f17301-b26c-5b8b-bd7a-bceda933cbaf",
+      "name": "Daily at 08:00 UTC",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        1040
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * *"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "868cc51b-0055-5a26-9c42-58a1e48d8199",
+      "name": "Run market_digest",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        1040
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($env.APP_URL || 'https://ethereumdashboard.dev') + '/api/cron/alerts/market_digest' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "Ethereum Dashboard cron"
+        }
+      }
+    },
+    {
+      "id": "027f05ae-6176-51d6-bf76-20b9a558a2ab",
+      "name": "Run ens_expiry",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        1130
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($env.APP_URL || 'https://ethereumdashboard.dev') + '/api/cron/alerts/ens_expiry' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "Ethereum Dashboard cron"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Every 5 minutes": {
+      "main": [
+        [
+          {
+            "node": "Run gas_below",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Run price",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Every 10 minutes": {
+      "main": [
+        [
+          {
+            "node": "Run wallet_activity",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Run depeg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Every 15 minutes": {
+      "main": [
+        [
+          {
+            "node": "Run validator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Every 30 minutes": {
+      "main": [
+        [
+          {
+            "node": "Run risky_approval",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Run nft_floor",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Run governance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Daily at 08:00 UTC": {
+      "main": [
+        [
+          {
+            "node": "Run market_digest",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Run ens_expiry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "UTC"
+  },
+  "active": false
+}

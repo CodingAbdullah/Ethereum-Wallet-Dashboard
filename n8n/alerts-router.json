@@ -1,0 +1,289 @@
+{
+  "name": "Ethereum Dashboard: alert router",
+  "nodes": [
+    {
+      "id": "dfcdf84a-780f-5583-a09f-8888c02677c3",
+      "name": "Alert webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        200
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ethereum-dashboard-alerts",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "3972af92-2067-5e0d-bbc7-32846050091c",
+      "name": "Expected signature",
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 1,
+      "position": [
+        220,
+        200
+      ],
+      "parameters": {
+        "action": "hmac",
+        "type": "SHA256",
+        "value": "={{ String($('Alert webhook').item.json.headers['x-signature'] || '').split(',')[0].slice(2) + '.' + JSON.stringify($json.body) }}",
+        "dataPropertyName": "expected",
+        "secret": "={{ $env.N8N_WEBHOOK_SECRET }}",
+        "encoding": "hex"
+      }
+    },
+    {
+      "id": "46bb5670-7646-553c-b755-926a1bce773b",
+      "name": "Signature valid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        440,
+        200
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "sig",
+              "leftValue": "={{ $json.expected === String($('Alert webhook').item.json.headers['x-signature'] || '').split(',')[1]?.slice(3) && Math.abs(Date.now() / 1000 - Number(String($('Alert webhook').item.json.headers['x-signature'] || '').split(',')[0].slice(2))) < 300 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "aac1de9e-280b-503b-8c6f-edb9861d6981",
+      "name": "Reject",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        660,
+        380
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"error\":\"Invalid signature\"}",
+        "options": {
+          "responseCode": 401
+        }
+      }
+    },
+    {
+      "id": "84acf8a0-f3c2-5a11-9994-6247365b1f23",
+      "name": "Route by channel",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        660,
+        140
+      ],
+      "parameters": {
+        "mode": "expression",
+        "numberOutputs": 3,
+        "output": "={{ ['telegram', 'discord', 'email'].indexOf($json.body.channel.kind) }}"
+      }
+    },
+    {
+      "id": "318912c0-60ea-5ce1-9228-e04ad5313e80",
+      "name": "Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        900,
+        0
+      ],
+      "parameters": {
+        "chatId": "={{ $json.body.channel.target }}",
+        "text": "={{ $json.body.text }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "disable_web_page_preview": true
+        }
+      },
+      "credentials": {
+        "telegramApi": {
+          "name": "Ethereum Dashboard bot"
+        }
+      }
+    },
+    {
+      "id": "edf63fc1-11c9-5fe9-8e50-e4719aa5adae",
+      "name": "Discord",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        900,
+        140
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.body.channel.target }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ content: $json.body.text.slice(0, 1990), allowed_mentions: { parse: [] } }) }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "0e2b6c97-87f1-5fcb-b2a5-e88678fd6250",
+      "name": "Email (Resend)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        900,
+        280
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.resend.com/emails",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ from: $env.ALERTS_FROM_EMAIL, to: $json.body.channel.target, subject: $json.body.title, text: $json.body.text }) }}",
+        "options": {}
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "Resend"
+        }
+      }
+    },
+    {
+      "id": "054390e6-2ad1-57ef-b240-29dc5388ff4b",
+      "name": "Delivered",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1140,
+        140
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"ok\":true}",
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "Alert webhook": {
+      "main": [
+        [
+          {
+            "node": "Expected signature",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Expected signature": {
+      "main": [
+        [
+          {
+            "node": "Signature valid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Signature valid?": {
+      "main": [
+        [
+          {
+            "node": "Route by channel",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Reject",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route by channel": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Discord",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Email (Resend)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram": {
+      "main": [
+        [
+          {
+            "node": "Delivered",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Discord": {
+      "main": [
+        [
+          {
+            "node": "Delivered",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email (Resend)": {
+      "main": [
+        [
+          {
+            "node": "Delivered",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": false
+}

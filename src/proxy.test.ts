@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { NextRequest } from "next/server";
-import { clientIp, isCrossSite, proxy } from "./proxy";
+import { clientIp, isCrossSite, isSignedEndpoint, proxy } from "./proxy";
 
 const request = (headers: Record<string, string>) =>
     new NextRequest("https://ethereumdashboard.dev/api/coin-prices", { headers: { host: "ethereumdashboard.dev", ...headers } });
@@ -51,5 +51,11 @@ describe("proxy", () => {
         for (let i = 0; i < 121; i++) last = await proxy(request(headers));
         expect(last?.status).toBe(429);
         expect(last?.headers.get("retry-after")).toBe("60");
+    });
+
+    it("doesn't rate limit webhooks and scheduled jobs, which check their own signatures", async () => {
+        expect(isSignedEndpoint('/api/webhooks/moralis')).toBe(true);
+        expect(isSignedEndpoint('/api/cron/alerts/gas_below')).toBe(true);
+        expect(isSignedEndpoint('/api/live')).toBe(false);
     });
 });
