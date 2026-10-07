@@ -6,6 +6,7 @@ import "./globals.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import Script from "next/script";
+import Providers from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,15 +34,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Navbar />
-          <MetricsNavbar />
-          { children }
-          <Analytics mode='production' />
-          <Script id="umami-analytics-scripts" 
-            src={process.env.UMAMI_URL}
-            data-website-id={process.env.UMAMI_DATA_WEBSITE_ID}>
-          </Script>
-        <Footer />
+        <Providers>
+          <Navbar />
+            <MetricsNavbar />
+            { children }
+            <Analytics mode='production' />
+            <Script id="umami-analytics-scripts" 
+              src={process.env.UMAMI_URL}
+              data-website-id={process.env.UMAMI_DATA_WEBSITE_ID}>
+            </Script>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

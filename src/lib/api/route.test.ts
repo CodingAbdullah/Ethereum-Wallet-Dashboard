@@ -3,6 +3,7 @@ import { z } from "zod";
 import { BaseError } from "viem";
 import { withErrorHandling, parseBody } from "./route";
 import { ProviderError } from "../providers/http";
+import { HttpError } from "./errors";
 import { postRequest } from "@/test/helpers";
 
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
@@ -37,6 +38,12 @@ describe("withErrorHandling", () => {
         const response = await failWith(new ProviderError("CoinGecko", 500, "CoinGecko responded with 500"))();
         expect(response.status).toBe(502);
         expect(await response.json()).toEqual({ error: "CoinGecko responded with 500" });
+    });
+
+    it("returns an HttpError's own status and message", async () => {
+        const response = await failWith(new HttpError(409, "You can save up to 5 wallets"))();
+        expect(response.status).toBe(409);
+        expect(await response.json()).toEqual({ error: "You can save up to 5 wallets" });
     });
 
     it("returns 502 for RPC failures", async () => {

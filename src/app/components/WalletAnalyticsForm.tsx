@@ -10,10 +10,12 @@ import TransactionBalanceInfoTable from './TransactionBalanceInfoTable';
 import WalletStatsInfoTable from './WalletStatsInfoTable';
 import WalletPnLBreakdownInfoTable from './WalletPnLBreakdownInfoTable';
 import WalletPnLInfoTable from './WalletPnLInfoTable';
+import { usePrefillAddress } from '../hooks/useConnectedAddress';
 
 // Wallet Analytics Form Custom Component
 export default function WalletAnalyticsForm() {
     const walletAddressRef = useRef<HTMLInputElement>(null)
+    usePrefillAddress(walletAddressRef);
     const [submittedWalletAddress, setSubmittedWalletAddress] = useState<string>('');
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [tableStatus, updateTableStatus] = useState<boolean>(false);

@@ -11,10 +11,12 @@ import ERC20TransfersInfoTable from "./ERC20TransfersInfoTable";
 import ERC20HoldingsInfoTable from "./ERC20HoldingsInfoTable";
 import ERC20HoldingsType from "../utils/types/ERC20HoldingsType";
 import ERC20TransfersType from "../utils/types/ERC20TransfersType";
+import { usePrefillAddress } from '../hooks/useConnectedAddress';
 
 // ERC20 Holdings Form Custom Component
 export default function ERC20HoldingsForm() {
     const walletAddressRef = useRef<HTMLInputElement>(null);
+    usePrefillAddress(walletAddressRef);
     const [submittedWalletAddress, setSubmittedWalletAddress] = useState<string>('');
     const [network, updateNetwork] = useState<string>("eth");
     const [showAlert, setShowAlert] = useState<boolean>(false);

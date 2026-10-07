@@ -5,10 +5,12 @@ import { useRouter } from 'next/navigation';
 import addressValidator from '../utils/functions/addressValidator';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
+import { usePrefillAddress } from '../hooks/useConnectedAddress';
 
 // Custom Component for working with the Home Page Wallet Form
 export default function HomePageWalletForm() {
     const walletAddressRef = useRef<HTMLInputElement>(null)
+    usePrefillAddress(walletAddressRef);
     const [error, setError] = useState<string>('');
     const router = useRouter();
 
