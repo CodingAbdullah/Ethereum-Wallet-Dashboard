@@ -101,8 +101,9 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 
 ## 🛠️ Built With
 
+- **Node.js 24 LTS**
 - **Next.js 16 / React 19:** App Router; all provider calls run in route handlers, so API keys never reach the browser.
-- **TypeScript**
+- **TypeScript 6** (TypeScript 7 is not supported by `typescript-eslint` yet)
 - **Viem** for RPC calls, ENS resolution and contract reads
 - **Zod** for request validation
 - **Tailwind CSS 4** + **shadcn/ui** (Radix primitives)
@@ -117,7 +118,7 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 ## 🚀 Getting Started
 
 ### Prerequisites
-- **Node.js 20.9+** (required by Next.js 16) and **npm**
+- **Node.js 24 LTS** (see `.nvmrc`) and **npm**
 - Free API keys for CoinGecko, Etherscan, Moralis, OpenSea, Groq and Resend (links in `.env.example`)
 
 ### Installation
@@ -228,7 +229,7 @@ export const POST = withErrorHandling(async (request: Request) => {
 | `address-details` was missing an `await` (returned `{}`) | Route was unused by the UI; removed with five other dead routes |
 | `coin-information` and `current-ERC20-price` never returned a response | Unused by the UI; removed |
 | Holesky testnet (retired) in the network selector | Replaced with Hoodi |
-| `Dockerfile` used Node 18 (too old for Next.js 16) | Node 22, `npm ci` |
+| `Dockerfile` used Node 18 (too old for Next.js 16) | Node 24 LTS, `npm ci` |
 | Copy-pasted "Failed to fetch Ethereum price" errors | Shared error handler with accurate messages and status codes |
 | No server-side input validation | Zod schemas on every route |
 | No caching or rate limiting | Data cache on every provider call; `proxy.ts` rate limit and cross-site block |
@@ -557,7 +558,7 @@ DISCORD_WEBHOOK_URL=''
 
 - **Domain:** [ethereumdashboard.dev](https://ethereumdashboard.dev)
 - **Hosting:** Vercel (serverless route handlers and cron jobs). Note that Vercel's free Hobby plan is for non-commercial use.
-- **Docker:** a `Dockerfile` (Node 22) is included for self-hosting:
+- **Docker:** a `Dockerfile` (Node 24) is included for self-hosting:
   ```bash
   docker build -t eth-dashboard .
   docker run -p 3000:3000 --env-file .env eth-dashboard

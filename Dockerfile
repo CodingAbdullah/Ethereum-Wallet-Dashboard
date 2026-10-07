@@ -1,6 +1,6 @@
 # Dockerfile for running the Next.js application in a container
-# Next.js 16 requires Node.js 20.9 or newer
-FROM node:22-alpine
+# Node.js 24 (current LTS); Next.js 16 requires 20.9 or newer
+FROM node:24-alpine
 
 # Setting up the working directory in the container
 WORKDIR /app
