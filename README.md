@@ -24,7 +24,7 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
    - [Phase 2: Data & Chain Expansion](#phase-2-data--chain-expansion-done)
    - [Phase 3: Real-Time & n8n Automations](#phase-3-real-time--n8n-automations-done)
    - [Phase 4: AI Layer (MCP Server + Agent)](#phase-4-ai-layer--mcp-server--agent-done)
-   - [Phase 5: On-Chain Actions](#phase-5-on-chain-actions-23-weeks)
+   - [Phase 5: On-Chain Actions](#phase-5-on-chain-actions-done)
    - [Phase 6: Polish & Growth](#phase-6-polish--growth-ongoing)
 10. [Target Architecture](#️-target-architecture)
 11. [Environment Variables](#-environment-variables)
@@ -51,6 +51,15 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 - **AI Market Insights:** Hourly AI-generated market commentary from market, DeFi, derivatives and staking data.
 - **Ask ETH Dashboard:** A chat assistant on every page that looks up live data with read-only tools and knows your connected wallet. **Explain** buttons on transaction, contract and token pages.
 - **MCP server (`/mcp`):** Use the dashboard's 20 read-only tools from Claude, Cursor or any MCP client, with a personal API key.
+
+### On-Chain Actions
+Every action is simulated (`eth_simulateV1`) and previewed in plain English, with balance changes, the network fee and security warnings, before your own wallet signs it. The site never holds keys.
+- **Swap (`/swap`):** Uniswap v3 swaps on Ethereum, Base, Arbitrum and OP Mainnet, quoted on-chain with no API key.
+- **Send (`/send`):** ETH or any token to an address or ENS name, with recipient checks.
+- **Stake & Wrap (`/stake`):** Stake ETH with Lido or Rocket Pool; wrap and unwrap the native coin.
+- **Approvals Manager (`/approvals`):** See and revoke token approvals, one at a time or in batches.
+- **Contract Explorer (`/contract`):** Read any verified contract and call its write functions.
+- **ENS Manager (`/ens-manager`):** Register and renew .eth names, set your primary name and edit records.
 - **DeFi, DEX Pools & Derivatives:** TVL by chain and protocol, stablecoins, yields, trending and new pools, funding rates, open interest and options.
 
 ### Ethereum Tools
@@ -90,7 +99,10 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 | **DefiLlama** | Open API | No | `/defi` and `/l2`: value locked, DEX volume, fees, stablecoins, yields |
 | **L2BEAT** | Public (unofficial) | No | `/l2`: rollup type, risk stage, total value secured |
 | **Public L2 RPCs** | Free | No | Live block and gas on `/l2/[chain]`; sign-in checks for L2 smart wallets |
-| **GoPlus Security** | Free | No | Token risk checks |
+| **GoPlus Security** | Free | No | Token risk checks; address and token checks in transaction previews |
+| **Uniswap v3 contracts** | On-chain | No | Swap quotes (QuoterV2) and swaps (SwapRouter02) |
+| **Sourcify** | Free | No | Verified contract ABIs where Etherscan's free plan doesn't reach (Base, OP Mainnet) |
+| **Lido / Rocket Pool / ENS contracts** | On-chain | No | Staking deposits, ENS registration, renewal and records |
 | **GeckoTerminal** | Free | No | Trending and new DEX pools |
 | **MEV-Boost relays** | Public data API | No | `/mev` |
 | **Deribit / OKX / Bybit** | Public market data | No | `/derivatives` |
@@ -298,7 +310,7 @@ export const POST = withErrorHandling(async (request: Request) => {
 |---|---|
 | **Wallet connection** | Done in Phase 1: connect, sign in, saved wallets, combined portfolio on `/me`. |
 | **User accounts / persistence** | Users, saved wallets, daily portfolio snapshots, alert channels, alerts and alert history (Neon). |
-| **Smart contract writes** | None. Reads exist (staking), but no approvals, swaps or transfers. |
+| **Smart contract writes** | Done in Phase 5: swaps, sends, staking, wrapping, approval revokes, contract calls and ENS, all simulated before signing. |
 | **n8n workflows** | Done in Phase 3: ten live alert workflows (`/alerts`, `/n8n`). |
 | **MCP server / AI agent** | Done in Phase 4: MCP server with API keys (`/mcp`) and the Ask ETH Dashboard assistant. |
 | **Real-time data** | Done in Phase 3.1: live block ticker over Server-Sent Events, live pending transactions. |
@@ -511,7 +523,7 @@ Each type validates its own settings, keeps state between runs (so it fires once
 
 ---
 
-### Phase 5: On-Chain Actions (2–3 weeks)
+### Phase 5: On-Chain Actions (done)
 
 Every write action follows the same flow:
 1. Build the transaction.
@@ -522,16 +534,20 @@ Every write action follows the same flow:
 
 **The app never holds private keys.**
 
-**Features**
-1. [ ] **Approvals manager:** list approvals; revoke one or many (`approve(spender, 0)`).
-2. [ ] **Contract explorer:** load a verified contract's ABI from Etherscan; call read functions and run write functions with simulation first.
-3. [ ] **Swaps:** 0x free tier, or quotes from Uniswap's on-chain Quoter contract.
-4. [ ] **Staking:** stake ETH for stETH (Lido) and rETH (Rocket Pool); wrap and unwrap ETH.
-5. [ ] **ENS:** register, renew, set primary name and records.
-6. [ ] **Send:** ETH and ERC20 transfers with ENS resolution and address risk checks.
-7. [ ] **Bridges** (optional): Across API for moving funds to L2s.
+How it works: `/api/simulate` runs the transaction(s) with `eth_simulateV1` (viem `simulateCalls`) on the target chain and returns balance changes, the fee and risk flags. Transactions that call an address with no contract are refused. The wallet is switched to the right network, signs and sends; the receipt is read through the wallet's own RPC first. The same panel (`TxFlowPanel`) is used by every feature.
 
-**Done when:** a user can revoke an approval and complete a swap end to end, with a simulation preview, on mainnet and Base.
+**Features**
+1. [x] **Approvals manager (`/approvals`):** lists approvals (Moralis, checked against live on-chain allowances); revoke one or up to 8 at once (`approve(spender, 0)`).
+2. [x] **Contract explorer (`/contract`):** loads a verified contract's ABI from Etherscan (free-plan chains) or Sourcify, following EIP-1967 proxies; calls read functions and runs write functions with simulation first.
+3. [x] **Swaps (`/swap`):** quotes from Uniswap's on-chain QuoterV2 (all fee tiers, plus two hops via WETH), executed through SwapRouter02 with a deadline and slippage limit; ERC20 inputs get an approval for exactly the amount. Keyless, so no 0x account is needed.
+4. [x] **Staking (`/stake`):** stake ETH for stETH (Lido) and rETH (Rocket Pool, deposit pool read from RocketStorage); wrap and unwrap the native coin on every chain.
+5. [x] **ENS (`/ens-manager`):** register (commit, wait, register), renew, set primary name and records. Registration and renewal are only offered while the known controller is still authorized by the ENS registrar.
+6. [x] **Send (`/send`):** ETH and ERC20 transfers with ENS resolution, contract and own-address warnings, and GoPlus address checks.
+7. [ ] **Bridges** (optional): not built. Across's API couldn't be tested here, and a bridge transaction built from an untested API shape is too risky to ship.
+
+The assistant points people to these pages when they want to make a transaction, instead of describing raw wallet steps.
+
+**Done when:** a user can revoke an approval and complete a swap end to end, with a simulation preview, on mainnet and Base. ✅ (tested against local Ethereum and Base chains running the official Uniswap v3 contracts)
 
 ---
 
@@ -586,6 +602,7 @@ All current variables are in `.env.example`:
 | `OPENSEA_API_KEY` | Yes | OpenSea free key |
 | `ETHPLORER_API_KEY` | No (defaults to `freekey`) | Ethplorer free key |
 | `ETH_RPC_URL` | No (defaults to PublicNode) | Any free-tier RPC URL |
+| `RPC_URL_BASE`, `RPC_URL_ARBITRUM`, … | No (default to each chain's public RPC) | Any free-tier RPC URL for that chain; used for simulations and on-chain reads |
 | `BEACON_API_URL` | No (defaults to PublicNode) | Any beacon node URL |
 | `GROQ_API_KEY` | For Market Insights and the assistant | Groq free tier |
 | `AGENT_MODEL` | No (defaults to `llama-3.3-70b-versatile`) | Any Groq model with tool calling |
@@ -617,8 +634,8 @@ Alert checks are run by n8n calling `/api/cron/alerts/<type>` with `CRON_SECRET`
 | 2: Data & chain expansion | 2–3 weeks | Done |
 | 3: Real-time & n8n automations | 2 weeks | Done |
 | 4: AI layer (MCP + agent) | 2 weeks | Done |
-| 5: On-chain actions | 2–3 weeks | Next |
-| 6: Polish & growth | Ongoing | Planned |
+| 5: On-chain actions | 2–3 weeks | Done |
+| 6: Polish & growth | Ongoing | Next |
 
 ---
 

@@ -59,6 +59,17 @@ export const SITE_PAGES: PageGroup[] = [
         ]
     },
     {
+        name: 'Actions',
+        pages: [
+            { name: 'Swap', href: '/swap', keywords: 'swap trade exchange uniswap buy sell' },
+            { name: 'Send', href: '/send', keywords: 'send transfer pay eth tokens' },
+            { name: 'Stake & Wrap', href: '/stake', keywords: 'stake staking lido steth rocket pool reth wrap unwrap weth' },
+            { name: 'Approvals Manager', href: '/approvals', keywords: 'approvals revoke allowance spender security' },
+            { name: 'Contract Explorer', href: '/contract', keywords: 'contract read write abi call interact' },
+            { name: 'ENS Manager', href: '/ens-manager', keywords: 'ens register renew primary name records .eth' }
+        ]
+    },
+    {
         name: 'Tokens & NFTs',
         pages: [
             { name: 'Token & NFT Analytics', href: '/collections', keywords: 'collection analytics erc20 erc721 holders' },
