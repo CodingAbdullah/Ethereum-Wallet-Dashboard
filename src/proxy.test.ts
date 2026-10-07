@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { NextRequest } from "next/server";
-import { clientIp, isCrossSite, isSignedEndpoint, proxy } from "./proxy";
+import { clientIp, isCrossSite, skipsIpRateLimit, proxy } from "./proxy";
 
 const request = (headers: Record<string, string>) =>
     new NextRequest("https://ethereumdashboard.dev/api/coin-prices", { headers: { host: "ethereumdashboard.dev", ...headers } });
@@ -53,9 +53,11 @@ describe("proxy", () => {
         expect(last?.headers.get("retry-after")).toBe("60");
     });
 
-    it("doesn't rate limit webhooks and scheduled jobs, which check their own signatures", async () => {
-        expect(isSignedEndpoint('/api/webhooks/moralis')).toBe(true);
-        expect(isSignedEndpoint('/api/cron/alerts/gas_below')).toBe(true);
-        expect(isSignedEndpoint('/api/live')).toBe(false);
+    it("doesn't IP rate limit webhooks, scheduled jobs and the MCP server, which have their own checks", async () => {
+        expect(skipsIpRateLimit('/api/webhooks/moralis')).toBe(true);
+        expect(skipsIpRateLimit('/api/cron/alerts/gas_below')).toBe(true);
+        expect(skipsIpRateLimit('/api/mcp')).toBe(true);
+        expect(skipsIpRateLimit('/api/mcp-other')).toBe(false);
+        expect(skipsIpRateLimit('/api/live')).toBe(false);
     });
 });

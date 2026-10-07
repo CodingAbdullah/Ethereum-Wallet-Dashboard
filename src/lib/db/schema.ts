@@ -1,6 +1,6 @@
-import { boolean, date, doublePrecision, index, integer, jsonb, pgTable, serial, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+import { boolean, date, doublePrecision, index, integer, jsonb, pgTable, primaryKey, serial, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
 
-// Phase 1 tables, plus Phase 3's alerts tables at the bottom. Phase 4 adds api_keys.
+// Phase 1 tables, then Phase 3's alerts tables and Phase 4's API keys at the bottom.
 
 // A user is a wallet that signed in with Ethereum; the checksummed address is the ID
 export const users = pgTable('users', {
@@ -95,3 +95,30 @@ export const alertEvents = pgTable('alert_events', {
 export type NotificationChannel = typeof notificationChannels.$inferSelect;
 export type AlertSubscription = typeof alertSubscriptions.$inferSelect;
 export type AlertEvent = typeof alertEvents.$inferSelect;
+
+// Phase 4: API keys for the MCP server (/api/mcp). Only a SHA-256 hash of each key is stored;
+// the key itself is shown once, when it is created.
+export const apiKeys = pgTable('api_keys', {
+    id: serial('id').primaryKey(),
+    userAddress: text('user_address').notNull().references(() => users.address, { onDelete: 'cascade' }),
+    name: text('name').notNull(),
+    prefix: text('prefix').notNull(),                  // first characters of the key, so users can tell keys apart
+    keyHash: text('key_hash').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    lastUsedAt: timestamp('last_used_at', { withTimezone: true }),
+    revokedAt: timestamp('revoked_at', { withTimezone: true })
+}, table => [
+    uniqueIndex('api_keys_hash_idx').on(table.keyHash),
+    index('api_keys_user_idx').on(table.userAddress)
+]);
+
+// Tool calls per key per day, for the daily quota that protects the free-plan data providers
+export const apiKeyUsage = pgTable('api_key_usage', {
+    keyId: integer('key_id').notNull().references(() => apiKeys.id, { onDelete: 'cascade' }),
+    day: date('day', { mode: 'string' }).notNull(),
+    calls: integer('calls').notNull().default(0)
+}, table => [
+    primaryKey({ columns: [table.keyId, table.day] })
+]);
+
+export type ApiKey = typeof apiKeys.$inferSelect;

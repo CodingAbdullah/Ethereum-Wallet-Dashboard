@@ -4,8 +4,8 @@ import { createRateLimiter } from "./lib/rateLimit";
 // Protects the /api routes that spend provider quotas:
 // 1. Rejects cross-site browser requests, so other websites can't use this app as a free proxy
 // 2. Applies a per-IP rate limit (shared through Upstash Redis when configured, see src/lib/rateLimit.ts).
-//    Webhooks and scheduled jobs are skipped: they check their own signature or secret, and Moralis
-//    Streams and Telegram send bursts from a few shared IPs.
+//    Webhooks, scheduled jobs and the MCP server are skipped: they check their own signature, secret or
+//    API key (with a per-key quota), and their callers (Moralis, Telegram, MCP clients) share a few IPs.
 
 const rateLimiter = createRateLimiter();
 
@@ -28,8 +28,8 @@ export function isCrossSite(request: NextRequest): boolean {
     }
 }
 
-export function isSignedEndpoint(pathname: string): boolean {
-    return pathname.startsWith('/api/webhooks/') || pathname.startsWith('/api/cron/');
+export function skipsIpRateLimit(pathname: string): boolean {
+    return pathname.startsWith('/api/webhooks/') || pathname.startsWith('/api/cron/') || pathname === '/api/mcp';
 }
 
 export async function proxy(request: NextRequest) {
@@ -37,7 +37,7 @@ export async function proxy(request: NextRequest) {
         return NextResponse.json({ error: 'Cross-site requests are not allowed' }, { status: 403 });
     }
 
-    if (!isSignedEndpoint(request.nextUrl.pathname) && await rateLimiter.isLimited(clientIp(request))) {
+    if (!skipsIpRateLimit(request.nextUrl.pathname) && await rateLimiter.isLimited(clientIp(request))) {
         return NextResponse.json({ error: 'Too many requests, please slow down' }, { status: 429, headers: { 'retry-after': '60' } });
     }
 
