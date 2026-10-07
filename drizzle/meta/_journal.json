@@ -15,6 +15,13 @@
       "when": 1791346551499,
       "tag": "0001_portfolio_snapshots",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791364816688,
+      "tag": "0002_alerts",
+      "breakpoints": true
     }
   ]
 }

@@ -1,48 +1,41 @@
 'use client';
 
+import Link from 'next/link';
 import GenericFetcher from '@/app/utils/functions/GenericFetcher';
 import useSWR from 'swr';
 import EthereumGasDataType from '../utils/types/EthereumGasDataType';
 import NavbarEthereumDataType from '../utils/types/NavbarEthereumDataType';
+import { useLiveBlock, useSecondsSince } from '../hooks/useLiveBlock';
 
-// Custom Metrics Navbar Component
-// useSWR for efficient data fetching
+// Metrics bar under the navbar: ETH price (polled), gas estimate (polled) and the latest block (live
+// over Server-Sent Events). Each item degrades on its own, so one failing source doesn't hide the rest.
 export default function MetricsNavbar() {
-    // Data fetching using the custom fetcher function and useSWR
-    const { data: ethData, error: ethError, isLoading: ethLoading } = useSWR<NavbarEthereumDataType>('/api/navbar/ethereum-price', GenericFetcher, { refreshInterval: 50000 });
-    const { data: gasData, error: gasError, isLoading: gasLoading } = useSWR<EthereumGasDataType>('/api/navbar/gas-track', GenericFetcher, { refreshInterval: 50000 });
+    const { data: ethData } = useSWR<NavbarEthereumDataType>('/api/navbar/ethereum-price', GenericFetcher, { refreshInterval: 50000 });
+    const { data: gasData } = useSWR<EthereumGasDataType>('/api/navbar/gas-track', GenericFetcher, { refreshInterval: 50000 });
+    const { block, status } = useLiveBlock();
+    const age = useSecondsSince(block?.timestamp);
+    const ethereum = ethData?.ethereum;
+    const live = status === 'live';
 
-    // Conditionally rendering component
-    if (ethError || gasError) 
-        return <div className="bg-red-500 text-white p-2">Error fetching data</div>
-
-    else if (ethLoading || gasLoading) 
-        return <div className="bg-gray-800 text-white p-2">Loading...</div>
-
-    else if (ethData && gasData) {
-        const { ethereum } = ethData;
-
-        // Returning the final JSX code for component
-        return (
-            <nav className="bg-gray-900 text-white py-2 px-4">
-                <div className="container mx-auto flex justify-between items-center">
-                    <div className="flex space-x-4 items-center">
-                        <div className="flex items-center space-x-2">
-                            <span className="ping-animation w-2 h-2 bg-green-500 rounded-full"></span>
-                            <span className="text-green-500 text-xs font-semibold">Live</span>
-                        </div>                        
-                            <span>ETH Price: <span>${ Number(ethereum?.usd).toFixed(2) }</span></span>
-                        <span>
-                            24-Hr % Chg: 
-                            <span className={ethereum?.usd_24h_change >= 0 ? 'text-green-500' : 'text-red-500'}>
-                                { ethereum?.usd_24h_change > 0 ? ' +' : ' ' }
-                                { ethereum?.usd_24h_change.toFixed(2) }%
-                            </span>
-                        </span>
-                        <span>Gas Price: <span className="font-bold">{ String(gasData?.maxPrice) } Gwei</span></span>
-                    </div>
-                </div>
-            </nav>
-        )
-    }
+    return (
+        <nav aria-label="Live metrics" className="bg-gray-900 text-white py-2 px-4 text-sm">
+            <div className="container mx-auto flex flex-wrap items-center gap-x-4 gap-y-1">
+                <span className="flex items-center gap-2" title={live ? 'Receiving new blocks' : 'Connecting to the network'}>
+                    <span className={`w-2 h-2 rounded-full ${live ? 'ping-animation bg-green-500' : 'bg-gray-500'}`} aria-hidden="true"></span>
+                    <span className={`text-xs font-semibold ${live ? 'text-green-500' : 'text-gray-400'}`}>{live ? 'Live' : status === 'unavailable' ? 'Offline' : 'Connecting'}</span>
+                </span>
+                <span>ETH: {ethereum ? <>${Number(ethereum.usd).toFixed(2)}{' '}
+                    <span className={ethereum.usd_24h_change >= 0 ? 'text-green-500' : 'text-red-500'}>{ethereum.usd_24h_change > 0 ? '+' : ''}{ethereum.usd_24h_change.toFixed(2)}%</span></> : <span className="text-gray-500">—</span>}
+                </span>
+                <span>Gas: {gasData ? <span className="font-bold">{String(gasData.maxPrice)} gwei</span> : <span className="text-gray-500">—</span>}</span>
+                {block && (
+                    <span className="text-gray-300">
+                        Block <Link href={`/block/${block.number}`} className="underline tabular-nums">{block.number.toLocaleString('en-US')}</Link>
+                        {age !== null && <span className="text-gray-500 tabular-nums"> · {age}s ago</span>}
+                        {block.baseFeeGwei !== null && <span className="hidden sm:inline text-gray-500"> · base fee {block.baseFeeGwei < 0.1 ? block.baseFeeGwei.toPrecision(2) : block.baseFeeGwei.toFixed(2)} gwei · {block.gasUsedPercent.toFixed(0)}% full</span>}
+                    </span>
+                )}
+            </div>
+        </nav>
+    )
 }

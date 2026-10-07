@@ -51,6 +51,7 @@ export const SITE_PAGES: PageGroup[] = [
         name: 'Wallets',
         pages: [
             { name: 'My Dashboard', href: '/me', keywords: 'portfolio my wallets saved account sign in' },
+            { name: 'Alerts', href: '/alerts', keywords: 'alerts notifications telegram discord email gas price validator ens depeg governance' },
             { name: 'ERC20 Holdings', href: '/erc20-holdings', keywords: 'tokens balances holdings transfers' },
             { name: 'ERC721 Holdings', href: '/erc721-holdings', keywords: 'nfts holdings collections' },
             { name: 'Wallet Analytics', href: '/wallet-analytics', keywords: 'pnl profit loss net worth stats' },
@@ -69,7 +70,7 @@ export const SITE_PAGES: PageGroup[] = [
         pages: [
             { name: 'About', href: '/about' },
             { name: 'Feedback', href: '/feedback', keywords: 'contact suggestions bug' },
-            { name: 'N8N Workflows', href: '/n8n-workflows', keywords: 'automation alerts workflows' }
+            { name: 'N8N Workflows', href: '/n8n-workflows', keywords: 'automation alerts workflows subscribe' }
         ]
     }
 ];

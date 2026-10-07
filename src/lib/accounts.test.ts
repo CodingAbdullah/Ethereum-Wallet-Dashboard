@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { createTestDb } from "@/test/db";
+import { setupTestDb } from "@/test/db";
 import type { Database } from "./db";
 import { users } from "./db/schema";
 import { MAX_WATCHED_WALLETS, addWatchedWallet, listWatchedWallets, removeWatchedWallet, upsertUser } from "./accounts";
@@ -10,8 +10,9 @@ const wallet = (n: number) => '0x' + n.toString(16).padStart(40, '0');
 
 describe("saved wallets", () => {
     let db: Database;
+    const testDb = setupTestDb();
     beforeEach(async () => {
-        db = await createTestDb();
+        db = testDb();
         await upsertUser(db, USER);
     });
 

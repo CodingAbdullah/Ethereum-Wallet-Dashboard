@@ -6,6 +6,7 @@ import { AddressLink, BlockLink, DetailList, ExplorerPage, RpcError, trimNumber,
 import { explorerChain, type TxDetails } from "@/lib/explorer";
 import { cachedTx } from "@/lib/explorerCache";
 import { chainInfo, explorerTx } from "@/lib/chains";
+import TxLiveStatus from "@/app/components/explorer/TxLiveStatus";
 
 type Props = { params: Promise<{ hash: string }>; searchParams: Promise<{ chain?: string }> };
 
@@ -32,6 +33,7 @@ export default async function TxPage({ params, searchParams }: Props) {
 
     return (
         <ExplorerPage title="Transaction" subtitle={<span className="font-mono text-sm">{tx.hash}</span>} chain={chain} path={`/tx/${hash}`}>
+            {tx.status === 'pending' && <TxLiveStatus hash={tx.hash} chain={chain} />}
             <Panel title="Overview">
                 <DetailList rows={[
                     ['Status', <span key="s" className={tx.status === 'success' ? 'text-green-400' : tx.status === 'failed' ? 'text-red-400' : 'text-amber-400'}>{STATUS[tx.status]}</span>],

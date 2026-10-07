@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { createTestDb } from "@/test/db";
+import { setupTestDb } from "@/test/db";
 import type { Database } from "./db";
 import { addWatchedWallet, upsertUser } from "./accounts";
 import { portfolioHistory, saveSnapshots, utcDay, walletsMissingSnapshot } from "./snapshots";
@@ -10,8 +10,9 @@ const B = '0x0000000000000000000000000000000000000002';
 
 describe("portfolio snapshots", () => {
     let db: Database;
+    const testDb = setupTestDb();
     beforeEach(async () => {
-        db = await createTestDb();
+        db = testDb();
         await upsertUser(db, USER);
     });
 
