@@ -284,9 +284,6 @@ export const POST = withErrorHandling(async (request: Request) => {
 ### Free endpoints available but unused
 | Provider | Endpoint | What It Enables |
 |---|---|---|
-| Moralis | Wallet DeFi positions | DeFi positions per wallet |
-| Moralis | Token approvals | Approval checker and revoke flow |
-| Moralis | Decoded wallet history | Human-readable activity feed |
 | CoinGecko Demo | On-chain (GeckoTerminal) endpoints | DEX pools, new pairs, trending pools |
 | Etherscan V2 | Other `chainid` values | Multi-chain lookups (check which chains the free plan covers) |
 | Ethereum RPC | Blocks, logs, `eth_simulateV1` | Explorer pages, ETH burn tracking, transaction previews |
@@ -366,14 +363,16 @@ Shipped in three parts. Each part works on its own; 1.1 needs no database.
 ### Phase 2: Data & Chain Expansion (2–3 weeks)
 
 **2.1 Use free endpoints already available**
-| Provider | Endpoint | Feature |
-|---|---|---|
-| Moralis | Wallet DeFi positions | DeFi tab on `/me` and wallet pages |
-| Moralis | Token approvals | Approval checker on `/me` and wallet pages (revoke comes in Phase 5) |
-| Moralis | Decoded wallet history | Readable activity feed ("Swapped 1 ETH for 3,200 USDC on Uniswap") |
-| CoinGecko Demo | On-chain (GeckoTerminal) | DEX pools, new pairs, trending pools |
-| Ethereum RPC | Blocks, transactions, logs | Transaction and block detail pages |
-| Etherscan V2 | `chainid` parameter | Multi-chain support |
+| Provider | Endpoint | Feature | Status |
+|---|---|---|---|
+| Moralis | Wallet DeFi positions | DeFi positions on `/me` and wallet pages | Done |
+| Moralis | Token approvals | Approval checker on `/me` and wallet pages, riskiest first (revoke comes in Phase 5) | Done |
+| Moralis | Decoded wallet history | Readable activity feed ("Swapped 1 ETH for 3,200 USDC") on `/me` and wallet pages | Done |
+| CoinGecko Demo | On-chain (GeckoTerminal) | DEX pools, new pairs, trending pools | Planned |
+| Ethereum RPC | Blocks, transactions, logs | Transaction and block detail pages | Planned (2.4) |
+| Etherscan V2 | `chainid` parameter | Multi-chain support | Planned (2.2) |
+
+Approvals, DeFi positions and the activity feed load separately from the portfolio numbers on `/me` (`/api/portfolio/insights`), and any wallet page uses `/api/wallet-insights`. Each list notes wallets that failed to load instead of hiding them. If the readable feed fails, `/me` falls back to the Etherscan transaction list.
 
 **2.2 Real Layer 2 support**
 - [ ] Replace the external links in the "Layer Two Chains" menu with chain-aware pages.
@@ -581,7 +580,7 @@ DISCORD_WEBHOOK_URL=''
 |---|---|---|
 | 0: Foundation | 1 week | Done |
 | 1: Wallet connection & accounts | 1–2 weeks | Done |
-| 2: Data & chain expansion | 2–3 weeks | Next |
+| 2: Data & chain expansion | 2–3 weeks | In progress (2.1 done) |
 | 3: Real-time & n8n automations | 2 weeks | Planned |
 | 4: AI layer (MCP + agent) | 2 weeks | Planned |
 | 5: On-chain actions | 2–3 weeks | Planned |

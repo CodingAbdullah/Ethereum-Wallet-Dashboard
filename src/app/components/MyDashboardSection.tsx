@@ -15,6 +15,7 @@ import addressValidator from '../utils/functions/addressValidator';
 import { usePrefillAddress } from '../hooks/useConnectedAddress';
 import { useSession } from '../hooks/useSession';
 import PortfolioOverview from './PortfolioOverview';
+import WalletInsightsSection from './WalletInsightsSection';
 
 interface SavedWallet {
     id: number;
@@ -90,7 +91,7 @@ function SavedWallets() {
     const { data: wallets, error, mutate: mutateWallets } = useSWR('/api/wallets', fetchWallets);
     const { mutate: mutateKey } = useSWRConfig();
     // Saving or removing a wallet changes the portfolio too
-    const mutate = () => Promise.all([mutateWallets(), mutateKey('/api/portfolio')]);
+    const mutate = () => Promise.all([mutateWallets(), mutateKey('/api/portfolio'), mutateKey('/api/portfolio/insights')]);
     const addressRef = useRef<HTMLInputElement>(null);
     const labelRef = useRef<HTMLInputElement>(null);
     const [network, setNetwork] = useState('eth');
@@ -136,6 +137,7 @@ function SavedWallets() {
     return (
         <>
             {wallets && wallets.length > 0 && <PortfolioOverview />}
+            {wallets && wallets.length > 0 && <WalletInsightsSection source={{ kind: 'me' }} />}
 
             <Panel title="Saved Wallets" description={`Follow up to ${MAX_WALLETS} wallets.`}>
                 {error && <Alert variant="destructive"><AlertDescription>{error.message}</AlertDescription></Alert>}

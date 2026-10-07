@@ -4,10 +4,11 @@ import useSWR from 'swr';
 import Link from 'next/link';
 import { Download, AlertTriangle } from 'lucide-react';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import Panel from './DashboardPanel';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { shortAddress } from './ConnectWalletButton';
 import type { Portfolio, Section } from '@/lib/portfolio';
+import type { WalletInsights } from '@/lib/walletInsights';
 
 type PortfolioResponse = Portfolio & { history: { day: string; usdValue: number; wallets: number }[] };
 
@@ -26,21 +27,6 @@ async function fetchPortfolio(url: string): Promise<PortfolioResponse> {
     return response.json();
 }
 
-function Panel({ title, description, action, children }: { title: string; description?: string; action?: React.ReactNode; children: React.ReactNode }) {
-    return (
-        <Card className="bg-gray-900 border-gray-800 shadow-xl w-full">
-            <CardHeader className="border-b border-gray-800 pb-4 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                <div>
-                    <CardTitle className="text-2xl font-bold text-gray-100">{title}</CardTitle>
-                    {description && <CardDescription className="text-gray-400 mt-1">{description}</CardDescription>}
-                </div>
-                {action}
-            </CardHeader>
-            <CardContent className="pt-4 overflow-x-auto">{children}</CardContent>
-        </Card>
-    );
-}
-
 function SectionNote<T>({ section, children }: { section: Section<T> | null; children: (data: T) => React.ReactNode }) {
     if (!section) return <span className="text-gray-500">—</span>;
     if ('error' in section) return <span className="text-gray-500" title={section.error}>Unavailable</span>;
@@ -50,6 +36,9 @@ function SectionNote<T>({ section, children }: { section: Section<T> | null; chi
 // Combined portfolio for the signed-in user's saved wallets
 export default function PortfolioOverview() {
     const { data, error, isLoading } = useSWR('/api/portfolio', fetchPortfolio, { revalidateOnFocus: false });
+    // The readable activity feed (WalletInsightsSection) replaces this list; it's only shown if that feed fails
+    const { data: insights, error: insightsError } = useSWR<WalletInsights>('/api/portfolio/insights', null);
+    const showRawActivity = !!insightsError || (!!insights && insights.activity.items.length === 0 && insights.activity.failed.length > 0);
 
     if (isLoading) return <Panel title="Portfolio"><p className="text-gray-400">Loading your wallets… this can take a few seconds.</p></Panel>;
     if (error || !data) return <Panel title="Portfolio"><p className="text-red-400">{error?.message ?? 'Could not load your portfolio'}</p></Panel>;
@@ -170,7 +159,7 @@ export default function PortfolioOverview() {
                 </Panel>
             )}
 
-            {data.activity.length > 0 && (
+            {showRawActivity && data.activity.length > 0 && (
                 <Panel title="Recent Activity" description="Latest transactions across your saved wallets.">
                     <Table>
                         <TableHeader>
