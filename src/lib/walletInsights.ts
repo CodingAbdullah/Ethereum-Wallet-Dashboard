@@ -37,6 +37,7 @@ export interface ActivityItem {
     category: string;
     summary: string;
     possibleSpam: boolean;
+    nativeValue: number;      // native coin moved by the transaction itself (ETH on Ethereum), 0 for token-only actions
 }
 
 type Json = Record<string, unknown>;
@@ -114,7 +115,8 @@ export function toActivity(data: unknown): ActivityItem[] {
                 timestamp: str(item.block_timestamp) ?? '',
                 category: str(item.category) ?? 'contract interaction',
                 summary: str(item.summary) ?? str(item.method_label) ?? 'Contract interaction',
-                possibleSpam: item.possible_spam === true
+                possibleSpam: item.possible_spam === true,
+                nativeValue: (num(item.value) ?? 0) / 1e18
             };
         })
         .filter(a => a.hash && !a.possibleSpam);
