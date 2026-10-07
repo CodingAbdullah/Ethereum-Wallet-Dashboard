@@ -13,10 +13,12 @@ import ERC721TransfersType from '../utils/types/ERC721TransfersType';
 import ERC721CollectionsHoldingsInfoTable from './ERC721CollectionsHoldingsInfoTable';
 import ERC721HoldingsInfoTable from './ERC721HoldingsInfoTable';
 import ERC721TransfersInfoTable from './ERC721TransfersInfoTable';
+import { usePrefillAddress } from '../hooks/useConnectedAddress';
 
 // ERC721 Holdings Form Custom Component
 export default function ERC721HoldingsForm() {
     const walletAddressRef = useRef<HTMLInputElement>(null);
+    usePrefillAddress(walletAddressRef);
     const [submittedWalletAddress, setSubmittedWalletAddress] = useState<string>('');
     const [network, updateNetwork] = useState<string>("eth");
     const [showAlert, setShowAlert] = useState<boolean>(false);

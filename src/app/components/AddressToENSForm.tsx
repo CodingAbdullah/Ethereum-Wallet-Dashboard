@@ -10,10 +10,12 @@ import AccountToENSInfoTable from "./AccountToENSInfoTable";
 import AccountInformationType from "../utils/types/AccountInformationType";
 import ENSOwnershipInfoTable from "./ENSOwnershipInfoTable";
 import ENSResolverInfoTable from "./ENSResolverInfoTable";
+import { usePrefillAddress } from '../hooks/useConnectedAddress';
 
 // Address To ENS Form Custom Component
 export default function AddressToENSForm() {
     const walletAddressRef = useRef<HTMLInputElement>(null); 
+    usePrefillAddress(walletAddressRef);
     const [submittedWalletAddress, setSubmittedWalletAddress] = useState<string>('');
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [accountInformation, setAccountInformation] = useState<AccountInformationType>();

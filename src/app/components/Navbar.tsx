@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Menu, X, ChevronDown } from 'lucide-react'
 import { NavbarLinks } from '../utils/constants/NavbarLinks';
+import ConnectWalletButton from './ConnectWalletButton';
 
 // Navbar Custom Component
 export default function Navbar() {
@@ -55,9 +56,13 @@ export default function Navbar() {
                   )}
                 </div>
               ))}
+              <div className="ml-4">
+                <ConnectWalletButton />
+              </div>
             </div>
           </div>
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center gap-2">
+            <ConnectWalletButton />
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
