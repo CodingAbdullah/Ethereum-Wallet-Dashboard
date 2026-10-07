@@ -1,29 +1,16 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
+import { resolveEnsName } from "@/lib/ens";
+import { withErrorHandling, parseBody } from "@/lib/api/route";
+import { ensNameSchema } from "@/lib/validation";
 
-const MORALIS_URL = 'https://deep-index.moralis.io/api/v2.2/';
+const bodySchema = z.object({ ensName: ensNameSchema });
 
-const options = {
-    method: 'GET',
-    headers: {
-        'content-type': 'application/json',
-        'accept': 'application/json',
-        'X-API-KEY': process.env.MORALIS_API_KEY ?? ''
-    } as HeadersInit
-};
+// Address an ENS name resolves to (forward resolution over free RPC)
+export const POST = withErrorHandling(async (request: Request) => {
+    const { ensName } = await parseBody(request, bodySchema);
+    const owner = await resolveEnsName(ensName);
 
-// Custom Route Handler function
-export async function POST(request: Request) {
-    const body = await request.json();
-
-    const response = await fetch(MORALIS_URL + 'resolve/ens/' + encodeURIComponent(body.ensName), options);
-
-    if (!response.ok) {
-        const errorBody = await response.json().catch(() => null);
-        return NextResponse.json({ error: 'Moralis ENS resolve error', status: response.status, detail: errorBody }, { status: response.status });
-    }
-
-    const data = await response.json();
-
-    // Moralis returns { address } — map to the shape the frontend expects: { results: [{ owner }] }
-    return NextResponse.json({ results: [{ owner: data.address }] });
-}
+    if (!owner) return NextResponse.json({ error: 'ENS name does not resolve to an address' }, { status: 404 });
+    return NextResponse.json({ results: [{ owner }] });
+});

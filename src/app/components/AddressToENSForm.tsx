@@ -14,11 +14,13 @@ import ENSResolverInfoTable from "./ENSResolverInfoTable";
 // Address To ENS Form Custom Component
 export default function AddressToENSForm() {
     const walletAddressRef = useRef<HTMLInputElement>(null); 
+    const [submittedWalletAddress, setSubmittedWalletAddress] = useState<string>('');
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [accountInformation, setAccountInformation] = useState<AccountInformationType>();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setSubmittedWalletAddress(walletAddressRef.current!.value.trim());
 
         // Handle form submission logic here
         // Set the token address to what the form value is for evaluation
@@ -89,8 +91,8 @@ export default function AddressToENSForm() {
                 accountInformation?.name ? 
                     <>
                         <AccountToENSInfoTable data={accountInformation} />
-                        <ENSOwnershipInfoTable data={walletAddressRef.current!.value.trim()} />
-                        <ENSResolverInfoTable data={walletAddressRef.current!.value.trim()} />
+                        <ENSOwnershipInfoTable data={submittedWalletAddress} />
+                        <ENSResolverInfoTable data={submittedWalletAddress} />
                     </> 
                 : null 
             }

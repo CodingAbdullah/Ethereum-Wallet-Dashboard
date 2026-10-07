@@ -21,21 +21,22 @@ export default function TopERC721CollectionsInfoTable() {
         // Render component using the information provided
         return (
             <div className="p-4 bg-gray-900 mt-10 mt-10 shadow-lg">
-                <h4 className="text-2xl font-bold mb-4 text-gray-100">Top Collections</h4>
+                <h4 className="text-2xl font-bold mb-4 text-gray-100">Top Collections (7 Day Volume)</h4>
                 <Table>
                     <TableHeader>
                         <TableRow>
                             <TableHead className="text-gray-300">Name</TableHead>
                             <TableHead className="text-gray-300">Logo</TableHead>
                             <TableHead className="text-gray-300">Floor Price</TableHead>
-                            <TableHead className="text-gray-300">24 Hour Price % Change</TableHead>
-                            <TableHead className="text-gray-300">Volume</TableHead>
+                            <TableHead className="text-gray-300">24 Hour Volume</TableHead>
                             <TableHead className="text-gray-300">24 Hour Volume % Change</TableHead>
+                            <TableHead className="text-gray-300">7 Day Volume</TableHead>
+                            <TableHead className="text-gray-300">Owners</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {collections?.topCollections?.map((collection, index: number) => (
-                            <TableRow key={index} className="border-b border-gray-800">
+                        {collections?.topCollections?.map(collection => (
+                            <TableRow key={collection.slug} className="border-b border-gray-800">
                                 <TableCell className="font-medium text-gray-100">{collection.collection_title}</TableCell>
                                 <TableCell className="text-gray-300">
                                     <div className="flex items-center space-x-2">
@@ -44,14 +45,13 @@ export default function TopERC721CollectionsInfoTable() {
                                             : <span className="text-gray-500">—</span>}
                                     </div>
                                 </TableCell>
-                                <TableCell className="text-gray-300">{"$" + collection.floor_price_usd}</TableCell>
-                                <TableCell className={Number(collection.floor_price_usd_24hr_percent_change) >= 0 ? 'text-green-500' : 'text-red-500'}>
-                                    {Number(collection.floor_price_usd_24hr_percent_change) >= 0 ? '+' + Number(collection.floor_price_usd_24hr_percent_change).toFixed(2) + '%' : Number(collection.floor_price_usd_24hr_percent_change).toFixed(2) + "%"}
+                                <TableCell className="text-gray-300">{collection.floor_price + ' ' + collection.floor_price_symbol}</TableCell>
+                                <TableCell className="text-gray-300">{collection.volume_24h.toLocaleString('en-US', { maximumFractionDigits: 2 }) + ' ETH'}</TableCell>
+                                <TableCell className={collection.volume_24h_percent_change >= 0 ? 'text-green-500' : 'text-red-500'}>
+                                    {(collection.volume_24h_percent_change >= 0 ? '+' : '') + collection.volume_24h_percent_change.toFixed(2) + '%'}
                                 </TableCell>
-                                <TableCell className="text-gray-300">{"$" + collection.volume_usd}</TableCell>
-                                <TableCell className={Number(collection.volume_24hr_percent_change) >= 0 ? 'text-green-500' : 'text-red-500'}>
-                                    {Number(collection.volume_24hr_percent_change) >= 0 ? '+' + Number(collection.volume_24hr_percent_change).toFixed(2) + '%' : Number(collection.volume_24hr_percent_change).toFixed(2) + "%"}
-                                </TableCell>
+                                <TableCell className="text-gray-300">{collection.volume_7d.toLocaleString('en-US', { maximumFractionDigits: 2 }) + ' ETH'}</TableCell>
+                                <TableCell className="text-gray-300">{collection.owners.toLocaleString('en-US')}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

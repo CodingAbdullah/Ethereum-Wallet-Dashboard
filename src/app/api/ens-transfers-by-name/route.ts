@@ -1,53 +1,16 @@
 import { NextResponse } from "next/server";
-import { keccak256 } from "ethereum-cryptography/keccak";
-import { utf8ToBytes } from "ethereum-cryptography/utils";
+import { z } from "zod";
+import { moralis } from "@/lib/providers/moralis";
+import { ENS_BASE_REGISTRAR, ensTokenId } from "@/lib/ens";
+import { toTransferRows } from "@/lib/nftTransfers";
+import { withErrorHandling, parseBody } from "@/lib/api/route";
+import { ensNameSchema } from "@/lib/validation";
 
-const ENS_CONTRACT = '0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85';
-const MORALIS_URL = 'https://deep-index.moralis.io/api/v2.2/';
+const bodySchema = z.object({ address: ensNameSchema });
 
-const options = {
-    method: 'GET',
-    headers: {
-        'content-type': 'application/json',
-        'accept': 'application/json',
-        'X-API-KEY': process.env.MORALIS_API_KEY ?? ''
-    } as HeadersInit
-};
-
-function ensNameToTokenId(ensName: string): string {
-    const label = ensName.split('.')[0];
-    const hash = keccak256(utf8ToBytes(label));
-    return BigInt('0x' + Buffer.from(hash).toString('hex')).toString(10);
-}
-
-function inferCategory(fromAddress: string): string {
-    if (!fromAddress || fromAddress === '0x0000000000000000000000000000000000000000') return 'mint';
-    return 'transfer';
-}
-
-// Custom Route Handler function
-export async function POST(request: Request) {
-    const body = await request.json();
-    const tokenId = ensNameToTokenId(body.address);
-
-    const response = await fetch(
-        MORALIS_URL + 'nft/' + ENS_CONTRACT + '/' + tokenId + '/transfers?chain=eth&format=decimal',
-        options
-    );
-
-    if (!response.ok) {
-        const errorBody = await response.json().catch(() => null);
-        return NextResponse.json({ error: 'Moralis NFT transfers error', status: response.status, detail: errorBody }, { status: response.status });
-    }
-
-    const data = await response.json();
-
-    const results = (data.result ?? []).map((t: any) => ({
-        timestamp: t.block_timestamp,
-        category: inferCategory(t.from_address),
-        from: t.from_address ?? null,
-        to: t.to_address ?? null
-    }));
-
-    return NextResponse.json({ results });
-}
+// Transfer history of a .eth name (Moralis free plan)
+export const POST = withErrorHandling(async (request: Request) => {
+    const { address: name } = await parseBody(request, bodySchema);
+    const data = await moralis<{ result?: [] }>('/nft/' + ENS_BASE_REGISTRAR + '/' + ensTokenId(name) + '/transfers?chain=eth&format=decimal');
+    return NextResponse.json({ results: toTransferRows(data.result) });
+});

@@ -1,33 +1,40 @@
 import { NextResponse } from "next/server";
+import { unstable_cache } from "next/cache";
+import { beacon } from "@/lib/providers/beacon";
+import { withErrorHandling } from "@/lib/api/route";
 
-const BEACON_CHAIN_URL = "https://beaconcha.in/api/v1/validators/queue"; // Beacon Chain API Endpoint
+const SLOTS_PER_EPOCH = 32;
+const GWEI_PER_ETH = 1e9;
 
-// Custom Route Handler function
-export async function GET(){
+// Validator entry/exit queues from the standard Beacon API on a free public node.
+// Replaces beaconcha.in, whose free API tier ended in May 2026.
+const getValidatorQueue = unstable_cache(async () => {
+    const [deposits, exiting, header] = await Promise.all([
+        beacon<{ data: { amount: string }[] }>('/eth/v1/beacon/states/head/pending_deposits'),
+        beacon<{ data: unknown[] }>('/eth/v1/beacon/states/head/validators?status=active_exiting'),
+        beacon<{ data: { header: { message: { slot: string } } } }>('/eth/v1/beacon/headers/head')
+    ]);
 
-    // Setting options for authenticated API call
-    const options = {
-        method: "GET",
-        headers : {
-            'content-type' : 'application/json',
-            'access-control-allow-origin': '*'
-        } as HeadersInit
-    }
+    // Every active validator sits in exactly one committee per epoch, spread evenly over its 32 slots,
+    // so one slot's committee sizes x 32 gives the active validator count without downloading the full set
+    const slot = header.data.header.message.slot;
+    const committees = await beacon<{ data: { validators: string[] }[] }>('/eth/v1/beacon/states/head/committees?slot=' + slot);
+    const slotValidators = committees.data.reduce((total, committee) => total + committee.validators.length, 0);
 
-    // Fetch data based on options parameters
-    const response = await fetch(BEACON_CHAIN_URL + '?apikey=' + process.env.BEACON_CHAIN_API_KEY , options); // Fetch data related to the global market
-    
-    // Return response based on data fetch
-    if (!response.ok) {
-        return NextResponse.json({
-            message: "Could not fetch global market data"
-        }, { status: 400 });
-    }
-    else {
-        // Send back as response, validator queue data
-        const information = await response.json();
-        return NextResponse.json({
-            information
-        });
-    }
-}
+    const pendingDepositEth = deposits.data.reduce((total, deposit) => total + Number(deposit.amount), 0) / GWEI_PER_ETH;
+
+    return {
+        information: {
+            data: {
+                pending_deposits: deposits.data.length,
+                pending_deposit_eth: Math.round(pendingDepositEth),
+                beaconchain_exiting: exiting.data.length,
+                validatorscount: slotValidators * SLOTS_PER_EPOCH
+            }
+        }
+    };
+}, ['validator-queue'], { revalidate: 600 }); // Beacon responses are large, so refresh every 10 minutes
+
+export const GET = withErrorHandling(async () => {
+    return NextResponse.json(await getValidatorQueue());
+});

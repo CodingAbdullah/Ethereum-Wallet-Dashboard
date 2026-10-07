@@ -21,7 +21,7 @@ export default function NetworkSelector(props: { networkSelector: (network: stri
                 <SelectContent className="bg-gray-900 text-gray-100 border-gray-700">
                     <SelectItem value="eth">Ethereum Mainnet</SelectItem>
                     <SelectItem value="sepolia">Sepolia Testnet</SelectItem>
-                    <SelectItem value="holesky">Holesky Testnet</SelectItem>
+                    <SelectItem value="hoodi">Hoodi Testnet</SelectItem>
                 </SelectContent>
             </Select>
         </div>

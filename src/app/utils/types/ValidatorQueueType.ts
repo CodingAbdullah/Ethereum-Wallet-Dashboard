@@ -1,6 +1,7 @@
 // Validator Queue Data Type
 export default interface ValidatorQueueType {
-    beaconchain_entering: number,
+    pending_deposits: number,
+    pending_deposit_eth: number,
     beaconchain_exiting: number,
     validatorscount: number
 }

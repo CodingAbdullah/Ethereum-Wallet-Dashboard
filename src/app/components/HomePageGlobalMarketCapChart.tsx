@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 
 // Home Page Market Data Section Component
 export default function HomePageGlobalMarketCapChart() {
-    const { data: marketChartData, error: marketChartError, isLoading: marketChartLoading } = useSWR('/api/global-market-cap-chart-data', GenericFetcher, { refreshInterval: 50000 });
+    const { data: marketChartData, error: marketChartError, isLoading: marketChartLoading } = useSWR('/api/eth-market-cap-chart-data', GenericFetcher, { refreshInterval: 50000 });
 
     // Conditionally render data
     if (marketChartError) {
@@ -30,7 +30,7 @@ export default function HomePageGlobalMarketCapChart() {
         return (
             <Card className="w-full bg-gray-800 border-gray-700 mt-10">
                 <CardHeader>
-                    <CardTitle className="text-xl text-gray-100">Global Market Cap (Last 30 Days)</CardTitle>
+                    <CardTitle className="text-xl text-gray-100">Ethereum Market Cap (Last 30 Days)</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="h-[400px] w-full">
@@ -70,7 +70,7 @@ export default function HomePageGlobalMarketCapChart() {
                                 stroke="#ff4136" 
                                 strokeWidth={2}
                                 dot={true}
-                                name="Global Market Cap Data"
+                                name="Ethereum Market Cap"
                             />
                             </LineChart>
                         </ResponsiveContainer>

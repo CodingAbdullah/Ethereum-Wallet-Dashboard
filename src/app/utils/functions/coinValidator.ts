@@ -1,17 +1,15 @@
 import CoinChartInfoType from "../types/CoinChartInfoType";
+import { coingecko, CG_CACHE } from "@/lib/providers/coingecko";
+import { coinIdSchema } from "@/lib/validation";
 
-// Custom function for validating a particular coin ID
-export const coinValidator = async (coin: string) => {
+// Returns CoinGecko data for a coin ID, or null if the ID is invalid or unknown
+export const coinValidator = async (coin: string): Promise<CoinChartInfoType | null> => {
+    if (!coinIdSchema.safeParse(coin).success) return null;
 
-    // Using the free version of the CoinGecko API, verify if the coin ID is correct
-    const response = await fetch('https://api.coingecko.com/api/v3/coins/' + coin);
-
-    // Conditionally return response
-    if (response.ok) {
-        const data: CoinChartInfoType = await response.json();
-        return data;
+    try {
+        return await coingecko<CoinChartInfoType>('/coins/' + coin + '?localization=false&tickers=false&community_data=false&developer_data=false', CG_CACHE.lookup);
     }
-    else {
-        return {} as CoinChartInfoType;
+    catch {
+        return null;
     }
 }

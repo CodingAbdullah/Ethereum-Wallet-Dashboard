@@ -1,18 +1,23 @@
 import { NextResponse } from "next/server";
+import { getCollectionSlug, getCollectionStats } from "@/lib/providers/opensea";
+import { withErrorHandling, parseBody } from "@/lib/api/route";
+import { addressBody } from "@/lib/validation";
 
-// Custom Route Handler function
-export async function POST(request: Request){
-    const body = await request.json(); // Retrieve data based on request
-    
-    // Return data based on data fetch
-    const response = await fetch('https://eth-mainnet.g.alchemy.com/nft/v3/' + process.env.ALCHEMY_API_KEY_2 + '/getFloorPrice?contractAddress=' + body.address);
+// Current floor price of an NFT collection (OpenSea free API).
+// Returned in the { [marketplace]: { floorPrice, priceCurrency, collectionUrl, retrievedAt } } shape the table expects.
+export const POST = withErrorHandling(async (request: Request) => {
+    const { address } = await parseBody(request, addressBody);
+    const slug = await getCollectionSlug(address);
+    const stats = await getCollectionStats(slug);
 
-    // Conditionally return data
-    if (response.status === 200) {
-        const data = await response.json();
-        return NextResponse.json({ information: data });
-    }
-    else {
-        return NextResponse.json({ message: "Could not fetch collection floor prices by marketplace" }, {status: 500 });
-    }
-}
+    return NextResponse.json({
+        information: {
+            openSea: {
+                floorPrice: stats.total.floor_price,
+                priceCurrency: stats.total.floor_price_symbol || 'ETH',
+                collectionUrl: 'https://opensea.io/collection/' + slug,
+                retrievedAt: new Date().toISOString()
+            }
+        }
+    });
+});

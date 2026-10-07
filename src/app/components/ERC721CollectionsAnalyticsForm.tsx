@@ -18,11 +18,13 @@ import ERC721CollectionFloorPriceInfoTable from './ERC721CollectionFloorPriceInf
 export default function ERC721CollectionsAnalyticsForm() {
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const collectionAddressRef = useRef<HTMLInputElement>(null);
+    const [submittedCollectionAddress, setSubmittedCollectionAddress] = useState<string>('');
     const [tableStatus, updateTableStatus] = useState<boolean>(false);
 
     // Handle Submit Function
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
+        setSubmittedCollectionAddress(collectionAddressRef.current!.value.trim());
 
         // Check address validity
         // If correct, make a request call to fetch ERC20 Collection Analytics data
@@ -75,12 +77,12 @@ export default function ERC721CollectionsAnalyticsForm() {
                 </Card>
             </div>
             { tableStatus ? null : <TopERC721CollectionsInfoTable /> }
-            { tableStatus ? <ERC721CollectionDataInfoTable address={collectionAddressRef.current!.value.trim()} /> : null }
-            { tableStatus ? <ERC721CollectionFloorPriceInfoTable address={collectionAddressRef.current!.value.trim()} /> : null }
-            { tableStatus ? <ERC721CollectionExtraDataInfoTable address={collectionAddressRef.current!.value.trim()} /> : null }
-            { tableStatus ? <ERC721CollectionAttributeSummaryInfoTable address={collectionAddressRef.current!.value.trim()} /> : null }
-            { tableStatus ? <ERC721CollectionTransfersInfoTable address={collectionAddressRef.current!.value.trim()} /> : null }
-            { tableStatus ? <ERC721CollectionSalesInfoTable address={collectionAddressRef.current!.value.trim()} /> : null }
+            { tableStatus ? <ERC721CollectionDataInfoTable address={submittedCollectionAddress} /> : null }
+            { tableStatus ? <ERC721CollectionFloorPriceInfoTable address={submittedCollectionAddress} /> : null }
+            { tableStatus ? <ERC721CollectionExtraDataInfoTable address={submittedCollectionAddress} /> : null }
+            { tableStatus ? <ERC721CollectionAttributeSummaryInfoTable address={submittedCollectionAddress} /> : null }
+            { tableStatus ? <ERC721CollectionTransfersInfoTable address={submittedCollectionAddress} /> : null }
+            { tableStatus ? <ERC721CollectionSalesInfoTable address={submittedCollectionAddress} /> : null }
         </>
     )
 }

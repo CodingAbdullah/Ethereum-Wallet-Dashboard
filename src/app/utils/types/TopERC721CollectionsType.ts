@@ -1,9 +1,12 @@
-// Top ERC721 Collections Data Type
+// Top ERC721 Collections Data Type (OpenSea collection stats)
 export default interface TopERC721CollectionsType {
+    slug: string,
     collection_title: string,
     collection_image: string,
-    floor_price_usd: string,
-    floor_price_usd_24hr_percent_change: string,
-    volume_usd: string,
-    volume_24hr_percent_change: string
+    floor_price: number,
+    floor_price_symbol: string,
+    volume_24h: number,
+    volume_24h_percent_change: number,
+    volume_7d: number,
+    owners: number
 }

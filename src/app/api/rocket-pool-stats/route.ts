@@ -1,33 +1,11 @@
 import { NextResponse } from "next/server";
+import { getRocketPoolStats } from "@/lib/staking";
+import { withErrorHandling } from "@/lib/api/route";
 
-const BEACON_CHAIN_URL = "https://beaconcha.in/api/v1/rocketpool/stats"; // Beacon Chain API Endpoint
+export const revalidate = 900;
 
-// Custom Route Handler function
-export async function GET(){
-
-    // Setting options for authenticated API call
-    const options = {
-        method: "GET",
-        headers : {
-            'content-type' : 'application/json',
-            'access-control-allow-origin': '*'
-        } as HeadersInit
-    }
-
-    // Fetch data based on options parameters
-    const response = await fetch(BEACON_CHAIN_URL + '?apikey=' + process.env.BEACON_CHAIN_API_KEY , options); // Fetch data related to the global market
-    
-    // Return response based on data fetch
-    if (!response.ok) {
-        return NextResponse.json({
-            message: "Could not fetch global market data"
-        }, { status: 400 });
-    }
-    else {
-        // Send back as response, rocket pool statistics
-        const information = await response.json();
-        return NextResponse.json({
-            information
-        });
-    }
-}
+// Rocket Pool network stats read from its contracts over free RPC.
+// Replaces beaconcha.in's Rocket Pool endpoint (its free API tier ended in May 2026).
+export const GET = withErrorHandling(async () => {
+    return NextResponse.json({ information: { status: 'OK', data: await getRocketPoolStats() } });
+});

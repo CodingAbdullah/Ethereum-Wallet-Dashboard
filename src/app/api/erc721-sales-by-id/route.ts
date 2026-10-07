@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
+import { formatEther } from "viem";
+import { moralis } from "@/lib/providers/moralis";
+import { withErrorHandling, parseBody } from "@/lib/api/route";
+import { addressSchema, tokenIdSchema } from "@/lib/validation";
 
-const MORALIS_URL = 'https://deep-index.moralis.io/api/v2.2/';
+const bodySchema = z.object({ address: addressSchema, id: tokenIdSchema });
 
 const MARKETPLACE_NAMES: Record<string, string> = {
     '0x00000000006c3852cbef3e08e8df289169ede581': 'OpenSea (Seaport 1.1)',
@@ -11,48 +16,28 @@ const MARKETPLACE_NAMES: Record<string, string> = {
     '0x74312363e45dcaba76c59ec49a13aa114034ea7': 'X2Y2'
 };
 
-const options = {
-    method: 'GET',
-    headers: {
-        'content-type': 'application/json',
-        'accept': 'application/json',
-        'X-API-KEY': process.env.MORALIS_API_KEY ?? ''
-    } as HeadersInit
-};
+interface MoralisTrade {
+    block_timestamp: string;
+    marketplace_address?: string;
+    price?: string;
+    buyer_address?: string;
+    seller_address?: string;
+}
 
-// Custom Route Handler function
-export async function POST(request: Request) {
-    const body = await request.json();
-    const { address, id } = body;
+// Sales history of a single NFT (Moralis free plan)
+export const POST = withErrorHandling(async (request: Request) => {
+    const { address, id } = await parseBody(request, bodySchema);
+    const data = await moralis<{ result?: MoralisTrade[] }>('/nft/' + address + '/' + id + '/trades?chain=eth', 300);
 
-    const response = await fetch(
-        MORALIS_URL + 'nft/' + address + '/' + encodeURIComponent(id) + '/trades?chain=eth',
-        options
-    );
-
-    if (!response.ok) {
-        const errorBody = await response.json().catch(() => null);
-        return NextResponse.json({ error: 'Moralis NFT trades error', status: response.status, detail: errorBody }, { status: response.status });
-    }
-
-    const data = await response.json();
-
-    // Map Moralis response to the shape the frontend expects
-    const results = (data.result ?? []).map((trade: any) => {
-        const marketplaceAddr = (trade.marketplace_address ?? '').toLowerCase();
-        const exchange_name = MARKETPLACE_NAMES[marketplaceAddr] ?? trade.marketplace_address ?? 'Unknown';
-        const ethPrice = trade.price ? Number(BigInt(trade.price)) / 1e18 : 0;
-
-        return {
-            timestamp: trade.block_timestamp,
-            exchange_name,
-            contract_version: '',
-            eth_price: ethPrice,
-            usd_price: 'N/A',
-            buyer: trade.buyer_address ?? null,
-            seller: trade.seller_address ?? null
-        };
-    });
+    const results = (data.result ?? []).map(trade => ({
+        timestamp: trade.block_timestamp,
+        exchange_name: MARKETPLACE_NAMES[(trade.marketplace_address ?? '').toLowerCase()] ?? trade.marketplace_address ?? 'Unknown',
+        contract_version: '',
+        eth_price: trade.price ? Number(formatEther(BigInt(trade.price))) : 0,
+        usd_price: 'N/A',
+        buyer: trade.buyer_address ?? null,
+        seller: trade.seller_address ?? null
+    }));
 
     return NextResponse.json({ information: { results } });
-}
+});

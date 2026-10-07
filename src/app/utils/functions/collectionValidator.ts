@@ -1,15 +1,15 @@
-// Custom function for validating a particular collection ID
-export const collectionValidator = async (collection: string) => {
+import { coingecko, CG_CACHE } from "@/lib/providers/coingecko";
+import { coinIdSchema } from "@/lib/validation";
 
-    // Using the free version of the CoinGecko API, verify if the collection ID is correct
-    const response = await fetch('https://api.coingecko.com/api/v3/nfts/' + collection);
+// Returns the contract address for a CoinGecko NFT collection ID, or an empty string if it is unknown
+export const collectionValidator = async (collection: string): Promise<string> => {
+    if (!coinIdSchema.safeParse(collection).success) return '';
 
-    // Conditionally return response
-    if (response.ok) {
-        const data = await response.json();
-        return data.contract_address;
+    try {
+        const data = await coingecko<{ contract_address?: string }>('/nfts/' + collection, CG_CACHE.lookup);
+        return data.contract_address ?? '';
     }
-    else {
-        return "";
+    catch {
+        return '';
     }
 }

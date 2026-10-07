@@ -25,16 +25,18 @@ export default function ValidatorQueueInfoTable() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="text-gray-300">Beaconchain Entering</TableHead>
-                            <TableHead className="text-gray-300">Beaconchain Exiting</TableHead>
-                            <TableHead className="text-gray-300">Validators Count</TableHead>                          
+                            <TableHead className="text-gray-300">Pending Deposits</TableHead>
+                            <TableHead className="text-gray-300">Pending Deposit ETH</TableHead>
+                            <TableHead className="text-gray-300">Validators Exiting</TableHead>
+                            <TableHead className="text-gray-300">Active Validators (approx.)</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         <TableRow key={1} className="border-b border-gray-800">
-                            <TableCell className="font-medium text-gray-100">{validatorData?.information?.data?.beaconchain_entering}</TableCell>
-                            <TableCell className="text-gray-300">{validatorData?.information?.data.beaconchain_exiting}</TableCell>
-                            <TableCell className="font-medium text-gray-100">{validatorData?.information?.data.validatorscount}</TableCell>
+                            <TableCell className="font-medium text-gray-100">{validatorData?.information?.data?.pending_deposits?.toLocaleString('en-US')}</TableCell>
+                            <TableCell className="text-gray-300">{validatorData?.information?.data?.pending_deposit_eth?.toLocaleString('en-US') + ' ETH'}</TableCell>
+                            <TableCell className="text-gray-300">{validatorData?.information?.data?.beaconchain_exiting?.toLocaleString('en-US')}</TableCell>
+                            <TableCell className="font-medium text-gray-100">{validatorData?.information?.data?.validatorscount?.toLocaleString('en-US')}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>

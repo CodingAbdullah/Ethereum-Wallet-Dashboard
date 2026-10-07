@@ -16,7 +16,9 @@ import ERC721RarityLookupsInfoTable from './ERC721RarityLookupsInfoTable';
 // ERC721 Lookups Form Custom Component
 export default function ERC721LookupsForm() {
     const tokenAddressRef = useRef<HTMLInputElement>(null);
+    const [submittedTokenAddress, setSubmittedTokenAddress] = useState<string>('');
     const tokenIDRef = useRef<HTMLInputElement>(null);
+    const [submittedTokenID, setSubmittedTokenID] = useState<string>('');
     const [network, updateNetwork] = useState<string>("eth");
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [tableStatus, updateTableStatus] = useState<boolean>(false);
@@ -24,6 +26,8 @@ export default function ERC721LookupsForm() {
     // Handle form submissions here
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setSubmittedTokenID(tokenIDRef.current!.value.trim());
+        setSubmittedTokenAddress(tokenAddressRef.current!.value.trim());
 
         // Handle form Submission logic here
         if (addressValidator(tokenAddressRef.current!.value.trim())){
@@ -88,11 +92,11 @@ export default function ERC721LookupsForm() {
                     </CardContent>
                 </Card>
             </div>
-            { tableStatus ? <ERC721LookupsInfoTable address={tokenAddressRef.current!.value.trim()} tokenID={tokenIDRef.current!.value.trim()} network={network} /> : null }
-            { tableStatus ? <ERC721OpenseaTokenLookupInfoTable address={tokenAddressRef.current!.value.trim()} tokenID={tokenIDRef.current!.value.trim()} network={network} /> : null }
-            { tableStatus && network === 'eth' ? <ERC721SalesLookupsInfoTable address={tokenAddressRef.current!.value.trim()} tokenID={tokenIDRef.current!.value.trim()} network={network} /> : null }
-            { tableStatus ? <ERC721TransferLookupsInfoTable address={tokenAddressRef.current!.value.trim()} tokenID={tokenIDRef.current!.value.trim()} network={network} /> : null } 
-            { tableStatus ? <ERC721RarityLookupsInfoTable address={tokenAddressRef.current!.value.trim()} tokenID={tokenIDRef.current!.value.trim()} network={network} /> : null } 
+            { tableStatus ? <ERC721LookupsInfoTable address={submittedTokenAddress} tokenID={submittedTokenID} network={network} /> : null }
+            { tableStatus ? <ERC721OpenseaTokenLookupInfoTable address={submittedTokenAddress} tokenID={submittedTokenID} network={network} /> : null }
+            { tableStatus && network === 'eth' ? <ERC721SalesLookupsInfoTable address={submittedTokenAddress} tokenID={submittedTokenID} network={network} /> : null }
+            { tableStatus ? <ERC721TransferLookupsInfoTable address={submittedTokenAddress} tokenID={submittedTokenID} network={network} /> : null } 
+            { tableStatus ? <ERC721RarityLookupsInfoTable address={submittedTokenAddress} tokenID={submittedTokenID} network={network} /> : null } 
         </>
     )
 }

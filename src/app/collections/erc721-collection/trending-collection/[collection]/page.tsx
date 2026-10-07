@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import ERC721CollectionAttributeSummaryInfoTable from "@/app/components/ERC721CollectionAttributeSummaryInfoTable";
 import ERC721CollectionDataInfoTable from "@/app/components/ERC721CollectionDataInfoTable";
 import ERC721CollectionExtraDataInfoTable from "@/app/components/ERC721CollectionExtraDataInfoTable";
@@ -41,7 +42,7 @@ export default async function TrendingCollectionsPage({ params }: { params: Prom
         )
     }   
     else {
-        // Collection ID is not valid, therefore return the error page
-        throw new Error();
+        // Collection ID is not valid, therefore return the not found page
+        notFound();
     }
 }
