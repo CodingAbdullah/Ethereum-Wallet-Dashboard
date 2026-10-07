@@ -6,9 +6,12 @@ export const NavbarLinks: NavbarLinkObject[] = [
         name: 'Extra Data',
         dropdown: [
             { name: 'DeFi Overview', href: '/defi' },
+            { name: 'Derivatives', href: '/derivatives' },
             { name: 'EIP Protocols', href: '/eip-protocols' },
             { name: 'Feedback', href: '/feedback' },
+            { name: 'Governance', href: '/governance' },
             { name: 'Market Insights', href: '/market-insights' },
+            { name: 'MEV', href: '/mev' },
             { name: 'My Dashboard', href: '/me' },
             { name: 'N8N Workflows', href: '/n8n-workflows' },
             { name: 'Staking/Validators', href: '/staking' },

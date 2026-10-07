@@ -391,9 +391,9 @@ Approvals, DeFi positions and the activity feed load separately from the portfol
 | `/eth-supply` ✅ | RPC + Beacon API + CoinGecko | ETH burnt over the last ~24h (measured from fee history, incl. blob fees) vs. estimated issuance, net change and yearly rate |
 | `/blobs` ✅ | RPC | Blob usage, blob base fee and fees burnt over ~24h, and which rollups posted blobs in the latest blocks (no Blobscan needed) |
 | `/staking` (expanded) | Beacon API, on-chain reads, Lido API | More LSTs, restaking, staking ratio |
-| `/derivatives` | Deribit / OKX / Bybit public APIs | ETH funding rates, open interest, options volume |
-| `/mev` | Flashbots relay data API | Relay and builder share, MEV-boost payloads |
-| `/governance` | Snapshot, Tally | Active proposals for major protocols |
+| `/derivatives` ✅ | Deribit / OKX / Bybit public APIs | ETH perpetual funding (8h and annualized), open interest and volume per exchange; Deribit options open interest, volume, put/call ratio and largest expiries. Exchanges that block the server's region show as unavailable |
+| `/mev` ✅ | Relay data API (Flashbots, Ultra Sound, Agnostic, Titan, Aestus) | Share of blocks via MEV-Boost, relay and builder share, payments to proposers, recent MEV-Boost blocks |
+| `/governance` ✅ | Snapshot | Active and recently closed votes for ~20 major DAOs, with leading choice and quorum (Tally's on-chain votes need a key; not added) |
 | Risk badges (site-wide) | GoPlus | Honeypot and scam-token flags on holdings and lookups |
 | Address labels ✅ | Curated list (`src/lib/labels.ts`) | Names for well-known mainnet addresses on explorer pages, approvals and blob posters |
 | `/eip-protocols` (rebuilt) | GitHub `ethereum/EIPs` | Live EIP status and upcoming-upgrade tracker |
