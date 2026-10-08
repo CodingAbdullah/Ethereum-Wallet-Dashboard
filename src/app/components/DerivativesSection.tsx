@@ -1,7 +1,5 @@
 'use client';
 
-import useSWR from 'swr';
-import GenericFetcher from '../utils/functions/GenericFetcher';
 import Panel from './DashboardPanel';
 import StatTile from './StatTile';
 import { usdCompact } from './ValueLineChart';
@@ -12,11 +10,8 @@ const pct = (fraction: number | null, digits = 4) => fraction === null ? '—' :
 const signedClass = (v: number | null) => v === null ? 'text-gray-500' : v >= 0 ? 'text-green-400' : 'text-red-400';
 const usd = (v: number | null) => v === null ? '—' : usdCompact(v);
 
-export default function DerivativesSection() {
-    const { data, error, isLoading } = useSWR<Derivatives>('/api/derivatives', GenericFetcher, { revalidateOnFocus: false, refreshInterval: 120000 });
-
-    if (isLoading) return <p className="text-center text-gray-400">Loading derivatives data…</p>;
-    if (error || !data) return <p className="text-center text-red-400">Could not load derivatives data. Please try again later.</p>;
+// Rendered with data loaded on the server (see ServerSection)
+export default function DerivativesSection({ data }: { data: Derivatives }) {
 
     const options = 'data' in data.options ? data.options.data : null;
 

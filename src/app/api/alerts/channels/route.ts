@@ -9,8 +9,8 @@ import { createChannel, deleteChannel, listChannels } from "@/lib/alerts/account
 export const dynamic = 'force-dynamic';
 
 const newChannelBody = z.object({
-    kind: z.enum(['telegram', 'discord', 'email']),
-    target: z.string().trim().max(300).optional(),
+    kind: z.enum(['telegram', 'discord', 'email', 'webpush']),
+    target: z.string().trim().max(1500).optional(),          // a browser push subscription is JSON, up to ~1 KB
     label: z.string().trim().max(40, 'Label must be 40 characters or fewer').optional()
 });
 const idBody = z.object({ id: z.number().int().positive() });

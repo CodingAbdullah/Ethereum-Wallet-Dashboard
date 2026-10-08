@@ -1,4 +1,6 @@
 import GovernanceSection from "../components/GovernanceSection";
+import ServerSection from "../components/ServerSection";
+import { getGovernance } from "@/lib/governance";
 import type { Metadata } from "next";
 
 // Custom Metadata for SEO
@@ -21,7 +23,9 @@ export default function Page() {
             <p className="text-xl text-gray-400 mb-12 text-center">
                 What the major DAOs are voting on
             </p>
-            <GovernanceSection />
+            <ServerSection load={getGovernance} loading="Loading proposals…" failed="Could not load proposals. Please try again later.">
+                {data => <GovernanceSection data={data} />}
+            </ServerSection>
         </div>
     )
 }

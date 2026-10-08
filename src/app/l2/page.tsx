@@ -1,4 +1,6 @@
 import L2OverviewSection from "../components/L2OverviewSection";
+import ServerSection from "../components/ServerSection";
+import { getL2Overview } from "@/lib/l2";
 import type { Metadata } from "next";
 
 // Custom Metadata for SEO
@@ -21,7 +23,9 @@ export default function L2Page() {
             <p className="text-xl text-gray-400 mb-12 text-center">
                 How Ethereum&apos;s rollups compare
             </p>
-            <L2OverviewSection />
+            <ServerSection load={getL2Overview} loading="Loading layer 2 data…" failed="Could not load layer 2 data. Please try again later.">
+                {data => <L2OverviewSection data={data} />}
+            </ServerSection>
         </div>
     )
 }

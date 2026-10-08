@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from './ui/alert';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import SignInGate, { buttonClass, Panel } from './SignInGate';
+import { track } from '@/lib/analytics';
 
 interface ApiKeyRow { id: number; name: string; prefix: string; createdAt: string; lastUsedAt: string | null; usedToday: number; dailyLimit: number }
 
@@ -78,6 +79,7 @@ function KeysManager() {
         setBusy(false);
         if (!response.ok) return setFormError(data.issues?.join(', ') || data.error || 'Could not create the key');
         setNewKey(data.key);
+        track('api_key_created');
         setName('');
         mutate('/api/keys');
     };

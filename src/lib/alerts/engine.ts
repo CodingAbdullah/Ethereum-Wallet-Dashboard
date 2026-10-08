@@ -3,7 +3,7 @@ import type { Database } from "../db";
 import { alertEvents, alertSubscriptions, notificationChannels, type AlertSubscription, type NotificationChannel } from "../db/schema";
 import { alertKind, type Trigger } from "./kinds";
 import { liveData, memoize, type AlertData } from "./data";
-import { deliver, type ChannelKind } from "./deliver";
+import { deliver, PushGoneError, type ChannelKind } from "./deliver";
 
 // Runs one alert type for every subscriber: check, save the checker's state, record what fired
 // (the unique dedupe index stops anything being sent twice), then deliver it.
@@ -61,6 +61,11 @@ export async function fire(db: Database, sub: ActiveSubscription, triggers: Trig
         }
         catch (err) {
             deliveryError = err instanceof Error ? err.message.slice(0, 500) : 'Delivery failed';
+            // A browser that unsubscribed won't come back: stop sending to it until it's added again
+            if (err instanceof PushGoneError) {
+                await db.update(notificationChannels).set({ verified: false }).where(eq(notificationChannels.id, sub.channel.id));
+                sub.channel.verified = false;
+            }
         }
         await db.update(alertEvents).set({ delivered: !deliveryError, deliveryError }).where(eq(alertEvents.id, event.id));
     }

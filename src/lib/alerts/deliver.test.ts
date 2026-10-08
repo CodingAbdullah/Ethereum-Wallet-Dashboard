@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { deliver, isDiscordWebhook, isEmail, plainText } from "./deliver";
+import { testPushSubscription, testVapidEnv } from "@/test/push";
+import { deliver, isDiscordWebhook, isEmail, parsePushTarget, plainText, PushGoneError, pushTargetJson } from "./deliver";
 import { verifySignature } from "./signing";
 
 const ok = () => vi.fn<typeof fetch>(async () => new Response('{}', { status: 200 }));
@@ -53,5 +54,47 @@ describe("validation", () => {
 
     it("keeps messages plain and within size limits", () => {
         expect(plainText({ channel: { kind: 'email', target: '' }, title: 'T', message: 'x'.repeat(5000) }).length).toBe(3500);
+    });
+});
+
+describe("browser push", () => {
+    const sub = testPushSubscription();
+    const env = testVapidEnv();
+    const push = { channel: { kind: 'webpush' as const, target: JSON.stringify(sub) }, title: 'Gas is low', message: 'Base fee is 0.4 gwei', url: 'https://ethereumdashboard.dev/gas-tracker', eventId: 7 };
+
+    it("sends an encrypted, VAPID-signed message straight to the push service, even with n8n set up", async () => {
+        const fetcher = ok();
+        expect(await deliver(push, { ...env, N8N_WEBHOOK_URL: 'https://n8n.example/x', N8N_WEBHOOK_SECRET: 's' }, fetcher)).toBe('direct');
+        const [url, init] = fetcher.mock.calls[0];
+        expect(String(url)).toBe(sub.endpoint);
+        const headers = init!.headers as Record<string, string>;
+        expect(headers.Authorization).toMatch(new RegExp(`^vapid t=[\\w-]+\\.[\\w-]+\\.[\\w-]+, k=${env.NEXT_PUBLIC_VAPID_PUBLIC_KEY}$`));
+        expect(headers['Content-Encoding']).toBe('aes128gcm');
+        expect(headers.TTL).toBe('86400');
+        // Encrypted: the text isn't readable on the wire
+        const body = init!.body as Uint8Array;
+        expect(body.byteLength).toBeGreaterThan(50);
+        expect(Buffer.from(body).toString()).not.toContain('Gas is low');
+    });
+
+    it("reports a subscription the browser dropped, and needs the VAPID keys", async () => {
+        const gone = vi.fn<typeof fetch>(async () => new Response('', { status: 410 }));
+        await expect(deliver(push, env, gone)).rejects.toBeInstanceOf(PushGoneError);
+        await expect(deliver(push, env, vi.fn<typeof fetch>(async () => new Response('', { status: 500 })))).rejects.toThrow('fcm.googleapis.com responded with 500');
+        await expect(deliver(push, {}, ok())).rejects.toThrow('VAPID_PRIVATE_KEY');
+    });
+
+    it("accepts only well-formed subscriptions on known push services", () => {
+        expect(parsePushTarget(JSON.stringify({ ...sub, expirationTime: null, extra: 1 }))).toEqual(sub);
+        expect(pushTargetJson(parsePushTarget(JSON.stringify(sub))!)).toBe(JSON.stringify(sub));
+        for (const endpoint of ['https://updates.push.services.mozilla.com/wpush/v2/x', 'https://web.push.apple.com/abc', 'https://wns2-par02p.notify.windows.com/w/?token=x']) {
+            expect(parsePushTarget(JSON.stringify({ ...sub, endpoint }))).not.toBeNull();
+        }
+        // The server POSTs to the endpoint, so internal or arbitrary hosts are refused
+        for (const endpoint of ['http://fcm.googleapis.com/fcm/send/x', 'https://169.254.169.254/latest', 'https://evil.example/push', 'https://fcm.googleapis.com:8443/x', 'https://fcm.googleapis.com.evil.example/x']) {
+            expect(parsePushTarget(JSON.stringify({ ...sub, endpoint }))).toBeNull();
+        }
+        expect(parsePushTarget(JSON.stringify({ endpoint: sub.endpoint, keys: { p256dh: 'short', auth: sub.keys.auth } }))).toBeNull();
+        expect(parsePushTarget('not json')).toBeNull();
     });
 });

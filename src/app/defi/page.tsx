@@ -1,4 +1,6 @@
 import DefiOverviewSection from "../components/DefiOverviewSection";
+import ServerSection from "../components/ServerSection";
+import { getDefiOverview } from "@/lib/defi";
 import type { Metadata } from "next";
 
 // Custom Metadata for SEO
@@ -21,7 +23,9 @@ export default function DefiPage() {
             <p className="text-xl text-gray-400 mb-12 text-center">
                 Where the money is across decentralized finance
             </p>
-            <DefiOverviewSection />
+            <ServerSection load={getDefiOverview} loading="Loading DeFi data…" failed="Could not load DeFi data. Please try again later.">
+                {data => <DefiOverviewSection data={data} />}
+            </ServerSection>
         </div>
     )
 }

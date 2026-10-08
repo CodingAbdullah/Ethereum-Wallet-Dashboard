@@ -4,7 +4,7 @@ import { HttpError } from "../api/errors";
 import type { Database } from "../db";
 import { alertEvents, alertSubscriptions, notificationChannels, users, type NotificationChannel } from "../db/schema";
 import { alertKind } from "./kinds";
-import { deliver, deliverDirect, isDiscordWebhook, isEmail, type ChannelKind } from "./deliver";
+import { deliver, deliverDirect, isDiscordWebhook, isEmail, parsePushTarget, PushGoneError, pushTargetJson, webPushConfigured, type ChannelKind } from "./deliver";
 import { REALTIME_KINDS, unwatchAddresses, watchAddresses } from "./streams";
 import { LINK_TOKEN_TTL_MS, telegramLink } from "./telegram";
 
@@ -28,7 +28,18 @@ function display(c: NotificationChannel): string {
     if (!c.target) return c.kind === 'telegram' ? 'Waiting for you to press Start in Telegram' : '';
     if (c.kind === 'discord') return 'Discord webhook …' + c.target.slice(-6);
     if (c.kind === 'telegram') return 'Telegram chat';
+    // The endpoint is a secret too: show only which browser's push service it uses
+    if (c.kind === 'webpush') return c.verified ? `Notifications in this browser (${pushService(c.target)})` : 'This browser stopped accepting notifications. Remove it and add it again.';
     return c.target;
+}
+
+function pushService(target: string): string {
+    const host = parsePushTarget(target) ? new URL(parsePushTarget(target)!.endpoint).hostname : '';
+    if (host.endsWith('googleapis.com')) return 'Chrome, Edge or Brave';
+    if (host.endsWith('mozilla.com')) return 'Firefox';
+    if (host.endsWith('apple.com')) return 'Safari';
+    if (host.endsWith('windows.com')) return 'Windows';
+    return 'browser';
 }
 
 const toPublic = (c: NotificationChannel): PublicChannel => ({ id: c.id, kind: c.kind as ChannelKind, label: c.label, verified: c.verified, display: display(c), createdAt: c.createdAt });
@@ -41,14 +52,19 @@ export async function listChannels(db: Database, user: string): Promise<PublicCh
 export interface NewChannel { kind: ChannelKind; target?: string; label?: string }
 
 // Telegram: pending until the user presses Start (returns the link). Discord: a test message must go through.
-// Email: pending until the link in the verification email is opened.
+// Email: pending until the link in the verification email is opened. Browser push: a test notification must go through.
 export async function createChannel(db: Database, user: string, input: NewChannel, origin: string, deps: AlertDeps = {}): Promise<{ channel: PublicChannel; link?: string }> {
     const env = deps.env ?? process.env;
     const [{ total }] = await db.select({ total: count() }).from(notificationChannels).where(eq(notificationChannels.userAddress, user));
     if (total >= MAX_CHANNELS) throw new HttpError(409, `You can add up to ${MAX_CHANNELS} channels`);
     await db.insert(users).values({ address: user }).onConflictDoNothing();
     const label = input.label?.trim() || null;
-    const target = input.target?.trim() ?? '';
+    let target = input.target?.trim() ?? '';
+    if (input.kind === 'webpush') {
+        const push = parsePushTarget(target);
+        if (!push) throw new HttpError(400, 'Your browser sent an invalid push subscription. Try again, or use another browser.');
+        target = pushTargetJson(push);
+    }
 
     if (target && (await db.select({ id: notificationChannels.id }).from(notificationChannels)
         .where(and(eq(notificationChannels.userAddress, user), eq(notificationChannels.kind, input.kind), eq(notificationChannels.target, target)))).length > 0) {
@@ -71,6 +87,18 @@ export async function createChannel(db: Database, user: string, input: NewChanne
             throw new HttpError(400, "Discord didn't accept a message on that webhook. Check the URL and try again.");
         }
         const [row] = await db.insert(notificationChannels).values({ userAddress: user, kind: 'discord', target, label, verified: true }).returning();
+        return { channel: toPublic(row) };
+    }
+
+    if (input.kind === 'webpush') {
+        if (!webPushConfigured(env)) throw new HttpError(503, 'Browser notifications are not configured on this server');
+        try {
+            await deliverDirect({ channel: { kind: 'webpush', target }, title: 'Ethereum Dashboard alerts', message: 'Notifications are on. Your alerts will appear like this.', url: `${origin}/alerts` }, env, deps.fetcher);
+        }
+        catch (err) {
+            throw new HttpError(400, err instanceof PushGoneError ? 'Your browser rejected the subscription. Allow notifications and try again.' : "Couldn't send a test notification to this browser. Try again later.");
+        }
+        const [row] = await db.insert(notificationChannels).values({ userAddress: user, kind: 'webpush', target, label, verified: true }).returning();
         return { channel: toPublic(row) };
     }
 
@@ -141,6 +169,7 @@ export async function sendTestAlert(db: Database, user: string, channelId: numbe
         await deliver({ channel: { kind: channel.kind as ChannelKind, target: channel.target }, title: 'Test alert', message: 'Alerts from Ethereum Dashboard will look like this.', url: 'https://ethereumdashboard.dev/alerts' }, deps.env, deps.fetcher);
     }
     catch (err) {
+        if (err instanceof PushGoneError) await db.update(notificationChannels).set({ verified: false }).where(eq(notificationChannels.id, channel.id));
         throw new HttpError(502, 'The test alert could not be delivered: ' + (err instanceof Error ? err.message : 'unknown error'));
     }
 }

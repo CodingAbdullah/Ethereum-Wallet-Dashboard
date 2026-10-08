@@ -4,8 +4,9 @@ import { createRateLimiter } from "./lib/rateLimit";
 // Protects the /api routes that spend provider quotas:
 // 1. Rejects cross-site browser requests, so other websites can't use this app as a free proxy
 // 2. Applies a per-IP rate limit (shared through Upstash Redis when configured, see src/lib/rateLimit.ts).
-//    Webhooks, scheduled jobs and the MCP server are skipped: they check their own signature, secret or
-//    API key (with a per-key quota), and their callers (Moralis, Telegram, MCP clients) share a few IPs.
+//    Webhooks, scheduled jobs, the MCP server and the REST API are skipped: they check their own signature,
+//    secret or API key (with a per-key quota), and their callers (Moralis, Telegram, MCP clients) share a few IPs.
+// The OpenAPI document spends nothing, so any site (e.g. an API explorer) may fetch it.
 
 const rateLimiter = createRateLimiter();
 
@@ -29,10 +30,11 @@ export function isCrossSite(request: NextRequest): boolean {
 }
 
 export function skipsIpRateLimit(pathname: string): boolean {
-    return pathname.startsWith('/api/webhooks/') || pathname.startsWith('/api/cron/') || pathname === '/api/mcp';
+    return pathname.startsWith('/api/webhooks/') || pathname.startsWith('/api/cron/') || pathname === '/api/mcp' || pathname.startsWith('/api/v1/tools/');
 }
 
 export async function proxy(request: NextRequest) {
+    if (request.nextUrl.pathname === '/api/openapi.json') return NextResponse.next();
     if (isCrossSite(request)) {
         return NextResponse.json({ error: 'Cross-site requests are not allowed' }, { status: 403 });
     }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import McpSection from "../components/McpSection";
 import { TOOLS } from "@/lib/tools";
 
@@ -21,7 +22,7 @@ export default function McpPage() {
             <section className="container mx-auto px-4 w-full max-w-5xl mt-8">
                 <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
                     <h2 className="text-2xl font-bold text-gray-100 mb-1">Tools</h2>
-                    <p className="text-gray-400 mb-6">{TOOLS.length} read-only tools. They can look things up but never sign or send transactions.</p>
+                    <p className="text-gray-400 mb-6">{TOOLS.length} read-only tools. They can look things up but never sign or send transactions. The same tools and keys work over plain HTTP: see the <Link href="/docs" className="underline">API docs</Link>.</p>
                     <dl className="grid gap-4 sm:grid-cols-2">
                         {TOOLS.map(t => (
                             <div key={t.name} className="min-w-0">

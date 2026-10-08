@@ -3,6 +3,8 @@ import StakingWebsiteSection from "../components/StakingWebsitesSection";
 import LiquidStakingInfoTable from "../components/LiquidStakingInfoTable";
 import ValidatorQueueInfoTable from "../components/ValidatorQueueInfoTable";
 import StakingOverviewSection from "../components/StakingOverviewSection";
+import ServerSection from "../components/ServerSection";
+import { getStakingOverview } from "@/lib/stakingOverview";
 import type { Metadata } from "next"
 
 // Custom Metadata for SEO
@@ -25,7 +27,9 @@ export default function StakingPage() {
             <p className="text-xl text-gray-400 mb-12 text-center">
                 <i>How much ETH is staked, what it earns, and where it&apos;s staked.</i>
             </p>
-            <StakingOverviewSection />
+            <ServerSection load={getStakingOverview} loading="Loading staking overview…" failed="Could not load the staking overview.">
+                {data => <StakingOverviewSection data={data} />}
+            </ServerSection>
             <RocketPoolStatsInfoTable />
             <LiquidStakingInfoTable />
             <ValidatorQueueInfoTable />

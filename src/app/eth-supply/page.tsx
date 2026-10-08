@@ -1,4 +1,6 @@
 import EthSupplySection from "../components/EthSupplySection";
+import ServerSection from "../components/ServerSection";
+import { getEthSupply } from "@/lib/ethSupply";
 import type { Metadata } from "next";
 
 // Custom Metadata for SEO
@@ -21,7 +23,9 @@ export default function Page() {
             <p className="text-xl text-gray-400 mb-12 text-center">
                 ETH burnt by fees vs. ETH issued to stakers
             </p>
-            <EthSupplySection />
+            <ServerSection load={getEthSupply} loading="Measuring the last day of blocks…" failed="Could not load supply data. Please try again later.">
+                {data => <EthSupplySection data={data} />}
+            </ServerSection>
         </div>
     )
 }

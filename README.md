@@ -25,7 +25,7 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
    - [Phase 3: Real-Time & n8n Automations](#phase-3-real-time--n8n-automations-done)
    - [Phase 4: AI Layer (MCP Server + Agent)](#phase-4-ai-layer--mcp-server--agent-done)
    - [Phase 5: On-Chain Actions](#phase-5-on-chain-actions-done)
-   - [Phase 6: Polish & Growth](#phase-6-polish--growth-ongoing)
+   - [Phase 6: Polish & Growth](#phase-6-polish--growth-done)
 10. [Target Architecture](#️-target-architecture)
 11. [Environment Variables](#-environment-variables)
 12. [Timeline](#️-timeline)
@@ -51,6 +51,7 @@ Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one
 - **AI Market Insights:** Hourly AI-generated market commentary from market, DeFi, derivatives and staking data.
 - **Ask ETH Dashboard:** A chat assistant on every page that looks up live data with read-only tools and knows your connected wallet. **Explain** buttons on transaction, contract and token pages.
 - **MCP server (`/mcp`):** Use the dashboard's 20 read-only tools from Claude, Cursor or any MCP client, with a personal API key.
+- **REST API & docs (`/docs`):** The same tools over plain HTTP (`POST /api/v1/tools/{name}`) with the same keys, an OpenAPI 3.1 spec at `/api/openapi.json`, and a reference page generated from the Zod schemas.
 
 ### On-Chain Actions
 Every action is simulated (`eth_simulateV1`) and previewed in plain English, with balance changes, the network fee and security warnings, before your own wallet signs it. The site never holds keys.
@@ -72,8 +73,10 @@ Every action is simulated (`eth_simulateV1`) and previewed in plain English, wit
 - **ETH Supply & Blobs:** ETH burnt vs. issued over the last day, and blob usage, fees and posters.
 - **MEV & Governance:** MEV-Boost relay and builder share; active Snapshot votes for major DAOs.
 - **Global search:** Cmd+K (or Ctrl+K) from any page.
-- **Alerts (`/alerts`):** Ten alert types (wallet activity, gas, prices, validators, risky approvals, NFT floors, ENS expiry, depegs, governance and a daily market digest) sent to Telegram, Discord or email, with alert history. Scheduled by n8n; wallet alerts can arrive within a block through Moralis Streams.
+- **Alerts (`/alerts`):** Ten alert types (wallet activity, gas, prices, validators, risky approvals, NFT floors, ENS expiry, depegs, governance and a daily market digest) sent to Telegram, Discord, email or as browser notifications, with alert history. Scheduled by n8n; wallet alerts can arrive within a block through Moralis Streams.
 - **n8n Workflows:** Every live alert workflow with a Subscribe button; the workflow exports live in [`/n8n`](n8n/README.md).
+- **Installable app:** Add to Home Screen / Install app, with an offline page and push notifications for alerts and confirmed transactions.
+- **Share cards:** Link previews with live data for transaction, address and token pages.
 - **Live block ticker:** Block number, age, base fee and fullness in the metrics bar, streamed from the server; pending transactions update when mined.
 
 ### Networks
@@ -151,7 +154,8 @@ Every action is simulated (`eth_simulateV1`) and previewed in plain English, wit
 - **Vitest** for unit tests
 - **Sentry** for error monitoring and **Upstash Redis** for rate limiting (both optional, free tiers)
 - **Lucide React** / **Font Awesome** icons
-- **Vercel** hosting and **Vercel Analytics**
+- **Vercel** hosting and **Vercel Analytics**; **Umami** and optional **PostHog** for product analytics
+- **Playwright** end-to-end tests on local **Anvil** chains; **web-push** for browser notifications
 
 ---
 
@@ -187,11 +191,14 @@ Every action is simulated (`eth_simulateV1`) and previewed in plain English, wit
    npm run lint       # ESLint
    npm run typecheck  # TypeScript, no emit
    npm test           # Vitest unit tests
+   npm run test:e2e   # Playwright end-to-end tests (needs npm run build and Foundry's anvil)
    npm run db:generate  # create a migration after changing src/lib/db/schema.ts
    npm run db:migrate   # apply migrations (needs DATABASE_URL in the environment)
    ```
 
-CI (`.github/workflows/ci.yml`) runs lint, typecheck, unit tests and build on every pull request.
+CI (`.github/workflows/ci.yml`) runs lint, typecheck, unit tests and build on every pull request, and the end-to-end tests in a separate job.
+
+End-to-end tests start their own local chains, so they need no keys or network. Install [Foundry](https://getfoundry.sh) (or point `ANVIL_BIN` at an `anvil` binary) and Playwright's Chromium (`npx playwright install chromium`, or set `PW_CHROMIUM_PATH`).
 
 ---
 
@@ -206,6 +213,8 @@ src/
 │   │   └── ui/              # shadcn/ui primitives
 │   ├── hooks/               # useConnectedAddress / usePrefillAddress, useSession (sign-in)
 │   ├── me/page.tsx          # My Dashboard (saved wallets)
+│   ├── docs/page.tsx        # API reference (generated from the tool registry)
+│   ├── manifest.ts          # Web app manifest (installable app)
 │   ├── providers.tsx        # wagmi + TanStack Query providers
 │   ├── utils/
 │   │   ├── constants/       # Links, lists, prompts
@@ -226,11 +235,16 @@ src/
 │   ├── ens.ts               # ENS resolution helpers (viem)
 │   ├── ensHoldings.ts       # .eth names owned by an address, with expiry details
 │   ├── rateLimit.ts         # Per-IP rate limit (Upstash Redis, or in-memory fallback)
-│   └── staking.ts           # Rocket Pool and liquid staking contract reads
+│   ├── staking.ts           # Rocket Pool and liquid staking contract reads
+│   ├── openapi.ts           # OpenAPI document for the REST API
+│   ├── pwa.ts               # Service worker registration and browser push subscription
+│   └── analytics.ts         # Privacy-safe product events (Umami, optional PostHog)
 ├── test/                    # Test helpers and sample provider responses
 ├── instrumentation.ts         # Sentry setup for the server (no-op without a DSN)
 ├── instrumentation-client.ts  # Sentry setup for the browser (no-op without a DSN)
 └── proxy.ts                 # Blocks cross-site /api calls and rate-limits per IP
+e2e/                         # Playwright tests, local Anvil chains (chain.ts) and test contracts
+public/sw.js                 # Service worker: offline page and alert notifications
 
 Unit tests (`*.test.ts`) sit next to the code they test.
 ```
@@ -551,14 +565,14 @@ The assistant points people to these pages when they want to make a transaction,
 
 ---
 
-### Phase 6: Polish & Growth (ongoing)
+### Phase 6: Polish & Growth (done)
 
-- [ ] **Performance:** server components for read-only pages, `Suspense` streaming, SWR only where data must update live.
-- [ ] **Mobile & PWA:** installable app with web push as another alert channel.
-- [ ] **SEO:** dynamic Open Graph images for address, token and transaction pages; sitemap.
-- [ ] **Product analytics:** PostHog free tier funnels (connect → sign in → alert created), alongside Umami and Vercel Analytics.
-- [ ] **Docs:** `/docs` with a public API reference generated from the Zod schemas.
-- [ ] **End-to-end tests:** Playwright runs of the main flows (lookup, connect, alert, revoke) against a mainnet fork using Anvil.
+- [x] **End-to-end tests:** Playwright runs the main flows (lookup, connect, revoke, swap, send, wrap, contract calls, alerts, PWA) on desktop and a phone viewport, against two local Anvil chains with the same chain IDs as Ethereum and Base. `e2e/chain.ts` deploys test tokens, WETH and the official Uniswap v3 contracts (from their npm builds) at the real addresses, so nothing touches a real network and the runs are deterministic. A test wallet (EIP-6963) signs through Anvil. Runs in CI as its own job.
+- [x] **SEO:** `sitemap.xml` and `robots.txt` from the site map; dynamic Open Graph images for transaction, address and token pages (live data with a 3-second fallback); a title template and share metadata.
+- [x] **Performance:** read-only pages (governance, L2s, DeFi, ETH supply, staking, blobs, MEV, derivatives and the homepage cards) load on the server and stream in with `Suspense`; SWR stays only where data updates live.
+- [x] **Mobile & PWA:** installable (web manifest, icons, service worker with an offline page; data is never cached). **Browser push** is a fourth alert channel: Web Push with free VAPID keys, sent straight from the server (never through n8n), limited to the browsers' push services, and switched off automatically when a browser unsubscribes. A notification also appears when a transaction confirms while the tab is in the background.
+- [x] **Docs:** `/docs` and `/api/openapi.json` (OpenAPI 3.1) generated from the tool registry's Zod schemas, plus a REST API (`POST /api/v1/tools/{name}`) that shares the MCP server's API keys and daily quota.
+- [x] **Product analytics:** a few named events (wallet connected, signed in, channel added, alert created, transaction previewed / confirmed / failed, assistant question, API key created, app installed) sent to Umami and, when `NEXT_PUBLIC_POSTHOG_KEY` is set, to PostHog's free tier for funnels. Privacy first: no addresses, hashes, amounts or free text (only short labels pass a filter), addresses and hashes are stripped from page URLs, and PostHog runs cookieless with no autocapture, recordings or person profiles. Vercel Analytics keeps counting page views.
 
 ---
 
@@ -582,10 +596,11 @@ The assistant points people to these pages when they want to make a transaction,
   Free plans: CoinGecko Demo · Moralis · Etherscan · OpenSea · Ethplorer
   Keyless:    Ethereum RPC · Beacon API · Coinbase · Lido · DefiLlama
               L2BEAT · Blobscan · Snapshot · Deribit/OKX · Flashbots relays
-  Free tiers: GoPlus · Groq · Resend · Neon · Upstash · Sentry · Reown
+  Free tiers: GoPlus · Groq · Resend · Neon · Upstash · Sentry · Reown · PostHog (optional)
 
   Neon Postgres (users, wallets, watchlists, alerts, snapshots, API keys)
   Moralis Streams / n8n schedule ──▶ alert engine ──▶ n8n ──▶ Email · Telegram · Discord
+                                           └──▶ Web Push (browsers, sent directly)
 ```
 
 ---
@@ -608,6 +623,7 @@ All current variables are in `.env.example`:
 | `AGENT_MODEL` | No (defaults to `llama-3.3-70b-versatile`) | Any Groq model with tool calling |
 | `RESEND_API_KEY`, `PERSONAL_EMAIL` | For the feedback form | Resend free tier |
 | `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | Recommended in production | Upstash Redis free tier |
+| `API_RATE_LIMIT` | No (defaults to 120 requests per IP per minute) | — |
 | `NEXT_PUBLIC_SENTRY_DSN` | Recommended in production | Sentry free Developer plan |
 | `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT` | No (source map upload only) | Sentry |
 | `UMAMI_URL`, `UMAMI_DATA_WEBSITE_ID` | No | Umami |
@@ -615,11 +631,12 @@ All current variables are in `.env.example`:
 | `DATABASE_URL` | For accounts and `/me` (Phase 1) | Neon free tier |
 | `AUTH_SECRET` | For sign-in (Phase 1) | Any random string of 32+ characters (`openssl rand -base64 32`) |
 | `CRON_SECRET` | For daily portfolio snapshots | Any random string; Vercel sends it to cron jobs |
-
 | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_BOT_USERNAME`, `TELEGRAM_WEBHOOK_SECRET` | For Telegram alerts (Phase 3) | Bot from @BotFather; any random secret |
 | `ALERTS_FROM_EMAIL` | For email alerts (Phase 3) | A sender on a domain verified in Resend |
 | `N8N_WEBHOOK_URL`, `N8N_WEBHOOK_SECRET` | No (the app delivers alerts itself without them) | Self-hosted n8n Community Edition |
 | `MORALIS_STREAM_ID`, `MORALIS_STREAMS_SECRET` | No (wallet alerts are polled without them) | Moralis Streams, free plan |
+| `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | For browser notification alerts (Phase 6) | Free: `npx web-push generate-vapid-keys` |
+| `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST` | No (product analytics funnels) | PostHog free tier |
 
 Alert checks are run by n8n calling `/api/cron/alerts/<type>` with `CRON_SECRET`; see [`n8n/README.md`](n8n/README.md) for the full setup.
 
@@ -635,7 +652,7 @@ Alert checks are run by n8n calling `/api/cron/alerts/<type>` with `CRON_SECRET`
 | 3: Real-time & n8n automations | 2 weeks | Done |
 | 4: AI layer (MCP + agent) | 2 weeks | Done |
 | 5: On-chain actions | 2–3 weeks | Done |
-| 6: Polish & growth | Ongoing | Next |
+| 6: Polish & growth | 2 weeks | Done |
 
 ---
 

@@ -1,4 +1,6 @@
 import DerivativesSection from "../components/DerivativesSection";
+import ServerSection from "../components/ServerSection";
+import { getDerivatives } from "@/lib/derivatives";
 import type { Metadata } from "next";
 
 // Custom Metadata for SEO
@@ -21,7 +23,9 @@ export default function Page() {
             <p className="text-xl text-gray-400 mb-12 text-center">
                 Funding, open interest and options
             </p>
-            <DerivativesSection />
+            <ServerSection load={getDerivatives} loading="Loading derivatives data…" failed="Could not load derivatives data. Please try again later.">
+                {data => <DerivativesSection data={data} />}
+            </ServerSection>
         </div>
     )
 }

@@ -1,4 +1,6 @@
 import MevSection from "../components/MevSection";
+import ServerSection from "../components/ServerSection";
+import { getMev } from "@/lib/mev";
 import type { Metadata } from "next";
 
 // Custom Metadata for SEO
@@ -21,7 +23,9 @@ export default function Page() {
             <p className="text-xl text-gray-400 mb-12 text-center">
                 Who builds Ethereum&apos;s blocks, and what they pay
             </p>
-            <MevSection />
+            <ServerSection load={getMev} loading="Loading relay data…" failed="Could not load MEV data. Please try again later.">
+                {data => <MevSection data={data} />}
+            </ServerSection>
         </div>
     )
 }
