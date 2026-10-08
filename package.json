@@ -51,7 +51,7 @@
     "lucide-react": "^1.52.0",
     "mcp-handler": "^2.2.0",
     "next": "^16.4.0",
-    "posthog-js": "1.434.12",
+    "posthog-js": "1.435.9",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "react-hook-form": "^7.89.0",
@@ -67,7 +67,7 @@
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.5.8",
-    "@playwright/test": "^1.56.1",
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^24.19.1",
     "@types/react": "^19.3.0",
