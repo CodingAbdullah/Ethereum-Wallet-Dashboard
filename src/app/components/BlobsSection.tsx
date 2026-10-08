@@ -1,7 +1,5 @@
 'use client';
 
-import useSWR from 'swr';
-import GenericFetcher from '../utils/functions/GenericFetcher';
 import Panel from './DashboardPanel';
 import StatTile from './StatTile';
 import ValueLineChart from './ValueLineChart';
@@ -12,11 +10,8 @@ import type { BlobSummary } from '@/lib/blobs';
 
 const gwei = (v: number) => v === 0 ? '0 gwei' : v < 0.001 ? v.toExponential(1) + ' gwei' : v.toLocaleString('en-US', { maximumFractionDigits: 4 }) + ' gwei';
 
-export default function BlobsSection() {
-    const { data, error, isLoading } = useSWR<Section<BlobSummary>>('/api/blobs', GenericFetcher, { revalidateOnFocus: false, refreshInterval: 300000 });
-
-    if (isLoading) return <p className="text-center text-gray-400">Reading the last day of blocks…</p>;
-    if (error || !data) return <p className="text-center text-red-400">Could not load blob data. Please try again later.</p>;
+// Rendered with data loaded on the server (see ServerSection)
+export default function BlobsSection({ data }: { data: Section<BlobSummary> }) {
     if ('error' in data) return <p className="text-center text-red-400">{data.error}</p>;
 
     const s = data.data;

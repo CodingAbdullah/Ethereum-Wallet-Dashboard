@@ -1,8 +1,6 @@
 'use client';
 
-import useSWR from 'swr';
 import Link from 'next/link';
-import GenericFetcher from '../utils/functions/GenericFetcher';
 import Panel from './DashboardPanel';
 import { usdCompact } from './ValueLineChart';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
@@ -16,11 +14,8 @@ export function StageBadge({ stage }: { stage: string | null }) {
     return <span className="inline-block rounded border border-gray-600 px-2 py-0.5 text-xs text-gray-200 whitespace-nowrap">{stage}</span>;
 }
 
-export default function L2OverviewSection() {
-    const { data, error, isLoading } = useSWR<L2Overview>('/api/l2-overview', GenericFetcher, { revalidateOnFocus: false });
-
-    if (isLoading) return <p className="text-center text-gray-400">Loading layer 2 data…</p>;
-    if (error || !data) return <p className="text-center text-red-400">Could not load layer 2 data. Please try again later.</p>;
+// Rendered with data loaded on the server (see ServerSection)
+export default function L2OverviewSection({ data }: { data: L2Overview }) {
 
     const l2Tvl = data.rows.reduce((sum, r) => sum + (r.tvl ?? 0), 0);
 

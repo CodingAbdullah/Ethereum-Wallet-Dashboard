@@ -1,8 +1,6 @@
 'use client';
 
-import useSWR from 'swr';
 import Link from 'next/link';
-import GenericFetcher from '../utils/functions/GenericFetcher';
 import Panel from './DashboardPanel';
 import StatTile from './StatTile';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
@@ -11,11 +9,8 @@ import type { MevSummary } from '@/lib/mev';
 const ethValue = (v: number | null, digits = 4) => v === null ? '—' : v.toLocaleString('en-US', { maximumFractionDigits: digits }) + ' ETH';
 const short = (key: string) => key.slice(0, 10) + '…' + key.slice(-6);
 
-export default function MevSection() {
-    const { data, error, isLoading } = useSWR<{ data: MevSummary } | { error: string }>('/api/mev', GenericFetcher, { revalidateOnFocus: false, refreshInterval: 120000 });
-
-    if (isLoading) return <p className="text-center text-gray-400">Loading relay data…</p>;
-    if (error || !data) return <p className="text-center text-red-400">Could not load MEV data. Please try again later.</p>;
+// Rendered with data loaded on the server (see ServerSection)
+export default function MevSection({ data }: { data: { data: MevSummary } | { error: string } }) {
     if ('error' in data) return <p className="text-center text-red-400">{data.error}</p>;
 
     const s = data.data;

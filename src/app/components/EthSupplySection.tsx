@@ -1,7 +1,5 @@
 'use client';
 
-import useSWR from 'swr';
-import GenericFetcher from '../utils/functions/GenericFetcher';
 import Panel from './DashboardPanel';
 import StatTile from './StatTile';
 import ValueLineChart from './ValueLineChart';
@@ -11,11 +9,8 @@ import type { SupplySummary } from '@/lib/ethSupply';
 const eth = (value: number, digits = 2) => value.toLocaleString('en-US', { maximumFractionDigits: digits }) + ' ETH';
 const signed = (value: number, digits = 2) => (value > 0 ? '+' : '') + eth(value, digits);
 
-export default function EthSupplySection() {
-    const { data, error, isLoading } = useSWR<Section<SupplySummary>>('/api/eth-supply', GenericFetcher, { revalidateOnFocus: false, refreshInterval: 300000 });
-
-    if (isLoading) return <p className="text-center text-gray-400">Measuring the last day of blocks…</p>;
-    if (error || !data) return <p className="text-center text-red-400">Could not load supply data. Please try again later.</p>;
+// Rendered with data loaded on the server (see ServerSection)
+export default function EthSupplySection({ data }: { data: Section<SupplySummary> }) {
     if ('error' in data) return <p className="text-center text-red-400">{data.error}</p>;
 
     const s = data.data;

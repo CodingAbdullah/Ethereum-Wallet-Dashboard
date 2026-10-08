@@ -1,7 +1,5 @@
 'use client';
 
-import useSWR from 'swr';
-import GenericFetcher from '../utils/functions/GenericFetcher';
 import Panel from './DashboardPanel';
 import StatTile from './StatTile';
 import { usdCompact } from './ValueLineChart';
@@ -35,11 +33,8 @@ function ProtocolTable({ section }: { section: Section<StakingProtocol[]> }) {
 }
 
 // Staking ratio, reward rate and the liquid staking / restaking landscape
-export default function StakingOverviewSection() {
-    const { data, error, isLoading } = useSWR<StakingOverview>('/api/staking-overview', GenericFetcher, { revalidateOnFocus: false });
-
-    if (isLoading) return <p className="text-center text-gray-400">Loading staking overview…</p>;
-    if (error || !data) return <p className="text-center text-red-400">Could not load the staking overview.</p>;
+// Rendered with data loaded on the server (see ServerSection)
+export default function StakingOverviewSection({ data }: { data: StakingOverview }) {
 
     const s = data.summary;
     return (

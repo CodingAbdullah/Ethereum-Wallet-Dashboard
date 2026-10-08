@@ -2,6 +2,9 @@ import Link from 'next/link';
 import HomeSearchBox from './components/HomeSearchBox';
 import HomeStatRow from './components/HomeStatRow';
 import HomeSummaryCards from './components/HomeSummaryCards';
+import ServerSection from './components/ServerSection';
+import { getDefiOverview } from '@/lib/defi';
+import { getL2Overview } from '@/lib/l2';
 import HomePageMarketDataSection from './components/HomePageMarketDataSection';
 import HomePageGlobalMarketCapChart from './components/HomePageGlobalMarketCapChart';
 import HomePageTrendingCoinsTable from './components/HomePageTrendingCoinsTable';
@@ -34,7 +37,13 @@ export default function HomePage() {
 
       <div className="container mx-auto w-full max-w-6xl mt-10 space-y-8">
         <HomeStatRow />
-        <HomeSummaryCards />
+        <ServerSection
+          load={() => Promise.all([getDefiOverview().catch(() => null), getL2Overview().catch(() => null)])}
+          loading={<HomeSummaryCards />}
+          failed="Could not load the summaries."
+        >
+          {([defi, l2]) => <HomeSummaryCards defi={defi} l2={l2} />}
+        </ServerSection>
       </div>
 
       <hr className='mt-10 border-gray-700' />

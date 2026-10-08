@@ -1,7 +1,5 @@
 'use client';
 
-import useSWR from 'swr';
-import GenericFetcher from '../utils/functions/GenericFetcher';
 import Panel from './DashboardPanel';
 import ValueLineChart, { usdCompact } from './ValueLineChart';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
@@ -30,11 +28,8 @@ function SectionBody<T>({ section, children }: { section: Section<T>; children: 
 const head = "text-gray-300";
 const right = "text-right tabular-nums";
 
-export default function DefiOverviewSection() {
-    const { data, error, isLoading } = useSWR<DefiOverview>('/api/defi-overview', GenericFetcher, { revalidateOnFocus: false, refreshInterval: 600000 });
-
-    if (isLoading) return <p className="text-center text-gray-400">Loading DeFi data…</p>;
-    if (error || !data) return <p className="text-center text-red-400">Could not load DeFi data. Please try again later.</p>;
+// Rendered with data loaded on the server (see ServerSection)
+export default function DefiOverviewSection({ data }: { data: DefiOverview }) {
 
     const { chains, protocols, tvlHistory, dexs, fees, stablecoins, yields } = data;
     const totalTvl = 'data' in chains ? chains.data.reduce((sum, c) => sum + c.tvl, 0) : null;

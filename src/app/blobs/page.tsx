@@ -1,4 +1,6 @@
 import BlobsSection from "../components/BlobsSection";
+import ServerSection from "../components/ServerSection";
+import { getBlobs } from "@/lib/blobs";
 import type { Metadata } from "next";
 
 // Custom Metadata for SEO
@@ -21,7 +23,9 @@ export default function Page() {
             <p className="text-xl text-gray-400 mb-12 text-center">
                 How rollups use Ethereum&apos;s blob space
             </p>
-            <BlobsSection />
+            <ServerSection load={getBlobs} loading="Reading the last day of blocks…" failed="Could not load blob data. Please try again later.">
+                {data => <BlobsSection data={data} />}
+            </ServerSection>
         </div>
     )
 }

@@ -1,7 +1,5 @@
 'use client';
 
-import useSWR from 'swr';
-import GenericFetcher from '../utils/functions/GenericFetcher';
 import Panel from './DashboardPanel';
 import type { Proposal } from '@/lib/governance';
 
@@ -29,11 +27,8 @@ function ProposalRow({ p }: { p: Proposal }) {
     );
 }
 
-export default function GovernanceSection() {
-    const { data, error, isLoading } = useSWR<{ data: { active: Proposal[]; closed: Proposal[] } } | { error: string }>('/api/governance', GenericFetcher, { revalidateOnFocus: false });
-
-    if (isLoading) return <p className="text-center text-gray-400">Loading proposals…</p>;
-    if (error || !data) return <p className="text-center text-red-400">Could not load proposals. Please try again later.</p>;
+// Rendered with data loaded on the server (see ServerSection)
+export default function GovernanceSection({ data }: { data: { data: { active: Proposal[]; closed: Proposal[] } } | { error: string } }) {
     if ('error' in data) return <p className="text-center text-red-400">{data.error}</p>;
 
     return (

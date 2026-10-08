@@ -1,9 +1,7 @@
 'use client';
 
-import useSWR from 'swr';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import GenericFetcher from '../utils/functions/GenericFetcher';
 import { usdCompact } from './ValueLineChart';
 import type { DefiOverview } from '@/lib/defi';
 import type { L2Overview } from '@/lib/l2';
@@ -22,10 +20,9 @@ const Row = ({ label, value }: { label: string; value: React.ReactNode }) => (
     <p className="flex justify-between gap-4"><span className="text-gray-400">{label}</span><span className="text-gray-100 tabular-nums">{value}</span></p>
 );
 
-// DeFi, layer 2 and Ethereum summary cards linking to their full pages
-export default function HomeSummaryCards() {
-    const { data: defi } = useSWR<DefiOverview>('/api/defi-overview', GenericFetcher, { revalidateOnFocus: false });
-    const { data: l2 } = useSWR<L2Overview>('/api/l2-overview', GenericFetcher, { revalidateOnFocus: false });
+// DeFi, layer 2 and Ethereum summary cards linking to their full pages.
+// Data is loaded on the server (see the home page); without it, values show as "—".
+export default function HomeSummaryCards({ defi, l2 }: { defi?: DefiOverview | null; l2?: L2Overview | null }) {
 
     const tvl = defi && 'data' in defi.chains ? defi.chains.data.reduce((s, c) => s + c.tvl, 0) : null;
     const topL2s = l2?.rows.filter(r => r.tvl !== null).slice(0, 3) ?? [];
