@@ -4,7 +4,7 @@ Free Ethereum analytics in one place: wallets, tokens, NFTs, ENS, gas, staking, 
 
 **[ethereumdashboard.dev](https://ethereumdashboard.dev)**
 
-Every data source is keyless or on a provider's free plan. How the product was rebuilt is in [PHASEPLAN.md](PHASEPLAN.md).
+Every data source is keyless or on a provider's free plan. How the product was rebuilt is in [PHASEPLAN.md](PHASEPLAN.md), and the main changes are summarized in [.changelog](.changelog).
 
 ---
 

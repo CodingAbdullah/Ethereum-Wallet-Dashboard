@@ -1,0 +1,100 @@
+# Changelog
+
+The main changes to Ethereum Dashboard since the revamp started, newest first. Each entry is one phase,
+dated by its merge into main. Full details, checklists and the reasons behind each change are in PHASEPLAN.md.
+
+## Phase 6: Polish & Growth (2026-10-08)
+
+### Added
+- End-to-end tests (Playwright) for lookup, connect, revoke, swap, send, wrap, contract calls, alerts and the
+  installable app, on desktop and phone sizes, against local Anvil chains running the real Uniswap v3 contracts.
+  Runs in CI.
+- Installable app (PWA): manifest, icons, service worker and an offline page.
+- Browser notifications as a fourth alert channel (Web Push, free VAPID keys), and a notification when a
+  transaction confirms in a background tab.
+- REST API (`POST /api/v1/tools/{name}`) using the MCP server's API keys and daily quota; `/docs` and an
+  OpenAPI 3.1 spec (`/api/openapi.json`) generated from the Zod schemas.
+- `sitemap.xml`, `robots.txt` and share images with live data for transaction, address and token pages.
+- Privacy-safe product analytics: named events to Umami and, optionally, PostHog (no addresses, hashes or amounts).
+
+### Changed
+- Read-only pages (governance, L2s, DeFi, ETH supply, staking, blobs, MEV, derivatives, homepage cards) render on
+  the server and stream in, instead of loading in the browser.
+- `API_RATE_LIMIT` sets the per-IP rate limit (default 120 requests a minute).
+
+## Phase 5: On-Chain Actions (2026-10-07)
+
+### Added
+- One transaction flow for every action: build, simulate (`eth_simulateV1`), plain-English preview with balance
+  changes, fee and GoPlus warnings, sign in the user's own wallet, track until confirmed. The app never holds keys.
+- Swaps (`/swap`) through Uniswap v3, quoted on-chain with no API key.
+- Send (`/send`), staking with Lido and Rocket Pool and wrap/unwrap (`/stake`).
+- Approvals manager (`/approvals`): revoke one or up to 8 approvals at once.
+- Contract explorer (`/contract`): read and write any verified contract (Etherscan or Sourcify ABIs, proxies followed).
+- ENS manager (`/ens-manager`): register, renew, set primary name and edit records.
+
+### Not included
+- Bridges (optional): left out because the bridge API couldn't be tested safely.
+
+## Phase 4: AI Layer (2026-10-07)
+
+### Added
+- MCP server (`/api/mcp`) with 20 read-only tools for Claude, Cursor and other MCP clients; personal API keys
+  (stored hashed) with 200 calls a day each; `/mcp` setup page.
+- "Ask ETH Dashboard" assistant on every page (Groq free tier) that knows the connected wallet, plus Explain
+  buttons on transaction, contract and token pages.
+- Guardrails: tools are read-only, on-chain text is treated as data, never asks for keys or seed phrases.
+
+### Changed
+- Market Insights no longer scrapes with Firecrawl; it uses CoinGecko, DefiLlama, derivatives and staking data directly.
+
+## Phase 3: Real-Time & n8n Automations (2026-10-07)
+
+### Added
+- Live block ticker (block, age, base fee, fullness) streamed over Server-Sent Events; pending transactions
+  update when mined.
+- Alerts (`/alerts`): ten types (wallet activity, gas, prices, validators, risky approvals, NFT floors, ENS
+  expiry, depegs, governance, daily digest) on Telegram, Discord or email, with history.
+- Alert pipeline: signed webhooks to n8n, Moralis Streams for real-time wallet alerts, de-duplicated events.
+- n8n workflow exports and setup guide (`n8n/`); `/n8n-workflows` with Subscribe buttons.
+
+## Phase 2: Data & Chain Expansion (2026-10-07)
+
+### Added
+- Base, Arbitrum, OP Mainnet, Polygon and Linea (plus Sepolia and Hoodi) across holdings, NFTs, portfolio,
+  approvals and DeFi positions; `/l2` comparison and `/l2/[chain]` pages.
+- Explorer pages: `/tx`, `/block`, `/address`, `/token`, with decoded transfers and address labels.
+- New pages: `/defi`, `/dex-pools`, `/eth-supply`, `/blobs`, `/derivatives`, `/mev`, `/governance`, and a
+  rebuilt `/eip-protocols` with an upgrade tracker.
+- Token approvals, DeFi positions and a readable activity feed on `/me` and wallet pages; GoPlus risk badges.
+- Homepage redesign and Cmd+K global search.
+
+### Changed
+- Navbar regrouped into Markets, Ethereum, Layer 2s, Wallets, Tokens & NFTs and More.
+
+## Phase 1: Wallet Connection & Accounts (2026-10-07)
+
+### Added
+- Connect a wallet (MetaMask and other extensions, Coinbase Wallet, WalletConnect); the address fills in
+  every wallet form.
+- Sign-In with Ethereum with a secure session cookie; Neon Postgres and Drizzle for accounts.
+- My Dashboard (`/me`): up to 5 saved wallets in one portfolio, value over time from daily snapshots, and CSV export.
+
+## Phase 0: Foundation (2026-10-06)
+
+### Changed
+- Every data source moved to a free plan or keyless API; paid-only and shut-down endpoints replaced
+  (CoinGecko Pro, Blocknative, Beaconcha.in, Alchemy NFT endpoints, Transpose and others).
+- One client per provider with timeouts, retries, typed errors and caching; one key per provider.
+- Zod validation and one error format on every route; `proxy.ts` blocks cross-site calls and rate-limits per IP.
+- Docker image on Node 24 LTS; working lint, typecheck and GitHub Actions CI.
+
+### Added
+- Unit tests (Vitest), Sentry error monitoring and a shared Upstash Redis rate limit (all free tiers, optional).
+
+### Fixed
+- Retired Etherscan V1 endpoint, broken and dead routes, the Holesky testnet (replaced by Hoodi), a crash on
+  unknown coins, forms that changed while typing, and unescaped text in feedback emails.
+
+### Removed
+- Unused routes and packages (Firecrawl, unused AI SDK providers and others).
