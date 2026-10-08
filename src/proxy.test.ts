@@ -40,6 +40,11 @@ describe("proxy", () => {
         expect(response.status).toBe(403);
     });
 
+    it("lets any site fetch the OpenAPI document", async () => {
+        const response = await proxy(new NextRequest("https://ethereumdashboard.dev/api/openapi.json", { headers: { host: "ethereumdashboard.dev", origin: "https://editor.swagger.io" } }));
+        expect(response.headers.get("x-middleware-next")).toBe("1");
+    });
+
     it("lets same-origin requests through", async () => {
         const response = await proxy(request({ origin: "https://ethereumdashboard.dev", "x-forwarded-for": "198.51.100.1" }));
         expect(response.headers.get("x-middleware-next")).toBe("1");
@@ -53,11 +58,13 @@ describe("proxy", () => {
         expect(last?.headers.get("retry-after")).toBe("60");
     });
 
-    it("doesn't IP rate limit webhooks, scheduled jobs and the MCP server, which have their own checks", async () => {
+    it("doesn't IP rate limit webhooks, scheduled jobs, the MCP server and the REST API, which have their own checks", async () => {
         expect(skipsIpRateLimit('/api/webhooks/moralis')).toBe(true);
         expect(skipsIpRateLimit('/api/cron/alerts/gas_below')).toBe(true);
         expect(skipsIpRateLimit('/api/mcp')).toBe(true);
         expect(skipsIpRateLimit('/api/mcp-other')).toBe(false);
+        expect(skipsIpRateLimit('/api/v1/tools/get_gas')).toBe(true);
+        expect(skipsIpRateLimit('/api/v1/tools')).toBe(false);
         expect(skipsIpRateLimit('/api/live')).toBe(false);
     });
 });

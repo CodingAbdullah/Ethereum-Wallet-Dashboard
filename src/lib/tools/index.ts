@@ -91,7 +91,7 @@ export const TOOLS: DashboardTool[] = [
         name: 'get_wallet_activity',
         title: 'Wallet activity',
         description: 'Recent transactions of a wallet in plain English (sends, receives, swaps, approvals...), newest first.',
-        input: z.object({ address: wallet, chain, limit: z.number().int().min(1).max(25).default(15) }),
+        input: z.object({ address: wallet, chain, limit: z.number().int().min(1).max(25).default(15).describe('How many items to return (1-25)') }),
         async run({ address, chain, limit }) {
             const resolved = await resolveWallet(address);
             const items = await getActivity(resolved, chain, limit);
@@ -129,7 +129,7 @@ export const TOOLS: DashboardTool[] = [
         name: 'resolve_ens',
         title: 'Resolve ENS',
         description: 'Turns an ENS name into an address, or an address into its primary ENS name.',
-        input: z.object({ nameOrAddress: z.string().trim().min(3).max(100) }),
+        input: z.object({ nameOrAddress: z.string().trim().min(3).max(100).describe('An ENS name to resolve, or an address to look up its primary name') }),
         async run({ nameOrAddress }) {
             if (isAddress(nameOrAddress, { strict: false })) {
                 const address = getAddress(nameOrAddress);
@@ -153,7 +153,7 @@ export const TOOLS: DashboardTool[] = [
         name: 'get_token_price',
         title: 'Token price',
         description: 'USD price, 24h change and market cap of a coin, by CoinGecko ID, symbol or name (e.g. ethereum, ETH, Chainlink).',
-        input: z.object({ coin: z.string().trim().min(1).max(60) }),
+        input: z.object({ coin: z.string().trim().min(1).max(60).describe('Coin name, symbol or CoinGecko id (e.g. ethereum, LINK, uniswap)') }),
         async run({ coin }) {
             const query = coin.toLowerCase();
             const markets = await getTopMarkets();
@@ -187,7 +187,7 @@ export const TOOLS: DashboardTool[] = [
         name: 'get_nft_collection',
         title: 'NFT collection',
         description: 'Floor price, volume, sales and owners of an NFT collection, by OpenSea slug (e.g. pudgypenguins) or contract address.',
-        input: z.object({ collection: z.string().trim().min(2).max(100), chain }),
+        input: z.object({ collection: z.string().trim().min(2).max(100).describe('NFT contract address or OpenSea collection slug'), chain }),
         async run({ collection, chain }) {
             const slug = isAddress(collection, { strict: false }) ? await getCollectionSlug(collection, chain) : collection.toLowerCase();
             const stats = await getCollectionStats(slug);
@@ -245,7 +245,7 @@ export const TOOLS: DashboardTool[] = [
         name: 'decode_transaction',
         title: 'Decode transaction',
         description: 'Details of a transaction by hash: status, from/to, value, fee, and decoded token transfers and approvals.',
-        input: z.object({ hash: z.string().trim().refine(v => isHash(v), 'Transaction hash (0x + 64 hex characters)'), chain: explorerChain }),
+        input: z.object({ hash: z.string().trim().refine(v => isHash(v), 'Transaction hash (0x + 64 hex characters)').describe('Transaction hash (0x + 64 hex characters)'), chain: explorerChain }),
         async run({ hash, chain }) {
             const tx = await cachedTx(chain, hash);
             if (!tx) throw new ToolError(`Transaction ${hash} was not found on ${chainInfo(chain).name}`);
@@ -269,7 +269,7 @@ export const TOOLS: DashboardTool[] = [
         name: 'check_token_risk',
         title: 'Token risk check',
         description: 'GoPlus security check of an ERC20 token: honeypot, taxes, mintable, owner privileges, holder count.',
-        input: z.object({ token: z.string().trim().refine(v => isAddress(v, { strict: false }), 'Token contract address'), chain }),
+        input: z.object({ token: z.string().trim().refine(v => isAddress(v, { strict: false }), 'Token contract address').describe('ERC20 token contract address'), chain }),
         async run({ token, chain }) {
             requireMarketValue(chain);
             const risks = await getTokenRisks(chain, [token]);
