@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { setupTestDb } from "@/test/db";
+import { testPushSubscription, testVapidEnv } from "@/test/push";
 import type { Database } from "../db";
 import { alertEvents, notificationChannels } from "../db/schema";
 import {
@@ -18,7 +19,9 @@ let db: Database;
 let calls: { url: string; method?: string; body: Record<string, unknown> }[];
 let status: number;
 const fetcher = (async (url: string, init: RequestInit) => {
-    calls.push({ url, method: init.method, body: JSON.parse(String(init.body)) });
+    let body: Record<string, unknown> = {};
+    try { body = JSON.parse(String(init.body)); } catch { /* encrypted push payload */ }
+    calls.push({ url, method: init.method, body });
     return new Response('{}', { status });
 }) as unknown as typeof fetch;
 const deps = () => ({ env: ENV, fetcher });
@@ -83,6 +86,25 @@ describe("channels", () => {
     it("won't send a test to a channel that isn't set up", async () => {
         const { channel } = await createChannel(db, USER, { kind: 'telegram' }, ORIGIN, deps());
         await expect(sendTestAlert(db, USER, channel.id, deps())).rejects.toMatchObject({ status: 409 });
+    });
+
+    it("adds a browser after a test notification gets through, and hides the endpoint", async () => {
+        const env = { ...ENV, ...testVapidEnv() };
+        const sub = testPushSubscription('https://fcm.googleapis.com/fcm/send/secret-endpoint');
+        const { channel } = await createChannel(db, USER, { kind: 'webpush', target: JSON.stringify({ ...sub, expirationTime: null }) }, ORIGIN, { env, fetcher });
+        expect(channel).toMatchObject({ kind: 'webpush', verified: true, display: 'Notifications in this browser (Chrome, Edge or Brave)' });
+        expect(calls[0].url).toBe(sub.endpoint);
+        expect(JSON.stringify(await listChannels(db, USER))).not.toContain('secret-endpoint');
+        // Same subscription again (in any key order) is a duplicate
+        await expect(createChannel(db, USER, { kind: 'webpush', target: JSON.stringify({ keys: sub.keys, endpoint: sub.endpoint }) }, ORIGIN, { env, fetcher })).rejects.toMatchObject({ status: 409 });
+        await expect(createChannel(db, USER, { kind: 'webpush', target: JSON.stringify({ ...sub, endpoint: 'https://evil.example/x' }) }, ORIGIN, { env, fetcher })).rejects.toMatchObject({ status: 400 });
+        await expect(createChannel(db, USER, { kind: 'webpush', target: JSON.stringify(testPushSubscription()) }, ORIGIN, deps())).rejects.toMatchObject({ status: 503 });
+        status = 410;
+        await expect(createChannel(db, USER, { kind: 'webpush', target: JSON.stringify(testPushSubscription('https://fcm.googleapis.com/fcm/send/other')) }, ORIGIN, { env, fetcher })).rejects.toMatchObject({ status: 400 });
+
+        // A test alert to a browser that unsubscribed deactivates the channel
+        await expect(sendTestAlert(db, USER, channel.id, { env, fetcher })).rejects.toMatchObject({ status: 502 });
+        expect((await listChannels(db, USER))[0]).toMatchObject({ verified: false, display: expect.stringContaining('Remove it and add it again') });
     });
 });
 

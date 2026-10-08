@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { eq } from "drizzle-orm";
 import { setupTestDb } from "@/test/db";
+import { testPushSubscription, testVapidEnv } from "@/test/push";
 import type { Database } from "../db";
 import { alertEvents, alertSubscriptions, notificationChannels, users } from "../db/schema";
 import { runCheck } from "./engine";
@@ -70,6 +71,17 @@ describe("runCheck", () => {
         const [event] = await db.select().from(alertEvents);
         expect(event.delivered).toBe(false);
         expect(event.deliveryError).toContain('TELEGRAM_BOT_TOKEN');
+    });
+
+    it("stops sending to a browser that unsubscribed", async () => {
+        const [c] = await db.insert(notificationChannels).values({ userAddress: USER, kind: 'webpush', target: JSON.stringify(testPushSubscription()), verified: true }).returning();
+        await db.insert(alertSubscriptions).values({ userAddress: USER, channelId: c.id, kind: 'gas_below', params: { maxGwei: 10 } });
+        const gone = (async () => new Response('', { status: 410 })) as unknown as typeof fetch;
+        const summary = await runCheck(db, 'gas_below', { data, env: testVapidEnv(), fetcher: gone, now: NOW });
+        expect(summary).toMatchObject({ fired: 1, delivered: 0 });
+        const [channel] = await db.select().from(notificationChannels).where(eq(notificationChannels.id, c.id));
+        expect(channel.verified).toBe(false);
+        expect((await db.select().from(alertEvents))[0].deliveryError).toContain('no longer subscribed');
     });
 
     it("skips unverified channels, disabled subscriptions and bad params without stopping the run", async () => {

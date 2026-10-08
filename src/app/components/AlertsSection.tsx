@@ -10,14 +10,15 @@ import { Button } from './ui/button';
 import SignInGate, { buttonClass, Panel } from './SignInGate';
 import { ALERT_CATALOG, catalogEntry, scheduleLabel, toParams, type AlertField } from '@/lib/alerts/catalog';
 import { CHAINS } from '@/lib/chains';
+import { PushSetupError, pushSupported, subscribeToPush } from '@/lib/pwa';
 
-interface Channel { id: number; kind: 'telegram' | 'discord' | 'email'; label: string | null; verified: boolean; display: string }
+interface Channel { id: number; kind: 'telegram' | 'discord' | 'email' | 'webpush'; label: string | null; verified: boolean; display: string }
 interface Subscription { id: number; kind: string; title: string; summary: string; channelId: number; enabled: boolean; lastTriggeredAt: string | null }
 interface AlertEventRow { id: number; title: string; message: string; url: string | null; delivered: boolean; deliveryError: string | null; createdAt: string }
 
-export interface AlertsSetup { telegram: boolean; email: boolean; spaces: string[] }
+export interface AlertsSetup { telegram: boolean; email: boolean; vapidKey: string | null; spaces: string[] }
 
-const CHANNEL_NAMES = { telegram: 'Telegram', discord: 'Discord', email: 'Email' } as const;
+const CHANNEL_NAMES = { telegram: 'Telegram', discord: 'Discord', email: 'Email', webpush: 'Browser' } as const;
 const selectClass = "w-full h-10 rounded-md bg-gray-800 text-gray-100 border border-gray-700 px-3 focus:outline-none focus:ring-2 focus:ring-gray-400";
 const inputClass = "w-full bg-gray-800 text-gray-100 border-gray-700 focus:ring-gray-400 placeholder-gray-500";
 const smallButton = "h-8 px-3 text-sm bg-gray-800 border border-gray-700 text-gray-200 hover:bg-gray-700";
@@ -78,12 +79,20 @@ function ChannelsPanel({ setup, channels }: { setup: AlertsSetup; channels?: Cha
     const add = async (e: React.FormEvent) => {
         e.preventDefault();
         setBusy(true); setError(undefined); setNotice(undefined); setTelegramLink(undefined);
-        const { error, data } = await send('/api/alerts/channels', 'POST', { kind, target: kind === 'telegram' ? undefined : target, label: label || undefined });
+        let channelTarget: string | undefined = kind === 'telegram' ? undefined : target;
+        if (kind === 'webpush') {
+            try { channelTarget = await subscribeToPush(setup.vapidKey!); }
+            catch (err) {
+                setBusy(false);
+                return setError(err instanceof PushSetupError ? err.message : 'Could not turn on notifications in this browser.');
+            }
+        }
+        const { error, data } = await send('/api/alerts/channels', 'POST', { kind, target: channelTarget, label: label || undefined });
         setBusy(false);
         if (error) return setError(error);
         setTarget(''); setLabel('');
         if (kind === 'telegram') setTelegramLink(String(data?.link));
-        else setNotice(kind === 'email' ? 'Check your inbox and open the link to confirm this address.' : 'Connected. We sent a message to the channel.');
+        else setNotice(kind === 'email' ? 'Check your inbox and open the link to confirm this address.' : kind === 'webpush' ? 'Notifications are on. We sent a test one to this browser.' : 'Connected. We sent a message to the channel.');
         mutate('/api/alerts/channels');
     };
 
@@ -101,7 +110,7 @@ function ChannelsPanel({ setup, channels }: { setup: AlertsSetup; channels?: Cha
     };
 
     return (
-        <Panel title="1. Where to send alerts" description="Add Telegram, a Discord channel webhook or an email address.">
+        <Panel title="1. Where to send alerts" description="Add Telegram, a Discord channel webhook, an email address or notifications in this browser.">
             {error && <Alert variant="destructive"><AlertDescription>{error}</AlertDescription></Alert>}
             {notice && <Alert className="bg-gray-800 border-gray-700 text-gray-200"><AlertDescription>{notice}</AlertDescription></Alert>}
             {telegramLink && (
@@ -135,11 +144,12 @@ function ChannelsPanel({ setup, channels }: { setup: AlertsSetup; channels?: Cha
                         <option value="telegram" disabled={!setup.telegram}>Telegram{setup.telegram ? '' : ' (not set up)'}</option>
                         <option value="discord">Discord</option>
                         <option value="email" disabled={!setup.email}>Email{setup.email ? '' : ' (not set up)'}</option>
+                        <option value="webpush" disabled={!setup.vapidKey}>This browser{setup.vapidKey ? '' : ' (not set up)'}</option>
                     </select>
                 </label>
-                <label className="text-sm text-gray-400">{kind === 'discord' ? 'Webhook URL' : kind === 'email' ? 'Email address' : 'Telegram'}
-                    {kind === 'telegram'
-                        ? <p className="h-10 flex items-center text-gray-500">You&apos;ll get a link to the bot</p>
+                <label className="text-sm text-gray-400">{kind === 'discord' ? 'Webhook URL' : kind === 'email' ? 'Email address' : kind === 'webpush' ? 'Notifications' : 'Telegram'}
+                    {kind === 'telegram' || kind === 'webpush'
+                        ? <p className="h-10 flex items-center text-gray-500">{kind === 'telegram' ? <>You&apos;ll get a link to the bot</> : 'Your browser will ask for permission'}</p>
                         : <Input className={inputClass} value={target} onChange={e => setTarget(e.target.value)} required type={kind === 'email' ? 'email' : 'url'}
                             placeholder={kind === 'discord' ? 'https://discord.com/api/webhooks/…' : 'you@example.com'} />}
                 </label>
@@ -148,8 +158,20 @@ function ChannelsPanel({ setup, channels }: { setup: AlertsSetup; channels?: Cha
                 </label>
                 <Button type="submit" className={buttonClass} disabled={busy}>{busy ? 'Adding…' : 'Add'}</Button>
             </form>
+            {kind === 'webpush' && <PushHint />}
             {kind === 'discord' && <p className="text-sm text-gray-500">In Discord: channel settings → Integrations → Webhooks → New Webhook → Copy Webhook URL.</p>}
         </Panel>
+    );
+}
+
+function PushHint() {
+    const [supported] = useState(pushSupported);
+    return (
+        <p className="text-sm text-gray-500">
+            {supported
+                ? 'Alerts pop up on this device even when the site is closed. Add each browser or phone you want them on separately.'
+                : "This browser can't show notifications. On iPhone or iPad, add this site to your Home Screen (Share → Add to Home Screen) and open it from there."}
+        </p>
     );
 }
 

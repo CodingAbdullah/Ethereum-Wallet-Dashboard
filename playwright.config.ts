@@ -3,6 +3,8 @@ import { defineConfig, devices } from "@playwright/test";
 // End-to-end tests (npm run test:e2e). They need a production build (npm run build) and Foundry's anvil.
 // The app runs against two local chains started by e2e/global-setup.ts (see e2e/chain.ts), never a real network.
 const PORT = 3210;
+// Lets the PWA test cut the service worker's own network requests (setOffline doesn't reach them)
+process.env.PW_EXPERIMENTAL_SERVICE_WORKER_NETWORK_EVENTS = '1';
 
 export default defineConfig({
     testDir: './e2e',
@@ -15,6 +17,7 @@ export default defineConfig({
     use: {
         baseURL: `http://localhost:${PORT}`,
         trace: 'retain-on-failure',
+        serviceWorkers: 'block',    // only e2e/pwa.spec.ts runs with the service worker
         // Use a preinstalled Chromium when PW_CHROMIUM_PATH is set (otherwise: npx playwright install chromium)
         launchOptions: process.env.PW_CHROMIUM_PATH ? { executablePath: process.env.PW_CHROMIUM_PATH } : {}
     },

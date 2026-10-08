@@ -10,6 +10,7 @@ import { CHAINS, type ChainKey } from '@/lib/chains';
 import type { CallJson } from '@/lib/onchain/request';
 import type { Simulation } from '@/lib/onchain/simulate';
 import type { RiskFlag } from '@/lib/onchain/risks';
+import { notifyIfHidden } from '@/lib/pwa';
 
 // Every on-chain action goes through the same steps:
 // 1. simulate (server, eth_simulateV1) → 2. preview → 3. the user signs in their own wallet (wagmi)
@@ -97,10 +98,12 @@ export function useTxFlow(onDone?: (sent: SentTx[]) => void) {
                 const receipt = await waitForReceipt(config, hash, target);
                 sent[i] = { hash, status: receipt.status === 'success' ? 'success' : 'reverted' };
                 if (receipt.status !== 'success') {
+                    void notifyIfHidden('Transaction failed', `${plan.title}: the transaction reverted.`);
                     setState({ step: 'failed', preview, sent: [...sent], error: 'The transaction was mined but failed (reverted). No changes were made by it.' });
                     return;
                 }
             }
+            void notifyIfHidden('Transaction confirmed', plan.title);
             setState({ step: 'done', preview, sent: [...sent] });
             onDone?.(sent);
         }

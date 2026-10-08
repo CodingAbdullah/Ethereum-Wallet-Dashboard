@@ -45,8 +45,8 @@ export const portfolioSnapshots = pgTable('portfolio_snapshots', {
 export const notificationChannels = pgTable('notification_channels', {
     id: serial('id').primaryKey(),
     userAddress: text('user_address').notNull().references(() => users.address, { onDelete: 'cascade' }),
-    kind: text('kind').notNull(),                       // 'telegram' | 'discord' | 'email'
-    target: text('target'),                             // chat id, webhook URL or email; null until a Telegram chat is linked
+    kind: text('kind').notNull(),                       // 'telegram' | 'discord' | 'email' | 'webpush'
+    target: text('target'),                             // chat id, webhook URL, email or push subscription JSON; null until a Telegram chat is linked
     label: text('label'),
     verified: boolean('verified').notNull().default(false),
     verifyToken: text('verify_token'),
