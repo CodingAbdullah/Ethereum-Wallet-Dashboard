@@ -1,671 +1,193 @@
 # Ethereum Dashboard
 
-### Live Ethereum Wallet Dashboard for Blockchain Analytics
-Explore Ethereum wallets, tokens, NFTs, ENS, gas, staking and market data in one dashboard built with **Next.js** and hosted on **Vercel**.
+Free Ethereum analytics in one place: wallets, tokens, NFTs, ENS, gas, staking, DeFi and layer 2s, with alerts, an AI assistant, an MCP server and safe, simulated transactions.
 
-[Ethereum Dashboard](https://ethereumdashboard.dev)
+**[ethereumdashboard.dev](https://ethereumdashboard.dev)**
 
-> **Free-tier policy:** every data source this dashboard uses is either keyless or on a provider's **free plan**. Where a feature needed a paid-only endpoint, it was rebuilt on a free alternative. The roadmap below follows the same rule.
-
----
-
-## Table of Contents
-1. [Features](#-features)
-2. [Data Providers](#-data-providers)
-3. [Built With](#️-built-with)
-4. [Getting Started](#-getting-started)
-5. [Project Structure](#-project-structure)
-6. [How the API Layer Works](#️-how-the-api-layer-works)
-7. [Free-Plan Limits](#-free-plan-limits)
-8. [Audit: Current State & Gaps](#-audit-current-state--gaps)
-9. [Roadmap](#️-roadmap)
-   - [Phase 0: Foundation](#phase-0-foundation-done)
-   - [Phase 1: Wallet Connection & Accounts](#phase-1-wallet-connection--accounts-done)
-   - [Phase 2: Data & Chain Expansion](#phase-2-data--chain-expansion-done)
-   - [Phase 3: Real-Time & n8n Automations](#phase-3-real-time--n8n-automations-done)
-   - [Phase 4: AI Layer (MCP Server + Agent)](#phase-4-ai-layer--mcp-server--agent-done)
-   - [Phase 5: On-Chain Actions](#phase-5-on-chain-actions-done)
-   - [Phase 6: Polish & Growth](#phase-6-polish--growth-done)
-10. [Target Architecture](#️-target-architecture)
-11. [Environment Variables](#-environment-variables)
-12. [Timeline](#️-timeline)
-13. [Deployment](#-deployment)
+Every data source is keyless or on a provider's free plan. How the product was rebuilt is in [PHASEPLAN.md](PHASEPLAN.md).
 
 ---
 
-## 🚀 Features
-
-### Wallet & Asset Analytics
-- **ERC20/721 Holdings:** View all tokens and NFTs in a wallet.
-- **ERC20/721 Collection Analytics:** Holders, transfers, sales, floor price, traits and volume stats for token and NFT collections.
-- **Transactions:** Normal and internal transaction history for any wallet.
-- **Wallet Analytics:** Net worth, profit & loss (PnL), PnL breakdown and wallet stats.
-- **My Dashboard (`/me`):** Connect and sign in with a wallet, save wallets, and see a combined portfolio with value over time, readable activity, token approvals and DeFi positions.
-- **Token risk badges:** GoPlus security checks on holdings, token pages and DEX pools.
-
-### Market Data & Pricing
-- **Coin Prices & ERC20 Prices:** Live and historical prices for coins and tokens.
-- **Global Market Data:** Total market cap, volume, DeFi market data and the ETH market-cap chart.
-- **Trending Coins/Collections:** Trending coins and top NFT collections by volume.
-- **Top Movers:** Top 24-hour gainers and losers among the top 250 coins.
-- **AI Market Insights:** Hourly AI-generated market commentary from market, DeFi, derivatives and staking data.
-- **Ask ETH Dashboard:** A chat assistant on every page that looks up live data with read-only tools and knows your connected wallet. **Explain** buttons on transaction, contract and token pages.
-- **MCP server (`/mcp`):** Use the dashboard's 20 read-only tools from Claude, Cursor or any MCP client, with a personal API key.
-- **REST API & docs (`/docs`):** The same tools over plain HTTP (`POST /api/v1/tools/{name}`) with the same keys, an OpenAPI 3.1 spec at `/api/openapi.json`, and a reference page generated from the Zod schemas.
-
-### On-Chain Actions
-Every action is simulated (`eth_simulateV1`) and previewed in plain English, with balance changes, the network fee and security warnings, before your own wallet signs it. The site never holds keys.
-- **Swap (`/swap`):** Uniswap v3 swaps on Ethereum, Base, Arbitrum and OP Mainnet, quoted on-chain with no API key.
-- **Send (`/send`):** ETH or any token to an address or ENS name, with recipient checks.
-- **Stake & Wrap (`/stake`):** Stake ETH with Lido or Rocket Pool; wrap and unwrap the native coin.
-- **Approvals Manager (`/approvals`):** See and revoke token approvals, one at a time or in batches.
-- **Contract Explorer (`/contract`):** Read any verified contract and call its write functions.
-- **ENS Manager (`/ens-manager`):** Register and renew .eth names, set your primary name and edit records.
-- **DeFi, DEX Pools & Derivatives:** TVL by chain and protocol, stablecoins, yields, trending and new pools, funding rates, open interest and options.
-
-### Ethereum Tools
-- **ENS:** Address ↔ ENS resolution (on-chain), owned names with expiry and grace periods, and transfer history.
-- **Gas Tracker:** Gas estimates at five confidence levels, computed from recent blocks.
-- **Staking/Validators:** Validator entry/exit queues, liquid staking tokens (stETH, rETH, cbETH) and Rocket Pool stats.
-- **ERC721 Lookups:** Token metadata, trait rarity, transfers, sales and OpenSea data by token ID.
-- **EIP Info:** Key standards with live status, and a tracker for the EIPs in upcoming network upgrades.
-- **Explorer:** Transaction, block, address and token pages (`/tx`, `/block`, `/address`, `/token`) on Ethereum and five L2s, with decoded token transfers and address labels.
-- **ETH Supply & Blobs:** ETH burnt vs. issued over the last day, and blob usage, fees and posters.
-- **MEV & Governance:** MEV-Boost relay and builder share; active Snapshot votes for major DAOs.
-- **Global search:** Cmd+K (or Ctrl+K) from any page.
-- **Alerts (`/alerts`):** Ten alert types (wallet activity, gas, prices, validators, risky approvals, NFT floors, ENS expiry, depegs, governance and a daily market digest) sent to Telegram, Discord, email or as browser notifications, with alert history. Scheduled by n8n; wallet alerts can arrive within a block through Moralis Streams.
-- **n8n Workflows:** Every live alert workflow with a Subscribe button; the workflow exports live in [`/n8n`](n8n/README.md).
-- **Installable app:** Add to Home Screen / Install app, with an offline page and push notifications for alerts and confirmed transactions.
-- **Share cards:** Link previews with live data for transaction, address and token pages.
-- **Live block ticker:** Block number, age, base fee and fullness in the metrics bar, streamed from the server; pending transactions update when mined.
-
-### Networks
-- **Ethereum**, **Base**, **Arbitrum One**, **OP Mainnet**, **Polygon PoS** and **Linea**, plus the **Sepolia** and **Hoodi** testnets, for wallet holdings, NFTs, portfolio, approvals and DeFi positions. One registry (`src/lib/chains.ts`) holds each chain's IDs, provider names, explorer and public RPC.
-- **`/l2`** compares layer 2s (DefiLlama value locked, L2BEAT type and risk stage), and **`/l2/[chain]`** has a page per supported network: value locked over time, top protocols, live block and gas price.
-- Etherscan's free plan no longer covers Base or OP Mainnet, so Etherscan-only features (raw transaction lists) aren't offered there; Moralis covers holdings and activity on those chains.
+## Contents
+1. [Features](#features)
+2. [Architecture](#architecture)
+3. [Data providers](#data-providers)
+4. [Tech stack](#tech-stack)
+5. [Getting started](#getting-started)
+6. [Environment variables](#environment-variables)
+7. [Project structure](#project-structure)
+8. [Deployment](#deployment)
 
 ---
 
-## 🔌 Data Providers
+## Features
 
-| Provider | Plan | Key needed | Used For |
-|---|---|---|---|
-| **CoinGecko** | Demo (free) | Free key | Coin & token prices, price history, global market data, trending coins/NFTs, NFT collection data |
-| **Moralis** | Free (40k compute units/day) | Free key | Wallet ERC20/NFT holdings and transfers, NFT metadata/transfers/sales, wallet net worth, stats and PnL, ENS holdings |
-| **Etherscan V2** | Free (5 calls/s, 100k/day) | Free key | ETH balance, normal and internal transaction history (Ethereum, Arbitrum, Polygon, Linea and testnets; Base and OP Mainnet need a paid plan) |
-| **OpenSea v2** | Free | Free key | NFT floor price, collection stats, trait counts, token rarity, top collections, account and token data |
-| **Ethplorer** | Free | Optional (`freekey` by default) | ERC20 top holders |
-| **Ethereum RPC** (PublicNode by default) | Free | No | Gas estimates, ENS resolution, Rocket Pool and liquid staking contract reads |
-| **Beacon API** (PublicNode by default) | Free | No | Validator entry/exit queues and active validator count |
-| **Coinbase Exchange** | Public | No | ETH/USD price and 24h change (CoinGecko is the fallback) |
-| **Lido API** | Public | No | stETH APR |
-| **DefiLlama** | Open API | No | `/defi` and `/l2`: value locked, DEX volume, fees, stablecoins, yields |
-| **L2BEAT** | Public (unofficial) | No | `/l2`: rollup type, risk stage, total value secured |
-| **Public L2 RPCs** | Free | No | Live block and gas on `/l2/[chain]`; sign-in checks for L2 smart wallets |
-| **GoPlus Security** | Free | No | Token risk checks; address and token checks in transaction previews |
-| **Uniswap v3 contracts** | On-chain | No | Swap quotes (QuoterV2) and swaps (SwapRouter02) |
-| **Sourcify** | Free | No | Verified contract ABIs where Etherscan's free plan doesn't reach (Base, OP Mainnet) |
-| **Lido / Rocket Pool / ENS contracts** | On-chain | No | Staking deposits, ENS registration, renewal and records |
-| **GeckoTerminal** | Free | No | Trending and new DEX pools |
-| **MEV-Boost relays** | Public data API | No | `/mev` |
-| **Deribit / OKX / Bybit** | Public market data | No | `/derivatives` |
-| **Snapshot** | Public GraphQL | No | `/governance` |
-| **Groq** | Free tier | Free key | AI market insights and the Ask ETH Dashboard assistant (Llama 3.3 70B) |
-| **Resend** | Free (3,000 emails/month) | Free key | Feedback form emails, email alerts |
-| **Moralis Streams** | Free plan | Same Moralis key (optional) | Real-time wallet activity and approval alerts |
-| **Telegram Bot API** | Free | Free bot token | Telegram alerts |
-| **Discord webhooks** | Free | No (users paste their own) | Discord alerts |
-| **n8n** | Community Edition (free, self-hosted) | No | Alert scheduling and delivery |
-| **Umami** | Free / self-hosted | Optional | Privacy-friendly site analytics |
+**Wallets & portfolio**
+- **My Dashboard (`/me`):** sign in with your wallet, save up to 5 wallets and see one combined portfolio: value over time, holdings, activity, token approvals and DeFi positions, with CSV export.
+- Token and NFT holdings, transfers, transaction history, net worth and profit & loss for any address.
+- GoPlus risk badges on holdings, token pages and DEX pools.
 
-### Replaced providers and endpoints
-| Was | Why it changed | Now |
+**Markets & DeFi**
+- Coin and token prices, global market data, trending coins, top movers and NFT collection stats.
+- DeFi TVL, stablecoins, yields, DEX pools (`/defi`, `/dex-pools`), and derivatives: funding, open interest and options (`/derivatives`).
+- Hourly AI market insights.
+
+**Ethereum & layer 2s**
+- Explorer pages for transactions, blocks, addresses and tokens (`/tx`, `/block`, `/address`, `/token`) on Ethereum and five L2s.
+- Gas tracker, ETH supply and burn, blobs, staking and validator queues, MEV-Boost relays, Snapshot governance, ENS lookups and EIP status.
+- `/l2` compares layer 2s; `/l2/[chain]` covers each supported network.
+- Live block ticker, Cmd+K search, and share images for transaction, address and token links.
+
+**On-chain actions**
+Every transaction is simulated and previewed in plain English (balance changes, fee, security warnings) before your own wallet signs it. The site never holds keys.
+- Swap (Uniswap v3), send, stake (Lido, Rocket Pool), wrap and unwrap, revoke approvals, call any verified contract, and register or manage ENS names.
+
+**Alerts**
+- Ten alert types (wallet activity, gas, prices, validators, risky approvals, NFT floors, ENS expiry, depegs, governance, daily digest) sent to Telegram, Discord, email or browser notifications (`/alerts`).
+- Scheduled by n8n; wallet alerts arrive within a block through Moralis Streams. Workflows are in [`n8n/`](n8n/README.md).
+
+**AI & developers**
+- **Ask ETH Dashboard:** a chat assistant on every page that reads live data and knows your connected wallet, plus Explain buttons on transaction, contract and token pages.
+- **MCP server (`/mcp`):** 20 read-only tools for Claude, Cursor and other MCP clients, with personal API keys.
+- **REST API (`/docs`):** the same tools at `POST /api/v1/tools/{name}`, with an OpenAPI 3.1 spec at `/api/openapi.json`.
+
+**App**
+- Installable (PWA) with an offline page and push notifications.
+- Networks: Ethereum, Base, Arbitrum One, OP Mainnet, Polygon PoS and Linea, plus the Sepolia and Hoodi testnets.
+
+---
+
+## Architecture
+
+```
+┌──────────────────────────── Next.js (Vercel) ───────────────────────────┐
+│  Pages (server components + streaming) ── wagmi + viem (wallet, SIWE)   │
+│            │                                                            │
+│  /api/* route handlers ── proxy.ts (cross-site block, per-IP rate limit)│
+│            │                                                            │
+│  src/lib/tools/ (read-only tool registry) ◀── /api/mcp, /api/v1, agent  │
+│            │                                                            │
+│  src/lib/providers/ (typed clients: Zod, timeouts, retries, caching)    │
+└────────────┬────────────────────────────────────────────────────────────┘
+             ▼
+  Free plans and keyless APIs (see Data providers)
+  Neon Postgres: users, wallets, snapshots, alerts, API keys
+  Moralis Streams / n8n schedule ──▶ alert engine ──▶ Telegram · Discord · Email · Web Push
+```
+
+- **API routes** validate input with Zod, call a provider client and return JSON. Errors always come back as `{ error }`: 400 bad input, 401 not signed in, 403 cross-site, 429 rate limited, 502 provider failure, 503 not available on the free plan or not configured.
+- **Caching:** provider responses use the Next.js data cache, with TTLs tuned to each free plan's limits.
+- **Transactions** are simulated with `eth_simulateV1` and signed only in the user's wallet.
+- **AI:** the assistant, MCP server and REST API share one registry of read-only tools.
+
+---
+
+## Data providers
+
+| Provider | Plan | Used for |
 |---|---|---|
-| CoinGecko **Pro** API (6 keys) | Paid plan | CoinGecko **Demo** API, one key, aggressive caching |
-| CoinGecko `top_gainers_losers` | Paid-only endpoint | Ranked from the free top-250 markets query |
-| CoinGecko `global/market_cap_chart` | Paid-only endpoint | ETH market cap chart (free `coins/ethereum/market_chart`) |
-| CoinGecko NFT `market_chart` | Paid-only endpoint | OpenSea 24h / 7d / 30d volume & sales stats |
-| Blocknative gas API | Service shut down (June 2026) | `eth_feeHistory` over free RPC, same response shape |
-| Beaconcha.in API (queue, leaderboard, Rocket Pool) | Free tier ended (May 2026) | Standard Beacon API, on-chain contract reads, Lido API |
-| Alchemy `computeRarity`, `summarizeNFTAttributes` | Removed by Alchemy (Sept 30, 2026) | OpenSea traits + token traits |
-| Alchemy `getFloorPrice` | Consolidated on one NFT source | OpenSea collection stats |
-| Moralis top NFT collections | Endpoint shut down by Moralis | OpenSea collections ordered by 7-day volume |
-| Moralis ERC20 owners | Premium (paid) endpoint | Ethplorer top holders |
-| Moralis ENS resolve/reverse | Saves free-plan compute units | Viem ENS resolution over free RPC |
-| Etherscan **V1** balance endpoint | Retired by Etherscan | Etherscan V2 |
-| Firecrawl scrape of coingecko.com | Paid credits, brittle | CoinGecko Demo data already cached by other routes |
-| Transpose | Service shut down, unused | Removed |
+| CoinGecko | Demo (free key) | Prices, market data, trending |
+| Moralis | Free key | Holdings, transfers, NFTs, net worth, PnL, approvals, DeFi positions, Streams |
+| Etherscan V2 | Free key | Balances and transaction history |
+| OpenSea | Free key | NFT floor prices, collection stats, traits |
+| Ethplorer | Free (`freekey`) | Top token holders |
+| Ethereum and L2 RPCs (PublicNode, public RPCs) | Keyless | Gas, ENS, blocks, simulations, contract reads |
+| Beacon API | Keyless | Validators and queues |
+| Coinbase, Lido | Keyless | ETH price, stETH APR |
+| DefiLlama, L2BEAT, GeckoTerminal | Keyless | DeFi, layer 2s, DEX pools |
+| Deribit, OKX, Bybit | Keyless | Derivatives |
+| MEV-Boost relays, Snapshot | Keyless | MEV, governance |
+| GoPlus, Sourcify | Keyless | Token and address risk, verified contract ABIs |
+| Uniswap, Lido, Rocket Pool, ENS contracts | On-chain | Swaps, staking, ENS management |
+| Groq | Free tier | AI insights and the assistant |
+| Resend, Telegram, Discord, Web Push | Free | Feedback and alert delivery |
+| n8n | Community Edition | Alert scheduling |
+
+Moralis's PnL endpoints may need a paid plan; if a free key is rejected, only those tables show as unavailable.
 
 ---
 
-## 🛠️ Built With
+## Tech stack
 
-- **Node.js 24 LTS**
-- **Next.js 16 / React 19:** App Router; all provider calls run in route handlers, so API keys never reach the browser.
-- **TypeScript 6** (TypeScript 7 is not supported by `typescript-eslint` yet)
-- **Viem** for RPC calls, ENS resolution, contract reads and Sign-In with Ethereum
-- **wagmi** + **TanStack Query** for wallet connection
-- **Neon Postgres** + **Drizzle ORM** for accounts, **jose** for the session cookie
-- **Zod** for request validation
-- **Tailwind CSS 4** + **shadcn/ui** (Radix primitives)
-- **Recharts** and **AG Grid** for charts and tables
-- **SWR** for client-side data fetching
-- **Vercel AI SDK** (`ai`, `@ai-sdk/groq`) for AI market insights
-- **Vitest** for unit tests
-- **Sentry** for error monitoring and **Upstash Redis** for rate limiting (both optional, free tiers)
-- **Lucide React** / **Font Awesome** icons
-- **Vercel** hosting and **Vercel Analytics**; **Umami** and optional **PostHog** for product analytics
-- **Playwright** end-to-end tests on local **Anvil** chains; **web-push** for browser notifications
+Next.js 16 (App Router) · React 19 · TypeScript · viem · wagmi · TanStack Query · SWR · Zod · Tailwind CSS 4 · shadcn/ui · Recharts · AG Grid · Neon Postgres · Drizzle ORM · Vercel AI SDK (Groq) · mcp-handler · web-push · Vitest · Playwright + Anvil · Sentry · Upstash Redis · Vercel Analytics · Umami · PostHog (optional)
 
 ---
 
-## 🚀 Getting Started
+## Getting started
 
-### Prerequisites
-- **Node.js 24 LTS** (see `.nvmrc`) and **npm**
-- Free API keys for CoinGecko, Etherscan, Moralis, OpenSea, Groq and Resend (links in `.env.example`)
+Requires **Node.js 24** (see `.nvmrc`).
 
-### Installation
-1. Clone the repository and install dependencies:
-   ```bash
-   git clone https://github.com/CodingAbdullah/Ethereum-Wallet-Dashboard.git
-   cd Ethereum-Wallet-Dashboard
-   npm install
-   ```
+```bash
+git clone https://github.com/CodingAbdullah/Ethereum-Wallet-Dashboard.git
+cd Ethereum-Wallet-Dashboard
+npm install
+cp .env.example .env     # add your free keys
+npm run dev
+```
 
-2. Copy the example environment file and fill in your free keys:
-   ```bash
-   cp .env.example .env
-   ```
-   See [Environment Variables](#-environment-variables) for what each one does.
+| Script | Does |
+|---|---|
+| `npm run build` / `npm start` | Production build / serve it |
+| `npm run lint` / `npm run typecheck` | ESLint / TypeScript |
+| `npm test` | Unit tests (Vitest) |
+| `npm run test:e2e` | End-to-end tests (Playwright) on local Anvil chains; needs a build and [Foundry](https://getfoundry.sh) |
+| `npm run db:migrate` | Create or update the database tables (needs `DATABASE_URL`) |
+| `npm run db:generate` | Create a migration after changing `src/lib/db/schema.ts` |
 
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-4. Other scripts:
-   ```bash
-   npm run build      # production build
-   npm run start      # serve the production build
-   npm run lint       # ESLint
-   npm run typecheck  # TypeScript, no emit
-   npm test           # Vitest unit tests
-   npm run test:e2e   # Playwright end-to-end tests (needs npm run build and Foundry's anvil)
-   npm run db:generate  # create a migration after changing src/lib/db/schema.ts
-   npm run db:migrate   # apply migrations (needs DATABASE_URL in the environment)
-   ```
-
-CI (`.github/workflows/ci.yml`) runs lint, typecheck, unit tests and build on every pull request, and the end-to-end tests in a separate job.
-
-End-to-end tests start their own local chains, so they need no keys or network. Install [Foundry](https://getfoundry.sh) (or point `ANVIL_BIN` at an `anvil` binary) and Playwright's Chromium (`npx playwright install chromium`, or set `PW_CHROMIUM_PATH`).
+CI runs lint, typecheck, unit tests, build and the end-to-end tests on every pull request.
 
 ---
 
-## 📁 Project Structure
+## Environment variables
+
+Every variable is listed and explained in [`.env.example`](.env.example). Most features work without the optional ones, and turn on when they're set.
+
+| Feature | Variables |
+|---|---|
+| Core data (required) | `ETHERSCAN_API_KEY`, `MORALIS_API_KEY`, `OPENSEA_API_KEY`; `COINGECKO_API_KEY` recommended |
+| RPC and beacon overrides | `ETH_RPC_URL`, `RPC_URL_<CHAIN>`, `BEACON_API_URL` (default to free public endpoints) |
+| Wallet connection | `NEXT_PUBLIC_REOWN_PROJECT_ID` (WalletConnect) |
+| Accounts, `/me`, alerts, API keys | `DATABASE_URL`, `AUTH_SECRET`, `CRON_SECRET` |
+| AI | `GROQ_API_KEY`, `AGENT_MODEL` |
+| Email (feedback and alerts) | `RESEND_API_KEY`, `PERSONAL_EMAIL`, `ALERTS_FROM_EMAIL` |
+| Telegram alerts | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_BOT_USERNAME`, `TELEGRAM_WEBHOOK_SECRET` |
+| Browser notification alerts | `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` |
+| n8n and real-time alerts | `N8N_WEBHOOK_URL`, `N8N_WEBHOOK_SECRET`, `MORALIS_STREAM_ID`, `MORALIS_STREAMS_SECRET` |
+| Rate limiting | `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, `API_RATE_LIMIT` |
+| Monitoring and analytics | `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_*`, `UMAMI_URL`, `UMAMI_DATA_WEBSITE_ID`, `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST` |
+
+---
+
+## Project structure
 
 ```
 src/
-├── app/
-│   ├── api/                 # Route handlers, one per feature (validate → provider client → JSON)
-│   │   └── navbar/          # ETH price + gas for the metrics navbar
-│   ├── components/          # Page sections, tables, charts, forms
-│   │   └── ui/              # shadcn/ui primitives
-│   ├── hooks/               # useConnectedAddress / usePrefillAddress, useSession (sign-in)
-│   ├── me/page.tsx          # My Dashboard (saved wallets)
-│   ├── docs/page.tsx        # API reference (generated from the tool registry)
-│   ├── manifest.ts          # Web app manifest (installable app)
-│   ├── providers.tsx        # wagmi + TanStack Query providers
-│   ├── utils/
-│   │   ├── constants/       # Links, lists, prompts
-│   │   ├── functions/       # Client fetchers and validators
-│   │   └── types/           # Response and component types
-│   └── <route>/page.tsx     # Pages (prices, holdings, ENS, gas, staking, ...)
+├── app/            # Pages, route handlers (app/api), components, hooks, manifest
 ├── lib/
-│   ├── providers/           # One client per data provider (free plans)
-│   ├── api/route.ts         # Shared error handling and body parsing for routes
-│   ├── auth/                # SIWE verification, nonces, session cookie
-│   ├── db/                  # Drizzle schema and Neon client (migrations in /drizzle)
-│   ├── accounts.ts          # Saved wallets for signed-in users
-│   ├── portfolio.ts         # Per-wallet holdings, NFTs, PnL, activity; combined portfolio
-│   ├── snapshots.ts         # Daily portfolio snapshots and value history
-│   ├── csv.ts               # CSV export helpers
-│   ├── wagmi.ts             # Wallet connection config
-│   ├── validation.ts        # Zod schemas: addresses, networks, ENS names, token IDs, intervals
-│   ├── ens.ts               # ENS resolution helpers (viem)
-│   ├── ensHoldings.ts       # .eth names owned by an address, with expiry details
-│   ├── rateLimit.ts         # Per-IP rate limit (Upstash Redis, or in-memory fallback)
-│   ├── staking.ts           # Rocket Pool and liquid staking contract reads
-│   ├── openapi.ts           # OpenAPI document for the REST API
-│   ├── pwa.ts               # Service worker registration and browser push subscription
-│   └── analytics.ts         # Privacy-safe product events (Umami, optional PostHog)
-├── test/                    # Test helpers and sample provider responses
-├── instrumentation.ts         # Sentry setup for the server (no-op without a DSN)
-├── instrumentation-client.ts  # Sentry setup for the browser (no-op without a DSN)
-└── proxy.ts                 # Blocks cross-site /api calls and rate-limits per IP
-e2e/                         # Playwright tests, local Anvil chains (chain.ts) and test contracts
-public/sw.js                 # Service worker: offline page and alert notifications
+│   ├── providers/  # One client per data provider
+│   ├── tools/      # Read-only tools shared by the assistant, MCP server and REST API
+│   ├── onchain/    # Transaction building, simulation and risk checks
+│   ├── alerts/     # Alert types, engine and delivery
+│   ├── auth/, db/  # Sign-In with Ethereum, session, Drizzle schema
+│   └── ...         # Chains, portfolio, ENS, staking, OpenAPI, PWA, analytics
+└── proxy.ts        # Cross-site block and per-IP rate limit for /api
+e2e/                # Playwright tests and local test chains
+n8n/                # Alert workflow exports and setup guide
+drizzle/            # Database migrations
+public/sw.js        # Service worker (offline page, notifications)
+```
 
 Unit tests (`*.test.ts`) sit next to the code they test.
-```
 
 ---
 
-## ⚙️ How the API Layer Works
+## Deployment
 
-Every route handler follows the same pattern:
-
-```ts
-export const POST = withErrorHandling(async (request: Request) => {
-    const { address, network } = await parseBody(request, addressNetworkBody); // Zod, 400 on bad input
-    const data = await moralis('/' + address + '/erc20?chain=' + moralisChain(network), 120); // cached 120s
-    return NextResponse.json(data);
-});
-```
-
-- **Validation:** addresses are checksum-validated with viem; networks, ENS names, coin IDs, token IDs and intervals are checked before any provider is called.
-- **Provider clients** (`src/lib/providers/`) handle auth headers, a 15s timeout, one retry on 429/5xx, and typed errors.
-- **Caching:** provider responses are stored in the Next.js data cache, so identical requests share one upstream call. Heavier computed results (gas, validator queue, AI insights, staking) are cached with `unstable_cache` or route-level revalidation.
-- **Errors:** every route returns `{ error }` with a consistent status code:
-
-  | Status | Meaning |
-  |---|---|
-  | 400 | Invalid input |
-  | 401 | Not signed in, or the sign-in message was invalid |
-  | 403 | Cross-site request blocked by `proxy.ts` |
-  | 429 | Rate limit (120 requests/minute per IP) |
-  | 502 | Provider or RPC failure |
-  | 503 | Provider rejected the key, or the endpoint is outside its free plan; or accounts are not configured |
-
-- **Rate limiting:** with `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` set, every server instance shares one counter in Upstash Redis (free tier). Without them, each instance counts in memory. If Redis is unreachable, the limiter falls back to memory instead of blocking requests.
-- **Caching vs. Upstash:** API responses are cached in the Next.js data cache, which Vercel shares across all instances, so Upstash is not needed for caching on Vercel. When self-hosting with Docker, that cache lives on each container's disk.
-- **Error monitoring:** with `NEXT_PUBLIC_SENTRY_DSN` set, unexpected errors (HTTP 500) are reported to Sentry, and provider or RPC failures are reported as warnings. Without a DSN, Sentry is off.
-
----
-
-## 📏 Free-Plan Limits
-
-| Provider | Limit | How the dashboard stays inside it |
-|---|---|---|
-| CoinGecko Demo | Monthly call cap (10,000 calls/month at the time of writing) and per-minute rate limit | Shared top-250 markets query; cache TTLs of 15 min (markets), 30 min (trending, lookups), 1 h (global, charts), 6 h (ETH market cap chart); ETH price comes from Coinbase instead |
-| Moralis Free | 40,000 compute units/day | Responses cached 2–60 min; ENS resolution moved to free RPC |
-| Etherscan Free | 5 calls/s, 100,000/day | 30–60s caching |
-| OpenSea | Per-key rate limit | Slugs cached 1 day, stats 10 min, traits 1 h |
-| Public RPC / Beacon node | Fair-use rate limits | Gas cached per block, validator queue 10 min, staking 15 min. Set `ETH_RPC_URL` / `BEACON_API_URL` to a free-tier key for headroom |
-| Groq Free | Requests/tokens per minute and day | Insights generated at most once an hour and shared by everyone |
-
-> **Moralis PnL and stats:** the wallet profitability and stats endpoints may require a paid Moralis plan. If your free key is rejected, those tables show an error (HTTP 503) and the rest of the dashboard keeps working. There is no free alternative with equivalent PnL data yet.
-
----
-
-## 🔍 Audit: Current State & Gaps
-
-### Fixed in Phase 0
-| Issue | Fix |
-|---|---|
-| `address-transaction-amount` called the retired Etherscan V1 endpoint | Moved to Etherscan V2 |
-| `address-details` was missing an `await` (returned `{}`) | Route was unused by the UI; removed with five other dead routes |
-| `coin-information` and `current-ERC20-price` never returned a response | Unused by the UI; removed |
-| Holesky testnet (retired) in the network selector | Replaced with Hoodi |
-| `Dockerfile` used Node 18 (too old for Next.js 16) | Node 24 LTS, `npm ci` |
-| Copy-pasted "Failed to fetch Ethereum price" errors | Shared error handler with accurate messages and status codes |
-| No server-side input validation | Zod schemas on every route |
-| No caching or rate limiting | Data cache on every provider call; `proxy.ts` rate limit and cross-site block |
-| 10 provider keys spread across routes | One key per provider |
-| Forms read input refs during render (tables changed as you typed after submitting) | Submitted values captured in state |
-| `/prices/[coin]` crashed on an unknown coin | Returns a 404 page |
-| Feedback form put raw user text into email HTML | Text is escaped and length-limited |
-| `npm run lint` crashed (`next lint` was removed in Next.js 16) | Flat ESLint config, `eslint .` |
-| Build failed without a Resend key | Resend client created per request |
-| Unused packages (`api`, `@ai-sdk/openai`, `@ai-sdk/anthropic`, `@mendable/firecrawl-js`, `ethereum-cryptography`) | Removed |
-
-### Still missing
-| Area | Status |
-|---|---|
-| **Wallet connection** | Done in Phase 1: connect, sign in, saved wallets, combined portfolio on `/me`. |
-| **User accounts / persistence** | Users, saved wallets, daily portfolio snapshots, alert channels, alerts and alert history (Neon). |
-| **Smart contract writes** | Done in Phase 5: swaps, sends, staking, wrapping, approval revokes, contract calls and ENS, all simulated before signing. |
-| **n8n workflows** | Done in Phase 3: ten live alert workflows (`/alerts`, `/n8n`). |
-| **MCP server / AI agent** | Done in Phase 4: MCP server with API keys (`/mcp`) and the Ask ETH Dashboard assistant. |
-| **Real-time data** | Done in Phase 3.1: live block ticker over Server-Sent Events, live pending transactions. |
-| **Layer 2 support** | Done in Phase 2.2: Base, Arbitrum, OP Mainnet, Polygon and Linea, plus `/l2` pages. |
-| **End-to-end tests** | Unit tests cover the API layer; no browser-level tests yet. |
-
-### Free endpoints available but unused
-| Provider | Endpoint | What It Enables |
-|---|---|---|
-| CoinGecko Demo | On-chain (GeckoTerminal) endpoints | DEX pools, new pairs, trending pools |
-| Etherscan V2 | Other `chainid` values | Multi-chain lookups (check which chains the free plan covers) |
-| Ethereum RPC | Blocks, logs, `eth_simulateV1` | Explorer pages, ETH burn tracking, transaction previews |
-
-### Free providers to add
-| Gap | Free Provider |
-|---|---|
-| DeFi TVL, yields, stablecoins, DEX volume, fees | **DefiLlama** open API (keyless) |
-| L2 comparison: TVS, activity, risk stages | **L2BEAT** public API (keyless, unofficial) |
-| ETH supply, burn vs. issuance | Computed from **RPC** (base fee × gas used) + **Beacon API** |
-| Blob usage and fees | **Blobscan** public API |
-| Derivatives: funding, open interest | **Deribit** / **OKX** / **Bybit** public market-data APIs (keyless) |
-| MEV-boost relays and builders | **Flashbots relay data API** (public) |
-| Token and contract risk | **GoPlus** Security API (free) |
-| Address labels | Open label datasets (e.g. `eth-labels`) |
-| Governance proposals | **Snapshot** GraphQL (keyless), **Tally** (free key) |
-| Transaction simulation | `eth_simulateV1` over RPC, or **Tenderly** free tier |
-| Swap quotes | **0x** free tier, or Uniswap's on-chain Quoter contract |
-| Live EIP data | GitHub `ethereum/EIPs` |
-
----
-
-## 🗺️ Roadmap
-
-Each phase builds on the previous one and ends with something shippable. Time estimates assume one developer working with an AI coding assistant. Phases 2 and 4 can partly run in parallel. **Every service below has a free tier.**
-
-### Phase 0: Foundation (done)
-
-- [x] Fix known bugs (Etherscan V1, Holesky, Dockerfile, dead routes, coin page crash, ref-during-render forms, feedback HTML injection)
-- [x] One client per provider in `src/lib/providers/` with timeouts, retries, typed errors and caching
-- [x] Move every route onto free plans and replace paid-only or shut-down endpoints
-- [x] Zod validation on every route; consistent error format
-- [x] `proxy.ts`: cross-site block and per-IP rate limit
-- [x] One key per provider; `.env.example`
-- [x] Working lint (ESLint flat config), `typecheck` script, GitHub Actions CI
-- [x] Unit tests (Vitest) for provider clients, validation, error handling, rate limiting, the proxy and key routes, using sample provider responses; run in CI
-- [x] Error monitoring with Sentry (free Developer plan), off until `NEXT_PUBLIC_SENTRY_DSN` is set
-- [x] Rate limit shared across server instances with Upstash Redis (free tier), with an in-memory fallback
-
----
-
-### Phase 1: Wallet Connection & Accounts (done)
-
-Shipped in three parts. Each part works on its own; 1.1 needs no database.
-
-**1.1 Connect a wallet (done)**
-- [x] `wagmi` + `@tanstack/react-query` with a Connect Wallet button in the navbar. Reown AppKit's wagmi adapter conflicts with wagmi 3's dependencies, so the button uses wagmi's own connectors; WalletConnect still uses a free Reown project ID.
-- [x] MetaMask, Rabby and other extensions (EIP-6963), Coinbase Wallet including its passkey smart wallet, and WalletConnect (when `NEXT_PUBLIC_REOWN_PROJECT_ID` is set).
-- [x] Wallet providers live in one client component (`src/app/providers.tsx`) with `ssr: true` and cookie storage; the layout stays a server component and pages stay static.
-- [x] The connected address is filled into every wallet-address form (`usePrefillAddress`).
-- [x] Wallet SDKs load only when the user picks that wallet.
-
-**1.2 Accounts (done; needs `AUTH_SECRET` and `DATABASE_URL` in production)**
-- [x] **Sign-In with Ethereum (SIWE)** using viem's built-in SIWE helpers (`createSiweMessage`, `verifySiweMessage`) and a signed, httpOnly session cookie (`jose`). The address is the user ID; no passwords. Auth.js v5 is still in beta, so it is not used.
-- [x] Single-use nonces with a short expiry (Upstash Redis when configured, in-memory otherwise); the message's domain, chain and expiry are checked on the server.
-- [x] **Neon Postgres** (free tier) + **Drizzle ORM** with only the tables Phase 1 uses:
-  - `users`
-  - `watched_wallets` (with a `chain` column, ready for Phase 2)
-- Later phases add their own tables when they need them: `watchlists` (Phase 2), `alert_subscriptions` and `notification_channels` (Phase 3), `api_keys` (Phase 4).
-- [x] The build and every existing page keep working without `DATABASE_URL`; account features return 503 until it is set.
-- [x] Unit tests for nonce handling, SIWE verification, the session cookie and the wallets route.
-- [x] `/me` page: sign in, then save (up to 5), label and remove wallets. Routes: `/api/auth/{nonce,verify,session,logout}`, `/api/wallets`.
-
-**1.3 "My Dashboard" (`/me`) portfolio (done)**
-- [x] Total value, value over time, a per-wallet table (value, token and NFT counts, realized PnL), combined holdings and recent activity.
-- [x] Multiple wallets combined into one portfolio view; holdings of the same token are merged across wallets.
-- [x] Each section loads on its own; if Moralis PnL is outside the free plan, or a provider is down, that cell says "Unavailable" and the rest of the page still shows. The total warns when a wallet is missing.
-- [x] Portfolio value over time from daily snapshots (`portfolio_snapshots`), saved by a daily Vercel cron job (`vercel.json`, `/api/cron/portfolio-snapshots`, protected by `CRON_SECRET`) and whenever `/me` loads. Snapshots are per wallet, so a wallet saved by several users is fetched once.
-- [x] A cap on saved wallets per user (5) and on snapshots per cron run (300), so snapshots stay inside Moralis's 40k compute units/day.
-- [x] CSV export of holdings (`/api/portfolio/export`), with spreadsheet-formula cells neutralized (token names come from arbitrary contracts).
-- Approvals and per-wallet staking positions move to Phase 2, where those data sources are added.
-
-**Done when:** a user can connect, sign in, save wallets and see one combined portfolio. ✅
-
----
-
-### Phase 2: Data & Chain Expansion (done)
-
-**2.1 Use free endpoints already available**
-| Provider | Endpoint | Feature | Status |
-|---|---|---|---|
-| Moralis | Wallet DeFi positions | DeFi positions on `/me` and wallet pages | Done |
-| Moralis | Token approvals | Approval checker on `/me` and wallet pages, riskiest first (revoke comes in Phase 5) | Done |
-| Moralis | Decoded wallet history | Readable activity feed ("Swapped 1 ETH for 3,200 USDC") on `/me` and wallet pages | Done |
-| GeckoTerminal | Public API (keyless, separate from the CoinGecko cap) | `/dex-pools`: trending and new pools on Ethereum and L2s, with risk badges | Done |
-| Ethereum RPC | Blocks, transactions, logs | Transaction and block detail pages | Done |
-| Etherscan V2 | `chainid` parameter | Multi-chain support | Done |
-
-Approvals, DeFi positions and the activity feed load separately from the portfolio numbers on `/me` (`/api/portfolio/insights`), and any wallet page uses `/api/wallet-insights`. Each list notes wallets that failed to load instead of hiding them. If the readable feed fails, `/me` falls back to the Etherscan transaction list.
-
-**2.2 Real Layer 2 support**
-- [x] Replace the external links in the "Layer Two Chains" menu with chain-aware pages (`/l2/[chain]`).
-- [x] Network selector for Ethereum, Base, Arbitrum, OP Mainnet, Polygon and Linea, driving Moralis's `chain`, Etherscan V2's `chainid`, OpenSea's chain slug and a public RPC per chain. zkSync Era and Scroll are left out because Moralis doesn't cover them; they still appear on `/l2`.
-- [x] `/l2`: comparison page using **L2BEAT** (type, risk stage, total value secured) and **DefiLlama** (value locked). L2BEAT's API is unofficial, so its columns hide themselves if it changes or is down.
-- [x] Portfolio, snapshots, approvals, DeFi positions and Sign-In with Ethereum work on every supported chain.
-
-**2.3 New pages on free providers**
-| Page | Provider | Content |
-|---|---|---|
-| `/defi` ✅ | DefiLlama open API | TVL by protocol and chain, TVL history, stablecoin supply, DEX volume, fees, and yields (the yields section hides itself if DefiLlama keeps that endpoint on its paid plan) |
-| `/eth-supply` ✅ | RPC + Beacon API + CoinGecko | ETH burnt over the last ~24h (measured from fee history, incl. blob fees) vs. estimated issuance, net change and yearly rate |
-| `/blobs` ✅ | RPC | Blob usage, blob base fee and fees burnt over ~24h, and which rollups posted blobs in the latest blocks (no Blobscan needed) |
-| `/staking` ✅ (expanded) | Beacon API, CoinGecko, DefiLlama, on-chain reads, Lido API | Staking ratio, base reward rate and validator count; liquid staking and (liquid) restaking protocols ranked by value on Ethereum; plus the existing stETH/rETH/cbETH, Rocket Pool and validator queue tables |
-| `/derivatives` ✅ | Deribit / OKX / Bybit public APIs | ETH perpetual funding (8h and annualized), open interest and volume per exchange; Deribit options open interest, volume, put/call ratio and largest expiries. Exchanges that block the server's region show as unavailable |
-| `/mev` ✅ | Relay data API (Flashbots, Ultra Sound, Agnostic, Titan, Aestus) | Share of blocks via MEV-Boost, relay and builder share, payments to proposers, recent MEV-Boost blocks |
-| `/governance` ✅ | Snapshot | Active and recently closed votes for ~20 major DAOs, with leading choice and quorum (Tally's on-chain votes need a key; not added) |
-| Risk badges ✅ | GoPlus (keyless) | Danger / caution flags (honeypots, unsellable tokens, owner powers, taxes) on `/me` holdings, ERC20 holdings, token pages and DEX pools |
-| Address labels ✅ | Curated list (`src/lib/labels.ts`) | Names for well-known mainnet addresses on explorer pages, approvals and blob posters |
-| `/eip-protocols` ✅ (rebuilt) | GitHub `ethereum/EIPs` + `ethereum/ERCs` | Live status on each standard, plus an upgrade tracker read from the meta EIPs (Glamsterdam EIP-7773, Fusaka EIP-7607): EIPs scheduled, considered or included, and the mainnet activation date |
-
-ETH ETF flow data has no reliable free API at the moment, so it is left out.
-
-**2.4 Explorer pages (done)**
-- [x] `/tx/[hash]`, `/block/[number]` (and `/block/latest`), `/address/[address]`, `/token/[address]`, server-rendered from free public RPCs so search engines can index them. Add `?chain=base` (or arbitrum, optimism, polygon, linea) for other networks.
-- [x] Transactions decode ERC20, ERC721 and ERC1155 transfers and approvals, with token symbols and decimals read on-chain; blocks show gas use, base fee and burnt ETH; addresses show balance, type and (for wallets) activity, approvals and DeFi positions; tokens show supply, plus price, holders and transfers on Ethereum.
-- [x] Address labels from the curated list in 2.3 show on explorer pages.
-
-**2.5 Homepage redesign (done)**
-- [x] Stat row: ETH price, gas, 24h supply change, share of ETH staked.
-- [x] DeFi, layer 2 and Ethereum summary cards linking to their pages; the market overview, chart and trending sections stay below.
-- [x] **Cmd+K global search** (also a navbar button and the homepage search box): detects an address, ENS name (resolved on-chain), transaction hash or block number, and finds pages by keyword and coins by name.
-- [x] Navbar regrouped into Markets, Ethereum, Layer 2s, Wallets, Tokens & NFTs and More (`src/app/utils/constants/SitePages.ts` feeds both the menus and search).
-
-**Done when:** each new page is live with caching, and wallet pages work on at least 5 chains. ✅ (Ethereum plus 5 networks)
-
----
-
-### Phase 3: Real-Time & n8n Automations (done)
-
-**3.1 Real-time (done)**
-- [x] Live block ticker in the metrics bar (block number, age, base fee, how full) over Server-Sent Events from `/api/live`. Each server instance shares one reading every 3 seconds, so viewers don't multiply RPC calls; no WebSocket provider or Upstash needed.
-- [x] Vercel functions can't hold connections open, so each stream runs ~50 seconds and the browser's EventSource reconnects automatically.
-- [x] Pending transactions on `/tx` check their status on every new block and refresh once mined (pending results are never cached).
-
-**3.2 Event pipeline (done)**
-```
-Moralis Streams (free plan) ──────────▶ /api/webhooks/* (signature-verified)
-n8n scheduler (gas, prices, validators, ...) ──▶ /api/cron/alerts/*
-                         │
-                         ▼
-            Store event (Postgres) ──▶ n8n webhook (signed)
-                         │
-                         ▼
-      n8n routes to Email (Resend) / Telegram / Discord
-```
-- [x] Tables: `notification_channels`, `alert_subscriptions` (with each checker's saved state) and `alert_events` (a unique key per alert, so a retry or Moralis's confirmed re-delivery is never sent twice). Migration `drizzle/0002_alerts.sql`.
-- [x] `/api/cron/alerts/[type]` runs one alert type for every subscriber (`CRON_SECRET`); n8n calls it on each type's interval, since Vercel Hobby cron only runs daily.
-- [x] Alerts go to n8n signed with HMAC-SHA256 and a timestamp (`N8N_WEBHOOK_URL`, `N8N_WEBHOOK_SECRET`); n8n rejects unsigned or stale requests and routes to Telegram, Discord or email. Without n8n the app delivers directly.
-- [x] Incoming webhooks are verified: Moralis Streams (`/api/webhooks/moralis`, keccak signature) and the Telegram bot (`/api/webhooks/telegram`, secret token). They skip the per-IP rate limit.
-- [x] Moralis Streams pushes wallet activity and approvals in real time; the app adds and removes watched addresses as alerts change, and polling stops when Streams is configured. Alchemy Notify was not needed.
-- [x] Workflow exports in [`/n8n`](n8n/README.md) (scheduler and router) with setup steps for self-hosting the free Community Edition.
-
-**3.3 Workflows (done)**
-1. [x] Daily market digest: ETH, market cap, gas and top movers
-2. [x] Watched-wallet activity alerts (incoming/outgoing transactions, optional minimum size)
-3. [x] Gas threshold alerts ("tell me when gas is under X gwei")
-4. [x] Price alerts for ETH and any top-250 coin
-5. [x] Validator alerts: missed attestations, slashing, balance drop (Beacon API)
-6. [x] New risky token approval on a watched wallet
-7. [x] NFT floor price moves
-8. [x] ENS expiry reminders (30, 7 and 1 day)
-9. [x] Depeg alerts for stETH/ETH and major stablecoins
-10. [x] New governance proposals for the Snapshot spaces the user picks
-
-Each type validates its own settings, keeps state between runs (so it fires once when a threshold is crossed, then waits until it clearly resets), and is tested against fake data.
-
-**3.4 Alerts UI (done)**
-- [x] `/alerts`: add Telegram (one-time link to the bot), Discord (webhook checked with a test message) or email (confirmed by link) channels; create, pause and delete alerts; see the last 50 alerts and whether each was delivered. Up to 5 channels and 20 alerts per user.
-- [x] `/n8n-workflows` lists the live workflows with Subscribe buttons that open `/alerts` with the type selected.
-
-**Done when:** a signed-in user can set up a wallet alert and receive it on Telegram within one block. ✅ (with Moralis Streams configured; otherwise within 10 minutes)
-
----
-
-### Phase 4: AI Layer — MCP Server + Agent (done)
-
-**4.1 MCP server (`/api/mcp`) (done)**
-- [x] Built with Vercel's `mcp-handler` (MCP SDK v2), serving 20 read-only tools from the shared registry:
-  `get_wallet_portfolio`, `get_wallet_pnl`, `get_wallet_activity`, `get_token_approvals`, `get_defi_positions`, `resolve_ens`, `get_gas`, `get_token_price`, `get_market_overview`, `get_nft_collection`, `get_validator_queue`, `get_staking_overview`, `get_defi_tvl`, `get_l2_stats`, `decode_transaction`, `get_address_info`, `check_token_risk`, `get_eth_supply`, `get_governance_proposals`, `get_derivatives`. Wallet tools accept an address or an ENS name.
-- [x] Access through per-user API keys (`api_keys` table, stored as SHA-256 hashes, up to 3 per user) with 200 tool calls per key per day (`api_key_usage`), so free-plan provider quotas are protected. Keys go in the `Authorization: Bearer` header, or `?key=` for clients that only take a URL.
-- [x] Works as a connector in Claude (Claude Code, Claude Desktop, claude.ai custom connectors), Cursor and other MCP clients.
-- [x] `/mcp` page: create and revoke keys, see today's usage, copy the setup for each client, and the tool list.
-
-**4.2 In-app agent ("Ask ETH Dashboard") (done)**
-- [x] Chat panel on every page using AI SDK `streamText` (`/api/agent`) and `useChat`, with tool calling (up to 6 steps per answer).
-- [x] One shared tool registry in `src/lib/tools/` used by both the agent and the MCP server.
-- [x] **Groq** free tier as the default model (`llama-3.3-70b-versatile`); `AGENT_MODEL` picks another. Tool results are trimmed and each IP can ask 20 questions an hour, to stay inside the free tier.
-- [x] Knows the connected wallet: "Explain my portfolio risk", "Do I have any risky token approvals?", "Is this token safe?", "Summarize this transaction".
-- [x] One-click **Explain** buttons on transaction, address/contract and token pages.
-
-**4.3 Market Insights (done)**
-- [x] Firecrawl scraping removed; the model gets CoinGecko data directly and the result is cached for an hour.
-- [x] DefiLlama (TVL by chain, DEX volume, stablecoin supply), derivatives (funding, open interest, options put/call) and staking (ratio, APR) added to the prompt. Each extra source is optional, so an outage leaves it out instead of breaking the analysis.
-
-**4.4 Guardrails (done)**
-- [x] The agent and MCP server can only read data: every tool is read-only (a test rejects write-like tools), MCP tools carry read-only annotations, and the system prompt forbids claiming to sign or send anything.
-- [x] The agent never signs anything. It explains the steps for the user to take in their own wallet; Phase 5 adds the simulate → preview → user-signs flow for suggested transactions.
-- [x] It never asks for seed phrases or keys, treats on-chain text (token names, labels) as data rather than instructions, and gives information, not financial advice.
-
-**Done when:** Claude can query wallets through MCP, and the in-app agent answers questions about the connected wallet. ✅
-
----
-
-### Phase 5: On-Chain Actions (done)
-
-Every write action follows the same flow:
-1. Build the transaction.
-2. Simulate it with `eth_simulateV1` over RPC (or the **Tenderly** free tier).
-3. Show a plain-English preview: balance changes and GoPlus risk flags.
-4. The user signs in their own wallet through wagmi.
-5. Track it until confirmed, then notify.
-
-**The app never holds private keys.**
-
-How it works: `/api/simulate` runs the transaction(s) with `eth_simulateV1` (viem `simulateCalls`) on the target chain and returns balance changes, the fee and risk flags. Transactions that call an address with no contract are refused. The wallet is switched to the right network, signs and sends; the receipt is read through the wallet's own RPC first. The same panel (`TxFlowPanel`) is used by every feature.
-
-**Features**
-1. [x] **Approvals manager (`/approvals`):** lists approvals (Moralis, checked against live on-chain allowances); revoke one or up to 8 at once (`approve(spender, 0)`).
-2. [x] **Contract explorer (`/contract`):** loads a verified contract's ABI from Etherscan (free-plan chains) or Sourcify, following EIP-1967 proxies; calls read functions and runs write functions with simulation first.
-3. [x] **Swaps (`/swap`):** quotes from Uniswap's on-chain QuoterV2 (all fee tiers, plus two hops via WETH), executed through SwapRouter02 with a deadline and slippage limit; ERC20 inputs get an approval for exactly the amount. Keyless, so no 0x account is needed.
-4. [x] **Staking (`/stake`):** stake ETH for stETH (Lido) and rETH (Rocket Pool, deposit pool read from RocketStorage); wrap and unwrap the native coin on every chain.
-5. [x] **ENS (`/ens-manager`):** register (commit, wait, register), renew, set primary name and records. Registration and renewal are only offered while the known controller is still authorized by the ENS registrar.
-6. [x] **Send (`/send`):** ETH and ERC20 transfers with ENS resolution, contract and own-address warnings, and GoPlus address checks.
-7. [ ] **Bridges** (optional): not built. Across's API couldn't be tested here, and a bridge transaction built from an untested API shape is too risky to ship.
-
-The assistant points people to these pages when they want to make a transaction, instead of describing raw wallet steps.
-
-**Done when:** a user can revoke an approval and complete a swap end to end, with a simulation preview, on mainnet and Base. ✅ (tested against local Ethereum and Base chains running the official Uniswap v3 contracts)
-
----
-
-### Phase 6: Polish & Growth (done)
-
-- [x] **End-to-end tests:** Playwright runs the main flows (lookup, connect, revoke, swap, send, wrap, contract calls, alerts, PWA) on desktop and a phone viewport, against two local Anvil chains with the same chain IDs as Ethereum and Base. `e2e/chain.ts` deploys test tokens, WETH and the official Uniswap v3 contracts (from their npm builds) at the real addresses, so nothing touches a real network and the runs are deterministic. A test wallet (EIP-6963) signs through Anvil. Runs in CI as its own job.
-- [x] **SEO:** `sitemap.xml` and `robots.txt` from the site map; dynamic Open Graph images for transaction, address and token pages (live data with a 3-second fallback); a title template and share metadata.
-- [x] **Performance:** read-only pages (governance, L2s, DeFi, ETH supply, staking, blobs, MEV, derivatives and the homepage cards) load on the server and stream in with `Suspense`; SWR stays only where data updates live.
-- [x] **Mobile & PWA:** installable (web manifest, icons, service worker with an offline page; data is never cached). **Browser push** is a fourth alert channel: Web Push with free VAPID keys, sent straight from the server (never through n8n), limited to the browsers' push services, and switched off automatically when a browser unsubscribes. A notification also appears when a transaction confirms while the tab is in the background.
-- [x] **Docs:** `/docs` and `/api/openapi.json` (OpenAPI 3.1) generated from the tool registry's Zod schemas, plus a REST API (`POST /api/v1/tools/{name}`) that shares the MCP server's API keys and daily quota.
-- [x] **Product analytics:** a few named events (wallet connected, signed in, channel added, alert created, transaction previewed / confirmed / failed, assistant question, API key created, app installed) sent to Umami and, when `NEXT_PUBLIC_POSTHOG_KEY` is set, to PostHog's free tier for funnels. Privacy first: no addresses, hashes, amounts or free text (only short labels pass a filter), addresses and hashes are stripped from page URLs, and PostHog runs cookieless with no autocapture, recordings or person profiles. Vercel Analytics keeps counting page views.
-
----
-
-## 🏗️ Target Architecture
-
-```
-┌─────────────────────────── Next.js (Vercel) ───────────────────────────┐
-│                                                                        │
-│  Pages / Server Components ── wagmi + viem (wallet, SIWE, contracts)   │
-│            │                                                           │
-│            ▼                                                           │
-│  /api/* route handlers ── proxy.ts (origin check, rate limit)          │
-│            │                                                           │
-│            ▼                                                           │
-│  src/lib/tools/  (shared tool registry) ◀── /api/mcp  ◀── Claude/Cursor│
-│            │                            ◀── in-app agent (AI SDK)      │
-│            ▼                                                           │
-│  src/lib/providers/  (typed clients, Zod, retries, caching)            │
-└────────────┬───────────────────────────────────────────────────────────┘
-             ▼
-  Free plans: CoinGecko Demo · Moralis · Etherscan · OpenSea · Ethplorer
-  Keyless:    Ethereum RPC · Beacon API · Coinbase · Lido · DefiLlama
-              L2BEAT · Blobscan · Snapshot · Deribit/OKX · Flashbots relays
-  Free tiers: GoPlus · Groq · Resend · Neon · Upstash · Sentry · Reown · PostHog (optional)
-
-  Neon Postgres (users, wallets, watchlists, alerts, snapshots, API keys)
-  Moralis Streams / n8n schedule ──▶ alert engine ──▶ n8n ──▶ Email · Telegram · Discord
-                                           └──▶ Web Push (browsers, sent directly)
-```
-
----
-
-## 🔑 Environment Variables
-
-All current variables are in `.env.example`:
-
-| Variable | Required | Free source |
-|---|---|---|
-| `COINGECKO_API_KEY` | Recommended (works keyless at lower limits) | CoinGecko Demo key |
-| `ETHERSCAN_API_KEY` | Yes | Etherscan free key |
-| `MORALIS_API_KEY` | Yes | Moralis free plan |
-| `OPENSEA_API_KEY` | Yes | OpenSea free key |
-| `ETHPLORER_API_KEY` | No (defaults to `freekey`) | Ethplorer free key |
-| `ETH_RPC_URL` | No (defaults to PublicNode) | Any free-tier RPC URL |
-| `RPC_URL_BASE`, `RPC_URL_ARBITRUM`, … | No (default to each chain's public RPC) | Any free-tier RPC URL for that chain; used for simulations and on-chain reads |
-| `BEACON_API_URL` | No (defaults to PublicNode) | Any beacon node URL |
-| `GROQ_API_KEY` | For Market Insights and the assistant | Groq free tier |
-| `AGENT_MODEL` | No (defaults to `llama-3.3-70b-versatile`) | Any Groq model with tool calling |
-| `RESEND_API_KEY`, `PERSONAL_EMAIL` | For the feedback form | Resend free tier |
-| `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | Recommended in production | Upstash Redis free tier |
-| `API_RATE_LIMIT` | No (defaults to 120 requests per IP per minute) | — |
-| `NEXT_PUBLIC_SENTRY_DSN` | Recommended in production | Sentry free Developer plan |
-| `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT` | No (source map upload only) | Sentry |
-| `UMAMI_URL`, `UMAMI_DATA_WEBSITE_ID` | No | Umami |
-| `NEXT_PUBLIC_REOWN_PROJECT_ID` | For wallet connection (Phase 1) | Reown Cloud free project |
-| `DATABASE_URL` | For accounts and `/me` (Phase 1) | Neon free tier |
-| `AUTH_SECRET` | For sign-in (Phase 1) | Any random string of 32+ characters (`openssl rand -base64 32`) |
-| `CRON_SECRET` | For daily portfolio snapshots | Any random string; Vercel sends it to cron jobs |
-| `TELEGRAM_BOT_TOKEN`, `TELEGRAM_BOT_USERNAME`, `TELEGRAM_WEBHOOK_SECRET` | For Telegram alerts (Phase 3) | Bot from @BotFather; any random secret |
-| `ALERTS_FROM_EMAIL` | For email alerts (Phase 3) | A sender on a domain verified in Resend |
-| `N8N_WEBHOOK_URL`, `N8N_WEBHOOK_SECRET` | No (the app delivers alerts itself without them) | Self-hosted n8n Community Edition |
-| `MORALIS_STREAM_ID`, `MORALIS_STREAMS_SECRET` | No (wallet alerts are polled without them) | Moralis Streams, free plan |
-| `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | For browser notification alerts (Phase 6) | Free: `npx web-push generate-vapid-keys` |
-| `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST` | No (product analytics funnels) | PostHog free tier |
-
-Alert checks are run by n8n calling `/api/cron/alerts/<type>` with `CRON_SECRET`; see [`n8n/README.md`](n8n/README.md) for the full setup.
-
----
-
-## ⏱️ Timeline
-
-| Phase | Duration | Status |
-|---|---|---|
-| 0: Foundation | 1 week | Done |
-| 1: Wallet connection & accounts | 1–2 weeks | Done |
-| 2: Data & chain expansion | 2–3 weeks | Done |
-| 3: Real-time & n8n automations | 2 weeks | Done |
-| 4: AI layer (MCP + agent) | 2 weeks | Done |
-| 5: On-chain actions | 2–3 weeks | Done |
-| 6: Polish & growth | 2 weeks | Done |
-
----
-
-## 🌐 Deployment
-
-- **Domain:** [ethereumdashboard.dev](https://ethereumdashboard.dev)
-- **Hosting:** Vercel (serverless route handlers and cron jobs). Note that Vercel's free Hobby plan is for non-commercial use.
-- **Accounts setup:** set `AUTH_SECRET`, `DATABASE_URL` and `CRON_SECRET` in Vercel, then create the tables once with `DATABASE_URL=... npm run db:migrate`. Run it again after pulling new files in `drizzle/`.
-- **Cron:** `vercel.json` schedules `/api/cron/portfolio-snapshots` daily at 05:15 UTC; Vercel sends `CRON_SECRET` as a bearer token.
-- **MCP keys:** `npm run db:migrate` also creates the `api_keys` tables (Phase 4).
-- **Alerts:** run `npm run db:migrate` for the alerts tables, create the Telegram bot and register its webhook, then import the n8n workflows. Step by step in [`n8n/README.md`](n8n/README.md).
-- **Docker:** a `Dockerfile` (Node 24) is included for self-hosting:
+- **Hosting:** Vercel (route handlers and a daily cron in `vercel.json`). A `Dockerfile` (Node 24) is included for self-hosting:
   ```bash
   docker build -t eth-dashboard .
   docker run -p 3000:3000 --env-file .env eth-dashboard
   ```
+- **Database:** set `DATABASE_URL`, `AUTH_SECRET` and `CRON_SECRET`, then run `npm run db:migrate` once, and again after pulling new files in `drizzle/`.
+- **Alerts:** create the Telegram bot, register its webhook and import the n8n workflows. Steps are in [`n8n/README.md`](n8n/README.md).
+- **Browser notifications:** generate keys once with `npx web-push generate-vapid-keys`.
