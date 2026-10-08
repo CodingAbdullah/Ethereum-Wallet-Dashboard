@@ -623,6 +623,7 @@ All current variables are in `.env.example`:
 | `AGENT_MODEL` | No (defaults to `llama-3.3-70b-versatile`) | Any Groq model with tool calling |
 | `RESEND_API_KEY`, `PERSONAL_EMAIL` | For the feedback form | Resend free tier |
 | `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | Recommended in production | Upstash Redis free tier |
+| `API_RATE_LIMIT` | No (defaults to 120 requests per IP per minute) | — |
 | `NEXT_PUBLIC_SENTRY_DSN` | Recommended in production | Sentry free Developer plan |
 | `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT` | No (source map upload only) | Sentry |
 | `UMAMI_URL`, `UMAMI_DATA_WEBSITE_ID` | No | Umami |
