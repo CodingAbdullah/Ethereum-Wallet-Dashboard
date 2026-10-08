@@ -51,3 +51,15 @@ describe("createRateLimiter", () => {
         await expect(limiter.isLimited("1.1.1.1")).resolves.toBe(false);
     });
 });
+
+describe("createRateLimiter", () => {
+    it("uses API_RATE_LIMIT when set", async () => {
+        const limiter = createRateLimiter({ API_RATE_LIMIT: '2' });
+        expect(await limiter.isLimited('ip')).toBe(false);
+        expect(await limiter.isLimited('ip')).toBe(false);
+        expect(await limiter.isLimited('ip')).toBe(true);
+        const defaults = createRateLimiter({ API_RATE_LIMIT: 'nonsense' });
+        for (let i = 0; i < 120; i++) expect(await defaults.isLimited('ip')).toBe(false);
+        expect(await defaults.isLimited('ip')).toBe(true);
+    });
+});

@@ -37,7 +37,8 @@ export function createMemoryLimiter(limit = MAX_REQUESTS_PER_WINDOW, windowMs = 
 }
 
 export interface LimiterOptions { limit: number; windowSeconds: number; prefix: string }
-const API_LIMIT: LimiterOptions = { limit: MAX_REQUESTS_PER_WINDOW, windowSeconds: WINDOW_SECONDS, prefix: 'eth-dashboard:api' };
+// API_RATE_LIMIT (requests per IP per minute) overrides the default, e.g. for self-hosting or end-to-end tests
+const apiLimit = (env: Record<string, string | undefined>): LimiterOptions => ({ limit: Number(env.API_RATE_LIMIT) > 0 ? Number(env.API_RATE_LIMIT) : MAX_REQUESTS_PER_WINDOW, windowSeconds: WINDOW_SECONDS, prefix: 'eth-dashboard:api' });
 
 function createUpstashLimiter(url: string, token: string, options: LimiterOptions): RateLimiter {
     const ratelimit = new Ratelimit({
@@ -65,7 +66,7 @@ function createUpstashLimiter(url: string, token: string, options: LimiterOption
 }
 
 // The default is the per-IP limit for /api; other features (the AI agent) pass their own limit and prefix
-export function createRateLimiter(env: Record<string, string | undefined> = process.env, options: LimiterOptions = API_LIMIT): RateLimiter {
+export function createRateLimiter(env: Record<string, string | undefined> = process.env, options: LimiterOptions = apiLimit(env)): RateLimiter {
     const url = env.UPSTASH_REDIS_REST_URL;
     const token = env.UPSTASH_REDIS_REST_TOKEN;
     return url && token ? createUpstashLimiter(url, token, options) : createMemoryLimiter(options.limit, options.windowSeconds * 1000);
