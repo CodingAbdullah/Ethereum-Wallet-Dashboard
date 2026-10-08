@@ -1,7 +1,7 @@
 # Changelog
 
 The main changes to Ethereum Dashboard since the revamp started, newest first. Each entry is one phase,
-dated by its merge into main. Full details, checklists and the reasons behind each change are in PHASEPLAN.md.
+dated by its merge into main. New releases are added at the top. Full details, checklists and the reasons behind each change are in [PHASEPLAN.md](PHASEPLAN.md).
 
 ## Phase 6: Polish & Growth (2026-10-08)
 
