@@ -179,6 +179,8 @@ public/sw.js        # Service worker (offline page, notifications)
 
 Unit tests (`*.test.ts`) sit next to the code they test.
 
+Working on the code, alone or with an AI assistant? See [AGENTS.md](AGENTS.md) for the commands, rules and conventions. Security issues: see [SECURITY.md](SECURITY.md).
+
 ---
 
 ## Deployment

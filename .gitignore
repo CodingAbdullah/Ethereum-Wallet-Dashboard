@@ -45,3 +45,6 @@ next-env.d.ts
 /e2e/.state.json
 /test-results/
 /playwright-report/
+
+# local Claude Code settings (personal)
+/.claude/settings.local.json
