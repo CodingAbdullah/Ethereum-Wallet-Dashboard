@@ -21,7 +21,7 @@ const uintGetterAbi = (name: string) => parseAbi([`function ${name}() view retur
 const toEth = (wei: bigint) => Number(formatEther(wei));
 
 // Rocket Pool resolves its contract addresses through RocketStorage
-async function rocketContract(name: string): Promise<`0x${string}`> {
+export async function rocketContract(name: string): Promise<`0x${string}`> {
     return rpcClient.readContract({
         address: ROCKET_STORAGE,
         abi: rocketStorageAbi,

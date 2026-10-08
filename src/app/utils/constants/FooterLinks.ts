@@ -13,7 +13,8 @@ export const FooterLinks: FooterLinksObject = {
                 { name: 'OpenSea', href: 'https://docs.opensea.io/reference/api-overview' },
                 { name: 'PublicNode', href: 'https://www.publicnode.com/' },
                 { name: 'Beacon API', href: 'https://ethereum.github.io/beacon-APIs/' },
-                { name: 'GoPlus', href: 'https://gopluslabs.io/' }
+                { name: 'GoPlus', href: 'https://gopluslabs.io/' },
+                { name: 'Sourcify', href: 'https://sourcify.dev/' }
             ]
         },
         {
@@ -26,7 +27,9 @@ export const FooterLinks: FooterLinksObject = {
                 { name: 'Deribit', href: 'https://docs.deribit.com/' },
                 { name: 'OKX', href: 'https://www.okx.com/docs-v5/en/' },
                 { name: 'Bybit', href: 'https://bybit-exchange.github.io/docs/' },
-                { name: 'Lido', href: 'https://lido.fi/' }
+                { name: 'Lido', href: 'https://lido.fi/' },
+                { name: 'Rocket Pool', href: 'https://rocketpool.net/' },
+                { name: 'Uniswap', href: 'https://docs.uniswap.org/contracts/v3/overview' }
             ]
         },
         {
