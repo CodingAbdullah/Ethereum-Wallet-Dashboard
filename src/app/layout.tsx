@@ -18,9 +18,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const DESCRIPTION = "Free Ethereum analytics: wallets, tokens, NFTs, DeFi, staking and layer 2s, with alerts, an AI assistant and safe, simulated transactions.";
+
 export const metadata: Metadata = {
-  title: "Ethereum Dashboard",
-  description: "Powered by Next.js, lookup everything there is to know within the Ethereum ecosystem"
+  metadataBase: new URL("https://ethereumdashboard.dev"),
+  title: { default: "Ethereum Dashboard", template: "%s · Ethereum Dashboard" },
+  description: DESCRIPTION,
+  applicationName: "Ethereum Dashboard",
+  openGraph: { type: "website", siteName: "Ethereum Dashboard", title: "Ethereum Dashboard", description: DESCRIPTION, url: "/" },
+  twitter: { card: "summary_large_image", title: "Ethereum Dashboard", description: DESCRIPTION }
 };
 
 export default function RootLayout({

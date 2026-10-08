@@ -10,7 +10,7 @@ import type { Metadata } from "next"
 
 // Custom Metadata
 export const metadata: Metadata = {
-  title: "Ethereum Dashboard",
+  title: { absolute: "Ethereum Dashboard" },
   description: "Live Ethereum data: wallets, tokens, DeFi, layer 2s, gas, supply, MEV and more"
 }
 
