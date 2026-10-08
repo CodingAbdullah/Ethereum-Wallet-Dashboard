@@ -11,6 +11,7 @@ import SignInGate, { buttonClass, Panel } from './SignInGate';
 import { ALERT_CATALOG, catalogEntry, scheduleLabel, toParams, type AlertField } from '@/lib/alerts/catalog';
 import { CHAINS } from '@/lib/chains';
 import { PushSetupError, pushSupported, subscribeToPush } from '@/lib/pwa';
+import { track } from '@/lib/analytics';
 
 interface Channel { id: number; kind: 'telegram' | 'discord' | 'email' | 'webpush'; label: string | null; verified: boolean; display: string }
 interface Subscription { id: number; kind: string; title: string; summary: string; channelId: number; enabled: boolean; lastTriggeredAt: string | null }
@@ -91,6 +92,7 @@ function ChannelsPanel({ setup, channels }: { setup: AlertsSetup; channels?: Cha
         setBusy(false);
         if (error) return setError(error);
         setTarget(''); setLabel('');
+        track('channel_added', { kind });
         if (kind === 'telegram') setTelegramLink(String(data?.link));
         else setNotice(kind === 'email' ? 'Check your inbox and open the link to confirm this address.' : kind === 'webpush' ? 'Notifications are on. We sent a test one to this browser.' : 'Connected. We sent a message to the channel.');
         mutate('/api/alerts/channels');
@@ -229,6 +231,7 @@ function NewAlertPanel({ setup, channels, initialKind }: { setup: AlertsSetup; c
         setBusy(false);
         if (error) return setError(error);
         setValues({});
+        track('alert_created', { kind: kindId });
         setNotice(`Alert created: ${entry.title}.`);
         mutate('/api/alerts/subscriptions');
     };

@@ -8,6 +8,7 @@ import { MessageCircle, X, Send, Square, RotateCcw } from 'lucide-react';
 import { chainByChainId } from '@/lib/chains';
 import ChatMarkdown from './ChatMarkdown';
 import { ASK_EVENT } from './askAgent';
+import { track } from '@/lib/analytics';
 
 const SUGGESTIONS_WALLET = ['Explain my portfolio risk', 'Do I have any risky token approvals?', 'Summarize my recent activity'];
 const SUGGESTIONS = ['How much is gas right now?', 'How is ETH staking doing?', 'Compare the main layer 2s'];
@@ -55,7 +56,10 @@ export default function AgentChat() {
     const [transport] = useState(() => new DefaultChatTransport({ api: '/api/agent' }));
     const { messages, sendMessage, status, stop, error, setMessages, clearError } = useChat({ transport });
     // The connected wallet goes with every question, so "my wallet" always means the current one
-    const ask = useCallback((text: string) => sendMessage({ text }, { body: { wallet: address, chain } }), [sendMessage, address, chain]);
+    const ask = useCallback((text: string) => {
+        track('agent_question', { withWallet: !!address });
+        return sendMessage({ text }, { body: { wallet: address, chain } });
+    }, [sendMessage, address, chain]);
     const [open, setOpen] = useState(false);
     const [input, setInput] = useState('');
     const bottom = useRef<HTMLDivElement>(null);

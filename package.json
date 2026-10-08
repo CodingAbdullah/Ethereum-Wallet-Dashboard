@@ -51,6 +51,7 @@
     "lucide-react": "^1.52.0",
     "mcp-handler": "^2.2.0",
     "next": "^16.4.0",
+    "posthog-js": "1.434.12",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "react-hook-form": "^7.89.0",

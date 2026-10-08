@@ -11,6 +11,7 @@ import type { CallJson } from '@/lib/onchain/request';
 import type { Simulation } from '@/lib/onchain/simulate';
 import type { RiskFlag } from '@/lib/onchain/risks';
 import { notifyIfHidden } from '@/lib/pwa';
+import { track } from '@/lib/analytics';
 
 // Every on-chain action goes through the same steps:
 // 1. simulate (server, eth_simulateV1) → 2. preview → 3. the user signs in their own wallet (wagmi)
@@ -76,6 +77,7 @@ export function useTxFlow(onDone?: (sent: SentTx[]) => void) {
             const body = await response.json().catch(() => ({}));
             if (!response.ok) throw new Error(body.issues?.join(', ') || body.error || 'The simulation failed');
             setState({ step: 'preview', preview: body as Preview });
+            track('tx_previewed', { chain: plan.chain, calls: plan.calls.length });
         }
         catch (err) {
             setState({ step: 'failed', preview: null, sent: [], error: err instanceof Error ? err.message : 'The simulation failed' });
@@ -98,11 +100,13 @@ export function useTxFlow(onDone?: (sent: SentTx[]) => void) {
                 const receipt = await waitForReceipt(config, hash, target);
                 sent[i] = { hash, status: receipt.status === 'success' ? 'success' : 'reverted' };
                 if (receipt.status !== 'success') {
+                    track('tx_failed', { chain: plan.chain, reason: 'reverted' });
                     void notifyIfHidden('Transaction failed', `${plan.title}: the transaction reverted.`);
                     setState({ step: 'failed', preview, sent: [...sent], error: 'The transaction was mined but failed (reverted). No changes were made by it.' });
                     return;
                 }
             }
+            track('tx_confirmed', { chain: plan.chain, calls: plan.calls.length });
             void notifyIfHidden('Transaction confirmed', plan.title);
             setState({ step: 'done', preview, sent: [...sent] });
             onDone?.(sent);

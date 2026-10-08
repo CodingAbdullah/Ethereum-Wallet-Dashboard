@@ -6,6 +6,7 @@ import { isAddressEqual } from 'viem';
 import { createSiweMessage } from 'viem/siwe';
 import { useAccount, useSignMessage } from 'wagmi';
 import { CHAINS } from '@/lib/chains';
+import { track } from '@/lib/analytics';
 
 // Sign-In with Ethereum on the client: asks the connected wallet to sign a one-time message,
 // and the server answers with an httpOnly session cookie.
@@ -73,6 +74,7 @@ export function useSession() {
                 body: JSON.stringify({ message, signature })
             });
             if (!verifyResponse.ok) throw new Error(await errorMessage(verifyResponse, 'Sign-in failed'));
+            track('signed_in');
             await mutate();
         }
         catch (err) {
